@@ -4,7 +4,7 @@ import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ReactNode } from 'react'
-import { LSDThemeProvider } from '../containers/LSDThemeProvider'
+import '../styles/globals.css'
 
 type NextLayoutComponentType<P = {}> = NextComponentType<
   NextPageContext,
@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
     ((page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>)
 
   return (
-    <LSDThemeProvider>
+    <>
       <Head>
         <title>Logos NextJS Starter</title>
         <meta
@@ -36,55 +36,20 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
         styles={css`
           html,
           body {
-            background: rgb(var(--lsd-surface-primary));
-            color: rgb(var(--lsd-text-primary));
             margin: 0;
             width: 100%;
             height: 100%;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            font-family: serif;
           }
 
           #__next {
             margin-left: auto;
             margin-right: auto;
           }
-
-          a,
-          a:visited,
-          a:hover,
-          a:active,
-          a:focus {
-            color: rgb(var(--lsd-text-primary));
-          }
-
-          h1,
-          h2,
-          h3,
-          h4,
-          h5,
-          h6,
-          p {
-            margin: 0;
-            padding: 0;
-            word-break: keep-all;
-          }
-
-          [data-theme='light'] {
-            .light-mode-hidden {
-              display: none !important;
-            }
-          }
-
-          [data-theme='dark'] {
-            .dark-mode-hidden {
-              display: none !important;
-            }
-          }
         `}
       />
       {getLayout(<Component {...pageProps} />)}
-    </LSDThemeProvider>
+    </>
   )
 }
