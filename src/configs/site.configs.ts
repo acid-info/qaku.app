@@ -1,5 +1,5 @@
 export const siteConfigs = {
-  title: 'Logos NextJS Starter',
+  title: 'Qaku: Q&A over Waku',
   description: 'Acid is designing the future.',
   keywords: [],
   xHandle: 'logos_network',

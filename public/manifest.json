@@ -1,6 +1,6 @@
 {
-  "short_name": "Logos NextJS",
-  "name": "Logos NextJS Starter",
+  "short_name": "Qaku",
+  "name": "Qaku: Q&A over Waku",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",

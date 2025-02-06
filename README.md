@@ -1,11 +1,11 @@
-# Logos NextJS Starter
+# Qaku
 
 ## How to Run Locally
 
 1. Clone this repository
 
 ```bash
-$ git clone https://github.com/acid-info/logos-nextjs-starter.git
+$ git clone https://github.com/acid-info/qaku.app.git
 ```
 
 2. Install the dependencies:
