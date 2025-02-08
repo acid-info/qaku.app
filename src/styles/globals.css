@@ -62,7 +62,8 @@ a:visited,
 a:hover,
 a:active,
 a:focus {
-  color: rgb(var(--lsd-text-primary));
+  color: var(--white);
+  text-decoration: none;
 }
 
 h1 {
