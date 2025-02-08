@@ -1,3 +1,5 @@
+import { Button } from '@/components/Button'
+import { PlusIcon } from '@/components/Icons/PlusIcon'
 import styled from '@emotion/styled'
 import React from 'react'
 
@@ -12,9 +14,91 @@ export const HomeContainer: React.FC<HomePageProps> = ({
 }) => {
   return (
     <Container {...props}>
-      <h1>Hello World</h1>
+      <Section>
+        <h2>Medium Buttons (Default)</h2>
+        <ButtonGroup>
+          <Button>Button</Button>
+          <Button icon={<PlusIcon />}>Button</Button>
+          <Button variant="outlined">Button</Button>
+          <Button variant="outlined" icon={<PlusIcon />}>
+            Button
+          </Button>
+          <Button variant="filledPrimary">Button</Button>
+          <Button variant="filledPrimary" icon={<PlusIcon />}>
+            Button
+          </Button>
+          <Button variant="outlinedPrimary">Button</Button>
+          <Button variant="outlinedPrimary" icon={<PlusIcon />}>
+            Button
+          </Button>
+        </ButtonGroup>
+      </Section>
+
+      <Section>
+        <h2>Large Buttons</h2>
+        <ButtonGroup>
+          <Button size="large">Button</Button>
+          <Button size="large" icon={<PlusIcon />}>
+            Button
+          </Button>
+          <Button size="large" variant="outlined">
+            Button
+          </Button>
+          <Button size="large" variant="outlined" icon={<PlusIcon />}>
+            Button
+          </Button>
+          <Button size="large" variant="filledPrimary">
+            Button
+          </Button>
+          <Button size="large" variant="filledPrimary" icon={<PlusIcon />}>
+            Button
+          </Button>
+          <Button size="large" variant="outlinedPrimary">
+            Button
+          </Button>
+          <Button size="large" variant="outlinedPrimary" icon={<PlusIcon />}>
+            Button
+          </Button>
+        </ButtonGroup>
+      </Section>
+
+      <Section>
+        <h2>Disabled State</h2>
+        <ButtonGroup>
+          <Button disabled>Button</Button>
+          <Button variant="outlined" disabled>
+            Button
+          </Button>
+          <Button variant="filledPrimary" disabled>
+            Button
+          </Button>
+          <Button variant="outlinedPrimary" disabled>
+            Button
+          </Button>
+        </ButtonGroup>
+      </Section>
     </Container>
   )
 }
 
-const Container = styled.div``
+const Container = styled.div`
+  padding: 32px;
+  color: var(--white);
+
+  h2 {
+    color: var(--white);
+    margin-bottom: 24px;
+    font-size: 24px;
+  }
+`
+
+const Section = styled.section`
+  margin-bottom: 48px;
+`
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+`
