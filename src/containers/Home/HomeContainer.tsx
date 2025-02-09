@@ -1,7 +1,9 @@
-import { Button } from '@/components/Button'
-import { PlusIcon } from '@/components/Icons/PlusIcon'
 import styled from '@emotion/styled'
 import React from 'react'
+
+import { Button } from '@/components/Button'
+import { IconButtonRound } from '@/components/IconButtonRound'
+import { PlusIcon } from '@/components/Icons/PlusIcon'
 
 export type HomePageProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -75,6 +77,73 @@ export const HomeContainer: React.FC<HomePageProps> = ({
           <Button variant="outlinedPrimary" disabled>
             Button
           </Button>
+        </ButtonGroup>
+      </Section>
+
+      <Section>
+        <h2>Round Icon Buttons</h2>
+        <ButtonGroup>
+          <IconButtonRound size="small" icon={<PlusIcon />} />
+          <IconButtonRound
+            size="small"
+            variant="outlined"
+            icon={<PlusIcon />}
+          />
+          <IconButtonRound
+            size="small"
+            variant="filledPrimary"
+            icon={<PlusIcon />}
+          />
+          <IconButtonRound
+            size="small"
+            variant="outlinedPrimary"
+            icon={<PlusIcon />}
+          />
+
+          <IconButtonRound icon={<PlusIcon />} />
+          <IconButtonRound variant="outlined" icon={<PlusIcon />} />
+          <IconButtonRound variant="filledPrimary" icon={<PlusIcon />} />
+          <IconButtonRound variant="outlinedPrimary" icon={<PlusIcon />} />
+
+          <IconButtonRound size="large" icon={<PlusIcon />} />
+          <IconButtonRound
+            size="large"
+            variant="outlined"
+            icon={<PlusIcon />}
+          />
+          <IconButtonRound
+            size="large"
+            variant="filledPrimary"
+            icon={<PlusIcon />}
+          />
+          <IconButtonRound
+            size="large"
+            variant="outlinedPrimary"
+            icon={<PlusIcon />}
+          />
+
+          <IconButtonRound disabled icon={<PlusIcon />} />
+          <IconButtonRound variant="outlined" disabled icon={<PlusIcon />} />
+          <IconButtonRound
+            variant="filledPrimary"
+            disabled
+            icon={<PlusIcon />}
+          />
+          <IconButtonRound
+            variant="outlinedPrimary"
+            disabled
+            icon={<PlusIcon />}
+          />
+        </ButtonGroup>
+        <ButtonGroup>
+          <IconButtonRound
+            variant="outlinedPrimary"
+            icon={
+              <PlusIcon
+                style={{ width: '60px', height: '60px', color: 'red' }}
+              />
+            }
+          />
         </ButtonGroup>
       </Section>
     </Container>
