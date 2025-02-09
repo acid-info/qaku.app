@@ -66,7 +66,7 @@ const getHoverBackground = (variant: IconButtonRoundVariant) => {
     case 'filledPrimary':
       return 'var(--yellow-darker)'
     case 'outlinedPrimary':
-      return 'rgba(255, 194, 51, 0.2)' // --yellow with 20% opacity
+      return 'color-mix(in srgb, var(--yellow) 20%, transparent)'
   }
 }
 
