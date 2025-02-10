@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Button } from '@/components/Button'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import { ToggleButton } from '@/components/ToggleButton'
 
 export type HomePageProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -14,8 +15,15 @@ export const HomeContainer: React.FC<HomePageProps> = ({
   children,
   ...props
 }) => {
+  const [toggleState, setToggleState] = useState(false)
+
   return (
     <Container {...props}>
+      <Section>
+        <h2>Toggle Button</h2>
+        <ToggleButton isOn={toggleState} onChange={setToggleState} />
+      </Section>
+
       <Section>
         <h2>Medium Buttons (Default)</h2>
         <ButtonGroup>
