@@ -12,8 +12,26 @@
   --gray-lighter: #3b3b3f;
   --gray-lightest: #45454a;
 
+  --display-font-size: 56px;
+  --display-line-height: 64px;
+
   --h1-font-size: 40px;
   --h1-line-height: 48px;
+
+  --h2-font-size: 28px;
+  --h2-line-height: 36px;
+
+  --h3-font-size: 20px;
+  --h3-line-height: 28px;
+
+  --body1-font-size: 16px;
+  --body1-line-height: 24px;
+
+  --body2-font-size: 14px;
+  --body2-line-height: 20px;
+
+  --label1-font-size: 12px;
+  --label1-line-height: 16px;
 }
 
 body {
@@ -69,5 +87,23 @@ a:focus {
 h1 {
   font-size: var(--h1-font-size);
   line-height: var(--h1-line-height);
+  color: var(--white);
+}
+
+h2 {
+  font-size: var(--h2-font-size);
+  line-height: var(--h2-line-height);
+  color: var(--white);
+}
+
+h3 {
+  font-size: var(--h3-font-size);
+  line-height: var(--h3-line-height);
+  color: var(--white);
+}
+
+p {
+  font-size: var(--body1-font-size);
+  line-height: var(--body1-line-height);
   color: var(--white);
 }
