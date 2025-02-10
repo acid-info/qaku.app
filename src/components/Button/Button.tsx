@@ -86,10 +86,12 @@ const StyledButton = styled.button<{
   transition: all 0.2s ease-in-out;
   font-family: inherit;
   padding: 0 16px;
+  white-space: nowrap;
 
   height: ${({ size }) => (size === 'medium' ? '32px' : '64px')};
-  width: ${({ size, hasIcon }) =>
+  min-width: ${({ size, hasIcon }) =>
     size === 'medium' ? (hasIcon ? '89px' : '67px') : '200px'};
+  width: fit-content;
   font-size: ${({ size }) =>
     size === 'medium' ? 'var(--label1-font-size)' : 'var(--body2-font-size)'};
   line-height: ${({ size }) =>
