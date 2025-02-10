@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from './Button'
 import { Hero } from './Hero'
 
-const HomaPage: React.FC = () => {
+export const HomePage: React.FC = () => {
   return (
     <LandingWrapper>
       <ContentContainer>
@@ -44,5 +44,3 @@ const ButtonGroup = styled.div`
   justify-content: center;
   margin-top: 48px;
 `
-
-export default HomaPage

@@ -26,6 +26,6 @@ const HeroWrapper = styled.div`
 
 const Title = styled.h1`
   margin-top: 40px;
-  font-size: 56px;
-  line-height: 64px;
+  font-size: var(--display-font-size);
+  line-height: var(--display-line-height);
 `
