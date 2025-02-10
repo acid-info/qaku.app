@@ -6,10 +6,10 @@ import { WakuLogo } from '../Icons/WakuLogo'
 export const Footer: React.FC = () => {
   return (
     <FooterWrapper>
-      <PoweredBySection>
+      <BrandSection>
         <WakuLogo width={18} height={18} />
         <PoweredByText>Powered by Waku</PoweredByText>
-      </PoweredBySection>
+      </BrandSection>
       <Divider />
       <LinkGroup>
         <FooterLink href="#">Terms of use</FooterLink>
@@ -33,7 +33,7 @@ const FooterWrapper = styled.footer`
   gap: 20px;
 `
 
-const PoweredBySection = styled.div`
+const BrandSection = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
