@@ -2,7 +2,7 @@ import { CreateQnA } from '@/components/Dashboard/CreateQnA'
 import { SEO } from '@/components/SEO'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 
-export default function CreateQnAPage() {
+export default function Page() {
   return (
     <>
       <SEO />
@@ -11,6 +11,6 @@ export default function CreateQnAPage() {
   )
 }
 
-CreateQnAPage.getLayout = function getLayout(page: React.ReactNode) {
+Page.getLayout = function getLayout(page: React.ReactNode) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
