@@ -24,6 +24,11 @@ export const HomeContainer: React.FC<HomePageProps> = ({
         <h2>Search</h2>
         <ButtonGroup>
           <Search onSearch={(value) => console.log('Search:', value)} />
+          <Search
+            label="Find Something"
+            placeholder="Enter keywords..."
+            onSearch={(value) => console.log('Search:', value)}
+          />
         </ButtonGroup>
       </Section>
 
@@ -35,8 +40,8 @@ export const HomeContainer: React.FC<HomePageProps> = ({
       <Section>
         <h2>Medium Buttons (Default)</h2>
         <ButtonGroup>
-          <Button>Button</Button>
-          <Button icon={<PlusIcon />}>Button</Button>
+          <Button>Button with text</Button>
+          <Button icon={<PlusIcon />}>Button with icon</Button>
           <Button variant="outlined">Button</Button>
           <Button variant="outlined" icon={<PlusIcon />}>
             Button
@@ -55,9 +60,9 @@ export const HomeContainer: React.FC<HomePageProps> = ({
       <Section>
         <h2>Large Buttons</h2>
         <ButtonGroup>
-          <Button size="large">Button</Button>
+          <Button size="large">Button with very very long text</Button>
           <Button size="large" icon={<PlusIcon />}>
-            Button
+            Button with icon
           </Button>
           <Button size="large" variant="outlined">
             Button
