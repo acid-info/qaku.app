@@ -3,14 +3,13 @@ import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
 const Root = styled.div`
-  background: var(--black);
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `
 
 const Main = styled.main`
   width: 100%;
-  height: 100%;
+  height: calc(100% - var(--footer-height));
 `
 
 export default function HomeLayout(props: PropsWithChildren) {

@@ -11,7 +11,6 @@ export const Button: React.FC<ButtonProps> = ({ variant, children }) => {
 }
 
 const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
-  align-self: stretch;
   background: ${({ variant }) =>
     variant === 'primary' ? 'var(--yellow)' : 'var(--gray)'};
   color: ${({ variant }) =>

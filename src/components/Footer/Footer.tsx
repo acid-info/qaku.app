@@ -1,18 +1,13 @@
 import styled from '@emotion/styled'
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { WakuLogo } from '../Icons/WakuLogo'
 
 export const Footer: React.FC = () => {
   return (
     <FooterWrapper>
       <PoweredBySection>
-        <WakuLogo
-          width={18}
-          height={18}
-          src="/brand/waku-logo-white.svg"
-          alt="Waku logo"
-        />
+        <WakuLogo width={18} height={18} />
         <PoweredByText>Powered by Waku</PoweredByText>
       </PoweredBySection>
       <Divider />
@@ -28,17 +23,14 @@ const FooterWrapper = styled.footer`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   color: var(--white);
 
   margin-top: auto;
-  margin-bottom: 24px;
+  padding-bottom: var(--footer-margin);
 
   width: 100%;
   gap: 20px;
-
-  @media (max-width: 991px) {
-    margin-top: 40px;
-  }
 `
 
 const PoweredBySection = styled.div`
@@ -46,14 +38,6 @@ const PoweredBySection = styled.div`
   align-items: center;
   gap: 14px;
   justify-content: start;
-  margin: auto 0;
-`
-
-const WakuLogo = styled(Image)`
-  object-fit: contain;
-  object-position: center;
-  width: 18px;
-  align-self: stretch;
   margin: auto 0;
 `
 

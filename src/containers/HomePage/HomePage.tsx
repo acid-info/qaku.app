@@ -10,7 +10,7 @@ const HomaPage: React.FC = () => {
       <ContentContainer>
         <Hero />
         <ButtonGroup>
-          <Link href={'#'}>
+          <Link href={'/qna/create'}>
             <Button variant="secondary">Create quick Q&A</Button>
           </Link>
           <Link href={'#'}>

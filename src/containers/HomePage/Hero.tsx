@@ -1,16 +1,12 @@
+import { QakuLogo } from '@/components/Icons/QakuLogo'
 import styled from '@emotion/styled'
-import Image from 'next/image'
 import React from 'react'
 
 export const Hero: React.FC = () => {
   return (
     <HeroWrapper>
-      <Logo
-        width={87}
-        height={84}
-        src="/brand/qaku-logo-white.svg"
-        alt="Qaku logo"
-      />
+      <QakuLogo width={87} height={84} />
+
       <Title>
         Qaku!
         <br />
@@ -26,11 +22,6 @@ const HeroWrapper = styled.div`
   align-items: center;
   color: var(--white);
   text-align: center;
-`
-
-const Logo = styled(Image)`
-  object-fit: contain;
-  object-position: center;
 `
 
 const Title = styled.h1`
