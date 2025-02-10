@@ -32,6 +32,22 @@
 
   --label1-font-size: 12px;
   --label1-line-height: 16px;
+
+  --footer-content-height: 18px;
+  --footer-margin: 24px;
+  --footer-height: calc(var(--footer-content-height) + var(--footer-margin));
+
+  --header-content-height: 32px;
+  --header-margin: 16px;
+  --header-height: calc(
+    var(--header-content-height) + var(--header-margin) * 2
+  );
+
+  --sidebar-width: 378px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
