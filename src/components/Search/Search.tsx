@@ -4,11 +4,13 @@ import { SearchIcon } from '../Icons/SearchIcon'
 
 export type SearchProps = {
   onSearch?: (value: string) => void
+  label?: string
   placeholder?: string
 }
 
 export const Search: React.FC<SearchProps> = ({
   onSearch,
+  label = 'Search',
   placeholder = 'Type..',
 }) => {
   const [isActive, setIsActive] = useState(false)
@@ -36,7 +38,7 @@ export const Search: React.FC<SearchProps> = ({
             }}
           />
         ) : (
-          <SearchText>Search</SearchText>
+          <SearchText>{label}</SearchText>
         )}
       </SearchButton>
     </SearchWrapper>
@@ -57,6 +59,7 @@ const SearchButton = styled.button<{ $isActive: boolean }>`
   padding: 8px 16px;
   cursor: pointer;
   min-width: 92px;
+  width: fit-content;
   height: 31px;
   transition: background-color 0.2s ease;
 
@@ -69,12 +72,14 @@ const SearchIconWrapper = styled.span`
   display: flex;
   align-items: center;
   color: var(--white);
+  flex-shrink: 0;
 `
 
 const SearchText = styled.span`
   color: var(--white);
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
+  white-space: nowrap;
 `
 
 const SearchInput = styled.input`
@@ -84,8 +89,7 @@ const SearchInput = styled.input`
   color: var(--white);
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
-  width: 100%;
-  min-width: 150px;
+  width: 150px;
 
   &::placeholder {
     color: var(--white);
