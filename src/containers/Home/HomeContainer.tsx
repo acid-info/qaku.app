@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Button } from '@/components/Button'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import { Search } from '@/components/Search'
 import { ToggleButton } from '@/components/ToggleButton'
 
 export type HomePageProps = React.DetailedHTMLProps<
@@ -19,6 +20,13 @@ export const HomeContainer: React.FC<HomePageProps> = ({
 
   return (
     <Container {...props}>
+      <Section>
+        <h2>Search</h2>
+        <ButtonGroup>
+          <Search onSearch={(value) => console.log('Search:', value)} />
+        </ButtonGroup>
+      </Section>
+
       <Section>
         <h2>Toggle Button</h2>
         <ToggleButton isOn={toggleState} onChange={setToggleState} />
