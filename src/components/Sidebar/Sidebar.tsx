@@ -4,15 +4,6 @@ import React from 'react'
 import { QakuLogo } from '../Icons/QakuLogo'
 import { Menu } from './Menu'
 
-const SidebarWrapper = styled.aside`
-  display: flex;
-  width: var(--sidebar-width);
-  flex-direction: column;
-  overflow: hidden;
-  justify-content: flex-start;
-  padding: 16px;
-`
-
 export const Sidebar: React.FC = () => {
   return (
     <SidebarWrapper>
@@ -23,3 +14,12 @@ export const Sidebar: React.FC = () => {
     </SidebarWrapper>
   )
 }
+
+const SidebarWrapper = styled.aside`
+  display: flex;
+  width: var(--sidebar-width);
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: flex-start;
+  padding: 16px;
+`

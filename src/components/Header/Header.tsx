@@ -1,6 +1,15 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
+export const Header: React.FC = () => {
+  return (
+    <ButtonGroupWrapper>
+      <ConnectWalletButton>Connect Wallet</ConnectWalletButton>
+      <WalletDropdown>0xC00B...f441</WalletDropdown>
+    </ButtonGroupWrapper>
+  )
+}
+
 const ButtonGroupWrapper = styled.header`
   display: flex;
   align-items: center;
@@ -33,20 +42,3 @@ const WalletDropdown = styled.div`
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
 `
-
-const DropdownIcon = styled.img`
-  aspect-ratio: 1;
-  object-fit: contain;
-  object-position: center;
-  width: 14px;
-  margin: auto 0;
-`
-
-export const Header: React.FC = () => {
-  return (
-    <ButtonGroupWrapper>
-      <ConnectWalletButton>Connect Wallet</ConnectWalletButton>
-      <WalletDropdown>0xC00B...f441</WalletDropdown>
-    </ButtonGroupWrapper>
-  )
-}

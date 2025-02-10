@@ -1,6 +1,15 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
+export const CreateNewQaku: React.FC = () => {
+  return (
+    <CreateNewQakuWrapper>
+      <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
+      <IconButton aria-label="Create new Qaku">+</IconButton>
+    </CreateNewQakuWrapper>
+  )
+}
+
 const CreateNewQakuWrapper = styled.div`
   display: flex;
   margin: auto;
@@ -29,20 +38,3 @@ const IconButton = styled.button`
   border: none;
   cursor: pointer;
 `
-
-const IconImage = styled.img`
-  aspect-ratio: 1;
-  object-fit: contain;
-  object-position: center;
-  width: 24px;
-  flex: 1;
-`
-
-export const CreateNewQaku: React.FC = () => {
-  return (
-    <CreateNewQakuWrapper>
-      <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
-      <IconButton aria-label="Create new Qaku">+</IconButton>
-    </CreateNewQakuWrapper>
-  )
-}
