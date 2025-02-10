@@ -3,13 +3,9 @@ import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
 const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background: var(--black);
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `
 
 const Main = styled.main`
@@ -17,7 +13,7 @@ const Main = styled.main`
   height: 100%;
 `
 
-export default function DefaultLayout(props: PropsWithChildren) {
+export default function HomeLayout(props: PropsWithChildren) {
   return (
     <Root>
       <Main>{props.children}</Main>
