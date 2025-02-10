@@ -90,7 +90,12 @@ const StyledButton = styled.button<{
   height: ${({ size }) => (size === 'medium' ? '32px' : '64px')};
   width: ${({ size, hasIcon }) =>
     size === 'medium' ? (hasIcon ? '89px' : '67px') : '200px'};
-  font-size: ${({ size }) => (size === 'medium' ? '14px' : '16px')};
+  font-size: ${({ size }) =>
+    size === 'medium' ? 'var(--label1-font-size)' : 'var(--body2-font-size)'};
+  line-height: ${({ size }) =>
+    size === 'medium'
+      ? 'var(--label1-line-height)'
+      : 'var(--body2-line-height)'};
 
   background-color: ${({ variant }) => getBackgroundColor(variant)};
   border-color: ${({ variant }) => getBorderColor(variant)};

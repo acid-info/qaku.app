@@ -73,7 +73,8 @@ const SearchIconWrapper = styled.span`
 
 const SearchText = styled.span`
   color: var(--white);
-  font-size: 14px;
+  font-size: var(--label1-font-size);
+  line-height: var(--label1-line-height);
 `
 
 const SearchInput = styled.input`
@@ -81,7 +82,8 @@ const SearchInput = styled.input`
   border: none;
   outline: none;
   color: var(--white);
-  font-size: 14px;
+  font-size: var(--label1-font-size);
+  line-height: var(--label1-line-height);
   width: 100%;
   min-width: 150px;
 
