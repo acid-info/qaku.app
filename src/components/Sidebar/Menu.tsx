@@ -1,6 +1,14 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
+export const Menu: React.FC = () => {
+  return (
+    <Wrapper>
+      <Title>Your Q&As</Title>
+    </Wrapper>
+  )
+}
+
 const Wrapper = styled.div`
   display: flex;
   margin-top: 32px;
@@ -13,11 +21,3 @@ const Title = styled.h2`
   color: var(--white);
   margin: auto 0;
 `
-
-export const Menu: React.FC = () => {
-  return (
-    <Wrapper>
-      <Title>Your Q&As</Title>
-    </Wrapper>
-  )
-}

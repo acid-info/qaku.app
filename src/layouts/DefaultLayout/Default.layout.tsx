@@ -4,6 +4,19 @@ import { Sidebar } from '@/components/Sidebar'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
+export default function DefaultLayout(props: PropsWithChildren) {
+  return (
+    <Root>
+      <Sidebar />
+      <MainContainer>
+        <Header />
+        <Main>{props.children}</Main>
+        <Footer />
+      </MainContainer>
+    </Root>
+  )
+}
+
 const Root = styled.div`
   display: flex;
   background: var(--black);
@@ -20,16 +33,3 @@ const Main = styled.main`
   width: 100%;
   height: 100%;
 `
-
-export default function DefaultLayout(props: PropsWithChildren) {
-  return (
-    <Root>
-      <Sidebar />
-      <MainContainer>
-        <Header />
-        <Main>{props.children}</Main>
-        <Footer />
-      </MainContainer>
-    </Root>
-  )
-}
