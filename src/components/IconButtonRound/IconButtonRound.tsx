@@ -60,11 +60,11 @@ const getTextColor = (variant: IconButtonRoundVariant) => {
 const getHoverBackground = (variant: IconButtonRoundVariant) => {
   switch (variant) {
     case 'filled':
-      return 'var(--gray-dark)'
-    case 'outlined':
       return 'var(--gray-darker)'
+    case 'outlined':
+      return 'var(--gray-darkest)'
     case 'filledPrimary':
-      return 'var(--yellow-darker)'
+      return 'var(--yellow-dark)'
     case 'outlinedPrimary':
       return 'color-mix(in srgb, var(--yellow) 20%, transparent)'
   }

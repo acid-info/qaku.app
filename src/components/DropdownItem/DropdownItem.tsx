@@ -34,7 +34,7 @@ const StyledDropdownItem = styled.button<{
         ? 'var(--gray-dark)'
         : 'var(--gray)'
       : $active
-      ? 'var(--gray-darker)'
+      ? 'var(--gray-darkest)'
       : 'transparent'};
   border: ${({ $variant }) =>
     $variant === 'outlined' ? '1px solid var(--gray)' : 'none'};
@@ -49,6 +49,6 @@ const StyledDropdownItem = styled.button<{
 
   &:hover {
     background: ${({ $variant }) =>
-      $variant === 'filled' ? 'var(--gray-dark)' : 'var(--gray-darker)'};
+      $variant === 'filled' ? 'var(--gray-dark)' : 'var(--gray-darkest)'};
   }
 `

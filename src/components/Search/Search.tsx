@@ -54,7 +54,7 @@ const SearchButton = styled.button<{ $isActive: boolean }>`
   align-items: center;
   gap: 8px;
   background-color: ${({ $isActive }) =>
-    $isActive ? 'var(--gray-darkest)' : 'transparent'};
+    $isActive ? 'var(--gray-ultradark)' : 'transparent'};
   border: 1px solid var(--gray);
   padding: 8px 16px;
   cursor: pointer;
@@ -64,7 +64,7 @@ const SearchButton = styled.button<{ $isActive: boolean }>`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: var(--gray-darker);
+    background-color: var(--gray-darkest);
   }
 `
 

@@ -43,12 +43,12 @@ const LeftRect = styled.div<{ $isOn: boolean }>`
   width: 16px;
   height: 16px;
   background-color: ${({ $isOn }) =>
-    $isOn ? 'var(--gray-dark)' : 'var(--gray-lighter)'};
+    $isOn ? 'var(--gray-darker)' : 'var(--gray-lighter)'};
 `
 
 const RightRect = styled.div<{ $isOn: boolean }>`
   width: 16px;
   height: 16px;
   background-color: ${({ $isOn }) =>
-    $isOn ? 'var(--yellow)' : 'var(--gray-dark)'};
+    $isOn ? 'var(--yellow)' : 'var(--gray-darker)'};
 `

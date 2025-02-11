@@ -1,13 +1,14 @@
 :root {
-  --yellow-darker: #ffb200;
+  --yellow-dark: #fab81e;
   --yellow: #ffc233;
   --red: #ff4d4d;
   --white: #fff;
   --green: #51b580;
   --black: #000;
-  --gray-darkest: #141415;
-  --gray-darker: #19191a;
-  --gray-dark: #1d1d1f;
+  --gray-ultradark: #141415;
+  --gray-darkest: #19191a;
+  --gray-darker: #1d1d1f;
+  --gray-dark: #242426;
   --gray: #28282a;
   --gray-light: #313135;
   --gray-lighter: #3b3b3f;

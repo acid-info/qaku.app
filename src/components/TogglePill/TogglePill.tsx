@@ -36,7 +36,7 @@ const PillContainer = styled.button<{ $isActive: boolean }>`
   border-radius: 16px;
   border: 1px solid var(--gray);
   background: ${({ $isActive }) =>
-    $isActive ? 'var(--gray-darkest)' : 'transparent'};
+    $isActive ? 'var(--gray-ultradark)' : 'transparent'};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
