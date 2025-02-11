@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
 import { Button } from '@/components/Button'
+import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
@@ -19,6 +20,8 @@ export const HomeContainer: React.FC<HomePageProps> = ({
   ...props
 }) => {
   const [toggleState, setToggleState] = useState(false)
+  const [selectedLanguage, setSelectedLanguage] = useState<string | number>()
+  const [selectedTheme, setSelectedTheme] = useState<string | number>()
   const [pillState, setPillState] = useState<{
     state1: [number, boolean]
     state2: [number, boolean]
@@ -29,8 +32,55 @@ export const HomeContainer: React.FC<HomePageProps> = ({
     state3: [1000, false],
   })
 
+  const languageOptions = [
+    { label: 'English', value: 'en' },
+    { label: 'Spanish', value: 'es' },
+    { label: 'French', value: 'fr' },
+    { label: 'German', value: 'de' },
+    { label: 'Italian', value: 'it' },
+  ]
+
+  const themeOptions = [
+    { label: 'System', value: 'system' },
+    { label: 'Light', value: 'light' },
+    { label: 'Dark', value: 'dark' },
+  ]
+
+  const handleLanguageChange = (value: string | number) => {
+    setSelectedLanguage(value)
+  }
+
+  const handleThemeChange = (value: string | number) => {
+    setSelectedTheme(value)
+  }
+
   return (
     <Container {...props}>
+      <Section>
+        <h2>Dropdowns</h2>
+        <ButtonGroup>
+          <DropdownWrapper>
+            <h3>Filled</h3>
+            <Dropdown
+              options={languageOptions}
+              value={selectedLanguage}
+              onChange={handleLanguageChange}
+              placeholder="Select Language"
+            />
+          </DropdownWrapper>
+          <DropdownWrapper style={{ width: '130px' }}>
+            <h3>Outlined</h3>
+            <Dropdown
+              options={themeOptions}
+              value={selectedTheme}
+              onChange={handleThemeChange}
+              variant="outlined"
+              placeholder="Select Theme"
+            />
+          </DropdownWrapper>
+        </ButtonGroup>
+      </Section>
+
       <Section>
         <h2>Search</h2>
         <ButtonGroup>
@@ -235,10 +285,9 @@ const Container = styled.div`
   padding: 32px;
   color: var(--white);
 
-  h2 {
-    color: var(--white);
+  h2,
+  h3 {
     margin-bottom: 24px;
-    font-size: 24px;
   }
 `
 
@@ -250,5 +299,9 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  align-items: flex-start;
+  align-items: center;
+`
+
+const DropdownWrapper = styled.div`
+  width: 200px;
 `
