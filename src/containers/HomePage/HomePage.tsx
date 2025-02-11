@@ -11,7 +11,7 @@ export const HomePage: React.FC = () => {
         <Hero />
         <ButtonGroup>
           <Link href={'/qna/create'}>
-            <Button variant="secondary">Create quick Q&A</Button>
+            <Button variant="secondary">Create quick</Button>
           </Link>
           <Link href={'#'}>
             <Button variant="primary">Connect Wallet</Button>
