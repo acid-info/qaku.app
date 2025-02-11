@@ -15,29 +15,29 @@ export const DropdownItem = ({
   active = false,
 }: DropdownItemProps) => {
   return (
-    <StyledDropdownItem onClick={onClick} variant={variant} active={active}>
+    <StyledDropdownItem onClick={onClick} $variant={variant} $active={active}>
       {children}
     </StyledDropdownItem>
   )
 }
 
 const StyledDropdownItem = styled.button<{
-  variant: 'filled' | 'outlined'
-  active: boolean
+  $variant: 'filled' | 'outlined'
+  $active: boolean
 }>`
   width: 100%;
   padding: 8px 16px;
   border: none;
-  background: ${({ variant, active }) =>
-    variant === 'filled'
-      ? active
+  background: ${({ $variant, $active }) =>
+    $variant === 'filled'
+      ? $active
         ? 'var(--gray-dark)'
         : 'var(--gray)'
-      : active
+      : $active
       ? 'var(--gray-darker)'
       : 'transparent'};
-  border: ${({ variant }) =>
-    variant === 'outlined' ? '1px solid var(--gray)' : 'none'};
+  border: ${({ $variant }) =>
+    $variant === 'outlined' ? '1px solid var(--gray)' : 'none'};
   color: var(--white);
   cursor: pointer;
   display: flex;
@@ -48,7 +48,7 @@ const StyledDropdownItem = styled.button<{
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${({ variant }) =>
-      variant === 'filled' ? 'var(--gray-dark)' : 'var(--gray-darker)'};
+    background: ${({ $variant }) =>
+      $variant === 'filled' ? 'var(--gray-dark)' : 'var(--gray-darker)'};
   }
 `

@@ -20,14 +20,14 @@ export const TogglePill: FC<TogglePillProps> = ({
   onClick,
 }) => {
   return (
-    <PillContainer onClick={onClick} isActive={isActive}>
+    <PillContainer onClick={onClick} $isActive={isActive}>
       <IconWrapper>{isActive ? activeIcon : icon}</IconWrapper>
       <Count>{count}</Count>
     </PillContainer>
   )
 }
 
-const PillContainer = styled.button<{ isActive: boolean }>`
+const PillContainer = styled.button<{ $isActive: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -35,8 +35,8 @@ const PillContainer = styled.button<{ isActive: boolean }>`
   padding: 0 16px;
   border-radius: 16px;
   border: 1px solid var(--gray);
-  background: ${({ isActive }) =>
-    isActive ? 'var(--gray-darkest)' : 'transparent'};
+  background: ${({ $isActive }) =>
+    $isActive ? 'var(--gray-darkest)' : 'transparent'};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 

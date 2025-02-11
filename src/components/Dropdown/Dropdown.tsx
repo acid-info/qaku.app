@@ -58,7 +58,7 @@ export const Dropdown = ({
         </IconWrapper>
       </DropdownItem>
       {isOpen && (
-        <DropdownList variant={variant}>
+        <DropdownList>
           {options.map((option) => (
             <DropdownItem
               key={option.value}
@@ -80,7 +80,7 @@ const DropdownContainer = styled.div`
   width: 100%;
 `
 
-const DropdownList = styled.div<{ variant: 'filled' | 'outlined' }>`
+const DropdownList = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
