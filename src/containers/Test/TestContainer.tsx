@@ -15,7 +15,7 @@ export type HomePageProps = React.DetailedHTMLProps<
   HTMLDivElement
 >
 
-export const HomeContainer: React.FC<HomePageProps> = ({
+export const TestContainer: React.FC<HomePageProps> = ({
   children,
   ...props
 }) => {
