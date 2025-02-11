@@ -3,9 +3,11 @@ import React, { useState } from 'react'
 
 import { Button } from '@/components/Button'
 import { IconButtonRound } from '@/components/IconButtonRound'
+import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { Search } from '@/components/Search'
 import { ToggleButton } from '@/components/ToggleButton'
+import { TogglePill } from '@/components/TogglePill'
 
 export type HomePageProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -17,6 +19,15 @@ export const HomeContainer: React.FC<HomePageProps> = ({
   ...props
 }) => {
   const [toggleState, setToggleState] = useState(false)
+  const [pillState, setPillState] = useState<{
+    state1: [number, boolean]
+    state2: [number, boolean]
+    state3: [number, boolean]
+  }>({
+    state1: [42, false],
+    state2: [24, true],
+    state3: [1000, false],
+  })
 
   return (
     <Container {...props}>
@@ -35,6 +46,55 @@ export const HomeContainer: React.FC<HomePageProps> = ({
       <Section>
         <h2>Toggle Button</h2>
         <ToggleButton isOn={toggleState} onChange={setToggleState} />
+      </Section>
+
+      <Section>
+        <h2>Toggle Pills</h2>
+        <ButtonGroup>
+          <TogglePill
+            count={pillState.state1[0]}
+            isActive={pillState.state1[1]}
+            onClick={() => {
+              const newCount = pillState.state1[1]
+                ? pillState.state1[0] - 1
+                : pillState.state1[0] + 1
+              setPillState({
+                ...pillState,
+                state1: [newCount, !pillState.state1[1]],
+              })
+            }}
+          />
+          <TogglePill
+            count={pillState.state2[0]}
+            isActive={pillState.state2[1]}
+            icon={<ChatBubbleOutlineIcon />}
+            activeIcon={<ChatBubbleOutlineIcon />}
+            onClick={() => {
+              const newCount = pillState.state2[1]
+                ? pillState.state2[0] - 1
+                : pillState.state2[0] + 1
+              setPillState({
+                ...pillState,
+                state2: [newCount, !pillState.state2[1]],
+              })
+            }}
+          />
+          <TogglePill
+            count={pillState.state3[0]}
+            isActive={pillState.state3[1]}
+            icon={<ChatBubbleOutlineIcon />}
+            activeIcon={<ChatBubbleOutlineIcon />}
+            onClick={() => {
+              const newCount = pillState.state3[1]
+                ? pillState.state3[0] - 1
+                : pillState.state3[0] + 1
+              setPillState({
+                ...pillState,
+                state3: [newCount, !pillState.state3[1]],
+              })
+            }}
+          />
+        </ButtonGroup>
       </Section>
 
       <Section>
