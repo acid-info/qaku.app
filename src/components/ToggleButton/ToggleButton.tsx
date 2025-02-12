@@ -9,19 +9,14 @@ export interface ToggleButtonProps {
 export const ToggleButton = ({
   isOn,
   onChange,
-  className,
+  ...props
 }: ToggleButtonProps) => {
   const handleClick = () => {
     onChange?.(!isOn)
   }
 
   return (
-    <StyledButton
-      type="button"
-      onClick={handleClick}
-      $isOn={isOn}
-      className={className}
-    >
+    <StyledButton type="button" onClick={handleClick} $isOn={isOn} {...props}>
       <LeftRect $isOn={isOn} />
       <RightRect $isOn={isOn} />
     </StyledButton>

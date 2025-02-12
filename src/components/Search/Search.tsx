@@ -12,11 +12,12 @@ export const Search: React.FC<SearchProps> = ({
   onSearch,
   label = 'Search',
   placeholder = 'Type..',
+  ...props
 }) => {
   const [isActive, setIsActive] = useState(false)
 
   return (
-    <SearchWrapper>
+    <SearchWrapper {...props}>
       <SearchButton
         type="button"
         onClick={() => !isActive && setIsActive(true)}

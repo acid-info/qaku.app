@@ -24,6 +24,7 @@ export const Dropdown = ({
   onChange,
   variant = 'filled',
   placeholder = 'Select an option',
+  ...props
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -50,7 +51,7 @@ export const Dropdown = ({
   }
 
   return (
-    <DropdownContainer ref={dropdownRef}>
+    <DropdownContainer ref={dropdownRef} {...props}>
       <DropdownItem variant={variant} onClick={() => setIsOpen(!isOpen)}>
         {selectedOption ? selectedOption.label : placeholder}
         <IconWrapper>
