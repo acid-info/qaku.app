@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
 import { Button } from '@/components/Button'
+import { Collapsible } from '@/components/Collapsible'
 import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
@@ -57,6 +58,36 @@ export const TestContainer: React.FC<HomePageProps> = ({
 
   return (
     <Container {...props}>
+      <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+      <Section>
+        <h2>Collapsible</h2>
+        <ButtonGroup
+          style={{ flexDirection: 'column', gap: '16px', width: '500px' }}
+        >
+          <Collapsible title="Add description">
+            <textarea
+              style={{ height: '100px' }}
+              placeholder="Type something here.."
+            />
+          </Collapsible>
+          <Collapsible title="Some collapsible">
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+              }}
+            >
+              <Button variant="filledPrimary">A button</Button>
+              <Search />
+            </div>
+          </Collapsible>
+          <Collapsible title="Default expanded" defaultExpanded>
+            <div>This content is visible by default.</div>
+          </Collapsible>
+        </ButtonGroup>
+      </Section>
+
       <Section>
         <h2>Message Form</h2>
         <ButtonGroup style={{ alignItems: 'flex-start' }}>
@@ -98,6 +129,7 @@ export const TestContainer: React.FC<HomePageProps> = ({
         </ButtonGroup>
       </Section>
 
+      <Separator>Components</Separator>
       <Section>
         <h2>Dropdowns</h2>
         <ButtonGroup>
@@ -346,4 +378,8 @@ const ButtonGroup = styled.div`
 
 const DropdownWrapper = styled.div`
   width: 200px;
+`
+
+const Separator = styled.h1`
+  margin: 60px 0 30px 0;
 `
