@@ -125,3 +125,8 @@ p {
   line-height: var(--body1-line-height);
   color: var(--white);
 }
+
+input {
+  color: var(--white);
+  padding: 0;
+}
