@@ -6,6 +6,7 @@ import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import { MessageForm } from '@/components/MessageForm'
 import { Search } from '@/components/Search'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
@@ -56,6 +57,47 @@ export const TestContainer: React.FC<HomePageProps> = ({
 
   return (
     <Container {...props}>
+      <Section>
+        <h2>Message Form</h2>
+        <ButtonGroup style={{ alignItems: 'flex-start' }}>
+          <div style={{ width: '500px' }}>
+            <h3>Unauthorized</h3>
+            <MessageForm
+              onSubmit={({ message, isAnonymous, resetForm, name }) => {
+                console.log(
+                  'Unauthorized message:',
+                  message,
+                  'Name:',
+                  name,
+                  'isAnonymous:',
+                  isAnonymous,
+                )
+                resetForm()
+              }}
+              messagePlaceholder="Write something..."
+              namePlaceholder="Name... (opt.)"
+            />
+          </div>
+          <div style={{ width: '500px' }}>
+            <h3>Authorized</h3>
+            <MessageForm
+              isAuthorized
+              onSubmit={({ message, isAnonymous, resetForm, name }) => {
+                console.log(
+                  'Authorized message:',
+                  message,
+                  'Name:',
+                  name,
+                  'isAnonymous:',
+                  isAnonymous,
+                )
+                resetForm()
+              }}
+            />
+          </div>
+        </ButtonGroup>
+      </Section>
+
       <Section>
         <h2>Dropdowns</h2>
         <ButtonGroup>
