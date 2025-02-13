@@ -1,6 +1,1 @@
-export { IconButtonRound } from './IconButtonRound'
-export type {
-  IconButtonRoundProps,
-  IconButtonRoundSize,
-  IconButtonRoundVariant,
-} from './IconButtonRound'
+export * from './IconButtonRound'
