@@ -26,7 +26,7 @@ const StyledDropdownItem = styled.button<{
   $active: boolean
 }>`
   width: 100%;
-  padding: 8px 16px;
+  padding: 7px 16px;
   border: none;
   background: ${({ $variant, $active }) =>
     $variant === 'filled'

@@ -59,7 +59,7 @@ export const Dropdown = ({
         </IconWrapper>
       </DropdownItem>
       {isOpen && (
-        <DropdownList>
+        <DropdownList $variant={variant}>
           {options.map((option) => (
             <DropdownItem
               key={option.value}
@@ -81,13 +81,16 @@ const DropdownContainer = styled.div`
   width: 100%;
 `
 
-const DropdownList = styled.div`
+const DropdownList = styled.div<{ $variant: 'filled' | 'outlined' }>`
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   overflow: hidden;
   z-index: 1;
+
+  background-color: ${({ $variant }) =>
+    $variant === 'filled' ? 'none' : 'var(--black)'};
 
   button {
     border-top: none;
