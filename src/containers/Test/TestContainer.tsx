@@ -13,357 +13,283 @@ import { Search } from '@/components/Search'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
 
-export type HomePageProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->
+type DemoSectionProps = {
+  title: string
+  children: React.ReactNode
+}
 
-export const TestContainer: React.FC<HomePageProps> = ({
-  children,
-  ...props
-}) => {
-  const [toggleState, setToggleState] = useState(false)
+const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
+  <Section>
+    <h2>{title}</h2>
+    <ButtonGroup>{children}</ButtonGroup>
+  </Section>
+)
+
+const CollapsibleDemo = () => (
+  <DemoSection title="Collapsible">
+    <div style={{ flexDirection: 'column', gap: '16px', width: '500px' }}>
+      <Collapsible title="Add description">
+        <textarea
+          style={{ height: '100px' }}
+          placeholder="Type something here.."
+        />
+      </Collapsible>
+      <Collapsible title="Review password">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <span
+            style={{
+              color: 'var(--white)',
+              opacity: 0.7,
+              fontSize: 'var(--body2-font-size)',
+              lineHeight: 'var(--body2-line-height)',
+            }}
+          >
+            Generated automatically for encrypted Q&As
+          </span>
+          <PasswordGenerator />
+        </div>
+      </Collapsible>
+      <Collapsible title="Default expanded" defaultExpanded>
+        <div>This content is visible by default.</div>
+      </Collapsible>
+    </div>
+  </DemoSection>
+)
+
+const MessageFormDemo = () => (
+  <DemoSection title="Message Form">
+    <div style={{ width: '500px' }}>
+      <h3>Unauthorized</h3>
+      <MessageForm
+        onSubmit={({ message, isAnonymous, resetForm, name }) => {
+          console.log(
+            'Unauthorized message:',
+            message,
+            'Name:',
+            name,
+            'isAnonymous:',
+            isAnonymous,
+          )
+          resetForm()
+        }}
+        messagePlaceholder="Write something..."
+        namePlaceholder="Name... (opt.)"
+      />
+    </div>
+    <div style={{ width: '500px' }}>
+      <h3>Authorized</h3>
+      <MessageForm
+        isAuthorized
+        onSubmit={({ message, isAnonymous, resetForm, name }) => {
+          console.log(
+            'Authorized message:',
+            message,
+            'Name:',
+            name,
+            'isAnonymous:',
+            isAnonymous,
+          )
+          resetForm()
+        }}
+      />
+    </div>
+  </DemoSection>
+)
+
+const DropdownDemo = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string | number>()
   const [selectedTheme, setSelectedTheme] = useState<string | number>()
-  const [pillState, setPillState] = useState<{
-    state1: [number, boolean]
-    state2: [number, boolean]
-    state3: [number, boolean]
-  }>({
-    state1: [42, false],
-    state2: [24, true],
-    state3: [1000, false],
-  })
 
-  const languageOptions = [
-    { label: 'English', value: 'en' },
-    { label: 'Spanish', value: 'es' },
-    { label: 'French', value: 'fr' },
-    { label: 'German', value: 'de' },
-    { label: 'Italian', value: 'it' },
-  ]
-
-  const themeOptions = [
-    { label: 'System', value: 'system' },
-    { label: 'Light', value: 'light' },
-    { label: 'Dark', value: 'dark' },
-  ]
-
-  const handleLanguageChange = (value: string | number) => {
-    setSelectedLanguage(value)
-  }
-
-  const handleThemeChange = (value: string | number) => {
-    setSelectedTheme(value)
+  const options = {
+    language: [
+      { label: 'English', value: 'en' },
+      { label: 'Spanish', value: 'es' },
+      { label: 'French', value: 'fr' },
+      { label: 'German', value: 'de' },
+      { label: 'Italian', value: 'it' },
+    ],
+    theme: [
+      { label: 'System', value: 'system' },
+      { label: 'Light', value: 'light' },
+      { label: 'Dark', value: 'dark' },
+    ],
   }
 
   return (
-    <Container {...props}>
-      <Separator style={{ marginTop: '0' }}>Patterns</Separator>
-      <Section>
-        <h2>Collapsible</h2>
-        <ButtonGroup
-          style={{ flexDirection: 'column', gap: '16px', width: '500px' }}
-        >
-          <Collapsible title="Add description">
-            <textarea
-              style={{ height: '100px' }}
-              placeholder="Type something here.."
-            />
-          </Collapsible>
-          <Collapsible title="Review password">
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-              }}
-            >
-              <span
-                style={{
-                  color: 'var(--white)',
-                  opacity: 0.7,
-                  fontSize: 'var(--body2-font-size)',
-                  lineHeight: 'var(--body2-line-height)',
-                }}
-              >
-                Generated automatically for encrypted Q&As
-              </span>
-              <PasswordGenerator />
-            </div>
-          </Collapsible>
-          <Collapsible title="Default expanded" defaultExpanded>
-            <div>This content is visible by default.</div>
-          </Collapsible>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Message Form</h2>
-        <ButtonGroup style={{ alignItems: 'flex-start' }}>
-          <div style={{ width: '500px' }}>
-            <h3>Unauthorized</h3>
-            <MessageForm
-              onSubmit={({ message, isAnonymous, resetForm, name }) => {
-                console.log(
-                  'Unauthorized message:',
-                  message,
-                  'Name:',
-                  name,
-                  'isAnonymous:',
-                  isAnonymous,
-                )
-                resetForm()
-              }}
-              messagePlaceholder="Write something..."
-              namePlaceholder="Name... (opt.)"
-            />
-          </div>
-          <div style={{ width: '500px' }}>
-            <h3>Authorized</h3>
-            <MessageForm
-              isAuthorized
-              onSubmit={({ message, isAnonymous, resetForm, name }) => {
-                console.log(
-                  'Authorized message:',
-                  message,
-                  'Name:',
-                  name,
-                  'isAnonymous:',
-                  isAnonymous,
-                )
-                resetForm()
-              }}
-            />
-          </div>
-        </ButtonGroup>
-      </Section>
-
-      <Separator>Components</Separator>
-      <Section>
-        <h2>Dropdowns</h2>
-        <ButtonGroup>
-          <DropdownWrapper>
-            <h3>Filled</h3>
-            <Dropdown
-              options={languageOptions}
-              value={selectedLanguage}
-              onChange={handleLanguageChange}
-              placeholder="Select Language"
-            />
-          </DropdownWrapper>
-          <DropdownWrapper style={{ width: '130px' }}>
-            <h3>Outlined</h3>
-            <Dropdown
-              options={themeOptions}
-              value={selectedTheme}
-              onChange={handleThemeChange}
-              variant="outlined"
-              placeholder="Select Theme"
-            />
-          </DropdownWrapper>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Search</h2>
-        <ButtonGroup>
-          <Search onSearch={(value) => console.log('Search:', value)} />
-          <Search
-            label="Find Something"
-            placeholder="Enter keywords..."
-            onSearch={(value) => console.log('Search:', value)}
-          />
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Toggle Button</h2>
-        <ToggleButton isOn={toggleState} onChange={setToggleState} />
-      </Section>
-
-      <Section>
-        <h2>Toggle Pills</h2>
-        <ButtonGroup>
-          <TogglePill
-            count={pillState.state1[0]}
-            isActive={pillState.state1[1]}
-            onClick={() => {
-              const newCount = pillState.state1[1]
-                ? pillState.state1[0] - 1
-                : pillState.state1[0] + 1
-              setPillState({
-                ...pillState,
-                state1: [newCount, !pillState.state1[1]],
-              })
-            }}
-          />
-          <TogglePill
-            count={pillState.state2[0]}
-            isActive={pillState.state2[1]}
-            icon={<ChatBubbleOutlineIcon />}
-            activeIcon={<ChatBubbleOutlineIcon />}
-            onClick={() => {
-              const newCount = pillState.state2[1]
-                ? pillState.state2[0] - 1
-                : pillState.state2[0] + 1
-              setPillState({
-                ...pillState,
-                state2: [newCount, !pillState.state2[1]],
-              })
-            }}
-          />
-          <TogglePill
-            count={pillState.state3[0]}
-            isActive={pillState.state3[1]}
-            icon={<ChatBubbleOutlineIcon />}
-            activeIcon={<ChatBubbleOutlineIcon />}
-            onClick={() => {
-              const newCount = pillState.state3[1]
-                ? pillState.state3[0] - 1
-                : pillState.state3[0] + 1
-              setPillState({
-                ...pillState,
-                state3: [newCount, !pillState.state3[1]],
-              })
-            }}
-          />
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Medium Buttons (Default)</h2>
-        <ButtonGroup>
-          <Button>Button with text</Button>
-          <Button icon={<PlusIcon />}>Button with icon</Button>
-          <Button variant="outlined">Button</Button>
-          <Button variant="outlined" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button variant="filledPrimary">Button</Button>
-          <Button variant="filledPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button variant="outlinedPrimary">Button</Button>
-          <Button variant="outlinedPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Large Buttons</h2>
-        <ButtonGroup>
-          <Button size="large">Button with very very long text</Button>
-          <Button size="large" icon={<PlusIcon />}>
-            Button with icon
-          </Button>
-          <Button size="large" variant="outlined">
-            Button
-          </Button>
-          <Button size="large" variant="outlined" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button size="large" variant="filledPrimary">
-            Button
-          </Button>
-          <Button size="large" variant="filledPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button size="large" variant="outlinedPrimary">
-            Button
-          </Button>
-          <Button size="large" variant="outlinedPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Disabled State</h2>
-        <ButtonGroup>
-          <Button disabled>Button</Button>
-          <Button variant="outlined" disabled>
-            Button
-          </Button>
-          <Button variant="filledPrimary" disabled>
-            Button
-          </Button>
-          <Button variant="outlinedPrimary" disabled>
-            Button
-          </Button>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Round Icon Buttons</h2>
-        <ButtonGroup>
-          <IconButtonRound size="small" icon={<PlusIcon />} />
-          <IconButtonRound
-            size="small"
-            variant="outlined"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="small"
-            variant="filledPrimary"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="small"
-            variant="outlinedPrimary"
-            icon={<PlusIcon />}
-          />
-
-          <IconButtonRound icon={<PlusIcon />} />
-          <IconButtonRound variant="outlined" icon={<PlusIcon />} />
-          <IconButtonRound variant="filledPrimary" icon={<PlusIcon />} />
-          <IconButtonRound variant="outlinedPrimary" icon={<PlusIcon />} />
-
-          <IconButtonRound size="large" icon={<PlusIcon />} />
-          <IconButtonRound
-            size="large"
-            variant="outlined"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="large"
-            variant="filledPrimary"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="large"
-            variant="outlinedPrimary"
-            icon={<PlusIcon />}
-          />
-
-          <IconButtonRound disabled icon={<PlusIcon />} />
-          <IconButtonRound variant="outlined" disabled icon={<PlusIcon />} />
-          <IconButtonRound
-            variant="filledPrimary"
-            disabled
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            variant="outlinedPrimary"
-            disabled
-            icon={<PlusIcon />}
-          />
-        </ButtonGroup>
-        <ButtonGroup>
-          <IconButtonRound
-            variant="outlinedPrimary"
-            icon={
-              <PlusIcon
-                style={{ width: '60px', height: '60px', color: 'red' }}
-              />
-            }
-          />
-        </ButtonGroup>
-      </Section>
-    </Container>
+    <DemoSection title="Dropdowns">
+      <DropdownWrapper>
+        <h3>Filled</h3>
+        <Dropdown
+          options={options.language}
+          value={selectedLanguage}
+          onChange={setSelectedLanguage}
+          placeholder="Select Language"
+        />
+      </DropdownWrapper>
+      <DropdownWrapper style={{ width: '130px' }}>
+        <h3>Outlined</h3>
+        <Dropdown
+          options={options.theme}
+          value={selectedTheme}
+          onChange={setSelectedTheme}
+          variant="outlined"
+          placeholder="Select Theme"
+        />
+      </DropdownWrapper>
+    </DemoSection>
   )
 }
+
+const ButtonDemo = () => {
+  const buttonVariants = [
+    'default',
+    'outlined',
+    'filledPrimary',
+    'outlinedPrimary',
+  ] as const
+
+  const renderButtonSet = (size?: 'large') =>
+    buttonVariants.map((variant) => (
+      <React.Fragment key={`${size}-${variant}`}>
+        <Button
+          size={size}
+          variant={variant === 'default' ? undefined : variant}
+        >
+          Button
+        </Button>
+        <Button
+          size={size}
+          variant={variant === 'default' ? undefined : variant}
+          icon={<PlusIcon />}
+        >
+          Button
+        </Button>
+      </React.Fragment>
+    ))
+
+  return (
+    <>
+      <DemoSection title="Buttons">
+        {renderButtonSet()}
+        {renderButtonSet('large')}
+        {buttonVariants.map((variant) => (
+          <Button
+            key={variant}
+            variant={variant === 'default' ? undefined : variant}
+            disabled
+          >
+            Button
+          </Button>
+        ))}
+      </DemoSection>
+    </>
+  )
+}
+
+const IconButtonDemo = () => {
+  const variants = [
+    'default',
+    'outlined',
+    'filledPrimary',
+    'outlinedPrimary',
+  ] as const
+  const sizes = ['small', 'medium', 'large'] as const
+
+  return (
+    <DemoSection title="Round Icon Buttons">
+      {sizes.map((size) => (
+        <React.Fragment key={size}>
+          {variants.map((variant) => (
+            <IconButtonRound
+              key={`${size}-${variant}`}
+              size={size === 'medium' ? undefined : size}
+              variant={variant === 'default' ? undefined : variant}
+              icon={<PlusIcon />}
+            />
+          ))}
+        </React.Fragment>
+      ))}
+      {variants.map((variant) => (
+        <IconButtonRound
+          key={`disabled-${variant}`}
+          variant={variant === 'default' ? undefined : variant}
+          disabled
+          icon={<PlusIcon />}
+        />
+      ))}
+      <IconButtonRound
+        variant="outlinedPrimary"
+        icon={
+          <PlusIcon style={{ width: '60px', height: '60px', color: 'red' }} />
+        }
+      />
+    </DemoSection>
+  )
+}
+
+const ToggleDemo = () => {
+  const [toggleState, setToggleState] = useState(false)
+  const [pillStates, setPillStates] = useState([
+    { count: 42, active: false },
+    { count: 24, active: true },
+    { count: 1000, active: false },
+  ])
+
+  const handlePillClick = (index: number) => {
+    setPillStates((prev) =>
+      prev.map((state, i) =>
+        i === index
+          ? {
+              count: state.active ? state.count - 1 : state.count + 1,
+              active: !state.active,
+            }
+          : state,
+      ),
+    )
+  }
+
+  return (
+    <>
+      <DemoSection title="Toggle Button">
+        <ToggleButton isOn={toggleState} onChange={setToggleState} />
+      </DemoSection>
+      <DemoSection title="Toggle Pills">
+        {pillStates.map((state, index) => (
+          <TogglePill
+            key={index}
+            count={state.count}
+            isActive={state.active}
+            icon={index > 0 ? <ChatBubbleOutlineIcon /> : undefined}
+            activeIcon={index > 0 ? <ChatBubbleOutlineIcon /> : undefined}
+            onClick={() => handlePillClick(index)}
+          />
+        ))}
+      </DemoSection>
+    </>
+  )
+}
+
+export const TestContainer: React.FC = () => (
+  <Container>
+    <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+    <CollapsibleDemo />
+    <MessageFormDemo />
+
+    <Separator>Components</Separator>
+    <DropdownDemo />
+    <DemoSection title="Search">
+      <Search onSearch={(value) => console.log('Search:', value)} />
+      <Search
+        label="Find Something"
+        placeholder="Enter keywords..."
+        onSearch={(value) => console.log('Search:', value)}
+      />
+    </DemoSection>
+    <ToggleDemo />
+    <ButtonDemo />
+    <IconButtonDemo />
+  </Container>
+)
 
 const Container = styled.div`
   padding: 32px;
