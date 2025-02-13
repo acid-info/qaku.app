@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
+import { CollapsibleToggle } from '@/components/CollapsibleToggle'
 import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
@@ -27,7 +28,14 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
 
 const CollapsibleDemo = () => (
   <DemoSection title="Collapsible">
-    <div style={{ flexDirection: 'column', gap: '16px', width: '500px' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        width: '500px',
+      }}
+    >
       <Collapsible title="Add description">
         <textarea
           style={{ height: '100px' }}
@@ -52,6 +60,45 @@ const CollapsibleDemo = () => (
       <Collapsible title="Default expanded" defaultExpanded>
         <div>This content is visible by default.</div>
       </Collapsible>
+    </div>
+  </DemoSection>
+)
+
+const CollapsibleToggleDemo = () => (
+  <DemoSection title="Collapsible Toggle">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        width: '500px',
+      }}
+    >
+      <CollapsibleToggle
+        title="Poll description"
+        description="Add a description visible to participants"
+      >
+        <textarea
+          style={{ height: '100px' }}
+          placeholder="Type something here.."
+        />
+      </CollapsibleToggle>
+      <CollapsibleToggle title="Toggle without description">
+        <span>Some text content.</span>
+      </CollapsibleToggle>
+      <CollapsibleToggle
+        title="Toggle with Form"
+        description="Contains an interactive form element"
+        defaultChecked
+      >
+        <MessageForm
+          isAuthorized
+          onSubmit={({ message, isAnonymous, resetForm }) => {
+            console.log('Message:', message, 'isAnonymous:', isAnonymous)
+            resetForm()
+          }}
+        />
+      </CollapsibleToggle>
     </div>
   </DemoSection>
 )
@@ -273,6 +320,7 @@ export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
     <CollapsibleDemo />
+    <CollapsibleToggleDemo />
     <MessageFormDemo />
 
     <Separator>Components</Separator>
