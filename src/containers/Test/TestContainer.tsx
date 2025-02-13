@@ -8,6 +8,7 @@ import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
+import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { Search } from '@/components/Search'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
@@ -70,16 +71,25 @@ export const TestContainer: React.FC<HomePageProps> = ({
               placeholder="Type something here.."
             />
           </Collapsible>
-          <Collapsible title="Some collapsible">
+          <Collapsible title="Review password">
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px',
+                gap: '16px',
               }}
             >
-              <Button variant="filledPrimary">A button</Button>
-              <Search />
+              <span
+                style={{
+                  color: 'var(--white)',
+                  opacity: 0.7,
+                  fontSize: 'var(--body2-font-size)',
+                  lineHeight: 'var(--body2-line-height)',
+                }}
+              >
+                Generated automatically for encrypted Q&As
+              </span>
+              <PasswordGenerator />
             </div>
           </Collapsible>
           <Collapsible title="Default expanded" defaultExpanded>
