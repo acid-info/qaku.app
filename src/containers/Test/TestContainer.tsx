@@ -11,6 +11,7 @@ import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { Search } from '@/components/Search'
+import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
 
@@ -25,6 +26,52 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
     <ButtonGroup>{children}</ButtonGroup>
   </Section>
 )
+
+const SearchAndFilterDemo = () => {
+  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [sortFilter, setSortFilter] = useState<string>('recent')
+
+  return (
+    <DemoSection title="Search and Filter">
+      <div style={{ width: '350px' }}>
+        <SearchAndFilter
+          onSearch={(value) => console.log('Search:', value)}
+          options={[
+            { label: 'All', value: 'all' },
+            { label: 'Open', value: 'open' },
+            { label: 'Closed', value: 'closed' },
+          ]}
+          value={statusFilter}
+          onFilterChange={(value) => {
+            console.log('Filter:', value)
+            setStatusFilter(value as string)
+          }}
+          searchPlaceholder="Search items..."
+          filterPlaceholder="Filter by status"
+          filterWidth="93px"
+        />
+      </div>
+      <div style={{ width: '500px' }}>
+        <SearchAndFilter
+          searchLabel="Find Questions"
+          onSearch={(value) => console.log('Search:', value)}
+          options={[
+            { label: 'Most Recent', value: 'recent' },
+            { label: 'Most Voted', value: 'voted' },
+            { label: 'Most Answered', value: 'answered' },
+          ]}
+          value={sortFilter}
+          onFilterChange={(value) => {
+            console.log('Sort:', value)
+            setSortFilter(value as string)
+          }}
+          searchPlaceholder="Type keywords..."
+          filterPlaceholder="Sort by"
+        />
+      </div>
+    </DemoSection>
+  )
+}
 
 const CollapsibleDemo = () => (
   <DemoSection title="Collapsible">
@@ -319,6 +366,7 @@ const ToggleDemo = () => {
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+    <SearchAndFilterDemo />
     <CollapsibleDemo />
     <CollapsibleToggleDemo />
     <MessageFormDemo />
