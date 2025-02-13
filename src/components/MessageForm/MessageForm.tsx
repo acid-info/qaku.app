@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '../Button'
+import { ProfileIcon } from '../ProfileIcon'
 import { ToggleButton } from '../ToggleButton'
 
 export type MessageFormProps = {
@@ -71,7 +72,7 @@ export const MessageForm = ({
         />
         {isFocused && (
           <ActionsContainer>
-            <ProfileIcon>A</ProfileIcon>
+            <ProfileIcon character={name || 'A'} />
             <NameInput
               placeholder={namePlaceholder}
               value={name}
@@ -140,18 +141,6 @@ const ActionsContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-`
-
-const ProfileIcon = styled.div`
-  min-width: 32px;
-  min-height: 32px;
-  border-radius: 50%;
-  background-color: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--label1-font-size);
-  line-height: var(--label1-line-height);
 `
 
 const NameInput = styled(MessageInput)`
