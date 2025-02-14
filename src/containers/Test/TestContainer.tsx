@@ -12,6 +12,7 @@ import { MessageForm } from '@/components/MessageForm'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { Search } from '@/components/Search'
 import { SearchAndFilter } from '@/components/SearchAndFilter'
+import { Thread } from '@/components/Thread'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
 
@@ -68,6 +69,151 @@ const SearchAndFilterDemo = () => {
           searchPlaceholder="Type keywords..."
           filterPlaceholder="Sort by"
         />
+      </div>
+    </DemoSection>
+  )
+}
+
+const ThreadDemo = () => {
+  const [threads, setThreads] = useState([
+    {
+      info: {
+        author: 'Alice',
+        timestamp: '15:32',
+        question:
+          'What are the key differences between React hooks and class components?',
+        responses: [
+          {
+            info: {
+              author: 'Bob',
+              timestamp: '15:45',
+              response:
+                'Hooks are more flexible and allow better code reuse. They also eliminate the complexity of lifecycle methods.',
+            },
+            likes: { count: 12, isLiked: false },
+          },
+          {
+            info: {
+              author: 'Charlie',
+              timestamp: '16:00',
+              response:
+                'Class components can be easier to understand for developers coming from OOP backgrounds.',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+        ],
+      },
+      likes: { count: 42, isLiked: true },
+    },
+    {
+      info: {
+        author: 'Bob',
+        timestamp: '02:00',
+        question:
+          'How do you handle state management in large React applications?',
+        responses: [],
+      },
+      likes: { count: 28, isLiked: false },
+    },
+  ])
+
+  const handleQuestionLike = (index: number) => {
+    setThreads((prevThreads) =>
+      prevThreads.map((thread, i) =>
+        i === index
+          ? {
+              ...thread,
+              likes: {
+                isLiked: !thread.likes.isLiked,
+                count: thread.likes.isLiked
+                  ? thread.likes.count - 1
+                  : thread.likes.count + 1,
+              },
+            }
+          : thread,
+      ),
+    )
+  }
+
+  const handleResponseLike = (threadIndex: number, responseIndex: number) => {
+    setThreads((prevThreads) =>
+      prevThreads.map((thread, i) =>
+        i === threadIndex
+          ? {
+              ...thread,
+              info: {
+                ...thread.info,
+                responses: thread.info.responses.map((response, j) =>
+                  j === responseIndex
+                    ? {
+                        ...response,
+                        likes: {
+                          isLiked: !response.likes?.isLiked,
+                          count: response.likes?.isLiked
+                            ? response.likes.count - 1
+                            : (response.likes?.count || 0) + 1,
+                        },
+                      }
+                    : response,
+                ),
+              },
+            }
+          : thread,
+      ),
+    )
+  }
+
+  return (
+    <DemoSection title="Threads">
+      <div
+        style={{
+          width: '600px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {threads.map((thread, index) => (
+          <Thread
+            key={`${thread.info.author}-${thread.info.timestamp}`}
+            info={thread.info}
+            likes={thread.likes}
+            isFirst={index === 0}
+            onQuestionLikeClick={() => handleQuestionLike(index)}
+            onResponseLikeClick={(responseIndex) =>
+              handleResponseLike(index, responseIndex)
+            }
+            onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
+              const newResponse = {
+                info: {
+                  author: isAnonymous ? 'Anonymous' : name || 'User',
+                  timestamp: new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  }),
+                  response: message,
+                },
+                likes: { count: 0, isLiked: false },
+              }
+
+              setThreads((prevThreads) =>
+                prevThreads.map((thread, i) =>
+                  i === index
+                    ? {
+                        ...thread,
+                        info: {
+                          ...thread.info,
+                          responses: [...thread.info.responses, newResponse],
+                        },
+                      }
+                    : thread,
+                ),
+              )
+              resetForm()
+            }}
+            isAuthorized={true}
+            isUser={true}
+          />
+        ))}
       </div>
     </DemoSection>
   )
@@ -367,6 +513,7 @@ export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
     <SearchAndFilterDemo />
+    <ThreadDemo />
     <CollapsibleDemo />
     <CollapsibleToggleDemo />
     <MessageFormDemo />
