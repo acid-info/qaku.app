@@ -72,6 +72,12 @@ const getHoverBackground = (variant: ButtonVariant) => {
   }
 }
 
+const getPadding = (size: ButtonSize, variant: ButtonVariant) => {
+  const horizontalPadding = size === 'medium' ? 16 : 40
+  const verticalPadding = size === 'large' ? 21 : 7
+  return `${verticalPadding}px ${horizontalPadding}px`
+}
+
 const StyledButton = styled.button<{
   size: ButtonSize
   variant: ButtonVariant
@@ -87,8 +93,7 @@ const StyledButton = styled.button<{
   font-family: inherit;
   white-space: nowrap;
 
-  padding: ${({ size }) => (size === 'medium' ? '0 16px' : '0 40px')};
-  height: ${({ size }) => (size === 'medium' ? '32px' : '64px')};
+  padding: ${({ size, variant }) => getPadding(size, variant)};
 
   font-size: ${({ size }) =>
     size === 'medium' ? 'var(--label1-font-size)' : 'var(--body2-font-size)'};

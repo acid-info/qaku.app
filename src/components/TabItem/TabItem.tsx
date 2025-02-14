@@ -76,10 +76,11 @@ const StyledTabItem = styled.button<{
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 8px 32px;
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
 
+  padding: ${({ $variant }) =>
+    $variant === 'secondary' ? '7px 32px' : '8px 32px'};
   border-radius: 40px;
   border: ${({ $variant }) =>
     $variant === 'secondary' ? '1px solid var(--gray)' : 'none'};
