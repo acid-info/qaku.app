@@ -16,6 +16,7 @@ import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
+import { WalletPanel } from '@/components/WalletPanel'
 
 type DemoSectionProps = {
   title: string
@@ -28,6 +29,26 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
     <ButtonGroup>{children}</ButtonGroup>
   </Section>
 )
+
+const WalletPanelDemo = () => {
+  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [selectedWallet, setSelectedWallet] = useState<'external' | 'qaku'>(
+    'external',
+  )
+
+  return (
+    <DemoSection title="Wallet Panel">
+      <div style={{ width: '500px' }}>
+        <WalletPanel
+          isAuthorized={isAuthorized}
+          onConnect={() => setIsAuthorized(true)}
+          onWalletSelect={setSelectedWallet}
+          selectedWallet={selectedWallet}
+        />
+      </div>
+    </DemoSection>
+  )
+}
 
 const TabDemo = () => {
   const [activeTabId, setActiveTabId] = useState<string | number>('overview')
@@ -569,6 +590,7 @@ export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
     <TabDemo />
+    <WalletPanelDemo />
     <SearchAndFilterDemo />
     <ThreadDemo />
     <CollapsibleDemo />
