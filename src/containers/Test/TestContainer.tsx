@@ -12,6 +12,7 @@ import { MessageForm } from '@/components/MessageForm'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { Search } from '@/components/Search'
 import { SearchAndFilter } from '@/components/SearchAndFilter'
+import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
@@ -27,6 +28,61 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
     <ButtonGroup>{children}</ButtonGroup>
   </Section>
 )
+
+const TabDemo = () => {
+  const [activeTabId, setActiveTabId] = useState<string | number>('overview')
+  const [activeFilterId, setActiveFilterId] = useState<string | number>('all')
+
+  const handleTabChange = (id: string | number) => {
+    setActiveTabId(id)
+  }
+
+  const handleFilterChange = (id: string | number) => {
+    setActiveFilterId(id)
+  }
+
+  return (
+    <DemoSection title="Tabs">
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '32px',
+        }}
+      >
+        <div>
+          <h3>Primary Variant</h3>
+          <Tab
+            options={[
+              { id: 'overview', label: 'Overview' },
+              { id: 'details', label: 'Details' },
+              { id: 'settings', label: 'Settings' },
+            ]}
+            activeId={activeTabId}
+            onChange={handleTabChange}
+            itemWidth="100px"
+          />
+        </div>
+
+        <div>
+          <h3>Secondary Variant</h3>
+          <Tab
+            options={[
+              { id: 'all', label: 'All' },
+              { id: 'active', label: 'Active' },
+              { id: 'completed', label: 'Completed' },
+            ]}
+            activeId={activeFilterId}
+            onChange={handleFilterChange}
+            variant="secondary"
+            itemWidth="200px"
+          />
+        </div>
+      </div>
+    </DemoSection>
+  )
+}
 
 const SearchAndFilterDemo = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -512,6 +568,7 @@ const ToggleDemo = () => {
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+    <TabDemo />
     <SearchAndFilterDemo />
     <ThreadDemo />
     <CollapsibleDemo />
