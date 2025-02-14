@@ -20,9 +20,10 @@ export const Tab = ({
   variant = 'primary',
   itemWidth,
   onChange,
+  ...props
 }: TabProps) => {
   return (
-    <TabContainer>
+    <TabContainer {...props}>
       {options.map((option) => (
         <TabItemWrapper key={option.id} $width={itemWidth}>
           <TabItem
@@ -38,7 +39,7 @@ export const Tab = ({
 }
 
 const TabContainer = styled.div`
-  display: flex;
+  display: inline-flex;
 `
 
 const TabItemWrapper = styled.div<{ $width?: string }>`
