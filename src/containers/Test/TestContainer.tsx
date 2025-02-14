@@ -6,6 +6,8 @@ import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import DefaultNav, { ProgressStatus } from '@/components/Navbar/DefaultNav'
+import UserNav from '@/components/Navbar/UserNav'
 import { Search } from '@/components/Search'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
@@ -276,6 +278,88 @@ export const TestContainer: React.FC<HomePageProps> = ({
             }
           />
         </ButtonGroup>
+      </Section>
+      <Section style={{ maxWidth: 1400 }}>
+        <h2>User Nav</h2>
+        <div>
+          <UserNav
+            mode="qna"
+            title="Town Hall 2025 - New Positions, Updates, And Plans"
+            count={3}
+            id="3212345"
+          />
+        </div>
+        <br />
+        <br />
+        <h2>Default Nav</h2>
+        <div>
+          <DefaultNav
+            mode="qna"
+            titleOnly={true}
+            title="Polls"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={3}
+            id="3212345"
+          />
+          <DefaultNav
+            mode="qna"
+            title="Town Hall 2025 - New Positions, Updates, And Plans"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={ProgressStatus.BeforeStart}
+          />
+          <DefaultNav
+            mode="qna"
+            title="Town Hall 2025 - New Positions, Updates, And Plans"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={ProgressStatus.InProgress}
+          />
+          <DefaultNav
+            mode="qna"
+            title="Town Hall 2025"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={ProgressStatus.Ended}
+          />
+          <br />
+          <br />
+          <DefaultNav
+            mode="polls"
+            titleOnly={true}
+            title="New Poll"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={3}
+            id="3212345"
+          />
+          <DefaultNav
+            mode="polls"
+            title="Town Hall 2025 - New Positions, Updates, And Plans"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={ProgressStatus.BeforeStart}
+          />
+          <DefaultNav
+            mode="polls"
+            title="Town Hall 2025 - New Positions, Updates, And Plans"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={ProgressStatus.InProgress}
+          />
+          <DefaultNav
+            mode="polls"
+            title="Town Hall 2025"
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={ProgressStatus.Ended}
+          />
+        </div>
       </Section>
     </Container>
   )

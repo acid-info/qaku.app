@@ -1,5 +1,5 @@
 import { Footer } from '@/components/Footer'
-import { Header } from '@/components/Header'
+import DefaultNav from '@/components/Navbar/DefaultNav'
 import { Sidebar } from '@/components/Sidebar'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -9,7 +9,14 @@ export default function DefaultLayout(props: PropsWithChildren) {
     <Root>
       <Sidebar />
       <MainContainer>
-        <Header />
+        <DefaultNav
+          mode="qna"
+          titleOnly={true}
+          title="Polls"
+          date={'2023-12-25T15:00:00.000Z'}
+          count={5121}
+          id="3212345"
+        />
         <Main>{props.children}</Main>
         <Footer />
       </MainContainer>

@@ -9,3 +9,7 @@ export function arrayIncludesAnyElementFromOtherArray<T>(a: T[], b: T[]) {
 
   return a.some((el) => b.includes(el))
 }
+
+export function numberWithCommas(x: number) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
