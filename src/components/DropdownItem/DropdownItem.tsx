@@ -1,10 +1,40 @@
 import styled from '@emotion/styled'
 import { ReactNode } from 'react'
 
+export type DropdownItemVariant = 'filled' | 'outlined'
+
+type VariantConfig = {
+  background: {
+    default: string
+    active: string
+    hover: string
+  }
+  border: string
+}
+
+const VARIANT_CONFIG: Record<DropdownItemVariant, VariantConfig> = {
+  filled: {
+    background: {
+      default: 'var(--gray)',
+      active: 'var(--gray-dark)',
+      hover: 'var(--gray-dark)',
+    },
+    border: 'none',
+  },
+  outlined: {
+    background: {
+      default: 'transparent',
+      active: 'var(--gray-darkest)',
+      hover: 'var(--gray-darkest)',
+    },
+    border: '1px solid var(--gray)',
+  },
+}
+
 export type DropdownItemProps = {
   children: ReactNode
   onClick?: () => void
-  variant?: 'filled' | 'outlined'
+  variant?: DropdownItemVariant
   active?: boolean
 }
 
@@ -22,22 +52,16 @@ export const DropdownItem = ({
 }
 
 const StyledDropdownItem = styled.button<{
-  $variant: 'filled' | 'outlined'
+  $variant: DropdownItemVariant
   $active: boolean
 }>`
   width: 100%;
   padding: 7px 16px;
-  border: none;
   background: ${({ $variant, $active }) =>
-    $variant === 'filled'
-      ? $active
-        ? 'var(--gray-dark)'
-        : 'var(--gray)'
-      : $active
-      ? 'var(--gray-darkest)'
-      : 'transparent'};
-  border: ${({ $variant }) =>
-    $variant === 'outlined' ? '1px solid var(--gray)' : 'none'};
+    $active
+      ? VARIANT_CONFIG[$variant].background.active
+      : VARIANT_CONFIG[$variant].background.default};
+  border: ${({ $variant }) => VARIANT_CONFIG[$variant].border};
   color: var(--white);
   cursor: pointer;
   display: flex;
@@ -48,7 +72,6 @@ const StyledDropdownItem = styled.button<{
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${({ $variant }) =>
-      $variant === 'filled' ? 'var(--gray-dark)' : 'var(--gray-darkest)'};
+    background: ${({ $variant }) => VARIANT_CONFIG[$variant].background.hover};
   }
 `

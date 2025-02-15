@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 
-import { DropdownItem } from '../DropdownItem'
+import { DropdownItem, DropdownItemVariant } from '../DropdownItem'
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
 import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 
@@ -14,7 +14,7 @@ export type DropdownProps = {
   options: DropdownOption[]
   value?: string | number
   onChange?: (value: string | number) => void
-  variant?: 'filled' | 'outlined'
+  variant?: DropdownItemVariant
   placeholder?: string
 }
 
@@ -81,7 +81,7 @@ const DropdownContainer = styled.div`
   width: 100%;
 `
 
-const DropdownList = styled.div<{ $variant: 'filled' | 'outlined' }>`
+const DropdownList = styled.div<{ $variant: DropdownItemVariant }>`
   position: absolute;
   top: 100%;
   left: 0;

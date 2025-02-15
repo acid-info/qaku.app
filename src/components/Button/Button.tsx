@@ -8,6 +8,40 @@ export type ButtonVariant =
   | 'filledPrimary'
   | 'outlinedPrimary'
 
+type VariantConfig = {
+  backgroundColor: string
+  borderColor: string
+  textColor: string
+  hoverBackground: string
+}
+
+const VARIANT_CONFIG: Record<ButtonVariant, VariantConfig> = {
+  filled: {
+    backgroundColor: 'var(--gray)',
+    borderColor: 'var(--gray)',
+    textColor: 'var(--white)',
+    hoverBackground: 'var(--gray-dark)',
+  },
+  outlined: {
+    backgroundColor: 'transparent',
+    borderColor: 'var(--gray)',
+    textColor: 'var(--white)',
+    hoverBackground: 'var(--gray-darkest)',
+  },
+  filledPrimary: {
+    backgroundColor: 'var(--yellow)',
+    borderColor: 'var(--yellow)',
+    textColor: 'var(--black)',
+    hoverBackground: 'var(--yellow-dark)',
+  },
+  outlinedPrimary: {
+    backgroundColor: 'transparent',
+    borderColor: 'var(--yellow)',
+    textColor: 'var(--white)',
+    hoverBackground: 'color-mix(in srgb, var(--yellow) 20%, transparent)',
+  },
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize
@@ -23,65 +57,23 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <StyledButton size={size} variant={variant} hasIcon={!!icon} {...props}>
+    <StyledButton size={size} variant={variant} {...props}>
       {children}
       {icon && <IconWrapper>{icon}</IconWrapper>}
     </StyledButton>
   )
 }
 
-const getBackgroundColor = (variant: ButtonVariant) => {
-  switch (variant) {
-    case 'filled':
-      return 'var(--gray)'
-    case 'filledPrimary':
-      return 'var(--yellow)'
-    case 'outlined':
-    case 'outlinedPrimary':
-      return 'transparent'
-  }
-}
-
-const getBorderColor = (variant: ButtonVariant) => {
-  switch (variant) {
-    case 'filled':
-      return 'var(--gray)'
-    case 'outlined':
-      return 'var(--gray)'
-    case 'filledPrimary':
-      return 'var(--yellow)'
-    case 'outlinedPrimary':
-      return 'var(--yellow)'
-  }
-}
-
-const getTextColor = (variant: ButtonVariant) => {
-  return variant === 'filledPrimary' ? 'var(--black)' : 'var(--white)'
-}
-
-const getHoverBackground = (variant: ButtonVariant) => {
-  switch (variant) {
-    case 'filled':
-      return 'var(--gray-dark)'
-    case 'outlined':
-      return 'var(--gray-darkest)'
-    case 'filledPrimary':
-      return 'var(--yellow-dark)'
-    case 'outlinedPrimary':
-      return 'color-mix(in srgb, var(--yellow) 20%, transparent)'
-  }
-}
-
-const getPadding = (size: ButtonSize, variant: ButtonVariant) => {
+const getPadding = (size: ButtonSize) => {
   const horizontalPadding = size === 'medium' ? 16 : 40
   const verticalPadding = size === 'large' ? 21 : 7
+
   return `${verticalPadding}px ${horizontalPadding}px`
 }
 
 const StyledButton = styled.button<{
   size: ButtonSize
   variant: ButtonVariant
-  hasIcon: boolean
 }>`
   display: flex;
   align-items: center;
@@ -93,7 +85,7 @@ const StyledButton = styled.button<{
   font-family: inherit;
   white-space: nowrap;
 
-  padding: ${({ size, variant }) => getPadding(size, variant)};
+  padding: ${({ size }) => getPadding(size)};
 
   font-size: ${({ size }) =>
     size === 'medium' ? 'var(--label1-font-size)' : 'var(--body2-font-size)'};
@@ -102,9 +94,9 @@ const StyledButton = styled.button<{
       ? 'var(--label1-line-height)'
       : 'var(--body2-line-height)'};
 
-  background-color: ${({ variant }) => getBackgroundColor(variant)};
-  border-color: ${({ variant }) => getBorderColor(variant)};
-  color: ${({ variant }) => getTextColor(variant)};
+  background-color: ${({ variant }) => VARIANT_CONFIG[variant].backgroundColor};
+  border-color: ${({ variant }) => VARIANT_CONFIG[variant].borderColor};
+  color: ${({ variant }) => VARIANT_CONFIG[variant].textColor};
 
   &:disabled {
     opacity: 0.5;
@@ -112,7 +104,8 @@ const StyledButton = styled.button<{
   }
 
   &:not(:disabled):hover {
-    background-color: ${({ variant }) => getHoverBackground(variant)};
+    background-color: ${({ variant }) =>
+      VARIANT_CONFIG[variant].hoverBackground};
   }
 `
 
