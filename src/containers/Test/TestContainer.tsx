@@ -10,6 +10,7 @@ import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
+import { PollOptions } from '@/components/PollOptions'
 import { Search } from '@/components/Search'
 import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { Tab } from '@/components/Tab'
@@ -30,6 +31,49 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
     <ButtonGroup>{children}</ButtonGroup>
   </Section>
 )
+
+const PollOptionsDemo = () => {
+  const [selectedOptionId, setSelectedOptionId] = useState<string>()
+
+  const options = [
+    {
+      id: '1',
+      title: 'Implement new feature',
+      percentage: 45,
+      isChecked: false,
+    },
+    {
+      id: '2',
+      title: 'Fix existing bugs',
+      percentage: 30,
+      isChecked: false,
+    },
+    {
+      id: '3',
+      title: 'Improve documentation',
+      percentage: 25,
+      isChecked: false,
+    },
+    {
+      id: '4',
+      title: 'Do nothing',
+      percentage: 0,
+      isChecked: false,
+    },
+  ]
+
+  return (
+    <DemoSection title="Poll Options">
+      <div style={{ width: '500px' }}>
+        <PollOptions
+          options={options}
+          selectedOptionId={selectedOptionId}
+          onOptionSelect={setSelectedOptionId}
+        />
+      </div>
+    </DemoSection>
+  )
+}
 
 const WalletPanelDemo = () => {
   const [isAuthorized, setIsAuthorized] = useState(false)
@@ -597,6 +641,7 @@ export const TestContainer: React.FC = () => (
       />
       <TitleBlock title="What is the best approach here? Are there any alternatives?" />
     </DemoSection>
+    <PollOptionsDemo />
     <TabDemo />
     <WalletPanelDemo />
     <SearchAndFilterDemo />
