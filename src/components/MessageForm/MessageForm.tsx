@@ -1,18 +1,14 @@
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 
+import { MessageFormSubmitHandler } from '@/types/form.types'
 import { Button } from '../Button'
 import { ProfileIcon } from '../ProfileIcon'
 import { ToggleButton } from '../ToggleButton'
 
 export type MessageFormProps = {
   isAuthorized?: boolean
-  onSubmit: (params: {
-    message: string
-    isAnonymous: boolean
-    resetForm: () => void
-    name?: string
-  }) => void
+  onSubmit: MessageFormSubmitHandler
   messagePlaceholder?: string
   namePlaceholder?: string
 }
