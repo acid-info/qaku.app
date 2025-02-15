@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { TabItem } from '../TabItem'
+import { TabItem, VariantType } from '../TabItem'
 
 export type TabOption = {
   id: string | number
@@ -9,7 +9,7 @@ export type TabOption = {
 export type TabProps = {
   options: TabOption[]
   activeId?: string | number
-  variant?: 'primary' | 'secondary'
+  variant?: VariantType
   itemWidth?: string
   onChange?: (id: string | number) => void
 }

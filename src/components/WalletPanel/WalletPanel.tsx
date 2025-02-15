@@ -32,7 +32,7 @@ export const WalletPanel: React.FC<WalletPanelProps> = ({
           <CustomButton onClick={onConnect}>Connect</CustomButton>
         ) : (
           <TabStyled
-            variant="secondary"
+            variant="tertiary"
             options={[
               { id: 'external', label: 'External' },
               { id: 'qaku', label: 'Qaku' },
