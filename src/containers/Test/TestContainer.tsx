@@ -14,6 +14,7 @@ import { Search } from '@/components/Search'
 import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
 import { WalletPanel } from '@/components/WalletPanel'
@@ -589,6 +590,13 @@ const ToggleDemo = () => {
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+    <DemoSection title="Title Block">
+      <TitleBlock
+        title="What is the best approach here? Are there any alternatives?"
+        description="Long description visible to all participants and everyone"
+      />
+      <TitleBlock title="What is the best approach here? Are there any alternatives?" />
+    </DemoSection>
     <TabDemo />
     <WalletPanelDemo />
     <SearchAndFilterDemo />
