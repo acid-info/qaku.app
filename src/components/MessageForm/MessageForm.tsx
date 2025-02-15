@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { MessageFormSubmitHandler } from '@/types/form.types'
+import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
 import { Button } from '../Button'
 import { ProfileIcon } from '../ProfileIcon'
 import { ToggleButton } from '../ToggleButton'
@@ -25,15 +26,10 @@ export const MessageForm = ({
   const [isAnonymous, setIsAnonymous] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (formRef.current?.contains(event.target as Node)) return
-      if (!message.trim() && !name.trim()) setIsFocused(false)
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [message, name])
+  const handleClickOutside = () => {
+    if (!message.trim() && !name.trim()) setIsFocused(false)
+  }
+  useOnClickOutside(formRef, handleClickOutside, true)
 
   const resetForm = () => {
     setMessage('')
