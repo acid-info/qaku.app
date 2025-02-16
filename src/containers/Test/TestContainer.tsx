@@ -9,6 +9,8 @@ import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
+import DefaultNav, { ProgressStatus } from '@/components/Navbar/DefaultNav'
+import UserNav from '@/components/Navbar/UserNav'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { PollOptions } from '@/components/PollOptions'
 import { Search } from '@/components/Search'
@@ -30,6 +32,73 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
     <h2>{title}</h2>
     <ButtonGroup>{children}</ButtonGroup>
   </Section>
+)
+
+const NavbarDemo = () => (
+  <DemoSection title="Navbars">
+    <div style={{ maxWidth: 1400, width: '100%' }}>
+      <h3>User Nav</h3>
+      <UserNav
+        mode="qna"
+        title="Town Hall 2025 - New Positions, Updates, And Plans"
+        count={3}
+        id="3212345"
+      />
+
+      <h3 style={{ marginTop: '32px' }}>Default Nav</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {/* QnA Mode */}
+        <DefaultNav
+          mode="qna"
+          titleOnly={true}
+          title="Polls"
+          date={'2023-12-25T15:00:00.000Z'}
+          count={3}
+          id="3212345"
+        />
+        {Object.values(ProgressStatus).map((status) => (
+          <DefaultNav
+            key={status}
+            mode="qna"
+            title={
+              status === ProgressStatus.Ended
+                ? 'Town Hall 2025'
+                : 'Town Hall 2025 - New Positions, Updates, And Plans'
+            }
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={status}
+          />
+        ))}
+
+        {/* Polls Mode */}
+        <DefaultNav
+          mode="polls"
+          titleOnly={true}
+          title="New Poll"
+          date={'2023-12-25T15:00:00.000Z'}
+          count={3}
+          id="3212345"
+        />
+        {Object.values(ProgressStatus).map((status) => (
+          <DefaultNav
+            key={`polls-${status}`}
+            mode="polls"
+            title={
+              status === ProgressStatus.Ended
+                ? 'Town Hall 2025'
+                : 'Town Hall 2025 - New Positions, Updates, And Plans'
+            }
+            date={'2023-12-25T15:00:00.000Z'}
+            count={1236}
+            id="3212345"
+            status={status}
+          />
+        ))}
+      </div>
+    </div>
+  </DemoSection>
 )
 
 const PollOptionsDemo = () => {
@@ -634,6 +703,7 @@ const ToggleDemo = () => {
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+    <NavbarDemo />
     <DemoSection title="Title Block">
       <TitleBlock
         title="What is the best approach here? Are there any alternatives?"

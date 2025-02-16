@@ -121,8 +121,10 @@ h3 {
 }
 
 p {
-  font-size: var(--body1-font-size);
-  line-height: var(--body1-line-height);
+  color: var(--white);
+}
+
+span {
   color: var(--white);
 }
 
