@@ -18,9 +18,10 @@ export const TogglePill: FC<TogglePillProps> = ({
   icon = <ThumbIcon style={{ width: 14, height: 14 }} />,
   activeIcon = <ThumbFilledIcon style={{ width: 14, height: 14 }} />,
   onClick,
+  ...props
 }) => {
   return (
-    <PillContainer onClick={onClick} $isActive={isActive}>
+    <PillContainer onClick={onClick} $isActive={isActive} {...props}>
       <IconWrapper>{isActive ? activeIcon : icon}</IconWrapper>
       <Count>{count}</Count>
     </PillContainer>

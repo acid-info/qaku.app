@@ -10,6 +10,10 @@ export function arrayIncludesAnyElementFromOtherArray<T>(a: T[], b: T[]) {
   return a.some((el) => b.includes(el))
 }
 
+export function getValidPercentage(value: number): number {
+  return Math.round(Math.min(100, Math.max(0, value)))
+}
+
 export function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }

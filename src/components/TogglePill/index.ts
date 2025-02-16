@@ -1,2 +1,1 @@
-export { TogglePill } from './TogglePill'
-export type { TogglePillProps } from './TogglePill'
+export * from './TogglePill'

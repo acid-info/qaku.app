@@ -1,14 +1,17 @@
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
-import { Button } from '../Button'
 import { QakuLogo } from '../Icons/QakuLogo'
+import { Tab } from '../Tab'
 import WalletConnect from './WalletConnect'
 
+export type NavMode = 'qna' | 'polls'
+
 interface Props {
-  mode: 'qna' | 'polls'
+  mode: NavMode
   title: string
   count: number
   id: string
+  onModeChange?: (mode: NavMode) => void
 }
 
 const renderUnit = (mode: 'qna' | 'polls', count: number) => {
@@ -21,7 +24,7 @@ const renderUnit = (mode: 'qna' | 'polls', count: number) => {
     : 'polls'
 }
 
-const UserNav = ({ mode, title, count, id }: Props) => {
+const UserNav = ({ mode, title, count, id, onModeChange }: Props) => {
   return (
     <Container>
       <Left>
@@ -36,14 +39,17 @@ const UserNav = ({ mode, title, count, id }: Props) => {
           </CountAndId>
         </Info>
       </Left>
-      <ToggleContainer>
-        <Button variant={mode === 'qna' ? 'filledPrimary' : 'filled'}>
-          Q&A
-        </Button>
-        <Button variant={mode === 'polls' ? 'filledPrimary' : 'filled'}>
-          Polls
-        </Button>
-      </ToggleContainer>
+      <TabWrapper>
+        <Tab
+          options={[
+            { id: 'qna', label: 'Q&A' },
+            { id: 'polls', label: 'Polls' },
+          ]}
+          activeId={mode}
+          onChange={(id) => onModeChange?.(id as NavMode)}
+          itemWidth="100px"
+        />
+      </TabWrapper>
       <WalletConnect />
     </Container>
   )
@@ -71,15 +77,6 @@ const Info = styled.div`
   gap: 4px;
 `
 
-const ToggleContainer = styled.div`
-  display: flex;
-
-  button {
-    width: 100px;
-    border-radius: 40px;
-  }
-`
-
 const CountAndId = styled.div`
   display: flex;
   gap: 8px;
@@ -90,6 +87,11 @@ const CountAndId = styled.div`
   span {
     opacity: 0.5;
   }
+`
+
+const TabWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 export default UserNav

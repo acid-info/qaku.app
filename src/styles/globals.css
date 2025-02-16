@@ -127,3 +127,23 @@ p {
 span {
   color: var(--white);
 }
+
+input {
+  color: var(--white);
+  padding: 0;
+}
+
+textarea {
+  color: var(--white);
+  padding: 16px 22px;
+  background-color: var(--gray-ultradark);
+  border: none;
+  font-size: var(--body2-font-size);
+  line-height: var(--body2-line-height);
+}
+textarea::placeholder {
+  opacity: 0.4;
+}
+textarea:focus {
+  outline: none;
+}

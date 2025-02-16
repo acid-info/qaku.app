@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 
-import { DropdownItem } from '../DropdownItem'
+import { DropdownItem, DropdownItemVariant } from '../DropdownItem'
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
 import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 
@@ -14,7 +14,7 @@ export type DropdownProps = {
   options: DropdownOption[]
   value?: string | number
   onChange?: (value: string | number) => void
-  variant?: 'filled' | 'outlined'
+  variant?: DropdownItemVariant
   placeholder?: string
 }
 
@@ -24,6 +24,7 @@ export const Dropdown = ({
   onChange,
   variant = 'filled',
   placeholder = 'Select an option',
+  ...props
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -50,7 +51,7 @@ export const Dropdown = ({
   }
 
   return (
-    <DropdownContainer ref={dropdownRef}>
+    <DropdownContainer ref={dropdownRef} {...props}>
       <DropdownItem variant={variant} onClick={() => setIsOpen(!isOpen)}>
         {selectedOption ? selectedOption.label : placeholder}
         <IconWrapper>
@@ -58,7 +59,7 @@ export const Dropdown = ({
         </IconWrapper>
       </DropdownItem>
       {isOpen && (
-        <DropdownList>
+        <DropdownList $variant={variant}>
           {options.map((option) => (
             <DropdownItem
               key={option.value}
@@ -80,13 +81,16 @@ const DropdownContainer = styled.div`
   width: 100%;
 `
 
-const DropdownList = styled.div`
+const DropdownList = styled.div<{ $variant: DropdownItemVariant }>`
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   overflow: hidden;
   z-index: 1;
+
+  background-color: ${({ $variant }) =>
+    $variant === 'filled' ? 'none' : 'var(--black)'};
 
   button {
     border-top: none;

@@ -12,11 +12,12 @@ export const Search: React.FC<SearchProps> = ({
   onSearch,
   label = 'Search',
   placeholder = 'Type..',
+  ...props
 }) => {
   const [isActive, setIsActive] = useState(false)
 
   return (
-    <SearchWrapper>
+    <SearchWrapper {...props}>
       <SearchButton
         type="button"
         onClick={() => !isActive && setIsActive(true)}
@@ -60,7 +61,7 @@ const SearchButton = styled.button<{ $isActive: boolean }>`
   cursor: pointer;
   min-width: 92px;
   width: fit-content;
-  height: 31px;
+  height: 32px;
   transition: background-color 0.2s ease;
 
   &:hover {
@@ -86,13 +87,11 @@ const SearchInput = styled.input`
   background: none;
   border: none;
   outline: none;
-  color: var(--white);
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
   width: 150px;
 
   &::placeholder {
-    color: var(--white);
     opacity: 0.4;
   }
 `

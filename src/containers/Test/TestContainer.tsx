@@ -2,297 +2,56 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
 import { Button } from '@/components/Button'
+import { Collapsible } from '@/components/Collapsible'
+import { CollapsibleToggle } from '@/components/CollapsibleToggle'
 import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import { MessageForm } from '@/components/MessageForm'
 import DefaultNav, { ProgressStatus } from '@/components/Navbar/DefaultNav'
-import UserNav from '@/components/Navbar/UserNav'
+import UserNav, { NavMode } from '@/components/Navbar/UserNav'
+import { PasswordGenerator } from '@/components/PasswordGenerator'
+import { PollOptions } from '@/components/PollOptions'
 import { Search } from '@/components/Search'
+import { SearchAndFilter } from '@/components/SearchAndFilter'
+import { Tab } from '@/components/Tab'
+import { Thread } from '@/components/Thread'
+import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
+import { WalletPanel } from '@/components/WalletPanel'
 
-export type HomePageProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->
+type DemoSectionProps = {
+  title: string
+  children: React.ReactNode
+}
 
-export const TestContainer: React.FC<HomePageProps> = ({
-  children,
-  ...props
-}) => {
-  const [toggleState, setToggleState] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState<string | number>()
-  const [selectedTheme, setSelectedTheme] = useState<string | number>()
-  const [pillState, setPillState] = useState<{
-    state1: [number, boolean]
-    state2: [number, boolean]
-    state3: [number, boolean]
-  }>({
-    state1: [42, false],
-    state2: [24, true],
-    state3: [1000, false],
-  })
+const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
+  <Section>
+    <h2>{title}</h2>
+    <ButtonGroup>{children}</ButtonGroup>
+  </Section>
+)
 
-  const languageOptions = [
-    { label: 'English', value: 'en' },
-    { label: 'Spanish', value: 'es' },
-    { label: 'French', value: 'fr' },
-    { label: 'German', value: 'de' },
-    { label: 'Italian', value: 'it' },
-  ]
-
-  const themeOptions = [
-    { label: 'System', value: 'system' },
-    { label: 'Light', value: 'light' },
-    { label: 'Dark', value: 'dark' },
-  ]
-
-  const handleLanguageChange = (value: string | number) => {
-    setSelectedLanguage(value)
-  }
-
-  const handleThemeChange = (value: string | number) => {
-    setSelectedTheme(value)
-  }
+const NavbarDemo = () => {
+  const [mode, setMode] = useState<NavMode>('qna')
 
   return (
-    <Container {...props}>
-      <Section>
-        <h2>Dropdowns</h2>
-        <ButtonGroup>
-          <DropdownWrapper>
-            <h3>Filled</h3>
-            <Dropdown
-              options={languageOptions}
-              value={selectedLanguage}
-              onChange={handleLanguageChange}
-              placeholder="Select Language"
-            />
-          </DropdownWrapper>
-          <DropdownWrapper style={{ width: '130px' }}>
-            <h3>Outlined</h3>
-            <Dropdown
-              options={themeOptions}
-              value={selectedTheme}
-              onChange={handleThemeChange}
-              variant="outlined"
-              placeholder="Select Theme"
-            />
-          </DropdownWrapper>
-        </ButtonGroup>
-      </Section>
+    <DemoSection title="Navbars">
+      <div style={{ maxWidth: 1400, width: '100%' }}>
+        <h3>User Nav</h3>
+        <UserNav
+          mode={mode}
+          title="Town Hall 2025 - New Positions, Updates, And Plans"
+          count={3}
+          id="3212345"
+          onModeChange={(newMode) => setMode(newMode)}
+        />
 
-      <Section>
-        <h2>Search</h2>
-        <ButtonGroup>
-          <Search onSearch={(value) => console.log('Search:', value)} />
-          <Search
-            label="Find Something"
-            placeholder="Enter keywords..."
-            onSearch={(value) => console.log('Search:', value)}
-          />
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Toggle Button</h2>
-        <ToggleButton isOn={toggleState} onChange={setToggleState} />
-      </Section>
-
-      <Section>
-        <h2>Toggle Pills</h2>
-        <ButtonGroup>
-          <TogglePill
-            count={pillState.state1[0]}
-            isActive={pillState.state1[1]}
-            onClick={() => {
-              const newCount = pillState.state1[1]
-                ? pillState.state1[0] - 1
-                : pillState.state1[0] + 1
-              setPillState({
-                ...pillState,
-                state1: [newCount, !pillState.state1[1]],
-              })
-            }}
-          />
-          <TogglePill
-            count={pillState.state2[0]}
-            isActive={pillState.state2[1]}
-            icon={<ChatBubbleOutlineIcon />}
-            activeIcon={<ChatBubbleOutlineIcon />}
-            onClick={() => {
-              const newCount = pillState.state2[1]
-                ? pillState.state2[0] - 1
-                : pillState.state2[0] + 1
-              setPillState({
-                ...pillState,
-                state2: [newCount, !pillState.state2[1]],
-              })
-            }}
-          />
-          <TogglePill
-            count={pillState.state3[0]}
-            isActive={pillState.state3[1]}
-            icon={<ChatBubbleOutlineIcon />}
-            activeIcon={<ChatBubbleOutlineIcon />}
-            onClick={() => {
-              const newCount = pillState.state3[1]
-                ? pillState.state3[0] - 1
-                : pillState.state3[0] + 1
-              setPillState({
-                ...pillState,
-                state3: [newCount, !pillState.state3[1]],
-              })
-            }}
-          />
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Medium Buttons (Default)</h2>
-        <ButtonGroup>
-          <Button>Button with text</Button>
-          <Button icon={<PlusIcon />}>Button with icon</Button>
-          <Button variant="outlined">Button</Button>
-          <Button variant="outlined" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button variant="filledPrimary">Button</Button>
-          <Button variant="filledPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button variant="outlinedPrimary">Button</Button>
-          <Button variant="outlinedPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Large Buttons</h2>
-        <ButtonGroup>
-          <Button size="large">Button with very very long text</Button>
-          <Button size="large" icon={<PlusIcon />}>
-            Button with icon
-          </Button>
-          <Button size="large" variant="outlined">
-            Button
-          </Button>
-          <Button size="large" variant="outlined" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button size="large" variant="filledPrimary">
-            Button
-          </Button>
-          <Button size="large" variant="filledPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-          <Button size="large" variant="outlinedPrimary">
-            Button
-          </Button>
-          <Button size="large" variant="outlinedPrimary" icon={<PlusIcon />}>
-            Button
-          </Button>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Disabled State</h2>
-        <ButtonGroup>
-          <Button disabled>Button</Button>
-          <Button variant="outlined" disabled>
-            Button
-          </Button>
-          <Button variant="filledPrimary" disabled>
-            Button
-          </Button>
-          <Button variant="outlinedPrimary" disabled>
-            Button
-          </Button>
-        </ButtonGroup>
-      </Section>
-
-      <Section>
-        <h2>Round Icon Buttons</h2>
-        <ButtonGroup>
-          <IconButtonRound size="small" icon={<PlusIcon />} />
-          <IconButtonRound
-            size="small"
-            variant="outlined"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="small"
-            variant="filledPrimary"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="small"
-            variant="outlinedPrimary"
-            icon={<PlusIcon />}
-          />
-
-          <IconButtonRound icon={<PlusIcon />} />
-          <IconButtonRound variant="outlined" icon={<PlusIcon />} />
-          <IconButtonRound variant="filledPrimary" icon={<PlusIcon />} />
-          <IconButtonRound variant="outlinedPrimary" icon={<PlusIcon />} />
-
-          <IconButtonRound size="large" icon={<PlusIcon />} />
-          <IconButtonRound
-            size="large"
-            variant="outlined"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="large"
-            variant="filledPrimary"
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            size="large"
-            variant="outlinedPrimary"
-            icon={<PlusIcon />}
-          />
-
-          <IconButtonRound disabled icon={<PlusIcon />} />
-          <IconButtonRound variant="outlined" disabled icon={<PlusIcon />} />
-          <IconButtonRound
-            variant="filledPrimary"
-            disabled
-            icon={<PlusIcon />}
-          />
-          <IconButtonRound
-            variant="outlinedPrimary"
-            disabled
-            icon={<PlusIcon />}
-          />
-        </ButtonGroup>
-        <ButtonGroup>
-          <IconButtonRound
-            variant="outlinedPrimary"
-            icon={
-              <PlusIcon
-                style={{ width: '60px', height: '60px', color: 'red' }}
-              />
-            }
-          />
-        </ButtonGroup>
-      </Section>
-      <Section style={{ maxWidth: 1400 }}>
-        <h2>User Nav</h2>
-        <div>
-          <UserNav
-            mode="qna"
-            title="Town Hall 2025 - New Positions, Updates, And Plans"
-            count={3}
-            id="3212345"
-          />
-        </div>
-        <br />
-        <br />
-        <h2>Default Nav</h2>
-        <div>
+        <h3 style={{ marginTop: '32px' }}>Default Nav</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* QnA Mode */}
           <DefaultNav
             mode="qna"
             titleOnly={true}
@@ -301,32 +60,23 @@ export const TestContainer: React.FC<HomePageProps> = ({
             count={3}
             id="3212345"
           />
-          <DefaultNav
-            mode="qna"
-            title="Town Hall 2025 - New Positions, Updates, And Plans"
-            date={'2023-12-25T15:00:00.000Z'}
-            count={1236}
-            id="3212345"
-            status={ProgressStatus.BeforeStart}
-          />
-          <DefaultNav
-            mode="qna"
-            title="Town Hall 2025 - New Positions, Updates, And Plans"
-            date={'2023-12-25T15:00:00.000Z'}
-            count={1236}
-            id="3212345"
-            status={ProgressStatus.InProgress}
-          />
-          <DefaultNav
-            mode="qna"
-            title="Town Hall 2025"
-            date={'2023-12-25T15:00:00.000Z'}
-            count={1236}
-            id="3212345"
-            status={ProgressStatus.Ended}
-          />
-          <br />
-          <br />
+          {Object.values(ProgressStatus).map((status) => (
+            <DefaultNav
+              key={status}
+              mode="qna"
+              title={
+                status === ProgressStatus.Ended
+                  ? 'Town Hall 2025'
+                  : 'Town Hall 2025 - New Positions, Updates, And Plans'
+              }
+              date={'2023-12-25T15:00:00.000Z'}
+              count={1236}
+              id="3212345"
+              status={status}
+            />
+          ))}
+
+          {/* Polls Mode */}
           <DefaultNav
             mode="polls"
             titleOnly={true}
@@ -335,35 +85,661 @@ export const TestContainer: React.FC<HomePageProps> = ({
             count={3}
             id="3212345"
           />
-          <DefaultNav
-            mode="polls"
-            title="Town Hall 2025 - New Positions, Updates, And Plans"
-            date={'2023-12-25T15:00:00.000Z'}
-            count={1236}
-            id="3212345"
-            status={ProgressStatus.BeforeStart}
-          />
-          <DefaultNav
-            mode="polls"
-            title="Town Hall 2025 - New Positions, Updates, And Plans"
-            date={'2023-12-25T15:00:00.000Z'}
-            count={1236}
-            id="3212345"
-            status={ProgressStatus.InProgress}
-          />
-          <DefaultNav
-            mode="polls"
-            title="Town Hall 2025"
-            date={'2023-12-25T15:00:00.000Z'}
-            count={1236}
-            id="3212345"
-            status={ProgressStatus.Ended}
-          />
+          {Object.values(ProgressStatus).map((status) => (
+            <DefaultNav
+              key={`polls-${status}`}
+              mode="polls"
+              title={
+                status === ProgressStatus.Ended
+                  ? 'Town Hall 2025'
+                  : 'Town Hall 2025 - New Positions, Updates, And Plans'
+              }
+              date={'2023-12-25T15:00:00.000Z'}
+              count={1236}
+              id="3212345"
+              status={status}
+            />
+          ))}
         </div>
-      </Section>
-    </Container>
+      </div>
+    </DemoSection>
   )
 }
+
+const PollOptionsDemo = () => {
+  const [selectedOptionId, setSelectedOptionId] = useState<string>()
+
+  const options = [
+    {
+      id: '1',
+      title: 'Implement new feature',
+      percentage: 45,
+      isChecked: false,
+    },
+    {
+      id: '2',
+      title: 'Fix existing bugs',
+      percentage: 30,
+      isChecked: false,
+    },
+    {
+      id: '3',
+      title: 'Improve documentation',
+      percentage: 25,
+      isChecked: false,
+    },
+    {
+      id: '4',
+      title: 'Do nothing',
+      percentage: 0,
+      isChecked: false,
+    },
+  ]
+
+  return (
+    <DemoSection title="Poll Options">
+      <div style={{ width: '500px' }}>
+        <PollOptions
+          options={options}
+          selectedOptionId={selectedOptionId}
+          onOptionSelect={setSelectedOptionId}
+        />
+      </div>
+    </DemoSection>
+  )
+}
+
+const WalletPanelDemo = () => {
+  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [selectedWallet, setSelectedWallet] = useState<'external' | 'qaku'>(
+    'external',
+  )
+
+  return (
+    <DemoSection title="Wallet Panel">
+      <div style={{ width: '500px' }}>
+        <WalletPanel
+          isAuthorized={isAuthorized}
+          onConnect={() => setIsAuthorized(true)}
+          onWalletSelect={setSelectedWallet}
+          selectedWallet={selectedWallet}
+        />
+      </div>
+    </DemoSection>
+  )
+}
+
+const TabDemo = () => {
+  const [activeTabId, setActiveTabId] = useState<string | number>('overview')
+  const [activeFilterId, setActiveFilterId] = useState<string | number>('all')
+
+  const handleTabChange = (id: string | number) => {
+    setActiveTabId(id)
+  }
+
+  const handleFilterChange = (id: string | number) => {
+    setActiveFilterId(id)
+  }
+
+  return (
+    <DemoSection title="Tabs">
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '32px',
+        }}
+      >
+        <div>
+          <h3>Primary Variant</h3>
+          <Tab
+            options={[
+              { id: 'overview', label: 'Overview' },
+              { id: 'details', label: 'Details' },
+              { id: 'settings', label: 'Settings' },
+            ]}
+            activeId={activeTabId}
+            onChange={handleTabChange}
+            itemWidth="100px"
+          />
+        </div>
+
+        <div>
+          <h3>Secondary Variant</h3>
+          <Tab
+            options={[
+              { id: 'all', label: 'All' },
+              { id: 'active', label: 'Active' },
+              { id: 'completed', label: 'Completed' },
+            ]}
+            activeId={activeFilterId}
+            onChange={handleFilterChange}
+            variant="secondary"
+            itemWidth="200px"
+          />
+        </div>
+      </div>
+    </DemoSection>
+  )
+}
+
+const SearchAndFilterDemo = () => {
+  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [sortFilter, setSortFilter] = useState<string>('recent')
+
+  return (
+    <DemoSection title="Search and Filter">
+      <div style={{ width: '350px' }}>
+        <SearchAndFilter
+          onSearch={(value) => console.log('Search:', value)}
+          options={[
+            { label: 'All', value: 'all' },
+            { label: 'Open', value: 'open' },
+            { label: 'Closed', value: 'closed' },
+          ]}
+          value={statusFilter}
+          onFilterChange={(value) => {
+            console.log('Filter:', value)
+            setStatusFilter(value as string)
+          }}
+          searchPlaceholder="Search items..."
+          filterPlaceholder="Filter by status"
+          filterWidth="93px"
+        />
+      </div>
+      <div style={{ width: '500px' }}>
+        <SearchAndFilter
+          searchLabel="Find Questions"
+          onSearch={(value) => console.log('Search:', value)}
+          options={[
+            { label: 'Most Recent', value: 'recent' },
+            { label: 'Most Voted', value: 'voted' },
+            { label: 'Most Answered', value: 'answered' },
+          ]}
+          value={sortFilter}
+          onFilterChange={(value) => {
+            console.log('Sort:', value)
+            setSortFilter(value as string)
+          }}
+          searchPlaceholder="Type keywords..."
+          filterPlaceholder="Sort by"
+        />
+      </div>
+    </DemoSection>
+  )
+}
+
+const ThreadDemo = () => {
+  const [threads, setThreads] = useState([
+    {
+      info: {
+        author: 'Alice',
+        timestamp: '15:32',
+        question:
+          'What are the key differences between React hooks and class components?',
+        responses: [
+          {
+            info: {
+              author: 'Bob',
+              timestamp: '15:45',
+              response:
+                'Hooks are more flexible and allow better code reuse. They also eliminate the complexity of lifecycle methods.',
+            },
+            likes: { count: 12, isLiked: false },
+          },
+          {
+            info: {
+              author: 'Charlie',
+              timestamp: '16:00',
+              response:
+                'Class components can be easier to understand for developers coming from OOP backgrounds.',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+        ],
+      },
+      likes: { count: 42, isLiked: true },
+    },
+    {
+      info: {
+        author: 'Bob',
+        timestamp: '02:00',
+        question:
+          'How do you handle state management in large React applications?',
+        responses: [],
+      },
+      likes: { count: 28, isLiked: false },
+    },
+  ])
+
+  const handleQuestionLike = (index: number) => {
+    setThreads((prevThreads) =>
+      prevThreads.map((thread, i) =>
+        i === index
+          ? {
+              ...thread,
+              likes: {
+                isLiked: !thread.likes.isLiked,
+                count: thread.likes.isLiked
+                  ? thread.likes.count - 1
+                  : thread.likes.count + 1,
+              },
+            }
+          : thread,
+      ),
+    )
+  }
+
+  const handleResponseLike = (threadIndex: number, responseIndex: number) => {
+    setThreads((prevThreads) =>
+      prevThreads.map((thread, i) =>
+        i === threadIndex
+          ? {
+              ...thread,
+              info: {
+                ...thread.info,
+                responses: thread.info.responses.map((response, j) =>
+                  j === responseIndex
+                    ? {
+                        ...response,
+                        likes: {
+                          isLiked: !response.likes?.isLiked,
+                          count: response.likes?.isLiked
+                            ? response.likes.count - 1
+                            : (response.likes?.count || 0) + 1,
+                        },
+                      }
+                    : response,
+                ),
+              },
+            }
+          : thread,
+      ),
+    )
+  }
+
+  return (
+    <DemoSection title="Threads">
+      <div
+        style={{
+          width: '600px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {threads.map((thread, index) => (
+          <Thread
+            key={`${thread.info.author}-${thread.info.timestamp}`}
+            info={thread.info}
+            likes={thread.likes}
+            isFirst={index === 0}
+            onQuestionLikeClick={() => handleQuestionLike(index)}
+            onResponseLikeClick={(responseIndex) =>
+              handleResponseLike(index, responseIndex)
+            }
+            onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
+              const newResponse = {
+                info: {
+                  author: isAnonymous ? 'Anonymous' : name || 'User',
+                  timestamp: new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  }),
+                  response: message,
+                },
+                likes: { count: 0, isLiked: false },
+              }
+
+              setThreads((prevThreads) =>
+                prevThreads.map((thread, i) =>
+                  i === index
+                    ? {
+                        ...thread,
+                        info: {
+                          ...thread.info,
+                          responses: [...thread.info.responses, newResponse],
+                        },
+                      }
+                    : thread,
+                ),
+              )
+              resetForm()
+            }}
+            isAuthorized={true}
+            isUser={true}
+          />
+        ))}
+      </div>
+    </DemoSection>
+  )
+}
+
+const CollapsibleDemo = () => (
+  <DemoSection title="Collapsible">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        width: '500px',
+      }}
+    >
+      <Collapsible title="Add description">
+        <textarea
+          style={{ height: '100px' }}
+          placeholder="Type something here.."
+        />
+      </Collapsible>
+      <Collapsible title="Review password">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <span
+            style={{
+              color: 'var(--white)',
+              opacity: 0.7,
+              fontSize: 'var(--body2-font-size)',
+              lineHeight: 'var(--body2-line-height)',
+            }}
+          >
+            Generated automatically for encrypted Q&As
+          </span>
+          <PasswordGenerator />
+        </div>
+      </Collapsible>
+      <Collapsible title="Default expanded" defaultExpanded>
+        <div>This content is visible by default.</div>
+      </Collapsible>
+    </div>
+  </DemoSection>
+)
+
+const CollapsibleToggleDemo = () => (
+  <DemoSection title="Collapsible Toggle">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        width: '500px',
+      }}
+    >
+      <CollapsibleToggle
+        title="Poll description"
+        description="Add a description visible to participants"
+      >
+        <textarea
+          style={{ height: '100px' }}
+          placeholder="Type something here.."
+        />
+      </CollapsibleToggle>
+      <CollapsibleToggle title="Toggle without description">
+        <span>Some text content.</span>
+      </CollapsibleToggle>
+      <CollapsibleToggle
+        title="Toggle with Form"
+        description="Contains an interactive form element"
+        defaultChecked
+      >
+        <MessageForm
+          isAuthorized
+          onSubmit={({ message, isAnonymous, resetForm }) => {
+            console.log('Message:', message, 'isAnonymous:', isAnonymous)
+            resetForm()
+          }}
+        />
+      </CollapsibleToggle>
+    </div>
+  </DemoSection>
+)
+
+const MessageFormDemo = () => (
+  <DemoSection title="Message Form">
+    <div style={{ width: '500px' }}>
+      <h3>Unauthorized</h3>
+      <MessageForm
+        onSubmit={({ message, isAnonymous, resetForm, name }) => {
+          console.log(
+            'Unauthorized message:',
+            message,
+            'Name:',
+            name,
+            'isAnonymous:',
+            isAnonymous,
+          )
+          resetForm()
+        }}
+        messagePlaceholder="Write something..."
+        namePlaceholder="Name... (opt.)"
+      />
+    </div>
+    <div style={{ width: '500px' }}>
+      <h3>Authorized</h3>
+      <MessageForm
+        isAuthorized
+        onSubmit={({ message, isAnonymous, resetForm, name }) => {
+          console.log(
+            'Authorized message:',
+            message,
+            'Name:',
+            name,
+            'isAnonymous:',
+            isAnonymous,
+          )
+          resetForm()
+        }}
+      />
+    </div>
+  </DemoSection>
+)
+
+const DropdownDemo = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState<string | number>()
+  const [selectedTheme, setSelectedTheme] = useState<string | number>()
+
+  const options = {
+    language: [
+      { label: 'English', value: 'en' },
+      { label: 'Spanish', value: 'es' },
+      { label: 'French', value: 'fr' },
+      { label: 'German', value: 'de' },
+      { label: 'Italian', value: 'it' },
+    ],
+    theme: [
+      { label: 'System', value: 'system' },
+      { label: 'Light', value: 'light' },
+      { label: 'Dark', value: 'dark' },
+    ],
+  }
+
+  return (
+    <DemoSection title="Dropdowns">
+      <DropdownWrapper>
+        <h3>Filled</h3>
+        <Dropdown
+          options={options.language}
+          value={selectedLanguage}
+          onChange={setSelectedLanguage}
+          placeholder="Select Language"
+        />
+      </DropdownWrapper>
+      <DropdownWrapper style={{ width: '130px' }}>
+        <h3>Outlined</h3>
+        <Dropdown
+          options={options.theme}
+          value={selectedTheme}
+          onChange={setSelectedTheme}
+          variant="outlined"
+          placeholder="Select Theme"
+        />
+      </DropdownWrapper>
+    </DemoSection>
+  )
+}
+
+const ButtonDemo = () => {
+  const buttonVariants = [
+    'default',
+    'outlined',
+    'filledPrimary',
+    'outlinedPrimary',
+  ] as const
+
+  const renderButtonSet = (size?: 'large') =>
+    buttonVariants.map((variant) => (
+      <React.Fragment key={`${size}-${variant}`}>
+        <Button
+          size={size}
+          variant={variant === 'default' ? undefined : variant}
+        >
+          Button
+        </Button>
+        <Button
+          size={size}
+          variant={variant === 'default' ? undefined : variant}
+          icon={<PlusIcon />}
+        >
+          Button
+        </Button>
+      </React.Fragment>
+    ))
+
+  return (
+    <>
+      <DemoSection title="Buttons">
+        {renderButtonSet()}
+        {renderButtonSet('large')}
+        {buttonVariants.map((variant) => (
+          <Button
+            key={variant}
+            variant={variant === 'default' ? undefined : variant}
+            disabled
+          >
+            Button
+          </Button>
+        ))}
+      </DemoSection>
+    </>
+  )
+}
+
+const IconButtonDemo = () => {
+  const variants = [
+    'default',
+    'outlined',
+    'filledPrimary',
+    'outlinedPrimary',
+  ] as const
+  const sizes = ['small', 'medium', 'large'] as const
+
+  return (
+    <DemoSection title="Round Icon Buttons">
+      {sizes.map((size) => (
+        <React.Fragment key={size}>
+          {variants.map((variant) => (
+            <IconButtonRound
+              key={`${size}-${variant}`}
+              size={size === 'medium' ? undefined : size}
+              variant={variant === 'default' ? undefined : variant}
+              icon={<PlusIcon />}
+            />
+          ))}
+        </React.Fragment>
+      ))}
+      {variants.map((variant) => (
+        <IconButtonRound
+          key={`disabled-${variant}`}
+          variant={variant === 'default' ? undefined : variant}
+          disabled
+          icon={<PlusIcon />}
+        />
+      ))}
+      <IconButtonRound
+        variant="outlinedPrimary"
+        icon={
+          <PlusIcon style={{ width: '60px', height: '60px', color: 'red' }} />
+        }
+      />
+    </DemoSection>
+  )
+}
+
+const ToggleDemo = () => {
+  const [toggleState, setToggleState] = useState(false)
+  const [pillStates, setPillStates] = useState([
+    { count: 42, active: false },
+    { count: 24, active: true },
+    { count: 1000, active: false },
+  ])
+
+  const handlePillClick = (index: number) => {
+    setPillStates((prev) =>
+      prev.map((state, i) =>
+        i === index
+          ? {
+              count: state.active ? state.count - 1 : state.count + 1,
+              active: !state.active,
+            }
+          : state,
+      ),
+    )
+  }
+
+  return (
+    <>
+      <DemoSection title="Toggle Button">
+        <ToggleButton isOn={toggleState} onChange={setToggleState} />
+      </DemoSection>
+      <DemoSection title="Toggle Pills">
+        {pillStates.map((state, index) => (
+          <TogglePill
+            key={index}
+            count={state.count}
+            isActive={state.active}
+            icon={index > 0 ? <ChatBubbleOutlineIcon /> : undefined}
+            activeIcon={index > 0 ? <ChatBubbleOutlineIcon /> : undefined}
+            onClick={() => handlePillClick(index)}
+          />
+        ))}
+      </DemoSection>
+    </>
+  )
+}
+
+export const TestContainer: React.FC = () => (
+  <Container>
+    <Separator style={{ marginTop: '0' }}>Patterns</Separator>
+    <NavbarDemo />
+    <DemoSection title="Title Block">
+      <TitleBlock
+        title="What is the best approach here? Are there any alternatives?"
+        description="Long description visible to all participants and everyone"
+      />
+      <TitleBlock title="What is the best approach here? Are there any alternatives?" />
+    </DemoSection>
+    <PollOptionsDemo />
+    <TabDemo />
+    <WalletPanelDemo />
+    <SearchAndFilterDemo />
+    <ThreadDemo />
+    <CollapsibleDemo />
+    <CollapsibleToggleDemo />
+    <MessageFormDemo />
+
+    <Separator>Components</Separator>
+    <DropdownDemo />
+    <DemoSection title="Search">
+      <Search onSearch={(value) => console.log('Search:', value)} />
+      <Search
+        label="Find Something"
+        placeholder="Enter keywords..."
+        onSearch={(value) => console.log('Search:', value)}
+      />
+    </DemoSection>
+    <ToggleDemo />
+    <ButtonDemo />
+    <IconButtonDemo />
+  </Container>
+)
 
 const Container = styled.div`
   padding: 32px;
@@ -388,4 +764,8 @@ const ButtonGroup = styled.div`
 
 const DropdownWrapper = styled.div`
   width: 200px;
+`
+
+const Separator = styled.h1`
+  margin: 60px 0 30px 0;
 `
