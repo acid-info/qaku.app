@@ -17,6 +17,8 @@ import { Search } from '@/components/Search'
 import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { Tile } from '@/components/Tile'
+import { TileItem } from '@/components/TileItem'
 import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
@@ -663,6 +665,42 @@ const IconButtonDemo = () => {
   )
 }
 
+const TileDemo = () => {
+  return (
+    <Section>
+      <h2>Tile & TileItem</h2>
+      <div style={{ display: 'flex', gap: '16px' }}>
+        <TileItem label="Questions1" data={42} size="medium" isActive />
+        <TileItem
+          label="Questions2"
+          data={12}
+          size="medium"
+          onClick={() => alert('hi')}
+        />
+        <TileItem label="Questions3" data={36} size="medium" />
+      </div>
+      <br />
+      <div style={{ display: 'flex' }}>
+        <Tile
+          items={[
+            {
+              label: 'Questions4',
+              data: 42,
+              size: 'large',
+              onClick: () => console.log('Clicked'),
+            },
+            {
+              label: 'Questions5',
+              data: 12,
+              size: 'large',
+            },
+          ]}
+        />
+      </div>
+    </Section>
+  )
+}
+
 const ToggleDemo = () => {
   const [toggleState, setToggleState] = useState(false)
   const [pillStates, setPillStates] = useState([
@@ -738,6 +776,7 @@ export const TestContainer: React.FC = () => (
     <ToggleDemo />
     <ButtonDemo />
     <IconButtonDemo />
+    <TileDemo />
   </Container>
 )
 
