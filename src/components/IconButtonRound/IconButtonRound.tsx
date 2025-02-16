@@ -13,6 +13,7 @@ type VariantConfig = {
   borderColor: string
   textColor: string
   hoverBackground: string
+  iconColor: string
 }
 
 type SizeConfig = {
@@ -26,24 +27,28 @@ const VARIANT_CONFIG: Record<IconButtonRoundVariant, VariantConfig> = {
     borderColor: 'var(--gray)',
     textColor: 'var(--white)',
     hoverBackground: 'var(--gray-darker)',
+    iconColor: 'var(--white)',
   },
   outlined: {
     backgroundColor: 'transparent',
     borderColor: 'var(--gray)',
     textColor: 'var(--white)',
     hoverBackground: 'var(--gray-darkest)',
+    iconColor: 'var(--white)',
   },
   filledPrimary: {
     backgroundColor: 'var(--yellow)',
     borderColor: 'var(--yellow)',
     textColor: 'var(--black)',
     hoverBackground: 'var(--yellow-dark)',
+    iconColor: 'var(--black)',
   },
   outlinedPrimary: {
     backgroundColor: 'transparent',
     borderColor: 'var(--yellow)',
     textColor: 'var(--white)',
     hoverBackground: 'color-mix(in srgb, var(--yellow) 20%, transparent)',
+    iconColor: 'var(--white)',
   },
 }
 
@@ -77,7 +82,7 @@ export const IconButtonRound: React.FC<IconButtonRoundProps> = ({
 }) => {
   return (
     <StyledButton size={size} variant={variant} {...props}>
-      <IconWrapper>{icon}</IconWrapper>
+      <IconWrapper $variant={variant}>{icon}</IconWrapper>
     </StyledButton>
   )
 }
@@ -113,7 +118,7 @@ const StyledButton = styled.button<{
   }
 `
 
-const IconWrapper = styled.span`
+const IconWrapper = styled.span<{ $variant: IconButtonRoundVariant }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,5 +126,6 @@ const IconWrapper = styled.span`
   svg {
     width: 14px;
     height: 14px;
+    color: ${({ $variant }) => VARIANT_CONFIG[$variant].iconColor};
   }
 `

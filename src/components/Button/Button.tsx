@@ -13,6 +13,7 @@ type VariantConfig = {
   borderColor: string
   textColor: string
   hoverBackground: string
+  iconColor: string
 }
 
 const VARIANT_CONFIG: Record<ButtonVariant, VariantConfig> = {
@@ -21,24 +22,28 @@ const VARIANT_CONFIG: Record<ButtonVariant, VariantConfig> = {
     borderColor: 'var(--gray)',
     textColor: 'var(--white)',
     hoverBackground: 'var(--gray-dark)',
+    iconColor: 'var(--white)',
   },
   outlined: {
     backgroundColor: 'transparent',
     borderColor: 'var(--gray)',
     textColor: 'var(--white)',
     hoverBackground: 'var(--gray-darkest)',
+    iconColor: 'var(--white)',
   },
   filledPrimary: {
     backgroundColor: 'var(--yellow)',
     borderColor: 'var(--yellow)',
     textColor: 'var(--black)',
     hoverBackground: 'var(--yellow-dark)',
+    iconColor: 'var(--black)',
   },
   outlinedPrimary: {
     backgroundColor: 'transparent',
     borderColor: 'var(--yellow)',
     textColor: 'var(--white)',
     hoverBackground: 'color-mix(in srgb, var(--yellow) 20%, transparent)',
+    iconColor: 'var(--white)',
   },
 }
 
@@ -59,7 +64,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <StyledButton size={size} variant={variant} {...props}>
       {children}
-      {icon && <IconWrapper>{icon}</IconWrapper>}
+      {icon && <IconWrapper $variant={variant}>{icon}</IconWrapper>}
     </StyledButton>
   )
 }
@@ -109,8 +114,12 @@ const StyledButton = styled.button<{
   }
 `
 
-const IconWrapper = styled.span`
+const IconWrapper = styled.span<{ $variant: ButtonVariant }>`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  svg {
+    color: ${({ $variant }) => VARIANT_CONFIG[$variant].iconColor};
+  }
 `
