@@ -3,14 +3,27 @@ import Link from 'next/link'
 import React from 'react'
 import { WakuLogo } from '../Icons/WakuLogo'
 
-export const Footer: React.FC = () => {
+type Props = {
+  showFooter?: boolean
+  showLogo?: boolean
+} & React.HTMLAttributes<HTMLDivElement>
+
+export const Footer = ({
+  showFooter = true,
+  showLogo = false,
+  ...props
+}: Props) => {
   return (
-    <FooterWrapper>
-      <BrandSection>
-        <WakuLogo width={18} height={18} />
-        <PoweredByText>Powered by Waku</PoweredByText>
-      </BrandSection>
-      <Divider />
+    <FooterWrapper $showFooter={showFooter} {...props}>
+      {showLogo && (
+        <>
+          <BrandSection>
+            <WakuLogo width={18} height={18} />
+            <PoweredByText>Powered by Waku</PoweredByText>
+          </BrandSection>
+          <Divider />
+        </>
+      )}
       <LinkGroup>
         <FooterLink href="#">Terms of use</FooterLink>
         <FooterLink href="#">Privacy policy</FooterLink>
@@ -19,8 +32,8 @@ export const Footer: React.FC = () => {
   )
 }
 
-const FooterWrapper = styled.footer`
-  display: flex;
+const FooterWrapper = styled.footer<{ $showFooter: boolean }>`
+  display: ${({ $showFooter }) => ($showFooter ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   position: relative;
@@ -67,6 +80,9 @@ const FooterLink = styled(Link)`
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+
+  font-size: var(--label1-font-size);
+  line-height: var(--label1-line-height);
 
   &:hover {
     text-decoration: underline;
