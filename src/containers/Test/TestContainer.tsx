@@ -13,6 +13,7 @@ import DefaultNav, { ProgressStatus } from '@/components/Navbar/DefaultNav'
 import UserNav, { NavMode } from '@/components/Navbar/UserNav'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { PollOptions } from '@/components/PollOptions'
+import { QnAWidget } from '@/components/QnAWidget'
 import { Search } from '@/components/Search'
 import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { Tab } from '@/components/Tab'
@@ -35,6 +36,96 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
     <ButtonGroup>{children}</ButtonGroup>
   </Section>
 )
+
+const QnAWidgetDemo = () => {
+  const demoQnA = {
+    id: 'qna-1',
+    title: 'Town Hall Discussion',
+  }
+  const demoQnA2 = {
+    id: 'qna-2',
+    title: 'Town Hall Discussion - long title that will be truncated',
+  }
+
+  const polls = [
+    {
+      id: 'poll-1',
+      title: 'Budget Allocation',
+    },
+    {
+      id: 'poll-2',
+      title: 'Project Timeline',
+    },
+    {
+      id: 'poll-3',
+      title: 'Team Structure',
+    },
+  ]
+
+  const [polls2, setPolls2] = useState<{ id: string; title: string }[]>([])
+  const [activeItemId, setActiveItemId] = useState<string>()
+  const [activeItemId2, setActiveItemId2] = useState<string>()
+
+  const handlePlusClick2 = () => {
+    const newPoll = {
+      id: `poll-${polls2.length + 1}`,
+      title: `New Poll ${polls2.length + 1}`,
+    }
+    setPolls2([...polls2, newPoll])
+    console.log('Added new poll:', newPoll)
+  }
+
+  const handleQnAClick = (id: string) => {
+    setActiveItemId(id)
+    console.log('QnA clicked:', id)
+  }
+
+  const handleQnAClick2 = (id: string) => {
+    setActiveItemId2(id)
+    console.log('QnA clicked:', id)
+  }
+
+  const handlePollClick = (id: string) => {
+    setActiveItemId(id)
+    console.log('Poll clicked:', id)
+  }
+
+  const handlePollClick2 = (id: string) => {
+    setActiveItemId2(id)
+    console.log('Poll clicked:', id)
+  }
+
+  return (
+    <DemoSection title="QnA Widget">
+      <div
+        style={{
+          width: '346px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <QnAWidget
+          qnaData={demoQnA}
+          pollsData={polls}
+          activeItemId={activeItemId}
+          onQnAClick={handleQnAClick}
+          onPollClick={handlePollClick}
+        />
+        <QnAWidget
+          hasPlusButton={true}
+          isLive
+          qnaData={demoQnA2}
+          pollsData={polls2}
+          defaultExpanded={true}
+          activeItemId={activeItemId2}
+          onPlusClick={handlePlusClick2}
+          onQnAClick={handleQnAClick2}
+          onPollClick={handlePollClick2}
+        />
+      </div>
+    </DemoSection>
+  )
+}
 
 const NavbarDemo = () => {
   const [mode, setMode] = useState<NavMode>('qna')
@@ -755,6 +846,7 @@ export const TestContainer: React.FC = () => (
       <TitleBlock title="What is the best approach here? Are there any alternatives?" />
     </DemoSection>
     <PollOptionsDemo />
+    <QnAWidgetDemo />
     <TabDemo />
     <WalletPanelDemo />
     <SearchAndFilterDemo />
