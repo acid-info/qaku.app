@@ -123,6 +123,7 @@ const QnAWidgetDemo = () => {
           onPollClick={handlePollClick}
         />
         <QnAWidget
+          hasPlusButton={true}
           isLive
           qnaData={demoQnA2}
           pollsData={polls2}

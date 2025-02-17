@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
 import { pollData, qnaData } from '@/types/qna.types'
+import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
+import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 import { QnAWidgetItem } from '../QnAWidgetItem/QnAWidgetItem'
 
 export interface QnAWidgetProps {
@@ -10,6 +12,7 @@ export interface QnAWidgetProps {
   isLive?: boolean
   defaultExpanded?: boolean
   activeItemId?: string
+  hasPlusButton?: boolean
   onPlusClick?: () => void
   onQnAClick?: (qnaId: string) => void
   onPollClick?: (pollId: string) => void
@@ -20,12 +23,17 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
   pollsData = [],
   isLive = false,
   defaultExpanded = false,
+  hasPlusButton = false,
   activeItemId,
   onPlusClick,
   onQnAClick,
   onPollClick,
 }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+  const [showAllPolls, setShowAllPolls] = useState(false)
+
+  const visiblePolls = showAllPolls ? pollsData : pollsData.slice(0, 2)
+  const hasMorePolls = !hasPlusButton && pollsData.length > 2
 
   return (
     <Container $isExpanded={isExpanded}>
@@ -38,27 +46,39 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
         {isLive && <LiveBadge />}
       </ToggleButton>
       {isExpanded && (
-        <Content>
-          <QnAWidgetItem
-            title={'Q&A'}
-            variant="text"
-            isActive={activeItemId === qnaData.id}
-            onClick={() => onQnAClick?.(qnaData.id)}
-          />
-          <Separator>Polls</Separator>
-          <PollsContainer>
-            {pollsData.map((poll) => (
-              <QnAWidgetItem
-                key={poll.id}
-                title={poll.title}
-                variant="text"
-                isActive={activeItemId === poll.id}
-                onClick={() => onPollClick?.(poll.id)}
-              />
-            ))}
-            <QnAWidgetItem variant="icon" onClick={onPlusClick} />
-          </PollsContainer>
-        </Content>
+        <>
+          <Content>
+            <QnAWidgetItem
+              title={'Q&A'}
+              variant="text"
+              isActive={activeItemId === qnaData.id}
+              onClick={() => onQnAClick?.(qnaData.id)}
+            />
+            <Separator>Polls</Separator>
+            <PollsContainer>
+              {visiblePolls.map((poll) => (
+                <QnAWidgetItem
+                  key={poll.id}
+                  title={poll.title}
+                  variant="text"
+                  isActive={activeItemId === poll.id}
+                  onClick={() => onPollClick?.(poll.id)}
+                />
+              ))}
+              {hasPlusButton && (
+                <QnAWidgetItem variant="icon" isActive onClick={onPlusClick} />
+              )}
+            </PollsContainer>
+          </Content>
+          {hasMorePolls && (
+            <ShowMoreButton onClick={() => setShowAllPolls(!showAllPolls)}>
+              <span>
+                {showAllPolls ? 'Show Less' : `${pollsData.length - 2} more`}
+              </span>
+              {showAllPolls ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            </ShowMoreButton>
+          )}
+        </>
       )}
     </Container>
   )
@@ -127,5 +147,30 @@ const PollsContainer = styled.div`
 
   > button:not(:first-of-type) {
     margin-top: -1px;
+  }
+`
+
+const ShowMoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--body2-font-size);
+  line-height: var(--body2-line-height);
+
+  span {
+    opacity: 0.4;
+  }
+
+  svg {
+    color: var(--white);
+  }
+
+  &:hover {
+    opacity: 1;
   }
 `
