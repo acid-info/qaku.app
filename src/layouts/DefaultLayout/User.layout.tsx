@@ -8,7 +8,7 @@ type Props = FooterProps
 export default function UserLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
-      <MainContainer>
+      <Container>
         <UserNav
           mode={'qna'}
           title="Town Hall 2025 - New Positions, Updates, And Plans"
@@ -18,7 +18,7 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
         />
         <Main>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
-      </MainContainer>
+      </Container>
     </Root>
   )
 }
@@ -30,12 +30,13 @@ const Root = styled.div`
   height: 100vh;
 `
 
-const MainContainer = styled.div`
+const Container = styled.div`
   width: 100%;
-  height: calc(100% - var(--footer-height) - var(--header-height));
+  height: 100%;
+  position: relative;
 `
 
 const Main = styled.main`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - var(--user-navbar-height) - var(--footer-height));
 `
