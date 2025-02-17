@@ -116,7 +116,7 @@ const QnAWidgetDemo = () => {
           isLive
           qnaData={demoQnA2}
           pollsData={polls2}
-          defaultExpanded={true}
+          isDefaultExpanded={true}
           activeItemId={activeItemId2}
           onPlusClick={handlePlusClick2}
           onQnAClick={handleQnAClick2}
@@ -147,7 +147,7 @@ const NavbarDemo = () => {
           {/* QnA Mode */}
           <DefaultNav
             mode="qna"
-            titleOnly={true}
+            isTitleOnly={true}
             title="Polls"
             date={'2023-12-25T15:00:00.000Z'}
             count={3}
@@ -172,7 +172,7 @@ const NavbarDemo = () => {
           {/* Polls Mode */}
           <DefaultNav
             mode="polls"
-            titleOnly={true}
+            isTitleOnly={true}
             title="New Poll"
             date={'2023-12-25T15:00:00.000Z'}
             count={3}

@@ -63,6 +63,7 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
     : pollsData.slice(0, INITIAL_VISIBLE_POLLS)
 
   const hasMorePolls = pollsData.length > INITIAL_VISIBLE_POLLS
+
   const shouldShowPlusButton =
     hasPlusButton && (pollsData.length <= INITIAL_VISIBLE_POLLS || showAllPolls)
 

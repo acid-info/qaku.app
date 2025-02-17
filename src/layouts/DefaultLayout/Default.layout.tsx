@@ -13,7 +13,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
       <Container>
         <DefaultNav
           mode="qna"
-          titleOnly={true}
+          isTitleOnly={true}
           title="Polls"
           date={'2023-12-25T15:00:00.000Z'}
           count={5121}

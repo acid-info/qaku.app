@@ -17,7 +17,7 @@ export enum ProgressStatus {
 
 interface Props {
   mode: 'qna' | 'polls'
-  titleOnly?: boolean
+  isTitleOnly?: boolean
   title: string
   date: string
   count: number
@@ -46,7 +46,7 @@ const renderUnit = (mode: 'qna' | 'polls', count: number) => {
 
 const DefaultNav = ({
   mode,
-  titleOnly = false,
+  isTitleOnly = false,
   title,
   date,
   count,
@@ -56,7 +56,7 @@ const DefaultNav = ({
   return (
     <Container>
       <Left>
-        {titleOnly ? (
+        {isTitleOnly ? (
           <h1>{title}</h1>
         ) : (
           <Info>
