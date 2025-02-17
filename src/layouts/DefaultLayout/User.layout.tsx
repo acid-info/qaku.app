@@ -11,7 +11,7 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
       <Container>
         <UserNav
           mode={'qna'}
-          title="Town Hall 2025 - New Positions, Updates, And Plans"
+          title="Town Hall 2025 - New Positions, Updates, And Plans dasdasd sffsd"
           count={3}
           id="3212345"
           onModeChange={(newMode) => console.log(newMode)}

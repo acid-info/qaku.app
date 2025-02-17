@@ -33,7 +33,7 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
           <QakuLogo width={40} height={40} />
         </Link>
         <Info>
-          <p>{title}</p>
+          <Title>{title}</Title>
           <CountAndId>
             <p>
               {numberWithCommas(count)} {renderUnit(mode, count)}
@@ -53,9 +53,9 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
           itemWidth="100px"
         />
       </TabWrapper>
-      <nav>
+      <Nav>
         <WalletConnect />
-      </nav>
+      </Nav>
     </Container>
   )
 }
@@ -64,6 +64,7 @@ const Container = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
+  gap: 16px;
   justify-content: space-between;
   align-items: flex-start;
 `
@@ -71,12 +72,14 @@ const Container = styled.header`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  flex: 1;
 `
 
 const Info = styled.div`
   margin-left: 16px;
   display: flex;
   max-width: 439px;
+  width: 100%;
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
@@ -96,10 +99,26 @@ const CountAndId = styled.div`
 
 const TabWrapper = styled.div`
   display: flex;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   align-items: center;
+`
+
+const Title = styled.h1`
+  font-size: var(--body1-font-size);
+  line-height: var(--body1-line-height);
+
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  word-break: break-all;
+`
+
+const Nav = styled.nav`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
 `
 
 export default UserNav

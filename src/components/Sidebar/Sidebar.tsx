@@ -22,4 +22,8 @@ const SidebarWrapper = styled.aside`
   overflow: hidden;
   justify-content: flex-start;
   padding: 16px;
+
+  a {
+    width: fit-content;
+  }
 `

@@ -60,7 +60,7 @@ const DefaultNav = ({
           <h1>{title}</h1>
         ) : (
           <Info>
-            <p>{title}</p>
+            <Title>{title}</Title>
             <Details>
               <Badge $mode={mode}>{mode === 'qna' ? 'Q&A' : 'Polls'}</Badge>
               <Row gap={8}>
@@ -116,6 +116,7 @@ const Container = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
+  gap: 16px;
   justify-content: space-between;
   align-items: flex-start;
 `
@@ -123,6 +124,7 @@ const Container = styled.header`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  flex: 1;
 `
 
 const Info = styled.div`
@@ -135,8 +137,10 @@ const Info = styled.div`
 
 const Navbar = styled.nav`
   display: flex;
-  gap: 8px;
+  flex: 1;
   align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
 `
 
 const Row = styled.div<{ gap?: number }>`
@@ -186,6 +190,18 @@ const CustomButton = styled(Button)<{ $color: 'yellow' | 'red' }>`
         ? 'color-mix(in srgb, var(--yellow) 20%, transparent)'
         : 'color-mix(in srgb, var(--red) 20%, transparent)'};
   }
+`
+
+const Title = styled.h1`
+  font-size: var(--body1-font-size);
+  line-height: var(--body1-line-height);
+
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  word-break: break-all;
 `
 
 export default DefaultNav
