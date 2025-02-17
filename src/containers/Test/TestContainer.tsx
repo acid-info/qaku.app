@@ -113,7 +113,6 @@ const QnAWidgetDemo = () => {
           flexDirection: 'column',
         }}
       >
-        <h3>Live</h3>
         <QnAWidget
           qnaData={demoQnA}
           pollsData={polls}
