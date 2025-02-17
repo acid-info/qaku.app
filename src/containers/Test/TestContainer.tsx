@@ -47,7 +47,7 @@ const QnAWidgetDemo = () => {
     title: 'Town Hall Discussion - long title that will be truncated',
   }
 
-  const [polls, setPolls] = useState([
+  const polls = [
     {
       id: 'poll-1',
       title: 'Budget Allocation',
@@ -60,20 +60,11 @@ const QnAWidgetDemo = () => {
       id: 'poll-3',
       title: 'Team Structure',
     },
-  ])
+  ]
 
   const [polls2, setPolls2] = useState<{ id: string; title: string }[]>([])
   const [activeItemId, setActiveItemId] = useState<string>()
   const [activeItemId2, setActiveItemId2] = useState<string>()
-
-  const handlePlusClick = () => {
-    const newPoll = {
-      id: `poll-${polls.length + 1}`,
-      title: `New Poll ${polls.length + 1}`,
-    }
-    setPolls([...polls, newPoll])
-    console.log('Added new poll:', newPoll)
-  }
 
   const handlePlusClick2 = () => {
     const newPoll = {
@@ -116,9 +107,7 @@ const QnAWidgetDemo = () => {
         <QnAWidget
           qnaData={demoQnA}
           pollsData={polls}
-          defaultExpanded={false}
           activeItemId={activeItemId}
-          onPlusClick={handlePlusClick}
           onQnAClick={handleQnAClick}
           onPollClick={handlePollClick}
         />
