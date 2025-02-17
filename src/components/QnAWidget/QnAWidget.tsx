@@ -6,17 +6,17 @@ import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
 import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 import { QnAWidgetItem } from '../QnAWidgetItem/QnAWidgetItem'
 
-export interface QnAWidgetProps {
+export type QnAWidgetProps = {
   qnaData: qnaData
   pollsData?: pollData[]
   isLive?: boolean
-  defaultExpanded?: boolean
+  isDefaultExpanded?: boolean
   activeItemId?: string
   hasPlusButton?: boolean
   onPlusClick?: () => void
   onQnAClick?: (qnaId: string) => void
   onPollClick?: (pollId: string) => void
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
 const INITIAL_VISIBLE_POLLS = 2
 
@@ -47,25 +47,27 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
   qnaData,
   pollsData = [],
   isLive = false,
-  defaultExpanded = false,
+  isDefaultExpanded = false,
   hasPlusButton = false,
   activeItemId,
   onPlusClick,
   onQnAClick,
   onPollClick,
+  ...props
 }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
-  const [showAllPolls, setShowAllPolls] = useState(false)
+  const [isExpanded, setIsExpanded] = useState<boolean>(isDefaultExpanded)
+  const [showAllPolls, setShowAllPolls] = useState<boolean>(false)
 
   const visiblePolls = showAllPolls
     ? pollsData
     : pollsData.slice(0, INITIAL_VISIBLE_POLLS)
+
   const hasMorePolls = pollsData.length > INITIAL_VISIBLE_POLLS
   const shouldShowPlusButton =
     hasPlusButton && (pollsData.length <= INITIAL_VISIBLE_POLLS || showAllPolls)
 
   return (
-    <Container $isExpanded={isExpanded}>
+    <Container $isExpanded={isExpanded} {...props}>
       <ToggleButton
         $isExpanded={isExpanded}
         onClick={() => setIsExpanded(!isExpanded)}
