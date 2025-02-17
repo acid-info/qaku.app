@@ -75,7 +75,7 @@ const DefaultNav = ({
           </Info>
         )}
       </Left>
-      <Right>
+      <Navbar>
         <Row>
           {status === ProgressStatus.BeforeStart && (
             <CustomButton
@@ -107,12 +107,12 @@ const DefaultNav = ({
           <Button icon={<LinkIcon />}>Share</Button>
           <WalletConnect />
         </Row>
-      </Right>
+      </Navbar>
     </Container>
   )
 }
 
-const Container = styled.div`
+const Container = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
@@ -133,7 +133,7 @@ const Info = styled.div`
   gap: 4px;
 `
 
-const Right = styled.div`
+const Navbar = styled.nav`
   display: flex;
   gap: 8px;
   align-items: center;
