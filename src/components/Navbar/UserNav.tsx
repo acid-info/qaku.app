@@ -6,7 +6,7 @@ import WalletConnect from './WalletConnect'
 
 export type NavMode = 'qna' | 'polls'
 
-interface Props {
+export type UserNavProps = {
   mode: NavMode
   title: string
   count: number
@@ -24,7 +24,7 @@ const renderUnit = (mode: 'qna' | 'polls', count: number) => {
     : 'polls'
 }
 
-const UserNav = ({ mode, title, count, id, onModeChange }: Props) => {
+const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
   return (
     <Container>
       <Left>
