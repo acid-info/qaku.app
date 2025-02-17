@@ -34,15 +34,15 @@ export const Footer = ({
 
 const FooterWrapper = styled.footer<{ $showFooter: boolean }>`
   display: ${({ $showFooter }) => ($showFooter ? 'flex' : 'none')};
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  color: var(--white);
-
-  margin-top: auto;
-  padding-bottom: var(--footer-margin);
-
   width: 100%;
+  height: var(--footer-height);
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  color: var(--white);
+  margin-top: auto;
   gap: 20px;
 `
 
@@ -68,15 +68,16 @@ const Divider = styled.div`
 
 const LinkGroup = styled.div`
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: start;
   justify-content: start;
-  margin: auto 0;
+  margin: 0;
 `
 
 const FooterLink = styled(Link)`
   opacity: 0.7;
-  margin: auto 0;
+  height: fit-content;
+  margin: 0;
   text-decoration: none;
   color: inherit;
   cursor: pointer;

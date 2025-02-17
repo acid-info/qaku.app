@@ -10,7 +10,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
       <Sidebar />
-      <MainContainer>
+      <Container>
         <DefaultNav
           mode="qna"
           titleOnly={true}
@@ -21,7 +21,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         />
         <Main>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
-      </MainContainer>
+      </Container>
     </Root>
   )
 }
@@ -33,12 +33,13 @@ const Root = styled.div`
   height: 100vh;
 `
 
-const MainContainer = styled.div`
+const Container = styled.div`
   width: 100%;
-  height: calc(100% - var(--footer-height) - var(--header-height));
+  height: 100%;
+  position: relative;
 `
 
 const Main = styled.main`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
 `
