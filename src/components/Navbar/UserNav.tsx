@@ -53,12 +53,14 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
           itemWidth="100px"
         />
       </TabWrapper>
-      <WalletConnect />
+      <nav>
+        <WalletConnect />
+      </nav>
     </Container>
   )
 }
 
-const Container = styled.div`
+const Container = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
