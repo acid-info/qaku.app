@@ -91,6 +91,9 @@ const CountAndId = styled.div`
 
 const TabWrapper = styled.div`
   display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   align-items: center;
 `
 
