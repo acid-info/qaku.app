@@ -1,9 +1,9 @@
-import { Footer } from '@/components/Footer'
+import { Footer, FooterProps } from '@/components/Footer'
 import UserNav from '@/components/Navbar/UserNav'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
-type Props = PropsWithChildren
+type Props = FooterProps
 
 export default function UserLayout(props: PropsWithChildren<Props>) {
   return (
@@ -17,7 +17,7 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
           onModeChange={(newMode) => console.log(newMode)}
         />
         <Main>{props.children}</Main>
-        <Footer />
+        <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </MainContainer>
     </Root>
   )

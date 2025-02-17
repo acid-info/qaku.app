@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { WakuLogo } from '../Icons/WakuLogo'
 
-type Props = {
+export type FooterProps = {
   showFooter?: boolean
   showLogo?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
@@ -12,7 +12,7 @@ export const Footer = ({
   showFooter = true,
   showLogo = false,
   ...props
-}: Props) => {
+}: FooterProps) => {
   return (
     <FooterWrapper $showFooter={showFooter} {...props}>
       {showLogo && (

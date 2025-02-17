@@ -1,10 +1,12 @@
-import { Footer } from '@/components/Footer'
+import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { Sidebar } from '@/components/Sidebar'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
-export default function DefaultLayout(props: PropsWithChildren) {
+type Props = FooterProps
+
+export default function DefaultLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
       <Sidebar />
@@ -18,7 +20,7 @@ export default function DefaultLayout(props: PropsWithChildren) {
           id="3212345"
         />
         <Main>{props.children}</Main>
-        <Footer />
+        <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </MainContainer>
     </Root>
   )
