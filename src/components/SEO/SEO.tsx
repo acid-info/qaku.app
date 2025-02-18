@@ -1,5 +1,4 @@
 import { siteConfigs } from '@/configs/site.configs'
-import { getOpenGraphImageUrl } from '@/utils/og.utils'
 import { getWebsiteUrl } from '@/utils/route.utils'
 import Head from 'next/head'
 
@@ -28,16 +27,11 @@ export default function SEO({
   locale,
   site_name,
   pageURL,
-  imageUrl,
   tags = [],
   pagePath = '',
   noIndex = false,
 }: Metadata) {
-  const ogImageUrl =
-    imageUrl ||
-    getOpenGraphImageUrl({
-      pagePath,
-    })
+  const ogImageUrl = '/og/og.png'
 
   const title = _title || siteConfigs.title
   const description = _description || siteConfigs.description
