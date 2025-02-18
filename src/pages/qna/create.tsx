@@ -1,5 +1,6 @@
 import { CreateQnA } from '@/components/Dashboard/CreateQnA'
 import { SEO } from '@/components/SEO'
+import { HomeSidebar } from '@/components/Sidebar/HomeSidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 
 export default function Page() {
@@ -12,5 +13,5 @@ export default function Page() {
 }
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
-  return <DefaultLayout>{page}</DefaultLayout>
+  return <DefaultLayout sidebar={<HomeSidebar />}>{page}</DefaultLayout>
 }

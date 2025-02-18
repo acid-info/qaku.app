@@ -1,15 +1,17 @@
 import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
-import { Sidebar } from '@/components/Sidebar'
+import { SidebarContainer } from '@/components/Sidebar'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
-type Props = FooterProps
+type Props = FooterProps & {
+  sidebar?: React.ReactNode
+}
 
 export default function DefaultLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
-      <Sidebar />
+      <SidebarContainer>{props.sidebar}</SidebarContainer>
       <Container>
         <DefaultNav
           mode="qna"
@@ -34,7 +36,7 @@ const Root = styled.div`
 `
 
 const Container = styled.div`
-  width: 100%;
+  width: calc(100% - var(--sidebar-width));
   height: 100%;
   position: relative;
 `
