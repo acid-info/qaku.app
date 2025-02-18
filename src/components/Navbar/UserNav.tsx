@@ -1,6 +1,8 @@
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import { Button } from '../Button'
+import { LinkIcon } from '../Icons/LinkIcon'
 import { QakuLogo } from '../Icons/QakuLogo'
 import { Tab } from '../Tab'
 import WalletConnect from './WalletConnect'
@@ -54,7 +56,9 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
         />
       </TabWrapper>
       <Nav>
-        <WalletConnect />
+        <WalletConnect
+          secondaryButton={<Button icon={<LinkIcon />}>Share</Button>}
+        />
       </Nav>
     </Container>
   )
