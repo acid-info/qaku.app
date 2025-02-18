@@ -1,0 +1,98 @@
+import { Button } from '@/components/Button'
+import { Collapsible } from '@/components/Collapsible'
+import { Input } from '@/components/Input'
+import { PasswordGenerator } from '@/components/PasswordGenerator'
+import { WalletPanel } from '@/components/WalletPanel'
+import styled from '@emotion/styled'
+import React from 'react'
+
+export const QnaCreate: React.FC = () => {
+  return (
+    <Wrapper>
+      <Main>
+        <WalletPanel isAuthorized={false} />
+        <NameSection>
+          <Title>Give it name</Title>
+          <Input placeholder="New Q&A.." />
+        </NameSection>
+        <Section>
+          <Collapsible title="Add description">
+            <TextArea placeholder="Type something here.." />
+          </Collapsible>
+          <Collapsible title="Review password">
+            <Stack>
+              <Text>Generated automatically for encrypted Q&As</Text>
+              <PasswordGenerator key="password-generator" />
+            </Stack>
+          </Collapsible>
+        </Section>
+      </Main>
+      <ActionContainer>
+        <StyledButton variant="filledPrimary" size="large">
+          Create
+        </StyledButton>
+      </ActionContainer>
+    </Wrapper>
+  )
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  height: 100%;
+`
+
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  height: 100%;
+  width: 507px;
+  overflow-y: auto;
+`
+
+const NameSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const Title = styled.h3`
+  margin-bottom: 16px;
+`
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`
+
+const TextArea = styled.textarea`
+  height: 100px;
+`
+
+const Stack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+const Text = styled.span`
+  color: var(--white);
+  opacity: 0.7;
+  font-size: var(--body2-font-size);
+  line-height: var(--body2-line-height);
+`
+
+const ActionContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const StyledButton = styled(Button)`
+  width: 200px;
+`

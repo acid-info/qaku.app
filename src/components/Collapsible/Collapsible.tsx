@@ -24,11 +24,14 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
 
   return (
     <Container>
-      <Header>
+      <Header onClick={toggleExpanded} role="button" tabIndex={0}>
         <Title>{title}</Title>
         <IconButtonRound
           icon={isExpanded ? <RemoveIcon /> : <PlusIcon />}
-          onClick={toggleExpanded}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleExpanded()
+          }}
           size="small"
           variant="filledPrimary"
         />
@@ -50,6 +53,8 @@ const Header = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
+  cursor: pointer;
+  user-select: none;
 `
 
 const Title = styled.span`

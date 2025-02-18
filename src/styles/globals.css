@@ -137,6 +137,10 @@ textarea {
   border: none;
   font-size: var(--body2-font-size);
   line-height: var(--body2-line-height);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: sans-serif;
 }
 textarea::placeholder {
   opacity: 0.4;

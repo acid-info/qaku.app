@@ -37,9 +37,7 @@ const PollsList: React.FC<{
         onClick={() => onPollClick?.(poll.id)}
       />
     ))}
-    {showPlusButton && (
-      <QnAWidgetItem variant="icon" isActive onClick={onPlusClick} />
-    )}
+    {showPlusButton && <QnAWidgetItem variant="icon" onClick={onPlusClick} />}
   </>
 )
 
@@ -170,6 +168,7 @@ const Separator = styled.div`
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
   opacity: 0.4;
+  color: var(--white);
 `
 
 const PollsContainer = styled.div`
