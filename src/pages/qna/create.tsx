@@ -1,17 +1,21 @@
-import { CreateQnA } from '@/components/Dashboard/CreateQnA'
 import { SEO } from '@/components/SEO'
-import { HomeSidebar } from '@/components/Sidebar/HomeSidebar'
+import { QnaCreateSidebar } from '@/components/Sidebar/QnaCreateSidebar'
+import { QnaCreate } from '@/containers/QnaCreate'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 
 export default function Page() {
   return (
     <>
       <SEO />
-      <CreateQnA />
+      <QnaCreate />
     </>
   )
 }
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
-  return <DefaultLayout sidebar={<HomeSidebar />}>{page}</DefaultLayout>
+  return (
+    <DefaultLayout showFooter={false} sidebar={<QnaCreateSidebar />}>
+      {page}
+    </DefaultLayout>
+  )
 }
