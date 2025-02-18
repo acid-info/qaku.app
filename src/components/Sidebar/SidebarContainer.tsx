@@ -1,16 +1,15 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import React from 'react'
+import { PropsWithChildren } from 'react'
 import { QakuLogo } from '../Icons/QakuLogo'
-import { Menu } from './Menu'
 
-export const Sidebar: React.FC = () => {
+export const SidebarContainer = ({ children }: PropsWithChildren) => {
   return (
     <SidebarWrapper>
       <Link href="/">
         <QakuLogo width={40} height={40} />
       </Link>
-      <Menu />
+      {children}
     </SidebarWrapper>
   )
 }
