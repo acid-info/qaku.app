@@ -1,16 +1,16 @@
 import { SEO } from '@/components/SEO'
-import { HomePage } from '@/containers/HomePage'
-import { HomeLayout } from '@/layouts/HomeLayout'
+import { LandingPage } from '@/containers/LandingPage'
+import { LandingPageLayout } from '@/layouts/LandingPageLayout'
 
 export default function Page() {
   return (
     <>
       <SEO />
-      <HomePage />
+      <LandingPage />
     </>
   )
 }
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
-  return <HomeLayout>{page}</HomeLayout>
+  return <LandingPageLayout>{page}</LandingPageLayout>
 }

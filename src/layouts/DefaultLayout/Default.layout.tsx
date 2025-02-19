@@ -1,6 +1,7 @@
 import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
+import { LayoutContainer } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
@@ -12,7 +13,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
       <SidebarContainer>{props.sidebar}</SidebarContainer>
-      <Container>
+      <LayoutContainer>
         <DefaultNav
           mode="qna"
           isTitleOnly={true}
@@ -23,7 +24,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         />
         <Main>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
-      </Container>
+      </LayoutContainer>
     </Root>
   )
 }
@@ -33,12 +34,6 @@ const Root = styled.div`
   background: var(--black);
   width: 100%;
   height: 100vh;
-`
-
-const Container = styled.div`
-  width: calc(100% - var(--sidebar-width));
-  height: 100%;
-  position: relative;
 `
 
 const Main = styled.main`

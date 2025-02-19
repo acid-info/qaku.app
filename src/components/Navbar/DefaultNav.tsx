@@ -7,6 +7,7 @@ import { LinkIcon } from '../Icons/LinkIcon'
 import { PauseIcon } from '../Icons/PauseIcon'
 import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
 import { SettingsIcon } from '../Icons/SettingsIcon'
+import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
 
 export enum ProgressStatus {
@@ -141,12 +142,6 @@ const Navbar = styled.nav`
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-`
-
-const Row = styled.div<{ gap?: number }>`
-  display: flex;
-  gap: ${({ gap }) => gap || 2}px;
-  align-items: center;
 `
 
 const Details = styled.div`

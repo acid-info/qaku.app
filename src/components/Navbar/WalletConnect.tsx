@@ -25,6 +25,7 @@ const WalletConnect = ({ secondaryButton = null }: Props) => {
 const Container = styled.div`
   display: flex;
   gap: 2px;
+  height: 32px;
 `
 
 export default WalletConnect
