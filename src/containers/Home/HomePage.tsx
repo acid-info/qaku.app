@@ -1,28 +1,28 @@
+import { Button } from '@/components/Button'
+import { Hero } from '@/components/Home/Hero'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import React from 'react'
-import { Button } from './Button'
-import { Hero } from './Hero'
 
 export const HomePage: React.FC = () => {
   return (
-    <LandingWrapper>
+    <Wrapper>
       <ContentContainer>
         <Hero />
         <ButtonGroup>
           <Link href={'/qna/create'}>
-            <Button variant="secondary">Create quick Q&A</Button>
+            <Button variant="filledPrimary">Create quick Q&A</Button>
           </Link>
           <Link href={'/home'}>
-            <Button variant="primary">Connect Wallet</Button>
+            <Button variant="filled">Connect Wallet</Button>
           </Link>
         </ButtonGroup>
       </ContentContainer>
-    </LandingWrapper>
+    </Wrapper>
   )
 }
 
-const LandingWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
