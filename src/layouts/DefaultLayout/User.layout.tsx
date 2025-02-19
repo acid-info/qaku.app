@@ -1,16 +1,18 @@
 import { Footer, FooterProps } from '@/components/Footer'
-import UserNav from '@/components/Navbar/UserNav'
+import UserNav, { NavMode } from '@/components/Navbar/UserNav'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
-type Props = FooterProps
+type Props = FooterProps & {
+  mode: NavMode
+}
 
 export default function UserLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
       <Container>
         <UserNav
-          mode={'qna'}
+          mode={props.mode}
           title="Town Hall 2025 - New Positions, Updates, And Plans dasdasd sffsd"
           count={3}
           id="3212345"
