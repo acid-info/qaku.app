@@ -41,7 +41,7 @@ const Root = styled.div`
 
 const Main = styled.main`
   width: 100%;
-  height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
+  min-height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
 `
 
 const Navbar = styled.header`
