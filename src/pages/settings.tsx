@@ -14,7 +14,7 @@ export default function Page() {
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return (
-    <HomeLayout title="Settings" sidebar={<HomeSidebar />}>
+    <HomeLayout title="Settings" sidebar={<HomeSidebar />} showFooter={false}>
       {page}
     </HomeLayout>
   )

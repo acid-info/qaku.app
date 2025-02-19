@@ -14,7 +14,11 @@ export default function Page() {
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return (
-    <DefaultLayout showFooter={false} sidebar={<QnaCreateSidebar />}>
+    <DefaultLayout
+      showFooter={false}
+      sidebar={<QnaCreateSidebar />}
+      navTitle="New Qaku"
+    >
       {page}
     </DefaultLayout>
   )

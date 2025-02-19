@@ -17,7 +17,6 @@ export const CreateNewQaku: React.FC = () => {
 
 const CreateNewQakuWrapper = styled.div`
   display: flex;
-  margin: auto;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -27,5 +26,4 @@ const CreateNewQakuWrapper = styled.div`
 
 const CreateNewQakuText = styled.h1`
   color: var(--white);
-  margin: auto 0;
 `
