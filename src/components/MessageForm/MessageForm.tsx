@@ -19,6 +19,7 @@ export const MessageForm = ({
   onSubmit,
   messagePlaceholder = 'Write your message',
   namePlaceholder = 'Enter your name (optional)',
+  ...props
 }: MessageFormProps) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [message, setMessage] = useState('')
@@ -51,7 +52,7 @@ export const MessageForm = ({
   }
 
   return (
-    <FormContainer ref={formRef} onSubmit={handleSubmit}>
+    <FormContainer ref={formRef} onSubmit={handleSubmit} {...props}>
       <InputContainer $isFocused={isFocused}>
         <MessageInput
           placeholder={messagePlaceholder}
