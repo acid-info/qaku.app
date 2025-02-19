@@ -62,11 +62,6 @@ const Main = styled.main<{
       $useAlternativeGap
         ? 'var(--navbar-alternative-gap)'
         : 'var(--navbar-main-gap)'};
-    padding-bottom: calc(
-      ${({ $useAlternativeGap }) =>
-          $useAlternativeGap
-            ? 'var(--navbar-alternative-gap)'
-            : 'var(--navbar-main-gap)'} * 2
-    );
+    padding-bottom: calc(var(--navbar-main-gap) * 2);
   }
 `

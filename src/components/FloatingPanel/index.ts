@@ -1,2 +1,3 @@
 export * from './FloatingPanel'
-export * from './QnaLiveFloatingPanel'
+export * from './PollFloatingPanel'
+export * from './QnaFloatingPanel'

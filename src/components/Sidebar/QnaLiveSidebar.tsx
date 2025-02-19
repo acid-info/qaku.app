@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { Button } from '../Button'
 import { IconButtonRound } from '../IconButtonRound'
@@ -11,11 +12,16 @@ import { Row } from '../StyledComponents'
 import { Tile } from '../Tile'
 
 export const QnaLiveSidebar: React.FC = () => {
+  const router = useRouter()
   const demoQnA = {
     id: 'qna-1',
     title: 'New Qaku',
   }
   const polls: { id: string; title: string }[] = []
+
+  const handlePlusClick = () => {
+    router.push('/poll/create')
+  }
 
   return (
     <Wrapper>
@@ -70,6 +76,7 @@ export const QnaLiveSidebar: React.FC = () => {
           onPollClick={() => {}}
           hasPlusButton
           isDefaultExpanded
+          onPlusClick={handlePlusClick}
         />
       </SidebarContent>
     </Wrapper>
