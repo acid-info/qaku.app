@@ -23,7 +23,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
           count={5121}
           id="3212345"
         />
-        <Main>{props.children}</Main>
+        <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
     </Root>
@@ -37,7 +37,16 @@ const Root = styled.div`
   height: 100vh;
 `
 
-const Main = styled.main`
+const Main = styled.main<{ $showFooter?: boolean }>`
   width: 100%;
-  height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
+  height: ${({ $showFooter }) =>
+    $showFooter
+      ? `calc(100vh - var(--default-navbar-height) - var(--footer-height))`
+      : `calc(100vh - var(--default-navbar-height))`};
+  overflow-y: auto;
+
+  .scrollable-container {
+    padding-top: var(--navbar-main-gap);
+    padding-bottom: calc(var(--navbar-main-gap) * 2);
+  }
 `

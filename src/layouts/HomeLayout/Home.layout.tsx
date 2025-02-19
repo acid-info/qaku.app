@@ -25,7 +25,7 @@ export default function HomeLayout(props: PropsWithChildren<Props>) {
             }
           />
         </Navbar>
-        <Main>{props.children}</Main>
+        <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
     </Root>
@@ -39,9 +39,19 @@ const Root = styled.div`
   height: 100vh;
 `
 
-const Main = styled.main`
+const Main = styled.main<{ $showFooter?: boolean }>`
   width: 100%;
-  height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
+  height: ${({ $showFooter }) =>
+    $showFooter
+      ? `calc(100vh - var(--default-navbar-height) - var(--footer-height))`
+      : `calc(100vh - var(--default-navbar-height))`};
+  overflow-y: auto;
+
+  .scrollable-container {
+    padding-top: var(--navbar-main-gap);
+    // the conntent should not be hidden behind the button, padding-bottom should be at least 100px
+    padding-bottom: calc(var(--navbar-main-gap) * 2);
+  }
 `
 
 const Navbar = styled.header`

@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
+import { ActionContainer } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
@@ -10,7 +11,7 @@ export const SettingsPage: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
   return (
     <Wrapper>
-      <Main>
+      <Main className="scrollable-container">
         <Column>
           <WalletPanel
             isAuthorized={isAuthorized}
@@ -84,13 +85,6 @@ const Column = styled.div`
       opacity: 0.7;
     }
   }
-`
-
-const ActionContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 16px 0 0;
 `
 
 const StyledButton = styled(Button)`

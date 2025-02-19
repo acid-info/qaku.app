@@ -16,3 +16,13 @@ export const Row = styled.div<{ gap?: number }>`
   gap: ${({ gap }) => gap || 2}px;
   align-items: center;
 `
+
+export const ActionContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+`

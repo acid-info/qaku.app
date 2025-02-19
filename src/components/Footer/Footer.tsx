@@ -9,7 +9,7 @@ export type FooterProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const Footer = ({
-  showFooter = true,
+  showFooter = false,
   showLogo = false,
   ...props
 }: FooterProps) => {

@@ -2,6 +2,7 @@ import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { Input } from '@/components/Input'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
+import { ActionContainer } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
@@ -13,7 +14,7 @@ export const QnaCreate: React.FC = () => {
 
   return (
     <Wrapper>
-      <Main>
+      <Main className="scrollable-container">
         <WalletPanel
           isAuthorized={isAuthorized}
           onConnect={() => setIsAuthorized(true)}
@@ -92,12 +93,6 @@ const Text = styled.span`
   opacity: 0.7;
   font-size: var(--body2-font-size);
   line-height: var(--body2-line-height);
-`
-
-const ActionContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
 `
 
 const StyledButton = styled(Button)`
