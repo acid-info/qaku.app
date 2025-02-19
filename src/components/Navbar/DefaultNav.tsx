@@ -1,3 +1,8 @@
+import {
+  DefaultNavbarProps,
+  NavbarMode,
+  QnaProgressStatus,
+} from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import { Button } from '../Button'
@@ -10,22 +15,6 @@ import { SettingsIcon } from '../Icons/SettingsIcon'
 import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
 
-export enum ProgressStatus {
-  BeforeStart = 'beforeStart',
-  InProgress = 'inProgress',
-  Ended = 'ended',
-}
-
-interface Props {
-  mode: 'qna' | 'polls'
-  isTitleOnly?: boolean
-  title: string
-  date: string
-  count: number
-  id: string
-  status?: ProgressStatus
-}
-
 // TODO : handing TODAY, days agp
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('en-GB', {
@@ -35,7 +24,7 @@ const formatDate = (date: string) => {
   })
 }
 
-const renderUnit = (mode: 'qna' | 'polls', count: number) => {
+const renderUnit = (mode: NavbarMode, count: number) => {
   return count < 1
     ? mode === 'qna'
       ? 'question'
@@ -53,7 +42,8 @@ const DefaultNav = ({
   count,
   id,
   status,
-}: Props) => {
+  onSettingsClick,
+}: DefaultNavbarProps) => {
   return (
     <Container>
       <Left>
@@ -78,7 +68,7 @@ const DefaultNav = ({
       </Left>
       <Navbar>
         <Row>
-          {status === ProgressStatus.BeforeStart && (
+          {status === QnaProgressStatus.BeforeStart && (
             <CustomButton
               $color="yellow"
               variant="outlinedPrimary"
@@ -87,7 +77,7 @@ const DefaultNav = ({
               Start {mode === 'qna' ? 'Q&A' : 'Poll'}
             </CustomButton>
           )}
-          {status === ProgressStatus.InProgress && (
+          {status === QnaProgressStatus.InProgress && (
             <CustomButton
               $color="red"
               variant="outlinedPrimary"
@@ -98,11 +88,11 @@ const DefaultNav = ({
           )}
         </Row>
         <Row>
-          {status === ProgressStatus.BeforeStart ||
-          status === ProgressStatus.InProgress ? (
+          {status === QnaProgressStatus.BeforeStart ||
+          status === QnaProgressStatus.InProgress ? (
             <IconButtonRound icon={<DeleteIcon />} />
           ) : null}
-          <IconButtonRound icon={<SettingsIcon />} />
+          <IconButtonRound icon={<SettingsIcon />} onClick={onSettingsClick} />
         </Row>
         <Row>
           <Button icon={<LinkIcon />}>Share</Button>
@@ -156,7 +146,7 @@ const Details = styled.div`
   }
 `
 
-const Badge = styled.div<{ $mode: 'qna' | 'polls' }>`
+const Badge = styled.div<{ $mode: NavbarMode }>`
   display: flex;
   background-color: ${({ $mode }) =>
     $mode === 'qna' ? 'var(--red)' : 'var(--green)'};

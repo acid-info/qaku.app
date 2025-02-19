@@ -6,6 +6,7 @@ import { ActionContainer } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
+import Link from 'next/link'
 import React from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 
@@ -36,9 +37,11 @@ export const QnaCreate: React.FC = () => {
         </Section>
       </Main>
       <ActionContainer>
-        <StyledButton variant="filledPrimary" size="large">
-          Create
-        </StyledButton>
+        <Link href="/qna/live">
+          <StyledButton variant="filledPrimary" size="large">
+            Create
+          </StyledButton>
+        </Link>
       </ActionContainer>
     </Wrapper>
   )

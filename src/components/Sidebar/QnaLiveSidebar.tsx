@@ -10,7 +10,7 @@ import { SearchAndFilter } from '../SearchAndFilter'
 import { Row } from '../StyledComponents'
 import { Tile } from '../Tile'
 
-export const QnaCreateSidebar: React.FC = () => {
+export const QnaLiveSidebar: React.FC = () => {
   const demoQnA = {
     id: 'qna-1',
     title: 'New Qaku',
@@ -62,6 +62,7 @@ export const QnaCreateSidebar: React.FC = () => {
           onFilterChange={() => {}}
         />
         <QnAWidget
+          isLive
           qnaData={demoQnA}
           pollsData={polls}
           activeItemId="qna-1"
