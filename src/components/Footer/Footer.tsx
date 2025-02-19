@@ -37,7 +37,7 @@ const FooterWrapper = styled.footer<{ $showFooter: boolean }>`
   width: 100%;
   height: var(--footer-height);
   justify-content: center;
-  position: absolute;
+  position: relative;
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
