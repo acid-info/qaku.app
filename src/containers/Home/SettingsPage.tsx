@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button'
-import { MessageForm } from '@/components/MessageForm'
+import { Input } from '@/components/Input'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
@@ -10,43 +10,35 @@ export const SettingsPage: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
   return (
     <Wrapper>
-      <Column>
-        <WalletPanel
-          isAuthorized={isAuthorized}
-          onConnect={() => setIsAuthorized(true)}
-        />
-        <div className="settings-input">
-          <div>
-            <h3>Codex Node URL</h3>
-            <p>Used to publish your Q&A snapshots</p>
-          </div>
-          <MessageForm
-            onSubmit={() => {
-              console.log('submit')
-            }}
-            messagePlaceholder="http://localhost:8080"
-            namePlaceholder=""
+      <Main>
+        <Column>
+          <WalletPanel
+            isAuthorized={isAuthorized}
+            onConnect={() => setIsAuthorized(true)}
           />
-        </div>
-        <div className="settings-input">
-          <div>
-            <h3>URL of Public Qaku Cache Node</h3>
-            <p>
-              Used to pull your Q&A snapshots if local node is not available
-            </p>
+          <div className="settings-input">
+            <div>
+              <h3>Codex Node URL</h3>
+              <p>Used to publish your Q&A snapshots</p>
+            </div>
+            <Input placeholder="http://localhost:8080" />
           </div>
-          <MessageForm
-            onSubmit={() => {
-              console.log('submit')
-            }}
-            messagePlaceholder="https://api.qaku.app"
-            namePlaceholder=""
-          />
-        </div>
-        <Button className="save-button" size="large" variant="filledPrimary">
+          <div className="settings-input">
+            <div>
+              <h3>URL of Public Qaku Cache Node</h3>
+              <p>
+                Used to pull your Q&A snapshots if local node is not available
+              </p>
+            </div>
+            <Input placeholder="https://api.qaku.app" />
+          </div>
+        </Column>
+      </Main>
+      <ActionContainer>
+        <StyledButton size="large" variant="filledPrimary">
           Save
-        </Button>
-      </Column>
+        </StyledButton>
+      </ActionContainer>
     </Wrapper>
   )
 }
@@ -56,7 +48,24 @@ const Wrapper = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  padding: 52px 16px;
+`
+
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+`
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 48px;
+  width: 100%;
+  max-width: 507px;
 
   .settings-input {
     display: flex;
@@ -75,18 +84,15 @@ const Wrapper = styled.div`
       opacity: 0.7;
     }
   }
-
-  .save-button {
-    width: 200px;
-    margin: 72px auto 0;
-  }
 `
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
+const ActionContainer = styled.div`
   width: 100%;
-  max-width: 507px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 0;
+`
+
+const StyledButton = styled(Button)`
+  width: 200px;
 `

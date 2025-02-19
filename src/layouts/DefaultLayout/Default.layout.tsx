@@ -7,6 +7,7 @@ import { PropsWithChildren } from 'react'
 
 type Props = FooterProps & {
   sidebar?: React.ReactNode
+  navTitle?: string
 }
 
 export default function DefaultLayout(props: PropsWithChildren<Props>) {
@@ -17,7 +18,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         <DefaultNav
           mode="qna"
           isTitleOnly={true}
-          title="Polls"
+          title={props.navTitle || 'Polls'}
           date={'2023-12-25T15:00:00.000Z'}
           count={5121}
           id="3212345"
@@ -38,5 +39,5 @@ const Root = styled.div`
 
 const Main = styled.main`
   width: 100%;
-  min-height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
+  height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
 `

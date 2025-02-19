@@ -4,13 +4,20 @@ import { Input } from '@/components/Input'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
+import { useAtom } from 'jotai'
 import React from 'react'
+import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 
 export const QnaCreate: React.FC = () => {
+  const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
+
   return (
     <Wrapper>
       <Main>
-        <WalletPanel isAuthorized={false} />
+        <WalletPanel
+          isAuthorized={isAuthorized}
+          onConnect={() => setIsAuthorized(true)}
+        />
         <NameSection>
           <Title>Give it name</Title>
           <Input placeholder="New Q&A.." />
@@ -40,7 +47,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
   width: 100%;
   height: 100%;
 `
