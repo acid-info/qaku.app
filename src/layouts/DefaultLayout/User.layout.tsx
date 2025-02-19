@@ -16,7 +16,7 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
           id="3212345"
           onModeChange={(newMode) => console.log(newMode)}
         />
-        <Main>{props.children}</Main>
+        <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </Container>
     </Root>
@@ -36,7 +36,16 @@ const Container = styled.div`
   position: relative;
 `
 
-const Main = styled.main`
+const Main = styled.main<{ $showFooter?: boolean }>`
   width: 100%;
-  height: calc(100vh - var(--user-navbar-height) - var(--footer-height));
+  height: ${({ $showFooter }) =>
+    $showFooter
+      ? `calc(100vh - var(--default-navbar-height) - var(--footer-height))`
+      : `calc(100vh - var(--default-navbar-height))`};
+  overflow-y: auto;
+
+  .scrollable-container {
+    padding-top: var(--navbar-main-gap);
+    padding-bottom: calc(var(--navbar-main-gap) * 2);
+  }
 `
