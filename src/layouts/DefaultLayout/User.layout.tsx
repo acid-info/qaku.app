@@ -1,6 +1,7 @@
 import { Footer, FooterProps } from '@/components/Footer'
 import UserNav, { NavMode } from '@/components/Navbar/UserNav'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
 import { PropsWithChildren } from 'react'
 
 type Props = FooterProps & {
@@ -8,6 +9,16 @@ type Props = FooterProps & {
 }
 
 export default function UserLayout(props: PropsWithChildren<Props>) {
+  const router = useRouter()
+
+  const handleModeChange = (newMode: NavMode) => {
+    if (newMode === 'polls') {
+      router.push('/user/polls')
+    } else {
+      router.push('/user/qna')
+    }
+  }
+
   return (
     <Root>
       <Container>
@@ -16,7 +27,7 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
           title="Town Hall 2025 - New Positions, Updates, And Plans dasdasd sffsd"
           count={3}
           id="3212345"
-          onModeChange={(newMode) => console.log(newMode)}
+          onModeChange={handleModeChange}
         />
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
