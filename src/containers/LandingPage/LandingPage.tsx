@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from './Button'
 import { Hero } from './Hero'
 
-export const HomePage: React.FC = () => {
+export const LandingPage: React.FC = () => {
   return (
     <LandingWrapper>
       <ContentContainer>

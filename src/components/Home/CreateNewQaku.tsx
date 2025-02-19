@@ -1,11 +1,16 @@
 import styled from '@emotion/styled'
+import Link from 'next/link'
 import React from 'react'
+import { IconButtonRound } from '../IconButtonRound'
+import { PlusIcon } from '../Icons/PlusIcon'
 
 export const CreateNewQaku: React.FC = () => {
   return (
     <CreateNewQakuWrapper>
       <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
-      <IconButton aria-label="Create new Qaku">+</IconButton>
+      <Link href="/qna/create">
+        <IconButtonRound variant="filledPrimary" icon={<PlusIcon />} />
+      </Link>
     </CreateNewQakuWrapper>
   )
 }
@@ -15,26 +20,12 @@ const CreateNewQakuWrapper = styled.div`
   margin: auto;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
   gap: 24px;
 `
 
 const CreateNewQakuText = styled.h1`
   color: var(--white);
   margin: auto 0;
-`
-
-const IconButton = styled.button`
-  justify-content: center;
-  align-items: center;
-  border-radius: 40px;
-  background: var(--yellow);
-  display: flex;
-  min-height: 32px;
-  gap: 8px;
-  width: 32px;
-  height: 32px;
-  margin: auto 0;
-  padding: 0 4px;
-  border: none;
-  cursor: pointer;
 `

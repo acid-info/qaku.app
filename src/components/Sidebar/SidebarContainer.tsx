@@ -1,3 +1,4 @@
+import { breakpoints } from '@/configs/ui.configs'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
@@ -24,5 +25,9 @@ const SidebarWrapper = styled.aside`
 
   a {
     width: fit-content;
+  }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    display: none;
   }
 `
