@@ -22,7 +22,9 @@ export const HomeSidebar: React.FC = () => {
       <TitleContainer>
         <Title>Your Q&As</Title>
         <Row gap={8}>
-          <IconButtonRound icon={<SettingsIcon />} />
+          <Link href="/settings">
+            <IconButtonRound icon={<SettingsIcon />} />
+          </Link>
           <Link href="/qna/create">
             <Button variant="filledPrimary" icon={<PlusIcon />}>
               Create

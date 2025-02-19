@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
 type Props = FooterProps & {
+  title?: string
   sidebar?: React.ReactNode
 }
 
@@ -16,13 +17,14 @@ export default function HomeLayout(props: PropsWithChildren<Props>) {
     <Root>
       <SidebarContainer>{props.sidebar}</SidebarContainer>
       <LayoutContainer>
-        <WalletConnectWrapper>
+        <Navbar>
+          <h1>{props.title}</h1>
           <WalletConnect
             secondaryButton={
               <Button icon={<ChevronDownIcon />}>0xC00B...f441</Button>
             }
           />
-        </WalletConnectWrapper>
+        </Navbar>
         <Main>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
@@ -42,11 +44,11 @@ const Main = styled.main`
   height: calc(100vh - var(--default-navbar-height) - var(--footer-height));
 `
 
-const WalletConnectWrapper = styled.div`
+const Navbar = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
 
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-start;
 `
