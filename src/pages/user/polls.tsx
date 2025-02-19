@@ -1,16 +1,16 @@
 import { SEO } from '@/components/SEO'
-import { QnAContainer } from '@/containers/User/QnAContainer'
+import { PollsContainer } from '@/containers/User/PollsContainer'
 import UserLayout from '@/layouts/DefaultLayout/User.layout'
 
 export default function Page() {
   return (
     <>
       <SEO />
-      <QnAContainer />
+      <PollsContainer />
     </>
   )
 }
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
-  return <UserLayout mode="qna">{page}</UserLayout>
+  return <UserLayout mode="polls">{page}</UserLayout>
 }
