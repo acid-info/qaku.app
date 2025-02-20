@@ -2,11 +2,10 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../Button'
-import { IconButtonRound } from '../IconButtonRound'
 import { PlusIcon } from '../Icons/PlusIcon'
-import { SettingsIcon } from '../Icons/SettingsIcon'
 import { QnAWidget } from '../QnAWidget'
 import { SearchAndFilter } from '../SearchAndFilter'
+import { SettingsButton } from '../SettingsButton'
 import { Row } from '../StyledComponents'
 import { Tile } from '../Tile'
 
@@ -22,9 +21,7 @@ export const HomeSidebar: React.FC = () => {
       <TitleContainer>
         <Title>Your Q&As</Title>
         <Row gap={8}>
-          <Link href="/settings">
-            <IconButtonRound icon={<SettingsIcon />} />
-          </Link>
+          <SettingsButton />
           <Link href="/qna/create">
             <Button variant="filledPrimary" icon={<PlusIcon />}>
               Create
