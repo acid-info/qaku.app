@@ -1,22 +1,42 @@
 import { Button } from '@/components/Button'
+import { CopyIcon } from '@/components/Icons/CopyIcon'
 import { Input } from '@/components/Input'
-import { ActionContainer } from '@/components/StyledComponents'
-import { WalletPanel } from '@/components/WalletPanel'
+import { ActionContainer, Row } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
-import { useAtom } from 'jotai'
-import React from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
+import React, { useEffect } from 'react'
 
 export const SettingsPage: React.FC = () => {
-  const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
+  const [key, setKey] = React.useState('')
+
+  useEffect(() => {
+    setKey('0xC00B84D28886213A162b08c6E242893a3222f441')
+  }, [])
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(key)
+
+    alert('Key copied to clipboard')
+  }
+
   return (
     <Wrapper>
       <Main className="scrollable-container">
         <Column>
-          <WalletPanel
-            isAuthorized={isAuthorized}
-            onConnect={() => setIsAuthorized(true)}
-          />
+          <KeyManagement>
+            <h3>Key Management</h3>
+            <div className="wrapper">
+              <Key>
+                <span>{key}</span>
+                <IconContainer onClick={handleCopy}>
+                  <CopyIcon />
+                </IconContainer>
+              </Key>
+              <Row className="button-group">
+                <Button variant="filled">Export Private Key</Button>
+                <Button variant="filled">Import Private Key</Button>
+              </Row>
+            </div>
+          </KeyManagement>
           <div className="settings-input">
             <div>
               <h3>Codex Node URL</h3>
@@ -89,4 +109,41 @@ const Column = styled.div`
 
 const StyledButton = styled(Button)`
   width: 200px;
+`
+
+const KeyManagement = styled.div`
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+
+  border-radius: 8px;
+  background: var(--gray-darker);
+
+  .wrapper {
+    width: 100%;
+  }
+
+  .button-group {
+    button {
+      width: 100%;
+    }
+  }
+`
+
+const Key = styled.div`
+  display: flex;
+  padding: 24px 16px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  align-self: stretch;
+  background: var(--gray-ultradark);
+`
+
+const IconContainer = styled.div`
+  cursor: pointer;
 `
