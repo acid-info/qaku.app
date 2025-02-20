@@ -51,7 +51,9 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
         <ProfileIcon variant={profileIconVariant} character={author} />
         <InfoText>
           <QuestionAuthor>{author}</QuestionAuthor>
-          <QuestionTimestamp>{timestamp}</QuestionTimestamp>
+          <QuestionTimestamp>
+            {new Date(timestamp).toLocaleString()}
+          </QuestionTimestamp>
         </InfoText>
       </InfoContainer>
 

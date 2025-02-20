@@ -46,7 +46,7 @@ export const ThreadItem: React.FC<ThreadItemProps> = ({
         onLikeClick={onLikeClick}
       />
       <Question>{question}</Question>
-      {children}
+      <div>{children}</div>
     </ThreadItemContainer>
   )
 }

@@ -369,25 +369,79 @@ const ThreadDemo = () => {
     {
       info: {
         author: 'Alice',
-        timestamp: '15:32',
+        timestamp: '2025-02-15T11:48:36.135Z',
         question:
           'What are the key differences between React hooks and class components?',
         responses: [
           {
             info: {
               author: 'Bob',
-              timestamp: '15:45',
-              response:
-                'Hooks are more flexible and allow better code reuse. They also eliminate the complexity of lifecycle methods.',
+              timestamp: '2025-02-16T11:48:36.135Z',
+              response: 'Response 1',
             },
             likes: { count: 12, isLiked: false },
           },
           {
             info: {
-              author: 'Charlie',
-              timestamp: '16:00',
-              response:
-                'Class components can be easier to understand for developers coming from OOP backgrounds.',
+              author: 'Chalie',
+              timestamp: '2025-02-19T11:48:36.135Z',
+              response: 'Response 4',
+            },
+            likes: { count: 12, isLiked: false },
+          },
+          {
+            info: {
+              author: 'Chalie',
+              timestamp: '2025-02-17T11:48:36.135Z',
+              response: 'Response 2',
+            },
+            likes: { count: 12, isLiked: false },
+          },
+          {
+            info: {
+              author: 'Bob',
+              timestamp: '2025-02-18T11:48:36.135Z',
+              response: 'Response 3',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+          {
+            info: {
+              author: 'Bob',
+              timestamp: '2025-02-20T11:48:36.135Z',
+              response: 'Response 5',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+          {
+            info: {
+              author: 'John',
+              timestamp: '2025-02-18T11:48:36.135Z',
+              response: 'Response 6',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+          {
+            info: {
+              author: 'John',
+              timestamp: '2025-02-20T11:48:36.135Z',
+              response: 'Response 7',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+          {
+            info: {
+              author: 'John',
+              timestamp: '2025-02-21T11:48:36.135Z',
+              response: 'Response 8',
+            },
+            likes: { count: 8, isLiked: true },
+          },
+          {
+            info: {
+              author: 'John',
+              timestamp: '2025-02-22T11:48:36.135Z',
+              response: 'Response 9',
             },
             likes: { count: 8, isLiked: true },
           },
@@ -398,7 +452,7 @@ const ThreadDemo = () => {
     {
       info: {
         author: 'Bob',
-        timestamp: '02:00',
+        timestamp: '2025-02-20T11:48:36.135Z',
         question:
           'How do you handle state management in large React applications?',
         responses: [],

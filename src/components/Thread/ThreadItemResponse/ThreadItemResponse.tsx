@@ -47,9 +47,22 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: var(--gray-darker);
-  border-radius: 8px;
   padding: 16px;
   gap: 16px;
+
+  &:first-of-type {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+  }
+
+  &:last-of-type {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--gray);
+  }
 `
 
 const Response = styled.p`

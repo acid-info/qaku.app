@@ -7,10 +7,8 @@ import {
   type LikeInfo,
 } from '../ThreadItemHeader'
 import { ThreadItemReply, type ThreadItemReplyProps } from '../ThreadItemReply'
-import {
-  ThreadItemResponse,
-  type ThreadItemResponseProps,
-} from '../ThreadItemResponse'
+import { type ThreadItemResponseProps } from '../ThreadItemResponse'
+import { ReplyContainer } from './ReplyContainer'
 
 type ThreadInfo = HeaderThreadInfo & {
   question: string
@@ -42,7 +40,7 @@ export const Thread: React.FC<ThreadProps> = ({
   isUser = false,
 }) => {
   const { responses, ...questionInfo } = info
-  const [showReply, setShowReply] = useState(false)
+  const [showReply, setShowReply] = useState<boolean>(false)
 
   const handleCommentClick = () => {
     setShowReply((prev) => !prev)
@@ -69,14 +67,10 @@ export const Thread: React.FC<ThreadProps> = ({
           check: !isUser,
         }}
       >
-        {responses.map((response, index) => (
-          <ThreadItemResponse
-            key={`${response.info.author}-${response.info.timestamp}`}
-            info={response.info}
-            likes={response.likes}
-            onLikeClick={() => onResponseLikeClick?.(index)}
-          />
-        ))}
+        <ReplyContainer
+          responses={responses}
+          onResponseLikeClick={onResponseLikeClick}
+        />
       </ThreadItem>
       {showReply && (
         <ThreadItemReply
