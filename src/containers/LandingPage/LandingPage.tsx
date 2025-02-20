@@ -18,29 +18,38 @@ export const LandingPage: React.FC = () => {
           </Link>
         </ButtonGroup>
       </ContentContainer>
+      <Video autoPlay loop muted playsInline>
+        <source src="/assets/hero-video.mp4" type="video/mp4" />
+      </Video>
     </LandingWrapper>
   )
 }
 
 const LandingWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   height: 100%;
   width: 100%;
+  padding: 24px;
+  position: relative;
 `
 
 const ContentContainer = styled.div`
   display: flex;
-  width: 477px;
-  max-width: 100%;
-  margin: auto;
+  flex: 1;
   flex-direction: column;
+  width: 574px;
 `
 
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
-  margin-top: 48px;
+  margin-top: 32px;
+`
+
+const Video = styled.video`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  top: 0;
+  right: 0;
 `
