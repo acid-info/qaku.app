@@ -6,6 +6,7 @@ import { ActionContainer } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
+import Link from 'next/link'
 import React from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 
@@ -15,30 +16,34 @@ export const QnaCreate: React.FC = () => {
   return (
     <Wrapper>
       <Main className="scrollable-container">
-        <WalletPanel
-          isAuthorized={isAuthorized}
-          onConnect={() => setIsAuthorized(true)}
-        />
-        <NameSection>
-          <Title>Give it name</Title>
-          <Input placeholder="New Q&A.." />
-        </NameSection>
-        <Section>
-          <Collapsible title="Add description">
-            <TextArea placeholder="Type something here.." />
-          </Collapsible>
-          <Collapsible title="Review password">
-            <Stack>
-              <Text>Generated automatically for encrypted Q&As</Text>
-              <PasswordGenerator key="password-generator" />
-            </Stack>
-          </Collapsible>
-        </Section>
+        <Content>
+          <WalletPanel
+            isAuthorized={isAuthorized}
+            onConnect={() => setIsAuthorized(true)}
+          />
+          <NameSection>
+            <Title>Give it name</Title>
+            <Input placeholder="New Q&A.." />
+          </NameSection>
+          <Section>
+            <Collapsible title="Add description">
+              <TextArea placeholder="Type something here.." />
+            </Collapsible>
+            <Collapsible title="Review password">
+              <Stack>
+                <Text>Generated automatically for encrypted Q&As</Text>
+                <PasswordGenerator key="password-generator" />
+              </Stack>
+            </Collapsible>
+          </Section>
+        </Content>
       </Main>
       <ActionContainer>
-        <StyledButton variant="filledPrimary" size="large">
-          Create
-        </StyledButton>
+        <Link href="/qna/live">
+          <StyledButton variant="filledPrimary" size="large">
+            Create
+          </StyledButton>
+        </Link>
       </ActionContainer>
     </Wrapper>
   )
@@ -56,10 +61,17 @@ const Wrapper = styled.div`
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  align-items: center;
   height: 100%;
-  width: 507px;
+  width: 100%;
   overflow-y: auto;
+`
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 507px;
 `
 
 const NameSection = styled.div`

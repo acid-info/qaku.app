@@ -9,8 +9,8 @@ import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
-import DefaultNav, { ProgressStatus } from '@/components/Navbar/DefaultNav'
-import UserNav, { NavMode } from '@/components/Navbar/UserNav'
+import DefaultNav from '@/components/Navbar/DefaultNav'
+import UserNav from '@/components/Navbar/UserNav'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { PollOptions } from '@/components/PollOptions'
 import { QnAWidget } from '@/components/QnAWidget'
@@ -24,6 +24,7 @@ import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
 import { WalletPanel } from '@/components/WalletPanel'
+import { NavbarMode, QnaProgressStatus } from '@/types/navbar.types'
 
 type DemoSectionProps = {
   title: string
@@ -128,7 +129,7 @@ const QnAWidgetDemo = () => {
 }
 
 const NavbarDemo = () => {
-  const [mode, setMode] = useState<NavMode>('qna')
+  const [mode, setMode] = useState<NavbarMode>('qna')
 
   return (
     <DemoSection title="Navbars">
@@ -153,12 +154,12 @@ const NavbarDemo = () => {
             count={3}
             id="3212345"
           />
-          {Object.values(ProgressStatus).map((status) => (
+          {Object.values(QnaProgressStatus).map((status) => (
             <DefaultNav
               key={status}
               mode="qna"
               title={
-                status === ProgressStatus.Ended
+                status === QnaProgressStatus.Ended
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }
@@ -178,12 +179,12 @@ const NavbarDemo = () => {
             count={3}
             id="3212345"
           />
-          {Object.values(ProgressStatus).map((status) => (
+          {Object.values(QnaProgressStatus).map((status) => (
             <DefaultNav
               key={`polls-${status}`}
               mode="polls"
               title={
-                status === ProgressStatus.Ended
+                status === QnaProgressStatus.Ended
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }

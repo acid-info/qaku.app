@@ -5,9 +5,12 @@ import { LayoutContainer } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
+type DefaultNavProps = React.ComponentProps<typeof DefaultNav>
+
 type Props = FooterProps & {
   sidebar?: React.ReactNode
-  navTitle?: string
+  navProps?: Partial<DefaultNavProps>
+  useAlternativeGap?: boolean
 }
 
 export default function DefaultLayout(props: PropsWithChildren<Props>) {
@@ -18,12 +21,18 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         <DefaultNav
           mode="qna"
           isTitleOnly={true}
-          title={props.navTitle || 'Polls'}
+          title={props.navProps?.title || 'Polls'}
           date={'2023-12-25T15:00:00.000Z'}
           count={5121}
           id="3212345"
+          {...props.navProps}
         />
-        <Main $showFooter={props.showFooter}>{props.children}</Main>
+        <Main
+          $showFooter={props.showFooter}
+          $useAlternativeGap={props.useAlternativeGap}
+        >
+          {props.children}
+        </Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
     </Root>
@@ -37,7 +46,10 @@ const Root = styled.div`
   height: 100vh;
 `
 
-const Main = styled.main<{ $showFooter?: boolean }>`
+const Main = styled.main<{
+  $showFooter?: boolean
+  $useAlternativeGap?: boolean
+}>`
   width: 100%;
   height: ${({ $showFooter }) =>
     $showFooter
@@ -46,7 +58,10 @@ const Main = styled.main<{ $showFooter?: boolean }>`
   overflow-y: auto;
 
   .scrollable-container {
-    padding-top: var(--navbar-main-gap);
+    padding-top: ${({ $useAlternativeGap }) =>
+      $useAlternativeGap
+        ? 'var(--navbar-alternative-gap)'
+        : 'var(--navbar-main-gap)'};
     padding-bottom: calc(var(--navbar-main-gap) * 2);
   }
 `

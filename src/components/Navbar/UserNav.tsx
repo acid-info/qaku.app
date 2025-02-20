@@ -1,3 +1,4 @@
+import { NavbarMode, UserNavbarProps } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import Link from 'next/link'
@@ -7,17 +8,7 @@ import { QakuLogo } from '../Icons/QakuLogo'
 import { Tab } from '../Tab'
 import WalletConnect from './WalletConnect'
 
-export type NavMode = 'qna' | 'polls'
-
-export type UserNavProps = {
-  mode: NavMode
-  title: string
-  count: number
-  id: string
-  onModeChange?: (mode: NavMode) => void
-}
-
-const renderUnit = (mode: 'qna' | 'polls', count: number) => {
+const renderUnit = (mode: NavbarMode, count: number) => {
   return count < 1
     ? mode === 'qna'
       ? 'question'
@@ -27,7 +18,7 @@ const renderUnit = (mode: 'qna' | 'polls', count: number) => {
     : 'polls'
 }
 
-const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
+const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
   return (
     <Container>
       <Left>
@@ -51,7 +42,7 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavProps) => {
             { id: 'polls', label: 'Polls' },
           ]}
           activeId={mode}
-          onChange={(id) => onModeChange?.(id as NavMode)}
+          onChange={(id) => onModeChange?.(id as NavbarMode)}
           itemWidth="100px"
         />
       </TabWrapper>

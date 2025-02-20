@@ -43,7 +43,8 @@
   --footer-height: 40px;
 
   --sidebar-width: 378px;
-  --navbar-main-gap: 76px;
+  --navbar-main-gap: 56px;
+  --navbar-alternative-gap: 76px;
 }
 
 * {

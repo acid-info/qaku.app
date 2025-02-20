@@ -25,4 +25,5 @@ const Container = styled.div<{ variant: 'black' | 'gray' }>`
   justify-content: center;
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
+  color: var(--white);
 `
