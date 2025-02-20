@@ -149,7 +149,7 @@ const Details = styled.div`
 const Badge = styled.div<{ $mode: NavbarMode }>`
   display: flex;
   background-color: ${({ $mode }) =>
-    $mode === 'qna' ? 'var(--red)' : 'var(--green)'};
+    $mode === 'qna' ? 'var(--orange)' : 'var(--green)'};
   color: var(--black);
   border-radius: 32px;
   font-size: var(--label1-font-size);
