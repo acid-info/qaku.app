@@ -87,7 +87,7 @@ const DefaultNav = ({
             </CustomButton>
           )}
         </Row>
-        <Row>
+        <Row gap={0}>
           {status === QnaProgressStatus.BeforeStart ||
           status === QnaProgressStatus.InProgress ? (
             <IconButtonRound icon={<DeleteIcon />} />
