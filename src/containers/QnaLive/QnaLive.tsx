@@ -76,7 +76,7 @@ export const QnaLive: React.FC = () => {
         )}
       </Main>
       <ActionContainer>
-        <Link href="#">
+        <Link href="/user/qna" target="_blank" rel="noopener noreferrer">
           <StyledButton variant="filled" size="large">
             View as participant
           </StyledButton>
