@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
+import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { mockThreads } from '@/data/mockThreads'
 import styled from '@emotion/styled'
@@ -8,6 +9,8 @@ import Link from 'next/link'
 import React from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { Thread as ThreadType, useThreads } from './hooks/useThreads'
+
+const CONTENT_WIDTH = 507
 
 const EmptyState = () => (
   <NoContentMessage>
@@ -63,6 +66,18 @@ export const QnaLive: React.FC = () => {
   return (
     <Wrapper>
       <Main className="scrollable-container">
+        <TabWrapper>
+          <Tab
+            variant="secondary"
+            options={[
+              { id: 'all', label: 'All' },
+              { id: 'popular', label: 'Popular' },
+              { id: 'answered', label: 'Answered' },
+            ]}
+            itemWidth="100px"
+            activeId="all"
+          />
+        </TabWrapper>
         {threads.length > 0 ? (
           <ThreadList
             threads={threads}
@@ -98,15 +113,20 @@ const Main = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 16px;
   height: 100%;
   width: 100%;
   overflow-y: auto;
 `
 
+const TabWrapper = styled.div`
+  width: ${CONTENT_WIDTH}px;
+`
+
 const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 507px;
+  width: ${CONTENT_WIDTH}px;
 `
 
 const NoContentMessage = styled.div`
