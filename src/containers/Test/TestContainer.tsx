@@ -621,6 +621,7 @@ const MessageFormDemo = () => (
           )
           resetForm()
         }}
+        maxLength={200}
       />
     </div>
   </DemoSection>

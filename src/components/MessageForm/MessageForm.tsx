@@ -12,6 +12,8 @@ export type MessageFormProps = {
   onSubmit: MessageFormSubmitHandler
   messagePlaceholder?: string
   namePlaceholder?: string
+  maxLength?: number
+  hideCharacterLimit?: boolean
 }
 
 export const MessageForm = ({
@@ -19,6 +21,8 @@ export const MessageForm = ({
   onSubmit,
   messagePlaceholder = 'Write your message',
   namePlaceholder = 'Enter your name (optional)',
+  maxLength = 150,
+  hideCharacterLimit = false,
   ...props
 }: MessageFormProps) => {
   const formRef = useRef<HTMLFormElement>(null)
@@ -63,6 +67,9 @@ export const MessageForm = ({
           onFocus={() => setIsFocused(true)}
           $isFocused={isFocused}
         />
+        {isFocused && !hideCharacterLimit && (
+          <CharacterLimit>{maxLength - message?.length}</CharacterLimit>
+        )}
         {isFocused && (
           <ActionsContainer>
             <ProfileIcon character={name || 'A'} />
@@ -95,6 +102,7 @@ export const MessageForm = ({
 
 const FormContainer = styled.form`
   width: 100%;
+  position: relative;
 `
 
 const InputContainer = styled.div<{ $isFocused: boolean }>`
@@ -155,4 +163,16 @@ const ToggleText = styled.span`
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
   opacity: 0.7;
+`
+
+const CharacterLimit = styled.span`
+  position: absolute;
+  right: 16px;
+  top: 44px;
+
+  font-size: var(--label1-font-size);
+  line-height: var(--label1-line-height);
+
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
 `
