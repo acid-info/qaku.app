@@ -7,8 +7,8 @@ import { PlusIcon } from '../Icons/PlusIcon'
 export const CreateNewQaku: React.FC = () => {
   return (
     <CreateNewQakuWrapper>
-      <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
       <Link href="/qna/create">
+        <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
         <IconButtonRound variant="filledPrimary" icon={<PlusIcon />} />
       </Link>
     </CreateNewQakuWrapper>
@@ -21,7 +21,12 @@ const CreateNewQakuWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  gap: 24px;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
 `
 
 const CreateNewQakuText = styled.h1`
