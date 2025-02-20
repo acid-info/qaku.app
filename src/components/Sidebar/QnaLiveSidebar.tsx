@@ -13,14 +13,56 @@ import { Tile } from '../Tile'
 
 export const QnaLiveSidebar: React.FC = () => {
   const router = useRouter()
-  const demoQnA = {
-    id: 'qna-1',
-    title: 'New Qaku',
-  }
-  const polls: { id: string; title: string }[] = []
+  const demoQnAs = [
+    {
+      id: 'qna-1',
+      title: 'Community Town Hall Q&A',
+      polls: [
+        { id: 'poll-1-1', title: 'Platform Feature Priority' },
+        { id: 'poll-1-2', title: 'Meeting Time Preference' },
+        { id: 'poll-1-3', title: 'Communication Channel' },
+      ],
+    },
+    {
+      id: 'qna-2',
+      title: 'Product Launch Feedback',
+      polls: [
+        { id: 'poll-2-1', title: 'UI/UX Rating' },
+        { id: 'poll-2-2', title: 'Pricing Model Survey' },
+      ],
+    },
+    {
+      id: 'qna-3',
+      title: 'Developer Workshop Series',
+      polls: [
+        { id: 'poll-3-1', title: 'Tech Stack Preferences' },
+        { id: 'poll-3-2', title: 'Workshop Topics' },
+      ],
+    },
+  ]
 
   const handlePlusClick = () => {
     router.push('/poll/create')
+  }
+
+  const handleQnAClick = (qnaId: string) => {
+    if (qnaId === 'qna-1') {
+      router.push('/qna/live')
+    } else {
+      router.push(`/qna/created/${qnaId}`)
+    }
+  }
+
+  const handlePollClick = (pollId: string) => {
+    const isLivePoll = demoQnAs
+      .find((qna) => qna.id === 'qna-1')
+      ?.polls.some((poll) => poll.id === pollId)
+
+    if (isLivePoll) {
+      router.push('/poll/live')
+    } else {
+      router.push(`/poll/created/${pollId}`)
+    }
   }
 
   return (
@@ -67,17 +109,22 @@ export const QnaLiveSidebar: React.FC = () => {
           onSearch={() => {}}
           onFilterChange={() => {}}
         />
-        <QnAWidget
-          isLive
-          qnaData={demoQnA}
-          pollsData={polls}
-          activeItemId="qna-1"
-          onQnAClick={() => {}}
-          onPollClick={() => {}}
-          hasPlusButton
-          isDefaultExpanded
-          onPlusClick={handlePlusClick}
-        />
+        <QnaWidgetContainer>
+          {demoQnAs.map((qna) => (
+            <QnAWidget
+              key={qna.id}
+              isLive={qna.id === 'qna-1'}
+              qnaData={qna}
+              pollsData={qna.polls}
+              activeItemId={qna.id}
+              onQnAClick={handleQnAClick}
+              onPollClick={handlePollClick}
+              hasPlusButton
+              isDefaultExpanded={qna.id === 'qna-1'}
+              onPlusClick={handlePlusClick}
+            />
+          ))}
+        </QnaWidgetContainer>
       </SidebarContent>
     </Wrapper>
   )
@@ -89,6 +136,7 @@ const Wrapper = styled.div`
   gap: 32px;
   margin-top: 32px;
   width: 100%;
+  height: 100%;
 `
 
 const TitleContainer = styled.div`
@@ -104,6 +152,14 @@ const Title = styled.h2`
 const SidebarContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 24px;
+  width: 100%;
+  height: 100%;
+`
+
+const QnaWidgetContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
 `
