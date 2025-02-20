@@ -16,25 +16,27 @@ export const QnaCreate: React.FC = () => {
   return (
     <Wrapper>
       <Main className="scrollable-container">
-        <WalletPanel
-          isAuthorized={isAuthorized}
-          onConnect={() => setIsAuthorized(true)}
-        />
-        <NameSection>
-          <Title>Give it name</Title>
-          <Input placeholder="New Q&A.." />
-        </NameSection>
-        <Section>
-          <Collapsible title="Add description">
-            <TextArea placeholder="Type something here.." />
-          </Collapsible>
-          <Collapsible title="Review password">
-            <Stack>
-              <Text>Generated automatically for encrypted Q&As</Text>
-              <PasswordGenerator key="password-generator" />
-            </Stack>
-          </Collapsible>
-        </Section>
+        <Content>
+          <WalletPanel
+            isAuthorized={isAuthorized}
+            onConnect={() => setIsAuthorized(true)}
+          />
+          <NameSection>
+            <Title>Give it name</Title>
+            <Input placeholder="New Q&A.." />
+          </NameSection>
+          <Section>
+            <Collapsible title="Add description">
+              <TextArea placeholder="Type something here.." />
+            </Collapsible>
+            <Collapsible title="Review password">
+              <Stack>
+                <Text>Generated automatically for encrypted Q&As</Text>
+                <PasswordGenerator key="password-generator" />
+              </Stack>
+            </Collapsible>
+          </Section>
+        </Content>
       </Main>
       <ActionContainer>
         <Link href="/qna/live">
@@ -59,10 +61,17 @@ const Wrapper = styled.div`
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  align-items: center;
   height: 100%;
-  width: 507px;
+  width: 100%;
   overflow-y: auto;
+`
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 507px;
 `
 
 const NameSection = styled.div`

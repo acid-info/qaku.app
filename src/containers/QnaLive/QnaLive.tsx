@@ -97,14 +97,16 @@ const Wrapper = styled.div`
 const Main = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100%;
-  width: 507px;
+  width: 100%;
   overflow-y: auto;
 `
 
 const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 507px;
 `
 
 const NoContentMessage = styled.div`

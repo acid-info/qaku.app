@@ -41,27 +41,29 @@ export const PollCreate: React.FC = () => {
   return (
     <Wrapper>
       <Main className="scrollable-container">
-        <Top>
-          <TitleWithInput>
-            <h3>What would you like to ask?</h3>
-            <Input placeholder="Type something here.." />
-          </TitleWithInput>
-          <Collapsible title="Add description">
-            <textarea
-              style={{ height: '100px' }}
-              placeholder="Type something here.."
+        <Content>
+          <Top>
+            <TitleWithInput>
+              <h3>What would you like to ask?</h3>
+              <Input placeholder="Type something here.." />
+            </TitleWithInput>
+            <Collapsible title="Add description">
+              <textarea
+                style={{ height: '100px' }}
+                placeholder="Type something here.."
+              />
+            </Collapsible>
+          </Top>
+          <Bottom>
+            <PollOptions options={options} />
+            <IconButtonRound
+              size="large"
+              variant="filled"
+              icon={<PlusIcon />}
+              onClick={handleAddOption}
             />
-          </Collapsible>
-        </Top>
-        <Bottom>
-          <PollOptions options={options} />
-          <IconButtonRound
-            size="large"
-            variant="filled"
-            icon={<PlusIcon />}
-            onClick={handleAddOption}
-          />
-        </Bottom>
+          </Bottom>
+        </Content>
       </Main>
       <ActionContainer>
         <Link href="#">
@@ -83,12 +85,19 @@ const Wrapper = styled.div`
 `
 
 const Main = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
-  height: 100%;
   width: 507px;
-  overflow-y: auto;
 `
 
 const Top = styled.div`
