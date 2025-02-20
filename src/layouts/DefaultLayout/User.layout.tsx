@@ -1,17 +1,18 @@
 import { Footer, FooterProps } from '@/components/Footer'
-import UserNav, { NavMode } from '@/components/Navbar/UserNav'
+import UserNav from '@/components/Navbar/UserNav'
+import { NavbarMode } from '@/types/navbar.types'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { PropsWithChildren } from 'react'
 
 type Props = FooterProps & {
-  mode: NavMode
+  mode: NavbarMode
 }
 
 export default function UserLayout(props: PropsWithChildren<Props>) {
   const router = useRouter()
 
-  const handleModeChange = (newMode: NavMode) => {
+  const handleModeChange = (newMode: NavbarMode) => {
     if (newMode === 'polls') {
       router.push('/user/polls')
     } else {
