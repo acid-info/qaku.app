@@ -5,8 +5,8 @@ export type InputProps = {
   placeholder?: string
 }
 
-export const Input: React.FC<InputProps> = ({ placeholder = '' }) => {
-  return <StyledInput placeholder={placeholder} />
+export const Input: React.FC<InputProps> = ({ placeholder = '', ...props }) => {
+  return <StyledInput placeholder={placeholder} {...props} />
 }
 
 const StyledInput = styled.input`
