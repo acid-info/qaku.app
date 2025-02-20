@@ -130,7 +130,7 @@ const threads = [
   {
     info: {
       author: 'Anonymous',
-      timestamp: '15:12',
+      timestamp: '2025-02-12T11:48:36.135Z',
       question: 'How to enable privacy secured approach into this system?',
       responses: [],
     },
@@ -139,14 +139,14 @@ const threads = [
   {
     info: {
       author: 'Alice',
-      timestamp: '15:32',
+      timestamp: '2025-02-15T11:48:36.135Z',
       question:
         'What are the key differences between React hooks and class components?',
       responses: [
         {
           info: {
             author: 'Bob',
-            timestamp: '15:45',
+            timestamp: '2025-02-16T11:48:36.135Z',
             response:
               'Hooks are more flexible and allow better code reuse. They also eliminate the complexity of lifecycle methods.',
           },
@@ -154,8 +154,17 @@ const threads = [
         },
         {
           info: {
-            author: 'Charlie',
-            timestamp: '16:00',
+            author: 'Bob',
+            timestamp: '2025-02-17T11:48:36.135Z',
+            response:
+              'Class components can be easier to understand for developers coming from OOP backgrounds.',
+          },
+          likes: { count: 8, isLiked: true },
+        },
+        {
+          info: {
+            author: 'Bob',
+            timestamp: '2025-02-18T11:48:36.135Z',
             response:
               'Class components can be easier to understand for developers coming from OOP backgrounds.',
           },
@@ -168,7 +177,7 @@ const threads = [
   {
     info: {
       author: 'Bob',
-      timestamp: '02:00',
+      timestamp: '2025-02-18T11:48:36.135Z',
       question:
         'How do you handle state management in large React applications?',
       responses: [],
@@ -178,7 +187,44 @@ const threads = [
   {
     info: {
       author: 'Anonymous',
-      timestamp: '15:12',
+      timestamp: '2025-02-19T11:48:36.135Z',
+      question: 'How to enable privacy secured approach into this system?',
+      responses: [
+        {
+          info: {
+            author: 'Bob',
+            timestamp: '2025-02-16T11:48:36.135Z',
+            response:
+              'Hooks are more flexible and allow better code reuse. They also eliminate the complexity of lifecycle methods.',
+          },
+          likes: { count: 12, isLiked: false },
+        },
+        {
+          info: {
+            author: 'Chalie',
+            timestamp: '2025-02-17T11:48:36.135Z',
+            response:
+              'Class components can be easier to understand for developers coming from OOP backgrounds.',
+          },
+          likes: { count: 8, isLiked: true },
+        },
+        {
+          info: {
+            author: 'Bob',
+            timestamp: '2025-02-18T11:48:36.135Z',
+            response:
+              'Class components can be easier to understand for developers coming from OOP backgrounds.',
+          },
+          likes: { count: 8, isLiked: true },
+        },
+      ],
+    },
+    likes: { count: 1, isLiked: false },
+  },
+  {
+    info: {
+      author: 'Anonymous',
+      timestamp: '2025-02-20T11:48:36.135Z',
       question: 'How to enable privacy secured approach into this system?',
       responses: [],
     },
@@ -187,7 +233,7 @@ const threads = [
   {
     info: {
       author: 'Anonymous',
-      timestamp: '15:12',
+      timestamp: '2025-02-21T11:48:36.135Z',
       question: 'How to enable privacy secured approach into this system?',
       responses: [],
     },
@@ -196,16 +242,7 @@ const threads = [
   {
     info: {
       author: 'Anonymous',
-      timestamp: '15:12',
-      question: 'How to enable privacy secured approach into this system?',
-      responses: [],
-    },
-    likes: { count: 1, isLiked: false },
-  },
-  {
-    info: {
-      author: 'Anonymous',
-      timestamp: '15:12',
+      timestamp: '2025-02-22T11:48:36.135Z',
       question: 'How to enable privacy secured approach into this system?',
       responses: [],
     },
