@@ -66,7 +66,7 @@ export const PollCreate: React.FC = () => {
         </Content>
       </Main>
       <ActionContainer>
-        <Link href="#">
+        <Link href="/poll/live">
           <StyledButton variant="filledPrimary" size="large">
             Create
           </StyledButton>
