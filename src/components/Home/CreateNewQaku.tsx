@@ -9,7 +9,10 @@ export const CreateNewQaku: React.FC = () => {
     <CreateNewQakuWrapper>
       <Link href="/qna/create">
         <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
-        <IconButtonRound variant="filledPrimary" icon={<PlusIcon />} />
+        <IconButtonRound
+          variant="filledPrimary"
+          icon={<PlusIcon style={{ width: '24px', height: '24px' }} />}
+        />
       </Link>
     </CreateNewQakuWrapper>
   )
