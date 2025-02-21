@@ -39,7 +39,7 @@ const StyledTileItem = styled.div<{
   height: 80px;
   padding: 8px 16px;
   background: ${({ $isActive }) =>
-    $isActive ? 'var(--black)' : 'var(--gray-dark)'};
+    $isActive ? 'var(--gray-dark)' : 'var(--black)'};
   border: 1px solid var(--gray);
   width: ${({ $size }) => ($size === 'medium' ? '116px' : '174px')};
   color: var(--white);

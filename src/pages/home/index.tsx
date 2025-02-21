@@ -1,6 +1,6 @@
 import { CreateNewQaku } from '@/components/Home/CreateNewQaku'
 import { SEO } from '@/components/SEO'
-import { HomeSidebar } from '@/components/Sidebar/HomeSidebar'
+import { Sidebar } from '@/components/Sidebar'
 import { HomeLayout } from '@/layouts/HomeLayout'
 
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return (
-    <HomeLayout showFooter={true} sidebar={<HomeSidebar />}>
+    <HomeLayout showFooter={true} sidebar={<Sidebar />}>
       {page}
     </HomeLayout>
   )

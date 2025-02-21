@@ -1,5 +1,5 @@
 import { SEO } from '@/components/SEO'
-import { QnaCreateSidebar } from '@/components/Sidebar/QnaCreateSidebar'
+import { Sidebar } from '@/components/Sidebar'
 import { QnaCreate } from '@/containers/QnaCreate/QnaCreate'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 
@@ -17,7 +17,7 @@ Page.getLayout = function getLayout(page: React.ReactNode) {
     <DefaultLayout
       useAlternativeGap
       showFooter={false}
-      sidebar={<QnaCreateSidebar />}
+      sidebar={<Sidebar />}
       navProps={{
         mode: 'qna',
         isTitleOnly: true,

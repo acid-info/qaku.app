@@ -1,5 +1,5 @@
 import { SEO } from '@/components/SEO'
-import { QnaLiveSidebar } from '@/components/Sidebar/QnaLiveSidebar'
+import { Sidebar } from '@/components/Sidebar'
 import { PollCreated } from '@/containers/PollCreated'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { QnaProgressStatus } from '@/types/navbar.types'
@@ -8,7 +8,7 @@ export default function Page() {
   const getLayout = (page: React.ReactNode) => (
     <DefaultLayout
       showFooter={false}
-      sidebar={<QnaLiveSidebar />}
+      sidebar={<Sidebar />}
       navProps={{
         mode: 'polls',
         isTitleOnly: false,

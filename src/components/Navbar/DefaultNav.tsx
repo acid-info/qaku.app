@@ -12,6 +12,7 @@ import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
 import { PauseIcon } from '../Icons/PauseIcon'
 import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
+import { PlusIcon } from '../Icons/PlusIcon'
 import { SettingsIcon } from '../Icons/SettingsIcon'
 import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
@@ -44,7 +45,11 @@ const DefaultNav = ({
   id,
   status,
   onSettingsClick,
+  onAddPollClick,
 }: DefaultNavbarProps) => {
+  const isBeforeStart = status === QnaProgressStatus.BeforeStart
+  const isInProgress = status === QnaProgressStatus.InProgress
+
   return (
     <Container>
       <Left>
@@ -68,29 +73,35 @@ const DefaultNav = ({
         )}
       </Left>
       <Navbar>
-        <Row>
-          {status === QnaProgressStatus.BeforeStart && (
-            <CustomButton
-              $color="yellow"
-              variant="outlinedPrimary"
-              icon={<PlayArrowIcon />}
-            >
-              Start {mode === 'qna' ? 'Q&A' : 'Poll'}
-            </CustomButton>
-          )}
-          {status === QnaProgressStatus.InProgress && (
-            <CustomButton
-              $color="red"
-              variant="outlinedPrimary"
-              icon={<PauseIcon />}
-            >
-              Close {mode === 'qna' ? 'Q&A' : 'Poll'}
-            </CustomButton>
-          )}
-        </Row>
+        {isBeforeStart && (
+          <CustomButton
+            $color="yellow"
+            variant="outlinedPrimary"
+            icon={<PlayArrowIcon />}
+          >
+            Start {mode === 'qna' ? 'Q&A' : 'Poll'}
+          </CustomButton>
+        )}
+        {isInProgress && (
+          <CustomButton
+            $color="red"
+            variant="outlinedPrimary"
+            icon={<PauseIcon />}
+          >
+            Close {mode === 'qna' ? 'Q&A' : 'Poll'}
+          </CustomButton>
+        )}
+        {isInProgress && (
+          <Button
+            variant="outlined"
+            icon={<PlusIcon />}
+            onClick={onAddPollClick}
+          >
+            Add Poll
+          </Button>
+        )}
         <Row gap={0}>
-          {status === QnaProgressStatus.BeforeStart ||
-          status === QnaProgressStatus.InProgress ? (
+          {isBeforeStart || isInProgress ? (
             <IconButtonRound icon={<DeleteIcon />} />
           ) : null}
           <IconButtonRound icon={<SettingsIcon />} onClick={onSettingsClick} />
