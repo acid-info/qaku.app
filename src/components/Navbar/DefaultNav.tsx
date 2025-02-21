@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { Button } from '../Button'
 import { IconButtonRound } from '../IconButtonRound'
 import { DeleteIcon } from '../Icons/DeleteIcon'
+import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
 import { PauseIcon } from '../Icons/PauseIcon'
 import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
@@ -56,7 +57,7 @@ const DefaultNav = ({
               <Badge $mode={mode}>{mode === 'qna' ? 'Q&A' : 'Polls'}</Badge>
               <Row gap={8}>
                 <p>{formatDate(date)}</p>
-                <p>·</p>
+                <DotIcon color="var(--white)" />
                 <p>
                   {numberWithCommas(count)} {renderUnit(mode, count)}
                 </p>
