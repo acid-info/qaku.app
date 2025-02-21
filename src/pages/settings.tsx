@@ -1,5 +1,5 @@
 import { SEO } from '@/components/SEO'
-import { HomeSidebar } from '@/components/Sidebar/HomeSidebar'
+import { Sidebar } from '@/components/Sidebar'
 import { SettingsPage } from '@/containers/Home/SettingsPage'
 import { HomeLayout } from '@/layouts/HomeLayout'
 
@@ -14,7 +14,7 @@ export default function Page() {
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return (
-    <HomeLayout title="Settings" sidebar={<HomeSidebar />} showFooter={false}>
+    <HomeLayout title="Settings" sidebar={<Sidebar />} showFooter={false}>
       {page}
     </HomeLayout>
   )
