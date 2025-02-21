@@ -51,5 +51,11 @@ const Video = styled.video`
   height: 100%;
   z-index: -1;
   top: 0;
-  right: 0;
+  right: -10%;
+
+  @media (max-width: 768px) {
+    height: fit-content;
+    top: 340px;
+    right: 0;
+  }
 `
