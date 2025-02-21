@@ -134,6 +134,7 @@ const Wrapper = styled.div`
   margin-top: 32px;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `
 
 const TitleContainer = styled.div`
@@ -151,12 +152,11 @@ const SidebarContent = styled.div`
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  height: 100%;
+  min-height: 0;
 `
 
 const QnaWidgetContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   overflow-y: auto;
 `
