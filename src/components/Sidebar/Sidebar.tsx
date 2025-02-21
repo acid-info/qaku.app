@@ -1,7 +1,16 @@
+import {
+  activeItemIdAtom,
+  expandedQnAIdsAtom,
+  filteredQnAsAtom,
+  qnaFilterAtom,
+  qnaStatsAtom,
+} from '@/atoms/qna.atoms'
+import { Poll } from '@/data/qna'
 import styled from '@emotion/styled'
+import { useAtom, useAtomValue } from 'jotai'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '../Button'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { QnAWidget } from '../QnAWidget'
@@ -10,42 +19,38 @@ import { SettingsButton } from '../SettingsButton'
 import { Row } from '../StyledComponents'
 import { Tile } from '../Tile'
 
-export const QnaLiveSidebar: React.FC = () => {
+export const Sidebar: React.FC = () => {
   const router = useRouter()
-  const demoQnAs = [
-    {
-      id: 'qna-1',
-      title: 'Community Town Hall Q&A',
-      polls: [
-        { id: 'poll-1-1', title: 'Platform Feature Priority' },
-        { id: 'poll-1-2', title: 'Meeting Time Preference' },
-        { id: 'poll-1-3', title: 'Communication Channel' },
-      ],
-    },
-    {
-      id: 'qna-2',
-      title: 'Product Launch Feedback',
-      polls: [
-        { id: 'poll-2-1', title: 'UI/UX Rating' },
-        { id: 'poll-2-2', title: 'Pricing Model Survey' },
-      ],
-    },
-    {
-      id: 'qna-3',
-      title: 'Developer Workshop Series',
-      polls: [
-        { id: 'poll-3-1', title: 'Tech Stack Preferences' },
-        { id: 'poll-3-2', title: 'Workshop Topics' },
-      ],
-    },
-  ]
+  const [filter, setFilter] = useAtom(qnaFilterAtom)
+  const [activeItemId, setActiveItemId] = useAtom(activeItemIdAtom)
+  const [expandedQnAIds, setExpandedQnAIds] = useAtom(expandedQnAIdsAtom)
 
-  const handlePlusClick = () => {
-    router.push('/poll/create')
-  }
+  const filteredQnAs = useAtomValue(filteredQnAsAtom)
+  const stats = useAtomValue(qnaStatsAtom)
+
+  // Auto-expand QnA when it or its poll becomes active
+  useEffect(() => {
+    if (!activeItemId) return
+
+    const qnaToExpand = filteredQnAs.find(
+      (qna) =>
+        qna.id === activeItemId ||
+        qna.polls.some((p: Poll) => p.id === activeItemId),
+    )
+
+    if (qnaToExpand) {
+      setExpandedQnAIds((prev) => {
+        const next = new Set(prev)
+        next.add(qnaToExpand.id)
+        return next
+      })
+    }
+  }, [activeItemId, filteredQnAs, setExpandedQnAIds])
 
   const handleQnAClick = (qnaId: string) => {
-    if (qnaId === 'qna-1') {
+    setActiveItemId(qnaId)
+    const qna = filteredQnAs.find((q) => q.id === qnaId)
+    if (qna?.isLive) {
       router.push('/qna/live')
     } else {
       router.push(`/qna/created/${qnaId}`)
@@ -53,15 +58,29 @@ export const QnaLiveSidebar: React.FC = () => {
   }
 
   const handlePollClick = (pollId: string) => {
-    const isLivePoll = demoQnAs
-      .find((qna) => qna.id === 'qna-1')
-      ?.polls.some((poll) => poll.id === pollId)
+    setActiveItemId(pollId)
+    const qna = filteredQnAs.find((q) =>
+      q.polls.some((p: Poll) => p.id === pollId),
+    )
+    const poll = qna?.polls.find((p: Poll) => p.id === pollId)
 
-    if (isLivePoll) {
+    if (poll?.isLive) {
       router.push('/poll/live')
     } else {
       router.push(`/poll/created/${pollId}`)
     }
+  }
+
+  const handleHeaderClick = (qnaId: string) => {
+    setExpandedQnAIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(qnaId)) {
+        next.delete(qnaId)
+      } else {
+        next.add(qnaId)
+      }
+      return next
+    })
   }
 
   return (
@@ -82,14 +101,17 @@ export const QnaLiveSidebar: React.FC = () => {
           items={[
             {
               label: 'All',
-              data: 4,
+              data: stats.all,
               size: 'large',
-              isActive: true,
+              isActive: filter === 'all',
+              onClick: () => setFilter('all'),
             },
             {
               label: 'Active',
-              data: 1,
+              data: stats.active,
               size: 'large',
+              isActive: filter === 'active',
+              onClick: () => setFilter('active'),
             },
           ]}
         />
@@ -107,18 +129,17 @@ export const QnaLiveSidebar: React.FC = () => {
           onFilterChange={() => {}}
         />
         <QnaWidgetContainer>
-          {demoQnAs.map((qna) => (
+          {filteredQnAs.map((qna) => (
             <QnAWidget
               key={qna.id}
-              isLive={qna.id === 'qna-1'}
               qnaData={qna}
               pollsData={qna.polls}
-              activeItemId={qna.id}
+              activeItemId={activeItemId}
+              isExpanded={expandedQnAIds.has(qna.id)}
+              onHeaderClick={() => handleHeaderClick(qna.id)}
               onQnAClick={handleQnAClick}
               onPollClick={handlePollClick}
-              hasPlusButton
-              isDefaultExpanded={qna.id === 'qna-1'}
-              onPlusClick={handlePlusClick}
+              isLive={qna.isLive}
             />
           ))}
         </QnaWidgetContainer>
@@ -134,6 +155,7 @@ const Wrapper = styled.div`
   margin-top: 32px;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `
 
 const TitleContainer = styled.div`
@@ -149,14 +171,13 @@ const Title = styled.h2`
 const SidebarContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
   width: 100%;
-  height: 100%;
+  gap: 24px;
+  min-height: 0;
 `
 
 const QnaWidgetContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   overflow-y: auto;
 `

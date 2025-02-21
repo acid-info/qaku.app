@@ -10,7 +10,8 @@ export type QnAWidgetProps = {
   qnaData: qnaData
   pollsData?: pollData[]
   isLive?: boolean
-  isDefaultExpanded?: boolean
+  isExpanded: boolean
+  onHeaderClick: () => void
   activeItemId?: string
   hasPlusButton?: boolean
   onPlusClick?: () => void
@@ -45,7 +46,8 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
   qnaData,
   pollsData = [],
   isLive = false,
-  isDefaultExpanded = false,
+  isExpanded,
+  onHeaderClick,
   hasPlusButton = false,
   activeItemId,
   onPlusClick,
@@ -53,7 +55,6 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
   onPollClick,
   ...props
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(isDefaultExpanded)
   const [showAllPolls, setShowAllPolls] = useState<boolean>(false)
 
   const visiblePolls = showAllPolls
@@ -69,7 +70,7 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
     <Container $isExpanded={isExpanded} {...props}>
       <ToggleButton
         $isExpanded={isExpanded}
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={onHeaderClick}
         title={qnaData.title}
       >
         <h3>{qnaData.title}</h3>

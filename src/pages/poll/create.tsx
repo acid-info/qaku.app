@@ -1,6 +1,6 @@
 import { PollFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
-import { QnaLiveSidebar } from '@/components/Sidebar/QnaLiveSidebar'
+import { Sidebar } from '@/components/Sidebar'
 import { PollCreate } from '@/containers/PollCreate/PollCreate'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { useAtom } from 'jotai'
@@ -15,7 +15,7 @@ export default function Page() {
     <DefaultLayout
       useAlternativeGap
       showFooter={false}
-      sidebar={<QnaLiveSidebar />}
+      sidebar={<Sidebar />}
       navProps={{
         isTitleOnly: true,
         title: 'New Poll',

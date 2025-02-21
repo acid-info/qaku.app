@@ -13,7 +13,7 @@ export const LayoutContainer = styled.div`
 
 export const Row = styled.div<{ gap?: number }>`
   display: flex;
-  gap: ${({ gap }) => gap || 2}px;
+  gap: ${({ gap }) => gap ?? 2}px;
   align-items: center;
 `
 

@@ -18,6 +18,7 @@ export interface DefaultNavbarProps extends BaseNavbarProps {
   date: string
   status?: QnaProgressStatus
   onSettingsClick?: () => void
+  onAddPollClick?: () => void
 }
 
 export interface UserNavbarProps extends BaseNavbarProps {

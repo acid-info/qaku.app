@@ -8,9 +8,11 @@ import styled from '@emotion/styled'
 import { Button } from '../Button'
 import { IconButtonRound } from '../IconButtonRound'
 import { DeleteIcon } from '../Icons/DeleteIcon'
+import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
 import { PauseIcon } from '../Icons/PauseIcon'
 import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
+import { PlusIcon } from '../Icons/PlusIcon'
 import { SettingsIcon } from '../Icons/SettingsIcon'
 import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
@@ -43,7 +45,11 @@ const DefaultNav = ({
   id,
   status,
   onSettingsClick,
+  onAddPollClick,
 }: DefaultNavbarProps) => {
+  const isBeforeStart = status === QnaProgressStatus.BeforeStart
+  const isInProgress = status === QnaProgressStatus.InProgress
+
   return (
     <Container>
       <Left>
@@ -56,7 +62,7 @@ const DefaultNav = ({
               <Badge $mode={mode}>{mode === 'qna' ? 'Q&A' : 'Polls'}</Badge>
               <Row gap={8}>
                 <p>{formatDate(date)}</p>
-                <p>·</p>
+                <DotIcon color="var(--white)" />
                 <p>
                   {numberWithCommas(count)} {renderUnit(mode, count)}
                 </p>
@@ -67,29 +73,35 @@ const DefaultNav = ({
         )}
       </Left>
       <Navbar>
-        <Row>
-          {status === QnaProgressStatus.BeforeStart && (
-            <CustomButton
-              $color="yellow"
-              variant="outlinedPrimary"
-              icon={<PlayArrowIcon />}
-            >
-              Start {mode === 'qna' ? 'Q&A' : 'Poll'}
-            </CustomButton>
-          )}
-          {status === QnaProgressStatus.InProgress && (
-            <CustomButton
-              $color="red"
-              variant="outlinedPrimary"
-              icon={<PauseIcon />}
-            >
-              Close {mode === 'qna' ? 'Q&A' : 'Poll'}
-            </CustomButton>
-          )}
-        </Row>
-        <Row>
-          {status === QnaProgressStatus.BeforeStart ||
-          status === QnaProgressStatus.InProgress ? (
+        {isBeforeStart && (
+          <CustomButton
+            $color="yellow"
+            variant="outlinedPrimary"
+            icon={<PlayArrowIcon />}
+          >
+            Start {mode === 'qna' ? 'Q&A' : 'Poll'}
+          </CustomButton>
+        )}
+        {isInProgress && (
+          <CustomButton
+            $color="red"
+            variant="outlinedPrimary"
+            icon={<PauseIcon />}
+          >
+            Close {mode === 'qna' ? 'Q&A' : 'Poll'}
+          </CustomButton>
+        )}
+        {isInProgress && (
+          <Button
+            variant="outlined"
+            icon={<PlusIcon />}
+            onClick={onAddPollClick}
+          >
+            Add Poll
+          </Button>
+        )}
+        <Row gap={0}>
+          {isBeforeStart || isInProgress ? (
             <IconButtonRound icon={<DeleteIcon />} />
           ) : null}
           <IconButtonRound icon={<SettingsIcon />} onClick={onSettingsClick} />
@@ -149,7 +161,7 @@ const Details = styled.div`
 const Badge = styled.div<{ $mode: NavbarMode }>`
   display: flex;
   background-color: ${({ $mode }) =>
-    $mode === 'qna' ? 'var(--red)' : 'var(--green)'};
+    $mode === 'qna' ? 'var(--orange)' : 'var(--green)'};
   color: var(--black);
   border-radius: 32px;
   font-size: var(--label1-font-size);

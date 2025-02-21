@@ -66,6 +66,8 @@ const QnAWidgetDemo = () => {
   const [polls2, setPolls2] = useState<{ id: string; title: string }[]>([])
   const [activeItemId, setActiveItemId] = useState<string>()
   const [activeItemId2, setActiveItemId2] = useState<string>()
+  const [isExpanded1, setIsExpanded1] = useState(false)
+  const [isExpanded2, setIsExpanded2] = useState(true)
 
   const handlePlusClick2 = () => {
     const newPoll = {
@@ -111,13 +113,16 @@ const QnAWidgetDemo = () => {
           activeItemId={activeItemId}
           onQnAClick={handleQnAClick}
           onPollClick={handlePollClick}
+          isExpanded={isExpanded1}
+          onHeaderClick={() => setIsExpanded1(!isExpanded1)}
         />
         <QnAWidget
           hasPlusButton={true}
           isLive
           qnaData={demoQnA2}
           pollsData={polls2}
-          isDefaultExpanded={true}
+          isExpanded={isExpanded2}
+          onHeaderClick={() => setIsExpanded2(!isExpanded2)}
           activeItemId={activeItemId2}
           onPlusClick={handlePlusClick2}
           onQnAClick={handleQnAClick2}
