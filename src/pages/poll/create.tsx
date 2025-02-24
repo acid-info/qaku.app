@@ -1,3 +1,4 @@
+import { pollSettingsAtom } from '@/../atoms/settings'
 import { PollFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { Sidebar } from '@/components/Sidebar'
@@ -10,6 +11,7 @@ export default function Page() {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
+  const [pollSettings, setPollSettings] = useAtom(pollSettingsAtom)
 
   const getLayout = (page: React.ReactNode) => (
     <DefaultLayout
@@ -18,7 +20,7 @@ export default function Page() {
       sidebar={<Sidebar />}
       navProps={{
         isTitleOnly: true,
-        title: 'New Poll',
+        title: pollSettings.title || 'New Poll',
         onSettingsClick: () => setIsSettingsPanelOpen(true),
       }}
     >
@@ -26,6 +28,11 @@ export default function Page() {
       <PollFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
+        initialValues={pollSettings}
+        onSave={(values) => {
+          setPollSettings(values)
+          setIsSettingsPanelOpen(false)
+        }}
       />
     </DefaultLayout>
   )

@@ -2,9 +2,8 @@ import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
-import { Input } from '@/components/Input'
 import { PollOptions } from '@/components/PollOptions'
-import { ActionContainer } from '@/components/StyledComponents'
+import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -45,7 +44,7 @@ export const PollCreate: React.FC = () => {
           <Top>
             <TitleWithInput>
               <h3>What would you like to ask?</h3>
-              <Input placeholder="Type something here.." />
+              <StyledInput placeholder="Type something here.." />
             </TitleWithInput>
             <Collapsible title="Add description">
               <textarea

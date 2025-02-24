@@ -1,20 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
-import { Input } from '../Input'
+import { StyledInput } from '../StyledComponents'
 import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
 import { ActionBar, PanelContent, SettingGroup, SettingStack } from './styles'
+import { BaseFloatingPanelProps, QnaSettings, SaveHandler } from './types'
 
-export type QnaFloatingPanelProps = {
-  isOpen: boolean
-  onClose: () => void
+export interface QnaFloatingPanelProps extends BaseFloatingPanelProps {
+  initialValues?: Partial<QnaSettings>
+  onSave: SaveHandler<QnaSettings>
 }
 
 export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
   isOpen,
   onClose,
+  initialValues,
+  onSave,
 }) => {
+  const [values, setValues] = useState<QnaSettings>({
+    allowReplies: true,
+    title: '',
+    showDescription: false,
+    description: '',
+    ...initialValues,
+  })
+
+  useEffect(() => {
+    if (initialValues) {
+      setValues((prev) => ({ ...prev, ...initialValues }))
+    }
+  }, [initialValues])
+
+  const handleSave = () => {
+    onSave(values)
+    onClose()
+  }
+
   return (
     <FloatingPanel title="Q&A settings" isOpen={isOpen} onClose={onClose}>
       <PanelContent>
@@ -23,7 +45,12 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
           description="Allow participants to reply to questions"
           isRow
         >
-          <ToggleButton isOn={true} />
+          <ToggleButton
+            isOn={values.allowReplies}
+            onChange={(isOn) =>
+              setValues((prev) => ({ ...prev, allowReplies: isOn }))
+            }
+          />
         </SettingField>
 
         <SettingGroup>
@@ -32,7 +59,13 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
               title="Q&A title"
               description="Edit your Q&A title here"
             >
-              <Input placeholder="Type something here.." />
+              <StyledInput
+                placeholder="Type something here.."
+                value={values.title}
+                onChange={(e) =>
+                  setValues((prev) => ({ ...prev, title: e.target.value }))
+                }
+              />
             </SettingField>
           </SettingStack>
 
@@ -42,14 +75,32 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
               description="Add a description"
               isRow
             >
-              <ToggleButton isOn={true} />
+              <ToggleButton
+                isOn={values.showDescription}
+                onChange={(isOn) =>
+                  setValues((prev) => ({ ...prev, showDescription: isOn }))
+                }
+              />
             </SettingField>
-            <Input placeholder="Type something here.." />
+            {values.showDescription && (
+              <StyledInput
+                placeholder="Type something here.."
+                value={values.description}
+                onChange={(e) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+              />
+            )}
           </SettingStack>
         </SettingGroup>
 
         <ActionBar>
-          <Button variant="filledPrimary">Save</Button>
+          <Button variant="filledPrimary" onClick={handleSave}>
+            Save
+          </Button>
         </ActionBar>
       </PanelContent>
     </FloatingPanel>

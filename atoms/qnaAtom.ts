@@ -6,8 +6,9 @@ export type QnAFilter = 'all' | 'active'
 export const qnasAtom = atom<QnA[]>(mockQnAs)
 export const qnaFilterAtom = atom<QnAFilter>('all')
 
-export const activeQnAIdAtom = atom<string | undefined>(undefined)
-export const activePollIdAtom = atom<string | undefined>(undefined)
+export const activeItemIdAtom = atom<string | undefined>(undefined)
+
+export const expandedQnAIdsAtom = atom<Set<string>>(new Set<string>())
 
 export const filteredQnAsAtom = atom((get) => {
   const qnas = get(qnasAtom)

@@ -1,16 +1,16 @@
-import {
-  activeItemIdAtom,
-  expandedQnAIdsAtom,
-  filteredQnAsAtom,
-  qnaFilterAtom,
-  qnaStatsAtom,
-} from '@/atoms/qna.atoms'
 import { Poll } from '@/data/qna'
 import styled from '@emotion/styled'
 import { useAtom, useAtomValue } from 'jotai'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import {
+  activeItemIdAtom,
+  expandedQnAIdsAtom,
+  filteredQnAsAtom,
+  qnaFilterAtom,
+  qnaStatsAtom,
+} from '../../../atoms/qnaAtom'
 import { Button } from '../Button'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { QnAWidget } from '../QnAWidget'
