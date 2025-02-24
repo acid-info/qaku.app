@@ -10,6 +10,7 @@ export type PollOptionsItemProps = {
   isChecked: boolean
   onCheck: (isChecked: boolean) => void
   percentage: number
+  isInput?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
@@ -18,6 +19,7 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
   isChecked,
   onCheck,
   percentage,
+  isInput = false,
   ...props
 }) => {
   const validPercentage = getValidPercentage(percentage)
@@ -36,7 +38,14 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
             onClick={() => onCheck(!isChecked)}
           />
         )}
-        <Title>{title}</Title>
+        {isInput ? (
+          <StyledInput
+            defaultValue={title}
+            placeholder="Type something here.."
+          />
+        ) : (
+          <Title>{title}</Title>
+        )}
       </Top>
       <Bottom>
         <ProgressBar>
@@ -61,10 +70,12 @@ const Top = styled.div`
   display: flex;
   gap: 16px;
   align-items: center;
+  width: 100%;
 `
 
 const Title = styled.h3`
   margin-bottom: 0 !important;
+  flex: 1;
 `
 
 const Bottom = styled.div`
@@ -95,4 +106,21 @@ const PercentageText = styled.span`
   line-height: var(--body2-line-height);
   min-width: 45px;
   opacity: 0.5;
+`
+
+const StyledInput = styled.input`
+  background: transparent;
+  border: none;
+  font-size: var(--h3-font-size);
+  line-height: var(--h3-line-height);
+  flex: 1;
+  min-width: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--gray);
+  }
 `

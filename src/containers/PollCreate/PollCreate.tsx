@@ -55,7 +55,7 @@ export const PollCreate: React.FC = () => {
             </Collapsible>
           </Top>
           <Bottom>
-            <PollOptions options={options} />
+            <PollOptions isInput={true} options={options} />
             <IconButtonRound
               size="large"
               variant="filled"
