@@ -15,6 +15,7 @@ export type PollOptionsProps = {
   hasCheckbox?: boolean
   selectedOptionId?: string
   onOptionSelect?: (optionId: string) => void
+  onRemove?: (optionId: string) => void
 }
 
 export const PollOptions: React.FC<PollOptionsProps> = ({
@@ -23,6 +24,7 @@ export const PollOptions: React.FC<PollOptionsProps> = ({
   onOptionSelect,
   isInput = false,
   hasCheckbox = true,
+  onRemove,
 }) => {
   return (
     <Container>
@@ -34,6 +36,7 @@ export const PollOptions: React.FC<PollOptionsProps> = ({
           isChecked={option.id === selectedOptionId}
           onCheck={() => onOptionSelect?.(option.id)}
           isInput={isInput}
+          onRemove={() => onRemove?.(option.id)}
         />
       ))}
     </Container>

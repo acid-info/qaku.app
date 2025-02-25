@@ -3,23 +3,26 @@ import React from 'react'
 import { getValidPercentage } from '../../utils/general.utils'
 import { IconButtonRound } from '../IconButtonRound'
 import { CheckIcon } from '../Icons/CheckIcon'
+import { CloseIcon } from '../Icons/CloseIcon'
 
 export type PollOptionsItemProps = {
   title: string
   hasCheckbox: boolean
   isChecked: boolean
-  onCheck: (isChecked: boolean) => void
   percentage: number
   isInput?: boolean
+  onCheck: (isChecked: boolean) => void
+  onRemove?: () => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
   title,
   hasCheckbox,
   isChecked,
-  onCheck,
   percentage,
   isInput = false,
+  onCheck,
+  onRemove,
   ...props
 }) => {
   const validPercentage = getValidPercentage(percentage)
@@ -27,31 +30,35 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
   return (
     <Container {...props}>
       <Top>
-        {hasCheckbox && (
-          <IconButtonRound
-            variant={isChecked ? 'filledPrimary' : 'outlined'}
-            icon={
-              <CheckIcon
-                style={{ color: isChecked ? 'var(--black)' : 'var(--white)' }}
-              />
-            }
-            onClick={() => onCheck(!isChecked)}
-          />
-        )}
-        {isInput ? (
-          <StyledInput
-            defaultValue={title}
-            placeholder="Type something here.."
-          />
-        ) : (
-          <Title>{title}</Title>
-        )}
+        <MainContent>
+          {hasCheckbox && (
+            <IconButtonRound
+              variant={isChecked ? 'filledPrimary' : 'outlined'}
+              icon={
+                <CheckIcon
+                  style={{ color: isChecked ? 'var(--black)' : 'var(--white)' }}
+                />
+              }
+              onClick={() => onCheck(!isChecked)}
+            />
+          )}
+          {isInput ? (
+            <StyledInput defaultValue={title} />
+          ) : (
+            <Title>{title}</Title>
+          )}
+        </MainContent>
+        <HoverIconButtonRound
+          className="hover-icon-button"
+          icon={<StyledCloseIcon />}
+          onClick={onRemove}
+        />
       </Top>
       <Bottom>
         <ProgressBar>
           <Progress style={{ width: `${validPercentage}%` }} />
         </ProgressBar>
-        <PercentageText>{validPercentage}%</PercentageText>
+        <PercentageContainer>{validPercentage}%</PercentageContainer>
       </Bottom>
     </Container>
   )
@@ -64,13 +71,26 @@ const Container = styled.div`
   padding: 16px;
   background-color: transparent;
   border: 1px solid var(--gray);
+
+  &:hover {
+    .hover-icon-button {
+      opacity: 1;
+    }
+  }
 `
 
 const Top = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 20px;
   align-items: center;
   width: 100%;
+`
+
+const MainContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
 `
 
 const Title = styled.h3`
@@ -100,11 +120,14 @@ const Progress = styled.div`
   transition: width 0.3s ease-in-out;
 `
 
-const PercentageText = styled.span`
+const PercentageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--white);
   font-size: var(--body2-font-size);
   line-height: var(--body2-line-height);
-  min-width: 45px;
+  width: 36px;
   opacity: 0.5;
 `
 
@@ -116,11 +139,26 @@ const StyledInput = styled.input`
   flex: 1;
   min-width: 0;
 
-  &:focus {
-    outline: none;
+  &::placeholder {
+    opacity: 0.5;
   }
 
-  &::placeholder {
-    color: var(--gray);
+  &:hover:not(:focus) {
+    opacity: 0.5;
   }
+
+  &:focus {
+    outline: none;
+    opacity: 1;
+  }
+`
+
+const HoverIconButtonRound = styled(IconButtonRound)`
+  background-color: var(--gray-darker);
+  border-color: var(--gray-darker);
+  opacity: 0;
+`
+
+const StyledCloseIcon = styled(CloseIcon)`
+  opacity: 0.7;
 `
