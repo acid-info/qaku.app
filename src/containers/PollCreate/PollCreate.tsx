@@ -9,6 +9,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 
 export const PollCreate: React.FC = () => {
+  const [nextId, setNextId] = useState(3)
   const [options, setOptions] = useState([
     {
       id: '1',
@@ -25,16 +26,20 @@ export const PollCreate: React.FC = () => {
   ])
 
   const handleAddOption = () => {
-    const newId = (options.length + 1).toString()
     setOptions([
       ...options,
       {
-        id: newId,
-        title: `Option ${newId}`,
+        id: nextId.toString(),
+        title: `Option ${nextId}`,
         percentage: 0,
         isChecked: false,
       },
     ])
+    setNextId(nextId + 1)
+  }
+
+  const handleRemoveOption = (optionId: string) => {
+    setOptions(options.filter((option) => option.id !== optionId))
   }
 
   return (
@@ -54,7 +59,11 @@ export const PollCreate: React.FC = () => {
             </Collapsible>
           </Top>
           <Bottom>
-            <PollOptions isInput={true} options={options} />
+            <PollOptions
+              isInput={true}
+              options={options}
+              onRemove={handleRemoveOption}
+            />
             <IconButtonRound
               size="large"
               variant="filled"
