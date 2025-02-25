@@ -113,7 +113,6 @@ const InputContainer = styled.div<{ $isFocused: boolean }>`
   padding: 16px;
   background-color: ${({ $isFocused }) =>
     $isFocused ? 'var(--gray-darkest)' : 'var(--gray-ultradark)'};
-  transition: background-color 0.2s ease;
 `
 
 const MessageInput = styled.input<{ $isFocused: boolean }>`

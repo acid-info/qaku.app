@@ -122,7 +122,6 @@ const StyledTabItem = styled.button<{
   border-radius: 40px;
   border: ${({ $variant }) =>
     VARIANT_CONFIG[$variant].hasBorder ? '1px solid var(--gray)' : 'none'};
-  transition: background-color 0.2s ease;
   cursor: ${({ $isActive }) => ($isActive ? 'default' : 'pointer')};
   background-color: ${({ $variant, $isActive }) =>
     getBackgroundColor($variant, $isActive)};

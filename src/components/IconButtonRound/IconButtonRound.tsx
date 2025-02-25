@@ -96,7 +96,6 @@ const StyledButton = styled.button<{
   justify-content: center;
   border: 1px solid;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
   padding: 0;
 
   width: ${({ size }) => SIZE_CONFIG[size].size};

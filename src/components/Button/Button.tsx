@@ -86,7 +86,6 @@ const StyledButton = styled.button<{
   gap: 8px;
   border: 1px solid;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
   font-family: inherit;
   white-space: nowrap;
 

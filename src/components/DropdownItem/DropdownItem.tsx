@@ -69,7 +69,6 @@ const StyledDropdownItem = styled.button<{
   justify-content: space-between;
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
-  transition: all 0.2s ease;
 
   &:hover {
     background: ${({ $variant }) => VARIANT_CONFIG[$variant].background.hover};
