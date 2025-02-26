@@ -6,12 +6,12 @@ import {
 import styled from '@emotion/styled'
 import React from 'react'
 
-type ThreadInfo = HeaderThreadInfoType & {
+type ThreadInfoType = HeaderThreadInfoType & {
   response: string
 }
 
 export type ThreadItemResponseProps = {
-  info: ThreadInfo
+  info: ThreadInfoType
   likes?: LikeInfoType
   onLikeClick?: () => void
 }

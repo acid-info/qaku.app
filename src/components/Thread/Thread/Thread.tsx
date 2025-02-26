@@ -1,16 +1,15 @@
-import styled from '@emotion/styled'
-import React, { useState } from 'react'
-
 import {
   type ThreadInfoType as HeaderThreadInfoType,
   type LikeInfoType,
 } from '@/types/thread.types'
+import styled from '@emotion/styled'
+import React, { useState } from 'react'
 import { ThreadItem } from '../ThreadItem'
 import { ThreadItemReply, type ThreadItemReplyProps } from '../ThreadItemReply'
 import { type ThreadItemResponseProps } from '../ThreadItemResponse'
 import { ReplyContainer } from './ReplyContainer'
 
-type ThreadInfo = HeaderThreadInfoType & {
+type ThreadInfoType = HeaderThreadInfoType & {
   question: string
   responses: Array<{
     info: ThreadItemResponseProps['info']
@@ -19,7 +18,7 @@ type ThreadInfo = HeaderThreadInfoType & {
 }
 
 export type ThreadProps = {
-  info: ThreadInfo
+  info: ThreadInfoType
   likes: LikeInfoType
   onQuestionLikeClick?: () => void
   onResponseLikeClick?: (index: number) => void

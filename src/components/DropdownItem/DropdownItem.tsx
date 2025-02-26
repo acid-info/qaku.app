@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import { ReactNode } from 'react'
 
-export type DropdownItemVariant = 'filled' | 'outlined'
+export type DropdownItemVariantType = 'filled' | 'outlined'
 
-type VariantConfig = {
+type VariantConfigType = {
   background: {
     default: string
     active: string
@@ -12,7 +12,7 @@ type VariantConfig = {
   border: string
 }
 
-const VARIANT_CONFIG: Record<DropdownItemVariant, VariantConfig> = {
+const VARIANT_CONFIG: Record<DropdownItemVariantType, VariantConfigType> = {
   filled: {
     background: {
       default: 'var(--gray)',
@@ -34,7 +34,7 @@ const VARIANT_CONFIG: Record<DropdownItemVariant, VariantConfig> = {
 export type DropdownItemProps = {
   children: ReactNode
   onClick?: () => void
-  variant?: DropdownItemVariant
+  variant?: DropdownItemVariantType
   active?: boolean
 }
 
@@ -52,7 +52,7 @@ export const DropdownItem = ({
 }
 
 const StyledDropdownItem = styled.button<{
-  $variant: DropdownItemVariant
+  $variant: DropdownItemVariantType
   $active: boolean
 }>`
   width: 100%;

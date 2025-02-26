@@ -1,20 +1,20 @@
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 
-import { DropdownItem, DropdownItemVariant } from '../DropdownItem'
+import { DropdownItem, DropdownItemVariantType } from '../DropdownItem'
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
 import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 
-export type DropdownOption = {
+export type DropdownOptionType = {
   label: string
   value: string | number
 }
 
 export type DropdownProps = {
-  options: DropdownOption[]
+  options: DropdownOptionType[]
   value?: string | number
   onChange?: (value: string | number) => void
-  variant?: DropdownItemVariant
+  variant?: DropdownItemVariantType
   placeholder?: string
 }
 
@@ -81,7 +81,7 @@ const DropdownContainer = styled.div`
   width: 100%;
 `
 
-const DropdownList = styled.div<{ $variant: DropdownItemVariant }>`
+const DropdownList = styled.div<{ $variant: DropdownItemVariantType }>`
   position: absolute;
   top: 100%;
   left: 0;

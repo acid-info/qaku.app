@@ -7,12 +7,12 @@ import {
 import styled from '@emotion/styled'
 import React from 'react'
 
-type ThreadInfo = HeaderThreadInfoType & {
+type ThreadInfoType = HeaderThreadInfoType & {
   question: string
 }
 
 export type ThreadItemProps = {
-  info: ThreadInfo
+  info: ThreadInfoType
   likes: LikeInfoType
   actions?: ActionVisibilityType
   isFirst?: boolean

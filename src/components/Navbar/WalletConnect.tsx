@@ -3,11 +3,11 @@ import { useAtom } from 'jotai'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { Button } from '../Button'
 
-type Props = {
+type WalletConnectProps = {
   secondaryButton?: React.ReactNode
 }
 
-const WalletConnect = ({ secondaryButton = null }: Props) => {
+const WalletConnect = ({ secondaryButton = null }: WalletConnectProps) => {
   const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
 
   const handleClick = () => {

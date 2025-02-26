@@ -3,13 +3,13 @@ import React from 'react'
 
 import { PlusIcon } from '../Icons/PlusIcon'
 
-export type QnAWidgetItemVariant = 'text' | 'icon'
+export type QnAWidgetItemVariantType = 'text' | 'icon'
 
 export interface QnAWidgetItemProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string
   isActive?: boolean
-  variant?: QnAWidgetItemVariant
+  variant?: QnAWidgetItemVariantType
 }
 
 export const QnAWidgetItem: React.FC<QnAWidgetItemProps> = ({
@@ -31,7 +31,7 @@ export const QnAWidgetItem: React.FC<QnAWidgetItemProps> = ({
 }
 
 const StyledButton = styled.button<{
-  $variant: QnAWidgetItemVariant
+  $variant: QnAWidgetItemVariantType
   $isActive: boolean
 }>`
   display: flex;
