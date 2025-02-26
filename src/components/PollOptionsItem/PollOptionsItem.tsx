@@ -48,11 +48,13 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
             <Title>{title}</Title>
           )}
         </MainContent>
-        <HoverIconButtonRound
-          className="hover-icon-button"
-          icon={<StyledCloseIcon />}
-          onClick={onRemove}
-        />
+        {isInput && (
+          <HoverIconButtonRound
+            className="hover-icon-button"
+            icon={<StyledCloseIcon />}
+            onClick={onRemove}
+          />
+        )}
       </Top>
       <Bottom>
         <ProgressBar>
