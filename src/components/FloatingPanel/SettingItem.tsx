@@ -3,7 +3,7 @@ import {
   SettingDescription,
   SettingLabelGroup,
   SettingRowLayout,
-} from './styles'
+} from './styledComponents'
 
 export type SettingFieldProps = {
   title: string

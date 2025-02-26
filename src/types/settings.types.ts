@@ -1,27 +1,27 @@
-export type SaveHandler<T> = (values: T) => void | Promise<void>
+export type SaveHandlerType<T> = (values: T) => void | Promise<void>
 
-export enum ResultVisibility {
+export enum ResultVisibilityEnum {
   Visible = 'visible',
   Hidden = 'hidden',
 }
 
-export interface QnaSettings {
+export interface QnaSettingsInterface {
   allowReplies: boolean
   title: string
   showDescription: boolean
   description: string
 }
 
-export interface PollSettings {
+export interface PollSettingsInterface {
   multipleOptions: boolean
   markCorrectAnswer: boolean
-  resultVisibility: ResultVisibility
+  resultVisibility: ResultVisibilityEnum
   title: string
   showDescription: boolean
   description: string
 }
 
-export interface BaseFloatingPanelProps {
+export interface BaseFloatingPanelPropsInterface {
   isOpen: boolean
   onClose: () => void
 }

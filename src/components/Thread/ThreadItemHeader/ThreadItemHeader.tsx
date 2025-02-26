@@ -6,12 +6,16 @@ import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { CheckIcon } from '@/components/Icons/CheckIcon'
 import { ProfileIcon } from '@/components/ProfileIcon'
 import { TogglePill } from '@/components/TogglePill'
-import { ActionVisibility, LikeInfo, ThreadInfo } from '@/types/thread.types'
+import {
+  type ActionVisibilityType,
+  type LikeInfoType,
+  type ThreadInfoType,
+} from '@/types/thread.types'
 
 export type ThreadItemHeaderProps = {
-  info: ThreadInfo
-  likes?: LikeInfo
-  actions?: ActionVisibility
+  info: ThreadInfoType
+  likes?: LikeInfoType
+  actions?: ActionVisibilityType
   profileIconVariant?: 'gray' | 'black'
   onCheckClick?: () => void
   onCommentClick?: () => void

@@ -1,11 +1,11 @@
-import { QnaSettings } from '@/types/settings.types'
+import { QnaSettingsInterface } from '@/types/settings.types'
 import { atom } from 'jotai'
 
-const defaultQnaSettings: QnaSettings = {
+const defaultQnaSettings: QnaSettingsInterface = {
   allowReplies: true,
   title: '',
   showDescription: false,
   description: '',
 }
 
-export const qnaSettingsAtom = atom<QnaSettings>(defaultQnaSettings)
+export const qnaSettingsAtom = atom<QnaSettingsInterface>(defaultQnaSettings)

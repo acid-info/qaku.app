@@ -1,5 +1,5 @@
 import { siteConfigs } from '@/configs/site.configs'
-import { FooterGroup } from '@/types/ui.types'
+import { type FooterGroupType } from '@/types/ui.types'
 
 export const NavLinksItems = [
   { label: 'Articles', href: '/articles' },
@@ -9,8 +9,8 @@ export const NavLinksItems = [
 ]
 
 export const FooterLinksItems: {
-  info: FooterGroup
-  social: FooterGroup
+  info: FooterGroupType
+  social: FooterGroupType
 } = {
   info: {
     title: null,

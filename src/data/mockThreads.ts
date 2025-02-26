@@ -1,6 +1,6 @@
-import { Thread } from '@/types/thread.types'
+import { type ThreadInterface } from '@/types/thread.types'
 
-export const mockThreads: Thread[] = [
+export const mockThreads: ThreadInterface[] = [
   {
     info: {
       author: 'Alice',

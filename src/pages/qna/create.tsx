@@ -2,6 +2,7 @@ import { SEO } from '@/components/SEO'
 import { Sidebar } from '@/components/Sidebar'
 import { QnaCreate } from '@/containers/QnaCreate/QnaCreate'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
+import { NavbarModeEnum } from '@/types/navbar.types'
 
 export default function Page() {
   return (
@@ -19,7 +20,7 @@ Page.getLayout = function getLayout(page: React.ReactNode) {
       showFooter={false}
       sidebar={<Sidebar />}
       navProps={{
-        mode: 'qna',
+        mode: NavbarModeEnum.Qna,
         isTitleOnly: true,
         title: 'New Qaku',
       }}

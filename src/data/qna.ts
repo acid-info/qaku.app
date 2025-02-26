@@ -1,6 +1,6 @@
-import { QnA } from '@/types/qna.types'
+import { type QnAInterface } from '@/types/qna.types'
 
-export const mockQnAs: QnA[] = [
+export const mockQnAs: QnAInterface[] = [
   {
     id: 'qna-1',
     title: 'Community Town Hall Q&A',

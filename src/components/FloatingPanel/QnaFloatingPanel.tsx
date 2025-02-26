@@ -1,7 +1,7 @@
 import {
-  BaseFloatingPanelProps,
-  QnaSettings,
-  SaveHandler,
+  BaseFloatingPanelPropsInterface,
+  QnaSettingsInterface,
+  SaveHandlerType,
 } from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
@@ -9,11 +9,16 @@ import { StyledInput } from '../StyledComponents'
 import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
-import { ActionBar, PanelContent, SettingGroup, SettingStack } from './styles'
+import {
+  ActionBar,
+  PanelContent,
+  SettingGroup,
+  SettingStack,
+} from './styledComponents'
 
-export interface QnaFloatingPanelProps extends BaseFloatingPanelProps {
-  initialValues?: Partial<QnaSettings>
-  onSave: SaveHandler<QnaSettings>
+export interface QnaFloatingPanelProps extends BaseFloatingPanelPropsInterface {
+  initialValues?: Partial<QnaSettingsInterface>
+  onSave: SaveHandlerType<QnaSettingsInterface>
 }
 
 export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
@@ -22,7 +27,7 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
   initialValues,
   onSave,
 }) => {
-  const [values, setValues] = useState<QnaSettings>({
+  const [values, setValues] = useState<QnaSettingsInterface>({
     allowReplies: true,
     title: '',
     showDescription: false,

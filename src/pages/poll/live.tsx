@@ -4,7 +4,7 @@ import { SEO } from '@/components/SEO'
 import { Sidebar } from '@/components/Sidebar'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
-import { QnaProgressStatus } from '@/types/navbar.types'
+import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
@@ -22,9 +22,9 @@ export default function Page() {
       showFooter={false}
       sidebar={<Sidebar />}
       navProps={{
-        mode: 'polls',
+        mode: NavbarModeEnum.Polls,
         isTitleOnly: false,
-        status: QnaProgressStatus.InProgress,
+        status: QnaProgressStatusEnum.InProgress,
         title: pollSettings.title || 'Live Q&A Session',
         date: new Date().toISOString(),
         count: 0,

@@ -1,8 +1,8 @@
 import {
-  BaseFloatingPanelProps,
-  PollSettings,
-  ResultVisibility,
-  SaveHandler,
+  BaseFloatingPanelPropsInterface,
+  PollSettingsInterface,
+  ResultVisibilityEnum,
+  SaveHandlerType,
 } from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
@@ -11,11 +11,17 @@ import { Tab } from '../Tab'
 import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
-import { ActionBar, PanelContent, SettingGroup, SettingStack } from './styles'
+import {
+  ActionBar,
+  PanelContent,
+  SettingGroup,
+  SettingStack,
+} from './styledComponents'
 
-export interface PollFloatingPanelProps extends BaseFloatingPanelProps {
-  initialValues?: Partial<PollSettings>
-  onSave: SaveHandler<PollSettings>
+export interface PollFloatingPanelProps
+  extends BaseFloatingPanelPropsInterface {
+  initialValues?: Partial<PollSettingsInterface>
+  onSave: SaveHandlerType<PollSettingsInterface>
 }
 
 export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
@@ -24,10 +30,10 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
   initialValues,
   onSave,
 }) => {
-  const [values, setValues] = useState<PollSettings>({
+  const [values, setValues] = useState<PollSettingsInterface>({
     multipleOptions: true,
     markCorrectAnswer: true,
-    resultVisibility: ResultVisibility.Visible,
+    resultVisibility: ResultVisibilityEnum.Visible,
     title: '',
     showDescription: false,
     description: '',
@@ -84,14 +90,14 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
             <Tab
               variant="secondary"
               options={[
-                { id: ResultVisibility.Visible, label: 'Visible' },
-                { id: ResultVisibility.Hidden, label: 'Hidden' },
+                { id: ResultVisibilityEnum.Visible, label: 'Visible' },
+                { id: ResultVisibilityEnum.Hidden, label: 'Hidden' },
               ]}
               activeId={values.resultVisibility}
               onChange={(id) =>
                 setValues((prev) => ({
                   ...prev,
-                  resultVisibility: id as ResultVisibility,
+                  resultVisibility: id as ResultVisibilityEnum,
                 }))
               }
             />

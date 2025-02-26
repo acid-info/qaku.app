@@ -1,32 +1,32 @@
-export type ActionVisibility = {
+export type ActionVisibilityType = {
   comment?: boolean
   like?: boolean
   check?: boolean
 }
 
-export type ThreadInfo = {
+export type ThreadInfoType = {
   author: string
   timestamp: string
 }
 
-export type LikeInfo = {
+export type LikeInfoType = {
   count: number
   isLiked: boolean
 }
 
-export interface ThreadResponse {
+export interface ThreadResponseInterface {
   info: {
     author: string
     timestamp: string
     response: string
   }
-  likes: LikeInfo
+  likes: LikeInfoType
 }
 
-export interface Thread {
-  info: ThreadInfo & {
+export interface ThreadInterface {
+  info: ThreadInfoType & {
     question: string
-    responses: ThreadResponse[]
+    responses: ThreadResponseInterface[]
   }
-  likes: LikeInfo
+  likes: LikeInfoType
 }

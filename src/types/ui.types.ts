@@ -1,14 +1,14 @@
 import { ReactNode } from 'react'
 
-export type FooterItem = {
+export type FooterItemType = {
   label: string | null
   href: string
   icon?: ReactNode
   key?: string
 }
 
-export type FooterGroup = {
+export type FooterGroupType = {
   title: string | null
   key?: string
-  links: FooterItem[]
+  links: FooterItemType[]
 }

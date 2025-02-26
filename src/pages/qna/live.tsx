@@ -4,7 +4,7 @@ import { SEO } from '@/components/SEO'
 import { Sidebar } from '@/components/Sidebar'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
-import { QnaProgressStatus } from '@/types/navbar.types'
+import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
@@ -22,9 +22,9 @@ export default function Page() {
       useAlternativeGap
       sidebar={<Sidebar />}
       navProps={{
-        mode: 'qna',
+        mode: NavbarModeEnum.Qna,
         isTitleOnly: false,
-        status: QnaProgressStatus.InProgress,
+        status: QnaProgressStatusEnum.InProgress,
         title: qnaSettings.title || 'Live Q&A Session',
         date: new Date().toISOString(),
         count: 0,

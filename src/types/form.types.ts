@@ -1,4 +1,4 @@
-export type MessageFormSubmitHandler = (params: {
+export type MessageFormSubmitHandlerType = (params: {
   message: string
   isAnonymous: boolean
   resetForm: () => void

@@ -1,18 +1,18 @@
 import { ThreadItemHeader } from '@/components/Thread/ThreadItemHeader'
 import {
-  type ThreadInfo as HeaderThreadInfo,
-  type LikeInfo,
+  type ThreadInfoType as HeaderThreadInfoType,
+  type LikeInfoType,
 } from '@/types/thread.types'
 import styled from '@emotion/styled'
 import React from 'react'
 
-type ThreadInfo = HeaderThreadInfo & {
+type ThreadInfo = HeaderThreadInfoType & {
   response: string
 }
 
 export type ThreadItemResponseProps = {
   info: ThreadInfo
-  likes?: LikeInfo
+  likes?: LikeInfoType
   onLikeClick?: () => void
 }
 

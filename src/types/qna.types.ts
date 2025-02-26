@@ -1,24 +1,27 @@
-export interface QnA {
+export interface QnAInterface {
   id: string
   title: string
   isLive?: boolean
-  polls: Poll[]
+  polls: PollInterface[]
 }
 
-export interface Poll {
+export interface PollInterface {
   id: string
   title: string
   isLive?: boolean
 }
 
-export type qnaData = {
+export type qnaDataType = {
   id: string
   title: string
 }
 
-export type pollData = {
+export type pollDataType = {
   id: string
   title: string
 }
 
-export type QnAFilter = 'all' | 'active'
+export enum QnAFilterTypeEnum {
+  All = 'all',
+  Active = 'active',
+}
