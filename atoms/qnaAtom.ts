@@ -1,7 +1,6 @@
-import { QnA, mockQnAs } from '@/data/qna'
+import { mockQnAs } from '@/data/qna'
+import { QnA, QnAFilter } from '@/types/qna.types'
 import { atom } from 'jotai'
-
-export type QnAFilter = 'all' | 'active'
 
 export const qnasAtom = atom<QnA[]>(mockQnAs)
 export const qnaFilterAtom = atom<QnAFilter>('all')

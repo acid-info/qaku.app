@@ -1,4 +1,4 @@
-import { Poll } from '@/data/qna'
+import { Poll } from '@/types/qna.types'
 import styled from '@emotion/styled'
 import { useAtom, useAtomValue } from 'jotai'
 import Link from 'next/link'

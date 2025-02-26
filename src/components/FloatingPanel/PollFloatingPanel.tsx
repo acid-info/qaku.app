@@ -1,3 +1,9 @@
+import {
+  BaseFloatingPanelProps,
+  PollSettings,
+  ResultVisibility,
+  SaveHandler,
+} from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
 import { StyledInput } from '../StyledComponents'
@@ -6,12 +12,6 @@ import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
 import { ActionBar, PanelContent, SettingGroup, SettingStack } from './styles'
-import {
-  BaseFloatingPanelProps,
-  PollSettings,
-  ResultVisibility,
-  SaveHandler,
-} from './types'
 
 export interface PollFloatingPanelProps extends BaseFloatingPanelProps {
   initialValues?: Partial<PollSettings>

@@ -1,3 +1,8 @@
+import {
+  BaseFloatingPanelProps,
+  QnaSettings,
+  SaveHandler,
+} from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
 import { StyledInput } from '../StyledComponents'
@@ -5,7 +10,6 @@ import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
 import { ActionBar, PanelContent, SettingGroup, SettingStack } from './styles'
-import { BaseFloatingPanelProps, QnaSettings, SaveHandler } from './types'
 
 export interface QnaFloatingPanelProps extends BaseFloatingPanelProps {
   initialValues?: Partial<QnaSettings>

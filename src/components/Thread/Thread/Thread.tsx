@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
-import { ThreadItem } from '../ThreadItem'
 import {
   type ThreadInfo as HeaderThreadInfo,
   type LikeInfo,
-} from '../ThreadItemHeader'
+} from '@/types/thread.types'
+import { ThreadItem } from '../ThreadItem'
 import { ThreadItemReply, type ThreadItemReplyProps } from '../ThreadItemReply'
 import { type ThreadItemResponseProps } from '../ThreadItemResponse'
 import { ReplyContainer } from './ReplyContainer'

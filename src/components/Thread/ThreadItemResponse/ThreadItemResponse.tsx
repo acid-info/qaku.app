@@ -1,11 +1,10 @@
-import styled from '@emotion/styled'
-import React from 'react'
-
+import { ThreadItemHeader } from '@/components/Thread/ThreadItemHeader'
 import {
-  ThreadItemHeader,
   type ThreadInfo as HeaderThreadInfo,
   type LikeInfo,
-} from '@/components/Thread/ThreadItemHeader'
+} from '@/types/thread.types'
+import styled from '@emotion/styled'
+import React from 'react'
 
 type ThreadInfo = HeaderThreadInfo & {
   response: string

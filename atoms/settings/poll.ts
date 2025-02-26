@@ -1,7 +1,4 @@
-import {
-  PollSettings,
-  ResultVisibility,
-} from '@/components/FloatingPanel/types'
+import { PollSettings, ResultVisibility } from '@/types/settings.types'
 import { atom } from 'jotai'
 
 const defaultPollSettings: PollSettings = {

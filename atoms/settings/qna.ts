@@ -1,4 +1,4 @@
-import { QnaSettings } from '@/components/FloatingPanel/types'
+import { QnaSettings } from '@/types/settings.types'
 import { atom } from 'jotai'
 
 const defaultQnaSettings: QnaSettings = {
