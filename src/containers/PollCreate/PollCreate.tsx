@@ -60,7 +60,7 @@ export const PollCreate: React.FC = () => {
           </Top>
           <Bottom>
             <PollOptions
-              isInput={true}
+              hasInput={true}
               options={options}
               onRemove={handleRemoveOption}
             />

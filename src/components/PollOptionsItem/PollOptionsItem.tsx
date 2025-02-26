@@ -10,7 +10,7 @@ export type PollOptionsItemProps = {
   hasCheckbox: boolean
   isChecked: boolean
   percentage: number
-  isInput?: boolean
+  hasInput?: boolean
   onCheck: (isChecked: boolean) => void
   onRemove?: () => void
 } & React.HTMLAttributes<HTMLDivElement>
@@ -20,7 +20,7 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
   hasCheckbox,
   isChecked,
   percentage,
-  isInput = false,
+  hasInput = false,
   onCheck,
   onRemove,
   ...props
@@ -42,13 +42,13 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
               onClick={() => onCheck(!isChecked)}
             />
           )}
-          {isInput ? (
+          {hasInput ? (
             <StyledInput defaultValue={title} />
           ) : (
             <Title>{title}</Title>
           )}
         </MainContent>
-        {isInput && (
+        {hasInput && (
           <HoverIconButtonRound
             className="hover-icon-button"
             icon={<StyledCloseIcon />}
