@@ -1,16 +1,16 @@
+import { PollInterface, QnAFilterTypeEnum } from '@/types/qna.types'
+import styled from '@emotion/styled'
+import { useAtom, useAtomValue } from 'jotai'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 import {
   activeItemIdAtom,
   expandedQnAIdsAtom,
   filteredQnAsAtom,
   qnaFilterAtom,
   qnaStatsAtom,
-} from '@/atoms/qna.atoms'
-import { Poll } from '@/data/qna'
-import styled from '@emotion/styled'
-import { useAtom, useAtomValue } from 'jotai'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+} from '../../../atoms/qnaAtom'
 import { Button } from '../Button'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { QnAWidget } from '../QnAWidget'
@@ -35,7 +35,7 @@ export const Sidebar: React.FC = () => {
     const qnaToExpand = filteredQnAs.find(
       (qna) =>
         qna.id === activeItemId ||
-        qna.polls.some((p: Poll) => p.id === activeItemId),
+        qna.polls.some((p: PollInterface) => p.id === activeItemId),
     )
 
     if (qnaToExpand) {
@@ -60,9 +60,9 @@ export const Sidebar: React.FC = () => {
   const handlePollClick = (pollId: string) => {
     setActiveItemId(pollId)
     const qna = filteredQnAs.find((q) =>
-      q.polls.some((p: Poll) => p.id === pollId),
+      q.polls.some((p: PollInterface) => p.id === pollId),
     )
-    const poll = qna?.polls.find((p: Poll) => p.id === pollId)
+    const poll = qna?.polls.find((p: PollInterface) => p.id === pollId)
 
     if (poll?.isLive) {
       router.push('/poll/live')
@@ -103,15 +103,15 @@ export const Sidebar: React.FC = () => {
               label: 'All',
               data: stats.all,
               size: 'large',
-              isActive: filter === 'all',
-              onClick: () => setFilter('all'),
+              isActive: filter === QnAFilterTypeEnum.All,
+              onClick: () => setFilter(QnAFilterTypeEnum.All),
             },
             {
               label: 'Active',
               data: stats.active,
               size: 'large',
-              isActive: filter === 'active',
-              onClick: () => setFilter('active'),
+              isActive: filter === QnAFilterTypeEnum.Active,
+              onClick: () => setFilter(QnAFilterTypeEnum.Active),
             },
           ]}
         />

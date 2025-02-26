@@ -2,7 +2,7 @@ import { SEO } from '@/components/SEO'
 import { Sidebar } from '@/components/Sidebar'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
-import { QnaProgressStatus } from '@/types/navbar.types'
+import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 
 export default function Page() {
   const getLayout = (page: React.ReactNode) => (
@@ -10,9 +10,9 @@ export default function Page() {
       showFooter={false}
       sidebar={<Sidebar />}
       navProps={{
-        mode: 'qna',
+        mode: NavbarModeEnum.Qna,
         isTitleOnly: false,
-        status: QnaProgressStatus.Ended,
+        status: QnaProgressStatusEnum.Ended,
         title: 'Live Q&A Session',
         date: new Date().toISOString(),
         count: 0,

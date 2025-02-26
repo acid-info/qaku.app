@@ -1,21 +1,20 @@
+import { ThreadItemHeader } from '@/components/Thread/ThreadItemHeader'
+import {
+  type ActionVisibilityType,
+  type ThreadInfoType as HeaderThreadInfoType,
+  type LikeInfoType,
+} from '@/types/thread.types'
 import styled from '@emotion/styled'
 import React from 'react'
 
-import {
-  ThreadItemHeader,
-  type ActionVisibility,
-  type ThreadInfo as HeaderThreadInfo,
-  type LikeInfo,
-} from '@/components/Thread/ThreadItemHeader'
-
-type ThreadInfo = HeaderThreadInfo & {
+type ThreadInfoType = HeaderThreadInfoType & {
   question: string
 }
 
 export type ThreadItemProps = {
-  info: ThreadInfo
-  likes: LikeInfo
-  actions?: ActionVisibility
+  info: ThreadInfoType
+  likes: LikeInfoType
+  actions?: ActionVisibilityType
   isFirst?: boolean
   onCheckClick?: () => void
   onCommentClick?: () => void

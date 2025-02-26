@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export type VariantType = 'primary' | 'secondary' | 'tertiary'
 
-type VariantConfig = {
+type VariantConfigType = {
   activeBackground: string
   inactiveBackground: string
   hoverBackground: string
@@ -17,7 +17,7 @@ type VariantConfig = {
   hasBorder: boolean
 }
 
-const VARIANT_CONFIG: Record<VariantType, VariantConfig> = {
+const VARIANT_CONFIG: Record<VariantType, VariantConfigType> = {
   primary: {
     activeBackground: 'var(--yellow)',
     inactiveBackground: 'var(--black)',
@@ -122,7 +122,6 @@ const StyledTabItem = styled.button<{
   border-radius: 40px;
   border: ${({ $variant }) =>
     VARIANT_CONFIG[$variant].hasBorder ? '1px solid var(--gray)' : 'none'};
-  transition: background-color 0.2s ease;
   cursor: ${({ $isActive }) => ($isActive ? 'default' : 'pointer')};
   background-color: ${({ $variant, $isActive }) =>
     getBackgroundColor($variant, $isActive)};

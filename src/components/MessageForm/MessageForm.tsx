@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useRef, useState } from 'react'
 
-import { MessageFormSubmitHandler } from '@/types/form.types'
+import { MessageFormSubmitHandlerType } from '@/types/form.types'
 import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
 import { Button } from '../Button'
 import { ProfileIcon } from '../ProfileIcon'
@@ -9,7 +9,7 @@ import { ToggleButton } from '../ToggleButton'
 
 export type MessageFormProps = {
   isAuthorized?: boolean
-  onSubmit: MessageFormSubmitHandler
+  onSubmit: MessageFormSubmitHandlerType
   messagePlaceholder?: string
   namePlaceholder?: string
   maxLength?: number
@@ -113,7 +113,6 @@ const InputContainer = styled.div<{ $isFocused: boolean }>`
   padding: 16px;
   background-color: ${({ $isFocused }) =>
     $isFocused ? 'var(--gray-darkest)' : 'var(--gray-ultradark)'};
-  transition: background-color 0.2s ease;
 `
 
 const MessageInput = styled.input<{ $isFocused: boolean }>`

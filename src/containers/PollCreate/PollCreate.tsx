@@ -2,14 +2,14 @@ import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
-import { Input } from '@/components/Input'
 import { PollOptions } from '@/components/PollOptions'
-import { ActionContainer } from '@/components/StyledComponents'
+import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
 export const PollCreate: React.FC = () => {
+  const [nextId, setNextId] = useState(3)
   const [options, setOptions] = useState([
     {
       id: '1',
@@ -26,16 +26,20 @@ export const PollCreate: React.FC = () => {
   ])
 
   const handleAddOption = () => {
-    const newId = (options.length + 1).toString()
     setOptions([
       ...options,
       {
-        id: newId,
-        title: `Option ${newId}`,
+        id: nextId.toString(),
+        title: `Option ${nextId}`,
         percentage: 0,
         isChecked: false,
       },
     ])
+    setNextId(nextId + 1)
+  }
+
+  const handleRemoveOption = (optionId: string) => {
+    setOptions(options.filter((option) => option.id !== optionId))
   }
 
   return (
@@ -45,7 +49,7 @@ export const PollCreate: React.FC = () => {
           <Top>
             <TitleWithInput>
               <h3>What would you like to ask?</h3>
-              <Input placeholder="Type something here.." />
+              <StyledInput placeholder="Type something here.." />
             </TitleWithInput>
             <Collapsible title="Add description">
               <textarea
@@ -55,7 +59,11 @@ export const PollCreate: React.FC = () => {
             </Collapsible>
           </Top>
           <Bottom>
-            <PollOptions options={options} />
+            <PollOptions
+              hasInput={true}
+              options={options}
+              onRemove={handleRemoveOption}
+            />
             <IconButtonRound
               size="large"
               variant="filled"

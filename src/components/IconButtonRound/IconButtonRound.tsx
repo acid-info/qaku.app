@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
 import React, { ReactNode } from 'react'
 
-export type IconButtonRoundSize = 'small' | 'medium' | 'large'
-export type IconButtonRoundVariant =
+export type IconButtonRoundSizeType = 'small' | 'medium' | 'large'
+export type IconButtonRoundVariantType =
   | 'filled'
   | 'outlined'
   | 'filledPrimary'
   | 'outlinedPrimary'
 
-type VariantConfig = {
+type VariantConfigType = {
   backgroundColor: string
   borderColor: string
   textColor: string
@@ -16,12 +16,12 @@ type VariantConfig = {
   iconColor: string
 }
 
-type SizeConfig = {
+type SizeConfigType = {
   size: string
   radius: string
 }
 
-const VARIANT_CONFIG: Record<IconButtonRoundVariant, VariantConfig> = {
+const VARIANT_CONFIG: Record<IconButtonRoundVariantType, VariantConfigType> = {
   filled: {
     backgroundColor: 'var(--gray)',
     borderColor: 'var(--gray)',
@@ -52,7 +52,7 @@ const VARIANT_CONFIG: Record<IconButtonRoundVariant, VariantConfig> = {
   },
 }
 
-const SIZE_CONFIG: Record<IconButtonRoundSize, SizeConfig> = {
+const SIZE_CONFIG: Record<IconButtonRoundSizeType, SizeConfigType> = {
   small: {
     size: '16px',
     radius: '40px',
@@ -69,9 +69,9 @@ const SIZE_CONFIG: Record<IconButtonRoundSize, SizeConfig> = {
 
 export interface IconButtonRoundProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: IconButtonRoundSize
+  size?: IconButtonRoundSizeType
   icon: ReactNode
-  variant?: IconButtonRoundVariant
+  variant?: IconButtonRoundVariantType
 }
 
 export const IconButtonRound: React.FC<IconButtonRoundProps> = ({
@@ -88,15 +88,14 @@ export const IconButtonRound: React.FC<IconButtonRoundProps> = ({
 }
 
 const StyledButton = styled.button<{
-  size: IconButtonRoundSize
-  variant: IconButtonRoundVariant
+  size: IconButtonRoundSizeType
+  variant: IconButtonRoundVariantType
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
   padding: 0;
 
   width: ${({ size }) => SIZE_CONFIG[size].size};
@@ -118,7 +117,7 @@ const StyledButton = styled.button<{
   }
 `
 
-const IconWrapper = styled.span<{ $variant: IconButtonRoundVariant }>`
+const IconWrapper = styled.span<{ $variant: IconButtonRoundVariantType }>`
   display: flex;
   align-items: center;
   justify-content: center;

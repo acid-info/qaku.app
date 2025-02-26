@@ -1,7 +1,10 @@
 import { Button } from '@/components/Button'
 import { CopyIcon } from '@/components/Icons/CopyIcon'
-import { Input } from '@/components/Input'
-import { ActionContainer, Row } from '@/components/StyledComponents'
+import {
+  ActionContainer,
+  Row,
+  StyledInput,
+} from '@/components/StyledComponents'
 import styled from '@emotion/styled'
 import React, { useEffect } from 'react'
 
@@ -42,7 +45,7 @@ export const SettingsPage: React.FC = () => {
               <h3>Codex Node URL</h3>
               <p>Used to publish your Q&A snapshots</p>
             </div>
-            <Input placeholder="http://localhost:8080" />
+            <StyledInput placeholder="http://localhost:8080" />
           </div>
           <div className="settings-input">
             <div>
@@ -51,7 +54,7 @@ export const SettingsPage: React.FC = () => {
                 Used to pull your Q&A snapshots if local node is not available
               </p>
             </div>
-            <Input placeholder="https://api.qaku.app" />
+            <StyledInput placeholder="https://api.qaku.app" />
           </div>
         </Column>
       </Main>

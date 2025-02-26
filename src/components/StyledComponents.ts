@@ -26,3 +26,21 @@ export const ActionContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
 `
+
+export const StyledInput = styled.input`
+  width: 100%;
+  border: none;
+  padding: 22px 16px;
+  background-color: var(--gray-ultradark);
+  color: var(--white);
+  font-size: var(--body2-font-size);
+  line-height: var(--body2-line-height);
+
+  &::placeholder {
+    opacity: 0.4;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`

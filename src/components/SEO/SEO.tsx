@@ -2,7 +2,7 @@ import { siteConfigs } from '@/configs/site.configs'
 import { getWebsiteUrl } from '@/utils/route.utils'
 import Head from 'next/head'
 
-type Metadata = {
+type MetadataType = {
   title?: string
   description?: string
   type?: string
@@ -30,7 +30,7 @@ export default function SEO({
   tags = [],
   pagePath = '',
   noIndex = false,
-}: Metadata) {
+}: MetadataType) {
   const ogImageUrl = '/og/og.png'
 
   const title = _title || siteConfigs.title

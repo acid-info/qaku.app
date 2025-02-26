@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
 import React, { ReactNode } from 'react'
 
-export type ButtonSize = 'medium' | 'large'
-export type ButtonVariant =
+export type ButtonSizeType = 'medium' | 'large'
+export type ButtonVariantType =
   | 'filled'
   | 'outlined'
   | 'filledPrimary'
   | 'outlinedPrimary'
 
-type VariantConfig = {
+type VariantConfigType = {
   backgroundColor: string
   borderColor: string
   textColor: string
@@ -16,7 +16,7 @@ type VariantConfig = {
   iconColor: string
 }
 
-const VARIANT_CONFIG: Record<ButtonVariant, VariantConfig> = {
+const VARIANT_CONFIG: Record<ButtonVariantType, VariantConfigType> = {
   filled: {
     backgroundColor: 'var(--gray)',
     borderColor: 'var(--gray)',
@@ -49,9 +49,9 @@ const VARIANT_CONFIG: Record<ButtonVariant, VariantConfig> = {
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: ButtonSize
+  size?: ButtonSizeType
   icon?: ReactNode
-  variant?: ButtonVariant
+  variant?: ButtonVariantType
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -69,7 +69,7 @@ export const Button: React.FC<ButtonProps> = ({
   )
 }
 
-const getPadding = (size: ButtonSize) => {
+const getPadding = (size: ButtonSizeType) => {
   const horizontalPadding = size === 'medium' ? 16 : 40
   const verticalPadding = size === 'large' ? 21 : 7
 
@@ -77,8 +77,8 @@ const getPadding = (size: ButtonSize) => {
 }
 
 const StyledButton = styled.button<{
-  size: ButtonSize
-  variant: ButtonVariant
+  size: ButtonSizeType
+  variant: ButtonVariantType
 }>`
   display: flex;
   align-items: center;
@@ -86,7 +86,6 @@ const StyledButton = styled.button<{
   gap: 8px;
   border: 1px solid;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
   font-family: inherit;
   white-space: nowrap;
 
@@ -114,7 +113,7 @@ const StyledButton = styled.button<{
   }
 `
 
-const IconWrapper = styled.span<{ $variant: ButtonVariant }>`
+const IconWrapper = styled.span<{ $variant: ButtonVariantType }>`
   display: flex;
   align-items: center;
   justify-content: center;

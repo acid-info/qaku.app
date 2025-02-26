@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { PollOptionsItem, PollOptionsItemProps } from '../PollOptionsItem'
 
-export type PollOption = Omit<
+export type PollOptionType = Omit<
   PollOptionsItemProps,
   'hasCheckbox' | 'onCheck'
 > & {
@@ -10,15 +10,21 @@ export type PollOption = Omit<
 }
 
 export type PollOptionsProps = {
-  options: PollOption[]
+  options: PollOptionType[]
+  hasInput?: boolean
+  hasCheckbox?: boolean
   selectedOptionId?: string
   onOptionSelect?: (optionId: string) => void
+  onRemove?: (optionId: string) => void
 }
 
 export const PollOptions: React.FC<PollOptionsProps> = ({
   options,
   selectedOptionId,
   onOptionSelect,
+  hasInput = false,
+  hasCheckbox = true,
+  onRemove,
 }) => {
   return (
     <Container>
@@ -26,9 +32,11 @@ export const PollOptions: React.FC<PollOptionsProps> = ({
         <StyledPollOptionsItem
           key={option.id}
           {...option}
-          hasCheckbox={true}
+          hasCheckbox={hasCheckbox}
           isChecked={option.id === selectedOptionId}
           onCheck={() => onOptionSelect?.(option.id)}
+          hasInput={hasInput}
+          onRemove={() => onRemove?.(option.id)}
         />
       ))}
     </Container>

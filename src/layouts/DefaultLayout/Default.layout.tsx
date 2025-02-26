@@ -2,14 +2,13 @@ import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
 import { LayoutContainer } from '@/components/StyledComponents'
+import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
-type DefaultNavProps = React.ComponentProps<typeof DefaultNav>
-
 type Props = FooterProps & {
   sidebar?: React.ReactNode
-  navProps?: Partial<DefaultNavProps>
+  navProps?: Partial<DefaultNavbarProps>
   useAlternativeGap?: boolean
 }
 
@@ -19,7 +18,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
       <SidebarContainer>{props.sidebar}</SidebarContainer>
       <LayoutContainer>
         <DefaultNav
-          mode="qna"
+          mode={NavbarModeEnum.Qna}
           isTitleOnly={true}
           title={props.navProps?.title || 'Polls'}
           date={'2023-12-25T15:00:00.000Z'}

@@ -1,19 +1,19 @@
-import { QnA, mockQnAs } from '@/data/qna'
+import { mockQnAs } from '@/data/qna'
+import { QnAFilterTypeEnum, QnAInterface } from '@/types/qna.types'
 import { atom } from 'jotai'
 
-export type QnAFilter = 'all' | 'active'
+export const qnasAtom = atom<QnAInterface[]>(mockQnAs)
+export const qnaFilterAtom = atom<QnAFilterTypeEnum>(QnAFilterTypeEnum.All)
 
-export const qnasAtom = atom<QnA[]>(mockQnAs)
-export const qnaFilterAtom = atom<QnAFilter>('all')
+export const activeItemIdAtom = atom<string | undefined>(undefined)
 
-export const activeQnAIdAtom = atom<string | undefined>(undefined)
-export const activePollIdAtom = atom<string | undefined>(undefined)
+export const expandedQnAIdsAtom = atom<Set<string>>(new Set<string>())
 
 export const filteredQnAsAtom = atom((get) => {
   const qnas = get(qnasAtom)
   const filter = get(qnaFilterAtom)
 
-  if (filter === 'all') {
+  if (filter === QnAFilterTypeEnum.All) {
     return qnas
   }
 

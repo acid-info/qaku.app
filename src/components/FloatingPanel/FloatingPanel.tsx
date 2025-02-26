@@ -45,7 +45,7 @@ const Container = styled.div<{ $isOpen: boolean }>`
   padding: 14px 14px 14px 0;
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 `
 
 const Panel = styled.div<{ $isOpen: boolean }>`
@@ -58,7 +58,7 @@ const Panel = styled.div<{ $isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   transform: translateX(${({ $isOpen }) => ($isOpen ? '0' : '100%')});
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 `
 
 const Header = styled.div`

@@ -1,13 +1,13 @@
 import styled from '@emotion/styled'
 import { TabItem, VariantType } from '../TabItem'
 
-export type TabOption = {
+export type TabOptionType = {
   id: string | number
   label: string
 }
 
 export type TabProps = {
-  options: TabOption[]
+  options: TabOptionType[]
   activeId?: string | number
   variant?: VariantType
   itemWidth?: string

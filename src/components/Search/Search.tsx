@@ -62,7 +62,6 @@ const SearchButton = styled.button<{ $isActive: boolean }>`
   min-width: 92px;
   width: fit-content;
   height: 32px;
-  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: var(--gray-darkest);

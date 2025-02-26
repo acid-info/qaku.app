@@ -1,7 +1,7 @@
 import {
   DefaultNavbarProps,
-  NavbarMode,
-  QnaProgressStatus,
+  NavbarModeEnum,
+  QnaProgressStatusEnum,
 } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
@@ -26,12 +26,12 @@ const formatDate = (date: string) => {
   })
 }
 
-const renderUnit = (mode: NavbarMode, count: number) => {
+const renderUnit = (mode: NavbarModeEnum, count: number) => {
   return count < 1
-    ? mode === 'qna'
+    ? mode === NavbarModeEnum.Qna
       ? 'question'
       : 'vote'
-    : mode === 'qna'
+    : mode === NavbarModeEnum.Qna
     ? 'questions'
     : 'votes'
 }
@@ -47,8 +47,8 @@ const DefaultNav = ({
   onSettingsClick,
   onAddPollClick,
 }: DefaultNavbarProps) => {
-  const isBeforeStart = status === QnaProgressStatus.BeforeStart
-  const isInProgress = status === QnaProgressStatus.InProgress
+  const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
+  const isInProgress = status === QnaProgressStatusEnum.InProgress
 
   return (
     <Container>
@@ -158,10 +158,10 @@ const Details = styled.div`
   }
 `
 
-const Badge = styled.div<{ $mode: NavbarMode }>`
+const Badge = styled.div<{ $mode: NavbarModeEnum }>`
   display: flex;
   background-color: ${({ $mode }) =>
-    $mode === 'qna' ? 'var(--orange)' : 'var(--green)'};
+    $mode === NavbarModeEnum.Qna ? 'var(--orange)' : 'var(--green)'};
   color: var(--black);
   border-radius: 32px;
   font-size: var(--label1-font-size);

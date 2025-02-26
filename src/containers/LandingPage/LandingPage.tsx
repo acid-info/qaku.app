@@ -1,7 +1,8 @@
+import { Button } from '@/components/Button'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import React from 'react'
-import { Button } from './Button'
+
 import { Hero } from './Hero'
 
 export const LandingPage: React.FC = () => {
@@ -11,10 +12,12 @@ export const LandingPage: React.FC = () => {
         <Hero />
         <ButtonGroup>
           <Link href={'/qna/create'}>
-            <Button variant="secondary">Create quick Q&A</Button>
+            <Button size="large">Create quick Q&A</Button>
           </Link>
           <Link href={'/home'}>
-            <Button variant="primary">Connect Wallet</Button>
+            <Button size="large" variant="filledPrimary">
+              Connect Wallet
+            </Button>
           </Link>
         </ButtonGroup>
       </ContentContainer>

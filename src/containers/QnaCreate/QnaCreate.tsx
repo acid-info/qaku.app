@@ -1,8 +1,7 @@
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
-import { Input } from '@/components/Input'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
-import { ActionContainer } from '@/components/StyledComponents'
+import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
@@ -23,7 +22,7 @@ export const QnaCreate: React.FC = () => {
           />
           <NameSection>
             <Title>Give it name</Title>
-            <Input placeholder="New Q&A.." />
+            <StyledInput placeholder="New Q&A.." />
           </NameSection>
           <Section>
             <Collapsible title="Add description">

@@ -1,17 +1,6 @@
-export interface Poll {
-  id: string
-  title: string
-  isLive?: boolean
-}
+import { type QnAInterface } from '@/types/qna.types'
 
-export interface QnA {
-  id: string
-  title: string
-  isLive?: boolean
-  polls: Poll[]
-}
-
-export const mockQnAs: QnA[] = [
+export const mockQnAs: QnAInterface[] = [
   {
     id: 'qna-1',
     title: 'Community Town Hall Q&A',

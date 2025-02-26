@@ -103,6 +103,10 @@ const PollList = styled.div`
 const StyledTab = styled(Tab)`
   flex-direction: column;
 
+  & > div:not(:first-of-type) {
+    margin-top: -1px;
+  }
+
   button {
     padding: 16px;
     font-size: var(--body2-font-size);

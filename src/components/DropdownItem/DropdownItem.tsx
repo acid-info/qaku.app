@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import { ReactNode } from 'react'
 
-export type DropdownItemVariant = 'filled' | 'outlined'
+export type DropdownItemVariantType = 'filled' | 'outlined'
 
-type VariantConfig = {
+type VariantConfigType = {
   background: {
     default: string
     active: string
@@ -12,7 +12,7 @@ type VariantConfig = {
   border: string
 }
 
-const VARIANT_CONFIG: Record<DropdownItemVariant, VariantConfig> = {
+const VARIANT_CONFIG: Record<DropdownItemVariantType, VariantConfigType> = {
   filled: {
     background: {
       default: 'var(--gray)',
@@ -34,7 +34,7 @@ const VARIANT_CONFIG: Record<DropdownItemVariant, VariantConfig> = {
 export type DropdownItemProps = {
   children: ReactNode
   onClick?: () => void
-  variant?: DropdownItemVariant
+  variant?: DropdownItemVariantType
   active?: boolean
 }
 
@@ -52,7 +52,7 @@ export const DropdownItem = ({
 }
 
 const StyledDropdownItem = styled.button<{
-  $variant: DropdownItemVariant
+  $variant: DropdownItemVariantType
   $active: boolean
 }>`
   width: 100%;
@@ -69,7 +69,6 @@ const StyledDropdownItem = styled.button<{
   justify-content: space-between;
   font-size: var(--label1-font-size);
   line-height: var(--label1-line-height);
-  transition: all 0.2s ease;
 
   &:hover {
     background: ${({ $variant }) => VARIANT_CONFIG[$variant].background.hover};

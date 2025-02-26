@@ -1,13 +1,16 @@
-export type NavbarMode = 'qna' | 'polls'
+export enum NavbarModeEnum {
+  Qna = 'qna',
+  Polls = 'polls',
+}
 
-export enum QnaProgressStatus {
+export enum QnaProgressStatusEnum {
   BeforeStart = 'beforeStart',
   InProgress = 'inProgress',
   Ended = 'ended',
 }
 
 export interface BaseNavbarProps {
-  mode: NavbarMode
+  mode: NavbarModeEnum
   title: string
   count: number
   id: string
@@ -16,11 +19,11 @@ export interface BaseNavbarProps {
 export interface DefaultNavbarProps extends BaseNavbarProps {
   isTitleOnly?: boolean
   date: string
-  status?: QnaProgressStatus
+  status?: QnaProgressStatusEnum
   onSettingsClick?: () => void
   onAddPollClick?: () => void
 }
 
 export interface UserNavbarProps extends BaseNavbarProps {
-  onModeChange?: (mode: NavbarMode) => void
+  onModeChange?: (mode: NavbarModeEnum) => void
 }

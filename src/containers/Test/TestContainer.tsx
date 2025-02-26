@@ -24,7 +24,7 @@ import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
 import { TogglePill } from '@/components/TogglePill'
 import { WalletPanel } from '@/components/WalletPanel'
-import { NavbarMode, QnaProgressStatus } from '@/types/navbar.types'
+import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 
 type DemoSectionProps = {
   title: string
@@ -134,7 +134,7 @@ const QnAWidgetDemo = () => {
 }
 
 const NavbarDemo = () => {
-  const [mode, setMode] = useState<NavbarMode>('qna')
+  const [mode, setMode] = useState<NavbarModeEnum>(NavbarModeEnum.Qna)
 
   return (
     <DemoSection title="Navbars">
@@ -152,19 +152,19 @@ const NavbarDemo = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* QnA Mode */}
           <DefaultNav
-            mode="qna"
+            mode={NavbarModeEnum.Qna}
             isTitleOnly={true}
             title="Polls"
             date={'2023-12-25T15:00:00.000Z'}
             count={3}
             id="3212345"
           />
-          {Object.values(QnaProgressStatus).map((status) => (
+          {Object.values(QnaProgressStatusEnum).map((status) => (
             <DefaultNav
               key={status}
-              mode="qna"
+              mode={NavbarModeEnum.Qna}
               title={
-                status === QnaProgressStatus.Ended
+                status === QnaProgressStatusEnum.Ended
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }
@@ -177,19 +177,19 @@ const NavbarDemo = () => {
 
           {/* Polls Mode */}
           <DefaultNav
-            mode="polls"
+            mode={NavbarModeEnum.Polls}
             isTitleOnly={true}
             title="New Poll"
             date={'2023-12-25T15:00:00.000Z'}
             count={3}
             id="3212345"
           />
-          {Object.values(QnaProgressStatus).map((status) => (
+          {Object.values(QnaProgressStatusEnum).map((status) => (
             <DefaultNav
               key={`polls-${status}`}
-              mode="polls"
+              mode={NavbarModeEnum.Polls}
               title={
-                status === QnaProgressStatus.Ended
+                status === QnaProgressStatusEnum.Ended
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }

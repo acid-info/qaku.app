@@ -1,6 +1,7 @@
 import { SEO } from '@/components/SEO'
 import { QnAContainer } from '@/containers/User/QnAContainer'
 import UserLayout from '@/layouts/DefaultLayout/User.layout'
+import { NavbarModeEnum } from '@/types/navbar.types'
 
 export default function Page() {
   return (
@@ -12,5 +13,5 @@ export default function Page() {
 }
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
-  return <UserLayout mode="qna">{page}</UserLayout>
+  return <UserLayout mode={NavbarModeEnum.Qna}>{page}</UserLayout>
 }

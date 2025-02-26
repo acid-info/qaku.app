@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
-import { pollData, qnaData } from '@/types/qna.types'
+import { pollDataType, qnaDataType } from '@/types/qna.types'
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
 import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 import { QnAWidgetItem } from '../QnAWidgetItem/QnAWidgetItem'
 
 export type QnAWidgetProps = {
-  qnaData: qnaData
-  pollsData?: pollData[]
+  qnaData: qnaDataType
+  pollsData?: pollDataType[]
   isLive?: boolean
   isExpanded: boolean
   onHeaderClick: () => void
@@ -22,7 +22,7 @@ export type QnAWidgetProps = {
 const INITIAL_VISIBLE_POLLS = 2
 
 const PollsList: React.FC<{
-  polls: pollData[]
+  polls: pollDataType[]
   activeItemId?: string
   onPollClick?: (id: string) => void
   showPlusButton?: boolean

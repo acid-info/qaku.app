@@ -1,7 +1,6 @@
+import { Button } from '@/components/Button'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-
-import { Button } from '@/components/Button'
 import {
   ThreadItemResponse,
   type ThreadItemResponseProps,

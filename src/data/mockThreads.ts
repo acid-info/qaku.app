@@ -1,23 +1,6 @@
-import { LikeInfo, ThreadInfo } from '@/components/Thread/ThreadItemHeader'
+import { type ThreadInterface } from '@/types/thread.types'
 
-export interface ThreadResponse {
-  info: {
-    author: string
-    timestamp: string
-    response: string
-  }
-  likes: LikeInfo
-}
-
-export interface Thread {
-  info: ThreadInfo & {
-    question: string
-    responses: ThreadResponse[]
-  }
-  likes: LikeInfo
-}
-
-export const mockThreads: Thread[] = [
+export const mockThreads: ThreadInterface[] = [
   {
     info: {
       author: 'Alice',
