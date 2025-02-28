@@ -1,16 +1,7 @@
-import { PollInterface, QnAFilterTypeEnum } from '@/types/qna.types'
+import { PollType, QnAFilterTypeEnum, QnAType } from '@/types/qna.types'
 import styled from '@emotion/styled'
-import { useAtom, useAtomValue } from 'jotai'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
-import {
-  activeItemIdAtom,
-  expandedQnAIdsAtom,
-  filteredQnAsAtom,
-  qnaFilterAtom,
-  qnaStatsAtom,
-} from '../../../atoms/qnaAtom'
+import React from 'react'
 import { Button } from '../Button'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { QnAWidget } from '../QnAWidget'
@@ -19,70 +10,36 @@ import { SettingsButton } from '../SettingsButton'
 import { Row } from '../StyledComponents'
 import { Tile } from '../Tile'
 
-export const Sidebar: React.FC = () => {
-  const router = useRouter()
-  const [filter, setFilter] = useAtom(qnaFilterAtom)
-  const [activeItemId, setActiveItemId] = useAtom(activeItemIdAtom)
-  const [expandedQnAIds, setExpandedQnAIds] = useAtom(expandedQnAIdsAtom)
-
-  const filteredQnAs = useAtomValue(filteredQnAsAtom)
-  const stats = useAtomValue(qnaStatsAtom)
-
-  // Auto-expand QnA when it or its poll becomes active
-  useEffect(() => {
-    if (!activeItemId) return
-
-    const qnaToExpand = filteredQnAs.find(
-      (qna) =>
-        qna.id === activeItemId ||
-        qna.polls.some((p: PollInterface) => p.id === activeItemId),
-    )
-
-    if (qnaToExpand) {
-      setExpandedQnAIds((prev) => {
-        const next = new Set(prev)
-        next.add(qnaToExpand.id)
-        return next
-      })
-    }
-  }, [activeItemId, filteredQnAs, setExpandedQnAIds])
-
-  const handleQnAClick = (qnaId: string) => {
-    setActiveItemId(qnaId)
-    const qna = filteredQnAs.find((q) => q.id === qnaId)
-    if (qna?.isLive) {
-      router.push('/qna/live')
-    } else {
-      router.push(`/qna/created/${qnaId}`)
-    }
+export type SidebarProps = {
+  filteredQnAs: (QnAType & { polls: PollType[] })[]
+  stats: {
+    all: number
+    active: number
   }
+  filter: QnAFilterTypeEnum
+  activeItemId?: number
+  expandedQnAIds: Set<number>
+  onFilterChange: (filter: QnAFilterTypeEnum) => void
+  onQnAClick: (qnaId: number) => void
+  onPollClick: (pollId: number) => void
+  onHeaderClick: (qnaId: number) => void
+  onSearch?: (query: string) => void
+  onStatusFilterChange?: (value: string | number) => void
+}
 
-  const handlePollClick = (pollId: string) => {
-    setActiveItemId(pollId)
-    const qna = filteredQnAs.find((q) =>
-      q.polls.some((p: PollInterface) => p.id === pollId),
-    )
-    const poll = qna?.polls.find((p: PollInterface) => p.id === pollId)
-
-    if (poll?.isLive) {
-      router.push('/poll/live')
-    } else {
-      router.push(`/poll/created/${pollId}`)
-    }
-  }
-
-  const handleHeaderClick = (qnaId: string) => {
-    setExpandedQnAIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(qnaId)) {
-        next.delete(qnaId)
-      } else {
-        next.add(qnaId)
-      }
-      return next
-    })
-  }
-
+export const Sidebar: React.FC<SidebarProps> = ({
+  filteredQnAs,
+  stats,
+  filter,
+  activeItemId,
+  expandedQnAIds,
+  onFilterChange,
+  onQnAClick,
+  onPollClick,
+  onHeaderClick,
+  onSearch = () => {},
+  onStatusFilterChange = () => {},
+}) => {
   return (
     <Wrapper>
       <TitleContainer>
@@ -104,14 +61,14 @@ export const Sidebar: React.FC = () => {
               data: stats.all,
               size: 'large',
               isActive: filter === QnAFilterTypeEnum.All,
-              onClick: () => setFilter(QnAFilterTypeEnum.All),
+              onClick: () => onFilterChange(QnAFilterTypeEnum.All),
             },
             {
               label: 'Active',
               data: stats.active,
               size: 'large',
               isActive: filter === QnAFilterTypeEnum.Active,
-              onClick: () => setFilter(QnAFilterTypeEnum.Active),
+              onClick: () => onFilterChange(QnAFilterTypeEnum.Active),
             },
           ]}
         />
@@ -125,8 +82,8 @@ export const Sidebar: React.FC = () => {
           searchPlaceholder="Search items..."
           filterPlaceholder="Filter by status"
           filterWidth="93px"
-          onSearch={() => {}}
-          onFilterChange={() => {}}
+          onSearch={onSearch}
+          onFilterChange={onStatusFilterChange}
         />
         <QnaWidgetContainer>
           {filteredQnAs.map((qna) => (
@@ -136,10 +93,10 @@ export const Sidebar: React.FC = () => {
               pollsData={qna.polls}
               activeItemId={activeItemId}
               isExpanded={expandedQnAIds.has(qna.id)}
-              onHeaderClick={() => handleHeaderClick(qna.id)}
-              onQnAClick={handleQnAClick}
-              onPollClick={handlePollClick}
-              isLive={qna.isLive}
+              onHeaderClick={() => onHeaderClick(qna.id)}
+              onQnAClick={onQnAClick}
+              onPollClick={onPollClick}
+              isLive={qna.isActive}
             />
           ))}
         </QnaWidgetContainer>
