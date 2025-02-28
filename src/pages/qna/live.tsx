@@ -1,8 +1,8 @@
 import { qnaSettingsAtom } from '@/../atoms/settings'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
-import { Sidebar } from '@/components/Sidebar'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
+import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { useAtom } from 'jotai'
@@ -20,7 +20,7 @@ export default function Page() {
     <DefaultLayout
       showFooter={false}
       useAlternativeGap
-      sidebar={<Sidebar />}
+      sidebar={<SidebarContainer />}
       navProps={{
         mode: NavbarModeEnum.Qna,
         isTitleOnly: false,

@@ -1,8 +1,8 @@
 import { pollSettingsAtom } from '@/../atoms/settings'
 import { PollFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
-import { Sidebar } from '@/components/Sidebar'
 import { PollLive } from '@/containers/PollLive/PollLive'
+import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { useAtom } from 'jotai'
@@ -20,7 +20,7 @@ export default function Page() {
     <DefaultLayout
       useAlternativeGap
       showFooter={false}
-      sidebar={<Sidebar />}
+      sidebar={<SidebarContainer />}
       navProps={{
         mode: NavbarModeEnum.Polls,
         isTitleOnly: false,

@@ -40,60 +40,106 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
 
 const QnAWidgetDemo = () => {
   const demoQnA = {
-    id: 'qna-1',
+    id: 1,
     title: 'Town Hall Discussion',
+    hash: 'abc123',
+    owner: 'admin',
+    hasAdmins: true,
+    allowsParticipantsReplies: true,
+    questionsIds: [],
+    startDate: new Date(),
+    isActive: true,
   }
   const demoQnA2 = {
-    id: 'qna-2',
+    id: 2,
     title: 'Town Hall Discussion - long title that will be truncated',
+    hash: 'def456',
+    owner: 'admin',
+    hasAdmins: true,
+    allowsParticipantsReplies: true,
+    questionsIds: [],
+    startDate: new Date(),
+    isActive: false,
   }
 
   const polls = [
     {
-      id: 'poll-1',
+      id: 1,
       title: 'Budget Allocation',
+      question: 'How should we allocate the budget?',
+      qnaId: 1,
+      optionsIds: [],
+      optionsCount: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     },
     {
-      id: 'poll-2',
+      id: 2,
       title: 'Project Timeline',
+      question: 'What is the best timeline for the project?',
+      qnaId: 1,
+      optionsIds: [],
+      optionsCount: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     },
     {
-      id: 'poll-3',
+      id: 3,
       title: 'Team Structure',
+      question: 'How should we structure the team?',
+      qnaId: 1,
+      optionsIds: [],
+      optionsCount: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     },
   ]
 
-  const [polls2, setPolls2] = useState<{ id: string; title: string }[]>([])
-  const [activeItemId, setActiveItemId] = useState<string>()
-  const [activeItemId2, setActiveItemId2] = useState<string>()
+  const [polls2, setPolls2] = useState<typeof polls>([])
+  const [activeItemId, setActiveItemId] = useState<number>()
+  const [activeItemId2, setActiveItemId2] = useState<number>()
   const [isExpanded1, setIsExpanded1] = useState(false)
   const [isExpanded2, setIsExpanded2] = useState(true)
 
   const handlePlusClick2 = () => {
     const newPoll = {
-      id: `poll-${polls2.length + 1}`,
+      id: polls2.length + 1,
       title: `New Poll ${polls2.length + 1}`,
+      question: `Question for Poll ${polls2.length + 1}`,
+      qnaId: 2,
+      optionsIds: [],
+      optionsCount: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     }
     setPolls2([...polls2, newPoll])
     console.log('Added new poll:', newPoll)
   }
 
-  const handleQnAClick = (id: string) => {
+  const handleQnAClick = (id: number) => {
     setActiveItemId(id)
     console.log('QnA clicked:', id)
   }
 
-  const handleQnAClick2 = (id: string) => {
+  const handleQnAClick2 = (id: number) => {
     setActiveItemId2(id)
     console.log('QnA clicked:', id)
   }
 
-  const handlePollClick = (id: string) => {
+  const handlePollClick = (id: number) => {
     setActiveItemId(id)
     console.log('Poll clicked:', id)
   }
 
-  const handlePollClick2 = (id: string) => {
+  const handlePollClick2 = (id: number) => {
     setActiveItemId2(id)
     console.log('Poll clicked:', id)
   }

@@ -1,6 +1,6 @@
 import { SEO } from '@/components/SEO'
-import { Sidebar } from '@/components/Sidebar'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
+import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 
@@ -8,7 +8,7 @@ export default function Page() {
   const getLayout = (page: React.ReactNode) => (
     <DefaultLayout
       showFooter={false}
-      sidebar={<Sidebar />}
+      sidebar={<SidebarContainer />}
       navProps={{
         mode: NavbarModeEnum.Qna,
         isTitleOnly: false,

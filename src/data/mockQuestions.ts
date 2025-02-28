@@ -1,0 +1,88 @@
+import { QuestionType } from '@/types/qna.types'
+
+export const mockQuestions: QuestionType[] = [
+  {
+    id: 1,
+    timestamp: new Date('2025-02-14T11:48:36.135Z'),
+    content:
+      'What are the key differences between React hooks and class components?',
+    author: 'Alice',
+    likesCount: 42,
+    likers: ['user1', 'user2', 'user3'],
+    isAnswered: true,
+    qnaId: 1,
+  },
+  {
+    id: 2,
+    timestamp: new Date('2025-02-15T11:48:36.135Z'),
+    content:
+      'How do you handle state management in large React applications? Would you recommend Redux, Context API, or other solutions?',
+    author: 'David',
+    likesCount: 28,
+    likers: ['user4', 'user5'],
+    isAnswered: true,
+    qnaId: 1,
+  },
+  {
+    id: 3,
+    timestamp: new Date('2025-02-17T11:48:36.135Z'),
+    content:
+      'What are the best practices for handling API calls in React components? Should we use custom hooks?',
+    author: 'Frank',
+    likesCount: 35,
+    likers: ['user1', 'user7'],
+    isAnswered: true,
+    qnaId: 1,
+  },
+  {
+    id: 4,
+    timestamp: new Date('2025-01-20T14:15:36.135Z'),
+    content: 'How intuitive did you find the new user interface?',
+    author: 'UserX',
+    likesCount: 15,
+    likers: ['user10', 'user11'],
+    isAnswered: false,
+    qnaId: 2,
+  },
+  {
+    id: 5,
+    timestamp: new Date('2025-01-20T14:30:36.135Z'),
+    content: 'What features would you like to see in the next update?',
+    author: 'UserY',
+    likesCount: 22,
+    likers: ['user12', 'user13', 'user14'],
+    isAnswered: false,
+    qnaId: 2,
+  },
+  {
+    id: 6,
+    timestamp: new Date('2025-03-01T15:10:36.135Z'),
+    content:
+      'What TypeScript features do you find most useful in large codebases?',
+    author: 'DevA',
+    likesCount: 18,
+    likers: ['dev1', 'dev2'],
+    isAnswered: false,
+    qnaId: 3,
+  },
+  {
+    id: 7,
+    timestamp: new Date('2025-03-01T15:20:36.135Z'),
+    content: 'How do you approach testing in your React applications?',
+    author: 'DevB',
+    likesCount: 14,
+    likers: ['dev3', 'dev4'],
+    isAnswered: false,
+    qnaId: 3,
+  },
+  {
+    id: 8,
+    timestamp: new Date('2025-03-01T15:30:36.135Z'),
+    content: 'What are your thoughts on server components in React?',
+    author: 'DevC',
+    likesCount: 21,
+    likers: ['dev5', 'dev6', 'dev7'],
+    isAnswered: false,
+    qnaId: 3,
+  },
+]

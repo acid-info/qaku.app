@@ -1,0 +1,45 @@
+import { QnAType } from '@/types/qna.types'
+
+export const mockQnAs: QnAType[] = [
+  {
+    id: 1,
+    title: 'Community Town Hall Q&A',
+    description:
+      'Monthly community discussion about platform updates and roadmap',
+    hash: 'comm-townhall-2025-feb',
+    owner: 'admin@qaku.app',
+    hasAdmins: true,
+    admins: ['moderator1@qaku.app', 'moderator2@qaku.app'],
+    allowsParticipantsReplies: true,
+    questionsIds: [1, 2, 3],
+    startDate: new Date('2025-02-14T10:00:00Z'),
+    endDate: new Date('2025-02-14T12:00:00Z'),
+    isActive: true,
+  },
+  {
+    id: 2,
+    title: 'Product Launch Feedback',
+    description: 'Gathering feedback on our new feature release',
+    hash: 'product-launch-2025',
+    owner: 'product@qaku.app',
+    hasAdmins: false,
+    allowsParticipantsReplies: false,
+    questionsIds: [4, 5],
+    startDate: new Date('2025-01-20T14:00:00Z'),
+    endDate: new Date('2025-01-20T16:00:00Z'),
+    isActive: false,
+  },
+  {
+    id: 3,
+    title: 'Developer Workshop Series',
+    description: 'Technical Q&A session for developers',
+    hash: 'dev-workshop-2025',
+    owner: 'tech@qaku.app',
+    hasAdmins: true,
+    admins: ['senior-dev@qaku.app'],
+    allowsParticipantsReplies: true,
+    questionsIds: [6, 7, 8],
+    startDate: new Date('2025-03-01T15:00:00Z'),
+    isActive: true,
+  },
+]

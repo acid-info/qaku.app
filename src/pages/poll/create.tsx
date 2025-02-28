@@ -1,8 +1,8 @@
 import { pollSettingsAtom } from '@/../atoms/settings'
 import { PollFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
-import { Sidebar } from '@/components/Sidebar'
 import { PollCreate } from '@/containers/PollCreate/PollCreate'
+import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { useAtom } from 'jotai'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
@@ -17,7 +17,7 @@ export default function Page() {
     <DefaultLayout
       useAlternativeGap
       showFooter={false}
-      sidebar={<Sidebar />}
+      sidebar={<SidebarContainer />}
       navProps={{
         isTitleOnly: true,
         title: pollSettings.title || 'New Poll',
