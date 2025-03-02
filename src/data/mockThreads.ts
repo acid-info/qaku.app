@@ -3,6 +3,7 @@ import { type ThreadInterface } from '@/types/thread.types'
 export const mockThreads: ThreadInterface[] = [
   {
     info: {
+      isAnswered: false,
       author: 'Alice',
       timestamp: '2025-02-14T11:48:36.135Z',
       question:
@@ -32,6 +33,7 @@ export const mockThreads: ThreadInterface[] = [
   },
   {
     info: {
+      isAnswered: false,
       author: 'David',
       timestamp: '2025-02-15T11:48:36.135Z',
       question:
@@ -52,6 +54,7 @@ export const mockThreads: ThreadInterface[] = [
   },
   {
     info: {
+      isAnswered: false,
       author: 'Frank',
       timestamp: '2025-02-17T11:48:36.135Z',
       question:
@@ -99,6 +102,7 @@ export const mockThreads: ThreadInterface[] = [
   },
   {
     info: {
+      isAnswered: false,
       author: 'Isabel',
       timestamp: '2025-02-12T11:48:36.135Z',
       question:
@@ -109,6 +113,7 @@ export const mockThreads: ThreadInterface[] = [
   },
   {
     info: {
+      isAnswered: false,
       author: 'Jack',
       timestamp: '2025-02-10T11:48:36.135Z',
       question:
