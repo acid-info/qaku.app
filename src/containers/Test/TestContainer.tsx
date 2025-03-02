@@ -282,7 +282,7 @@ const PollOptionsDemo = () => {
       <div style={{ width: '500px' }}>
         <PollOptions
           options={options}
-          selectedOptionId={selectedOptionId}
+          selectedOptionIds={[String(selectedOptionId)]}
           onOptionSelect={setSelectedOptionId}
         />
       </div>
