@@ -39,7 +39,6 @@ export type PollType = {
   description?: string
   qnaId: number
   optionsIds: number[]
-  optionsCount: number[]
   correctAnswersIds?: number[]
   hasCorrectAnswers: boolean
   hasMultipleOptionsSelect: boolean

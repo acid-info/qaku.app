@@ -13,19 +13,24 @@ export type PollOptionsProps = {
   options: PollOptionType[]
   hasInput?: boolean
   hasCheckbox?: boolean
-  selectedOptionId?: string
+  selectedOptionIds?: string[]
   onOptionSelect?: (optionId: string) => void
   onRemove?: (optionId: string) => void
 }
 
 export const PollOptions: React.FC<PollOptionsProps> = ({
   options,
-  selectedOptionId,
+  selectedOptionIds = [],
   onOptionSelect,
   hasInput = false,
   hasCheckbox = true,
   onRemove,
 }) => {
+  const handleOptionCheck = (optionId: string) => {
+    if (!onOptionSelect) return
+    onOptionSelect(optionId)
+  }
+
   return (
     <Container>
       {options.map((option) => (
@@ -33,8 +38,8 @@ export const PollOptions: React.FC<PollOptionsProps> = ({
           key={option.id}
           {...option}
           hasCheckbox={hasCheckbox}
-          isChecked={option.id === selectedOptionId}
-          onCheck={() => onOptionSelect?.(option.id)}
+          isChecked={selectedOptionIds.includes(option.id)}
+          onCheck={() => handleOptionCheck(option.id)}
           hasInput={hasInput}
           onRemove={() => onRemove?.(option.id)}
         />

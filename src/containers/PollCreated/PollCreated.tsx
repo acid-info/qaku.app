@@ -1,87 +1,78 @@
 import { PollOptions } from '@/components/PollOptions'
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
-import { Thread } from '@/components/Thread'
 import { TitleBlock } from '@/components/TitleBlock'
-import {
-  Thread as ThreadType,
-  useThreads,
-} from '@/containers/QnaLive/hooks/useThreads'
-import { mockThreads } from '@/data/mockThreads'
+import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
+import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useMemo } from 'react'
+import {
+  pollWithOptionsAtom,
+  qnaCountsByIdAtom,
+} from '../../../atoms/selectors'
+import { userAtom } from '../../../atoms/userAtom'
 
-const CONTENT_WIDTH = 507
-
-const ThreadList: React.FC<{ threads: ThreadType[] }> = ({ threads }) => (
-  <ThreadsContainer>
-    {threads.map((thread, index) => (
-      <Thread
-        key={`${thread.info.author}-${thread.info.timestamp}`}
-        info={thread.info}
-        likes={thread.likes}
-        isFirst={index === 0}
-        onReplySubmit={() => {}}
-      />
-    ))}
-  </ThreadsContainer>
-)
+const emptyPollAtom = atom(undefined)
+const emptyCountsAtom = atom({
+  questionsCount: 0,
+  namedAuthorCount: 0,
+  anonymousRate: 0,
+})
 
 export const PollCreated: React.FC = () => {
   const router = useRouter()
-  const { id } = router.query
-  const { threads } = useThreads(mockThreads)
+  const user = useAtomValue(userAtom)
 
-  const options = [
-    {
-      id: '1',
-      title: 'Option 1',
-      percentage: 65,
-      isChecked: false,
-    },
-    {
-      id: '2',
-      title: 'Option 2',
-      percentage: 20,
-      isChecked: false,
-    },
-    {
-      id: '3',
-      title: 'Option 3',
-      percentage: 5,
-      isChecked: false,
-    },
-    {
-      id: '4',
-      title: 'Option 4',
-      percentage: 10,
-      isChecked: false,
-    },
-    {
-      id: '5',
-      title: 'Option 5',
-      percentage: 0,
-      isChecked: false,
-    },
-  ]
+  const pollId = useMemo(() => {
+    const id = router.query.id
+    return typeof id === 'string' ? parseInt(id, 10) || null : null
+  }, [router.query.id])
+
+  const pollDataAtom = useMemo(
+    () => (pollId !== null ? pollWithOptionsAtom(pollId) : emptyPollAtom),
+    [pollId],
+  )
+
+  const pollData = useAtomValue(pollDataAtom)
+
+  const qnaCountsAtom = useMemo(
+    () =>
+      pollData?.qnaId ? qnaCountsByIdAtom(pollData.qnaId) : emptyCountsAtom,
+    [pollData?.qnaId],
+  )
+  const qnaCounts = useAtomValue(qnaCountsAtom) || {
+    questionsCount: 0,
+    namedAuthorCount: 0,
+    anonymousRate: 0,
+  }
+
+  const mappedOptions = useMemo(
+    () => mapPollOptionsForDisplay(pollData),
+    [pollData],
+  )
+
+  if (!router.isReady || pollId === null || !pollData) {
+    return null
+  }
 
   return (
     <Wrapper>
       <Main>
         <QnaCreatedHeaderStyled
-          questionsCount={threads.length}
-          anonymousRate={50}
-          namedAuthorCount={
-            threads.filter((thread) => thread.info.author !== 'Anonymous')
-              .length
-          }
+          questionsCount={qnaCounts.questionsCount}
+          anonymousRate={qnaCounts.anonymousRate}
+          namedAuthorCount={qnaCounts.namedAuthorCount}
         />
         <Content>
           <TitleBlock
-            title="What is the best approach here? Are there any alternatives?"
-            description="Long description visible to all participants and everyone"
+            title={pollData.question}
+            description={pollData.description || ''}
           />
-          <PollOptions options={options} />
+          <PollOptions
+            options={mappedOptions}
+            hasCheckbox={pollData.hasCorrectAnswers}
+            selectedOptionIds={pollData.correctAnswersIds?.map(String)}
+          />
         </Content>
       </Main>
     </Wrapper>
@@ -116,10 +107,4 @@ const Content = styled.div`
   gap: 32px;
   height: 100%;
   width: 507px;
-`
-
-const ThreadsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: ${CONTENT_WIDTH}px;
 `

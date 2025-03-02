@@ -18,7 +18,7 @@ const polls = [
 
 export const PollsContainer: React.FC = () => {
   const [activePollId, setActivePollId] = useState<string>('1')
-  const [selectedOptionId, setSelectedOptionId] = useState<string>('')
+  const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([])
 
   const handleSelectedPollTitle = (id: string) => {
     return polls.find((option) => option.id === id)?.label ?? ''
@@ -47,11 +47,11 @@ export const PollsContainer: React.FC = () => {
           <PollsWrapper>
             <PollOptions
               options={options}
-              selectedOptionId={selectedOptionId}
-              onOptionSelect={(optionId) => setSelectedOptionId(optionId)}
+              selectedOptionIds={selectedOptionIds}
+              onOptionSelect={(optionId) => setSelectedOptionIds([optionId])}
             />
           </PollsWrapper>
-          {selectedOptionId !== '' && (
+          {selectedOptionIds.length > 0 && (
             <SelectContainer>
               <Row gap={0}>
                 <ActionButton variant="filled">Cancel</ActionButton>

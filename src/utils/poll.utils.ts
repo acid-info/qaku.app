@@ -1,4 +1,4 @@
-import { PollOptionType } from '@/types/qna.types'
+import { PollOptionType, PollType } from '@/types/qna.types'
 import { getValidPercentage } from './general.utils'
 
 // Calculates the percentage of votes for a given poll option based on total votes
@@ -14,4 +14,29 @@ export const calculateOptionPercentage = (
 // Calculates the total number of votes in a poll
 export const calculateTotalVotes = (options: PollOptionType[]): number => {
   return options.reduce((total, option) => total + option.voteCount, 0)
+}
+
+export type MappedPollOption = {
+  id: string
+  title: string
+  percentage: number
+  isChecked: boolean
+}
+
+export const mapPollOptionsForDisplay = (
+  pollData: (PollType & { options: PollOptionType[] }) | undefined,
+): MappedPollOption[] => {
+  if (!pollData) return []
+
+  const totalVotes = calculateTotalVotes(pollData.options)
+
+  return pollData.options.map((option) => ({
+    id: option.id.toString(),
+    title: option.title,
+    percentage: calculateOptionPercentage(option, totalVotes),
+    isChecked:
+      (pollData.hasCorrectAnswers &&
+        pollData.correctAnswersIds?.includes(option.id)) ||
+      false,
+  }))
 }
