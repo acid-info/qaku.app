@@ -16,6 +16,7 @@ export type ThreadItemProps = {
   likes: LikeInfoType
   actions?: ActionVisibilityType
   isFirst?: boolean
+  isChecked?: boolean
   onCheckClick?: () => void
   onCommentClick?: () => void
   onLikeClick?: () => void
@@ -27,6 +28,7 @@ export const ThreadItem: React.FC<ThreadItemProps> = ({
   likes,
   actions,
   isFirst = false,
+  isChecked = false,
   onCheckClick,
   onCommentClick,
   onLikeClick,
@@ -40,6 +42,7 @@ export const ThreadItem: React.FC<ThreadItemProps> = ({
         info={{ author, timestamp }}
         likes={likes}
         actions={actions}
+        isChecked={isChecked}
         onCheckClick={onCheckClick}
         onCommentClick={onCommentClick}
         onLikeClick={onLikeClick}

@@ -56,4 +56,25 @@ export const mockAnswers: AnswerType[] = [
     questionId: 3,
     qnaId: 1,
   },
+  {
+    id: 106,
+    timestamp: new Date('2025-02-20T14:48:36.135Z'),
+    content:
+      'Absolutely agree with using React Query. It handles loading states, caching, and error handling out of the box.',
+    author: 'Henry',
+    likesCount: 18,
+    likers: ['user13', 'user14'],
+    questionId: 4,
+    qnaId: 2,
+  },
+  {
+    id: 107,
+    timestamp: new Date('2025-02-20T14:48:36.135Z'),
+    content: 'Absolutely agree with using React Query.',
+    author: 'Jack',
+    likesCount: 18,
+    likers: ['user13', 'user14'],
+    questionId: 9,
+    qnaId: 2,
+  },
 ]

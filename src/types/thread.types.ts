@@ -26,7 +26,14 @@ export interface ThreadResponseInterface {
 export interface ThreadInterface {
   info: ThreadInfoType & {
     question: string
+    isAnswered: boolean
     responses: ThreadResponseInterface[]
   }
   likes: LikeInfoType
+}
+
+export enum FilterThreadEnum {
+  All = 'all',
+  Popular = 'popular',
+  Answered = 'answered',
 }

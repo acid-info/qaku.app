@@ -22,10 +22,13 @@ export type ThreadProps = {
   likes: LikeInfoType
   onQuestionLikeClick?: () => void
   onResponseLikeClick?: (index: number) => void
-  onReplySubmit: ThreadItemReplyProps['onSubmit']
+  onReplySubmit?: ThreadItemReplyProps['onSubmit']
+  onCheckClick?: () => void
   isAuthorized?: boolean
   isFirst?: boolean
   isUser?: boolean
+  isChecked?: boolean
+  hasCommentButton?: boolean
 }
 
 export const Thread: React.FC<ThreadProps> = ({
@@ -33,10 +36,13 @@ export const Thread: React.FC<ThreadProps> = ({
   likes,
   onQuestionLikeClick,
   onResponseLikeClick,
-  onReplySubmit,
+  onReplySubmit = () => {},
+  onCheckClick,
   isAuthorized = false,
   isFirst = false,
   isUser = false,
+  isChecked = false,
+  hasCommentButton = true,
 }) => {
   const { responses, ...questionInfo } = info
   const [showReply, setShowReply] = useState<boolean>(false)
@@ -62,8 +68,11 @@ export const Thread: React.FC<ThreadProps> = ({
         likes={likes}
         onLikeClick={onQuestionLikeClick}
         onCommentClick={handleCommentClick}
+        onCheckClick={onCheckClick}
+        isChecked={isChecked}
         actions={{
           check: !isUser,
+          comment: hasCommentButton,
         }}
       >
         <ReplyContainer

@@ -24,7 +24,7 @@ export const mockQnAs: QnAType[] = [
     owner: 'product@qaku.app',
     hasAdmins: false,
     allowsParticipantsReplies: false,
-    questionsIds: [4, 5],
+    questionsIds: [4, 5, 9],
     startDate: new Date('2025-01-20T14:00:00Z'),
     endDate: new Date('2025-01-20T16:00:00Z'),
     isActive: false,

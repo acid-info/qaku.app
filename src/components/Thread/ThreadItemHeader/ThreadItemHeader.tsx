@@ -17,6 +17,7 @@ export type ThreadItemHeaderProps = {
   likes?: LikeInfoType
   actions?: ActionVisibilityType
   profileIconVariant?: 'gray' | 'black'
+  isChecked?: boolean
   onCheckClick?: () => void
   onCommentClick?: () => void
   onLikeClick?: () => void
@@ -27,6 +28,7 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
   likes,
   actions = {},
   profileIconVariant = 'gray',
+  isChecked = false,
   onCheckClick,
   onCommentClick,
   onLikeClick,
@@ -63,7 +65,7 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
         )}
         {check && (
           <IconButtonRound
-            variant="outlined"
+            variant={isChecked ? 'filledPrimary' : 'outlined'}
             icon={<CheckIcon />}
             onClick={onCheckClick}
           />

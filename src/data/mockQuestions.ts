@@ -55,6 +55,16 @@ export const mockQuestions: QuestionType[] = [
     qnaId: 2,
   },
   {
+    id: 9,
+    timestamp: new Date('2025-01-20T14:30:36.135Z'),
+    content: 'What features would you like to see in the next update?',
+    author: 'UserYY',
+    likesCount: 22,
+    likers: ['user12', 'user13', 'user14'],
+    isAnswered: true,
+    qnaId: 2,
+  },
+  {
     id: 6,
     timestamp: new Date('2025-03-01T15:10:36.135Z'),
     content:
