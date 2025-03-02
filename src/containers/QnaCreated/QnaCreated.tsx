@@ -4,11 +4,9 @@ import { Thread } from '@/components/Thread'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { filterQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
-import { atom, useAtomValue } from 'jotai'
-import { useRouter } from 'next/router'
+import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
 import {
-  QuestionWithAnswersType,
   allQuestionsWithAnswersForQnAAtom,
   qnaCountsByIdAtom,
 } from '../../../atoms/selectors'
@@ -16,55 +14,36 @@ import { userAtom } from '../../../atoms/userAtom'
 
 const CONTENT_WIDTH = 507
 
-const emptyQuestionsAtom = atom<QuestionWithAnswersType[]>([])
-const emptyCountsAtom = atom({
-  questionsCount: 0,
-  namedAuthorCount: 0,
-  anonymousRate: 0,
-})
+export type QnaCreatedProps = {
+  qnaId: number
+}
 
-export const QnaCreated: React.FC = () => {
-  const router = useRouter()
+export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
   const user = useAtomValue(userAtom)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return typeof id === 'string' ? parseInt(id, 10) || null : null
-  }, [router.query.id])
-
   const questionsAtom = useMemo(
-    () =>
-      qnaId !== null
-        ? allQuestionsWithAnswersForQnAAtom(qnaId)
-        : emptyQuestionsAtom,
+    () => allQuestionsWithAnswersForQnAAtom(qnaId),
     [qnaId],
   )
-  const countsAtom = useMemo(
-    () => (qnaId !== null ? qnaCountsByIdAtom(qnaId) : emptyCountsAtom),
-    [qnaId],
-  )
+  const countsAtom = useMemo(() => qnaCountsByIdAtom(qnaId), [qnaId])
 
   const questionsWithAnswers = useAtomValue(questionsAtom)
   const qnaCounts = useAtomValue(countsAtom)
 
   const threads = useMemo(() => {
-    if (qnaId === null || questionsWithAnswers.length === 0) return []
+    if (questionsWithAnswers.length === 0) return []
 
     return filterQuestions(questionsWithAnswers, activeFilter).map((question) =>
       mapQuestionToThread(question, user.id),
     )
-  }, [questionsWithAnswers, activeFilter, qnaId, user.id])
+  }, [questionsWithAnswers, activeFilter, user.id])
 
   const handleTabChange = useCallback((id: string | number) => {
     setActiveFilter(id.toString() as FilterThreadEnum)
   }, [])
-
-  if (!router.isReady || qnaId === null || questionsWithAnswers.length === 0) {
-    return null
-  }
 
   const counts = qnaCounts || {
     questionsCount: 0,

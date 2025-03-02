@@ -39,17 +39,3 @@ export const inactivePollIdsByQnaIdAtom = (qnaId: number) =>
 
 export const getPollByIdAtom = (id: number) =>
   atom((get) => get(pollsRecordAtom)[id])
-
-export const pollStatsByQnaIdAtom = (qnaId: number) =>
-  atom((get) => {
-    const pollsRecord = get(pollsRecordAtom)
-    const pollIds = get(pollIdsByQnaIdAtom(qnaId))
-
-    const activeCount = pollIds.filter((id) => pollsRecord[id].isActive).length
-
-    return {
-      total: pollIds.length,
-      active: activeCount,
-      inactive: pollIds.length - activeCount,
-    }
-  })

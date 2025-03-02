@@ -5,6 +5,7 @@ import {
   QnAType,
   QuestionType,
 } from '@/types/qna.types'
+import { calculateTotalVotes } from '@/utils/poll.utils'
 import { calculateQnAStats } from '@/utils/qna.utils'
 import { atom } from 'jotai'
 import {
@@ -198,4 +199,13 @@ export const qnaCountsByIdAtom = (id: number) =>
     const answers = answerIds.map((id) => answersRecord[id])
 
     return calculateQnAStats(questions, answers)
+  })
+
+export const getPollTotalVotesCountAtom = (pollId: number) =>
+  atom((get) => {
+    const optionIds = get(pollOptionIdsByPollIdAtom(pollId))
+    const optionsRecord = get(pollOptionsRecordAtom)
+    const options = optionIds.map((id) => optionsRecord[id])
+
+    return calculateTotalVotes(options)
   })
