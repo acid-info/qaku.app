@@ -12,6 +12,7 @@ import {
   allQuestionsWithAnswersForQnAAtom,
   qnaCountsByIdAtom,
 } from '../../../atoms/selectors'
+import { userAtom } from '../../../atoms/userAtom'
 
 const CONTENT_WIDTH = 507
 
@@ -27,6 +28,7 @@ export const QnaCreated: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
+  const user = useAtomValue(userAtom)
 
   const qnaId = useMemo(() => {
     const id = router.query.id
@@ -52,9 +54,9 @@ export const QnaCreated: React.FC = () => {
     if (qnaId === null || questionsWithAnswers.length === 0) return []
 
     return filterQuestions(questionsWithAnswers, activeFilter).map((question) =>
-      mapQuestionToThread(question),
+      mapQuestionToThread(question, user.id),
     )
-  }, [questionsWithAnswers, activeFilter, qnaId])
+  }, [questionsWithAnswers, activeFilter, qnaId, user.id])
 
   const handleTabChange = useCallback((id: string | number) => {
     setActiveFilter(id.toString() as FilterThreadEnum)

@@ -3,8 +3,7 @@ import { QuestionWithAnswersType } from '../../atoms'
 
 export const mapQuestionToThread = (
   question: QuestionWithAnswersType,
-  // TODO: Get from user atom
-  currentUser = 'currentUser',
+  currentUser: string,
 ): ThreadInterface => ({
   info: {
     author: question.author,
