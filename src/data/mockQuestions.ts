@@ -31,7 +31,7 @@ export const mockQuestions: QuestionType[] = [
     author: 'Frank',
     likesCount: 35,
     likers: ['user1', 'user7'],
-    isAnswered: true,
+    isAnswered: false,
     qnaId: 1,
   },
   {

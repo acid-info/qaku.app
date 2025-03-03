@@ -2,13 +2,22 @@ import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
-import { mockThreads } from '@/data/mockThreads'
+import { FilterThreadEnum } from '@/types/thread.types'
+import { filterQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import Link from 'next/link'
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+import { QuestionWithAnswersType } from '../../../atoms'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { Thread as ThreadType, useThreads } from './hooks/useThreads'
+import {
+  addAnswerAtom,
+  allQuestionsWithAnswersForQnAAtom,
+  answerLikeAtom,
+  questionLikeAtom,
+  toggleAnsweredAtom,
+} from '../../../atoms/selectors'
+import { userAtom } from '../../../atoms/userAtom'
 
 const CONTENT_WIDTH = 507
 
@@ -19,49 +28,87 @@ const EmptyState = () => (
   </NoContentMessage>
 )
 
-interface ThreadListProps {
-  threads: ThreadType[]
-  onLike: (index: number) => void
-  onResponseLike: (threadIndex: number, responseIndex: number) => void
-  onReply: (
-    index: number,
-    params: { message: string; isAnonymous: boolean; name?: string },
-  ) => void
-  isAuthorized: boolean
+export type QnaLiveProps = {
+  qnaId: number
 }
 
-const ThreadList: React.FC<ThreadListProps> = ({
-  threads,
-  onLike,
-  onResponseLike,
-  onReply,
-  isAuthorized,
-}) => (
-  <ThreadsContainer>
-    {threads.map((thread, index) => (
-      <Thread
-        key={`${thread.info.author}-${thread.info.timestamp}`}
-        info={thread.info}
-        likes={thread.likes}
-        isFirst={index === 0}
-        onQuestionLikeClick={() => onLike(index)}
-        onResponseLikeClick={(responseIndex) =>
-          onResponseLike(index, responseIndex)
-        }
-        onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
-          onReply(index, { message, isAnonymous, name })
-          resetForm()
-        }}
-        isAuthorized={isAuthorized}
-      />
-    ))}
-  </ThreadsContainer>
-)
-
-export const QnaLive: React.FC = () => {
+export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
+  const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
+    FilterThreadEnum.All,
+  )
   const [isAuthorized] = useAtom(isAuthorizedAtom)
-  const { threads, handleQuestionLike, handleResponseLike, handleReply } =
-    useThreads(mockThreads)
+  const user = useAtomValue(userAtom)
+
+  const questionsAtom = useMemo(
+    () => allQuestionsWithAnswersForQnAAtom(qnaId),
+    [qnaId],
+  )
+  const questionsWithAnswers = useAtomValue(questionsAtom)
+
+  const setQuestionLike = useSetAtom(questionLikeAtom)
+  const setAnswerLike = useSetAtom(answerLikeAtom)
+  const setAddAnswer = useSetAtom(addAnswerAtom)
+  const setToggleAnswered = useSetAtom(toggleAnsweredAtom)
+
+  const filteredQuestions = useMemo(() => {
+    return filterQuestions(questionsWithAnswers, activeFilter)
+  }, [questionsWithAnswers, activeFilter])
+
+  const threads = useMemo(() => {
+    return filteredQuestions.map((question) =>
+      mapQuestionToThread(question, user.id),
+    )
+  }, [filteredQuestions, user.id])
+
+  const questionIdMap = useMemo(() => {
+    return filteredQuestions.reduce((map, question) => {
+      map[question.id] = question
+      return map
+    }, {} as Record<number, QuestionWithAnswersType>)
+  }, [filteredQuestions])
+
+  const handleQuestionLike = useCallback(
+    (questionId: number) => {
+      setQuestionLike({ questionId, userId: user.id })
+    },
+    [setQuestionLike, user.id],
+  )
+
+  const handleResponseLike = useCallback(
+    (answerId: number) => {
+      setAnswerLike({
+        answerId,
+        userId: user.id,
+      })
+    },
+    [setAnswerLike, user.id],
+  )
+
+  const handleReply = useCallback(
+    (
+      questionId: number,
+      params: { message: string; isAnonymous: boolean; name?: string },
+    ) => {
+      setAddAnswer({
+        questionId,
+        qnaId,
+        content: params.message,
+        author: params.isAnonymous ? 'Anonymous' : params.name || user.id,
+      })
+    },
+    [qnaId, setAddAnswer, user.id],
+  )
+
+  const handleCheck = useCallback(
+    (questionId: number) => {
+      setToggleAnswered(questionId)
+    },
+    [setToggleAnswered],
+  )
+
+  const handleTabChange = useCallback((id: string | number) => {
+    setActiveFilter(id.toString() as FilterThreadEnum)
+  }, [])
 
   return (
     <Wrapper>
@@ -70,22 +117,41 @@ export const QnaLive: React.FC = () => {
           <Tab
             variant="secondary"
             options={[
-              { id: 'all', label: 'All' },
-              { id: 'popular', label: 'Popular' },
-              { id: 'answered', label: 'Answered' },
+              { id: FilterThreadEnum.All, label: 'All' },
+              { id: FilterThreadEnum.Popular, label: 'Popular' },
+              { id: FilterThreadEnum.Answered, label: 'Answered' },
             ]}
             itemWidth="100px"
-            activeId="all"
+            activeId={activeFilter}
+            onChange={handleTabChange}
           />
         </TabWrapper>
         {threads.length > 0 ? (
-          <ThreadList
-            threads={threads}
-            onLike={handleQuestionLike}
-            onResponseLike={handleResponseLike}
-            onReply={handleReply}
-            isAuthorized={isAuthorized}
-          />
+          <ThreadsContainer>
+            {threads.map((thread, index) => (
+              <Thread
+                key={`thread-${thread.info.questionId}`}
+                info={thread.info}
+                likes={thread.likes}
+                isFirst={index === 0}
+                onQuestionLikeClick={() =>
+                  handleQuestionLike(thread.info.questionId)
+                }
+                onResponseLikeClick={(answerId) => handleResponseLike(answerId)}
+                onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
+                  handleReply(thread.info.questionId, {
+                    message,
+                    isAnonymous,
+                    name,
+                  })
+                  resetForm()
+                }}
+                onCheckClick={() => handleCheck(thread.info.questionId)}
+                isChecked={thread.info.isAnswered}
+                isAuthorized={isAuthorized}
+              />
+            ))}
+          </ThreadsContainer>
         ) : (
           <EmptyState />
         )}

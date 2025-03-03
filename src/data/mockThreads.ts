@@ -4,12 +4,14 @@ export const mockThreads: ThreadInterface[] = [
   {
     info: {
       isAnswered: false,
+      questionId: 1,
       author: 'Alice',
       timestamp: '2025-02-14T11:48:36.135Z',
       question:
         'What are the key differences between React hooks and class components?',
       responses: [
         {
+          id: 101,
           info: {
             author: 'Bob',
             timestamp: '2025-02-15T11:48:36.135Z',
@@ -19,6 +21,7 @@ export const mockThreads: ThreadInterface[] = [
           likes: { count: 12, isLiked: false },
         },
         {
+          id: 102,
           info: {
             author: 'Bob',
             timestamp: '2025-02-16T11:48:36.135Z',
@@ -34,12 +37,14 @@ export const mockThreads: ThreadInterface[] = [
   {
     info: {
       isAnswered: false,
+      questionId: 2,
       author: 'David',
       timestamp: '2025-02-15T11:48:36.135Z',
       question:
         'How do you handle state management in large React applications? Would you recommend Redux, Context API, or other solutions?',
       responses: [
         {
+          id: 103,
           info: {
             author: 'Eva',
             timestamp: '2025-02-16T11:48:36.135Z',
@@ -55,12 +60,14 @@ export const mockThreads: ThreadInterface[] = [
   {
     info: {
       isAnswered: false,
+      questionId: 3,
       author: 'Frank',
       timestamp: '2025-02-17T11:48:36.135Z',
       question:
         'What are the best practices for handling API calls in React components? Should we use custom hooks?',
       responses: [
         {
+          id: 104,
           info: {
             author: 'Henry',
             timestamp: '2025-02-19T11:48:36.135Z',
@@ -70,6 +77,7 @@ export const mockThreads: ThreadInterface[] = [
           likes: { count: 20, isLiked: false },
         },
         {
+          id: 105,
           info: {
             author: 'Henry',
             timestamp: '2025-02-17T11:48:36.135Z',
@@ -79,6 +87,7 @@ export const mockThreads: ThreadInterface[] = [
           likes: { count: 18, isLiked: true },
         },
         {
+          id: 106,
           info: {
             author: 'Henry',
             timestamp: '2025-02-20T11:48:36.135Z',
@@ -88,6 +97,7 @@ export const mockThreads: ThreadInterface[] = [
           likes: { count: 18, isLiked: true },
         },
         {
+          id: 107,
           info: {
             author: 'Anonymous',
             timestamp: '2025-02-15T11:48:36.135Z',
@@ -103,6 +113,7 @@ export const mockThreads: ThreadInterface[] = [
   {
     info: {
       isAnswered: false,
+      questionId: 4,
       author: 'Isabel',
       timestamp: '2025-02-12T11:48:36.135Z',
       question:
@@ -114,12 +125,14 @@ export const mockThreads: ThreadInterface[] = [
   {
     info: {
       isAnswered: false,
+      questionId: 5,
       author: 'Jack',
       timestamp: '2025-02-10T11:48:36.135Z',
       question:
         'How do you optimize performance in React applications? Any specific tools or techniques you recommend?',
       responses: [
         {
+          id: 108,
           info: {
             author: 'Kelly',
             timestamp: '2025-02-14T11:48:36.135Z',

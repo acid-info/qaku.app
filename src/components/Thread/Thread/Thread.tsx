@@ -1,4 +1,5 @@
 import {
+  ThreadResponseInterface,
   type ThreadInfoType as HeaderThreadInfoType,
   type LikeInfoType,
 } from '@/types/thread.types'
@@ -6,22 +7,18 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import { ThreadItem } from '../ThreadItem'
 import { ThreadItemReply, type ThreadItemReplyProps } from '../ThreadItemReply'
-import { type ThreadItemResponseProps } from '../ThreadItemResponse'
 import { ReplyContainer } from './ReplyContainer'
 
 type ThreadInfoType = HeaderThreadInfoType & {
   question: string
-  responses: Array<{
-    info: ThreadItemResponseProps['info']
-    likes?: LikeInfoType
-  }>
+  responses: ThreadResponseInterface[]
 }
 
 export type ThreadProps = {
   info: ThreadInfoType
   likes: LikeInfoType
   onQuestionLikeClick?: () => void
-  onResponseLikeClick?: (index: number) => void
+  onResponseLikeClick?: (answerId: number) => void
   onReplySubmit?: ThreadItemReplyProps['onSubmit']
   onCheckClick?: () => void
   isAuthorized?: boolean

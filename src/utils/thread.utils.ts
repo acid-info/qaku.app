@@ -10,7 +10,9 @@ export const mapQuestionToThread = (
     timestamp: question.timestamp.toISOString(),
     question: question.content,
     isAnswered: question.isAnswered,
+    questionId: question.id,
     responses: question.answers.map((answer) => ({
+      id: answer.id,
       info: {
         author: answer.author,
         timestamp: answer.timestamp.toISOString(),
@@ -36,7 +38,9 @@ export const filterQuestions = (
     case FilterThreadEnum.All:
       return questions.filter((question) => !question.isAnswered)
     case FilterThreadEnum.Popular:
-      return questions.filter((question) => question.answers.length >= 2)
+      return questions.filter(
+        (question) => question.answers.length >= 2 && !question.isAnswered,
+      )
     case FilterThreadEnum.Answered:
       return questions.filter((question) => question.isAnswered)
     default:

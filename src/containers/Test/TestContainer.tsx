@@ -421,6 +421,7 @@ const ThreadDemo = () => {
           'What are the key differences between React hooks and class components?',
         responses: [
           {
+            id: 1,
             info: {
               author: 'Bob',
               timestamp: '2025-02-16T11:48:36.135Z',
@@ -429,6 +430,7 @@ const ThreadDemo = () => {
             likes: { count: 12, isLiked: false },
           },
           {
+            id: 2,
             info: {
               author: 'Chalie',
               timestamp: '2025-02-19T11:48:36.135Z',
@@ -437,6 +439,7 @@ const ThreadDemo = () => {
             likes: { count: 12, isLiked: false },
           },
           {
+            id: 3,
             info: {
               author: 'Chalie',
               timestamp: '2025-02-17T11:48:36.135Z',
@@ -445,6 +448,7 @@ const ThreadDemo = () => {
             likes: { count: 12, isLiked: false },
           },
           {
+            id: 4,
             info: {
               author: 'Bob',
               timestamp: '2025-02-18T11:48:36.135Z',
@@ -453,6 +457,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 5,
             info: {
               author: 'Bob',
               timestamp: '2025-02-20T11:48:36.135Z',
@@ -461,6 +466,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 6,
             info: {
               author: 'John',
               timestamp: '2025-02-18T11:48:36.135Z',
@@ -469,6 +475,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 7,
             info: {
               author: 'John',
               timestamp: '2025-02-20T11:48:36.135Z',
@@ -477,6 +484,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 8,
             info: {
               author: 'John',
               timestamp: '2025-02-21T11:48:36.135Z',
@@ -485,6 +493,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 9,
             info: {
               author: 'John',
               timestamp: '2025-02-22T11:48:36.135Z',
@@ -526,7 +535,7 @@ const ThreadDemo = () => {
     )
   }
 
-  const handleResponseLike = (threadIndex: number, responseIndex: number) => {
+  const handleResponseLike = (threadIndex: number, responseId: number) => {
     setThreads((prevThreads) =>
       prevThreads.map((thread, i) =>
         i === threadIndex
@@ -534,8 +543,8 @@ const ThreadDemo = () => {
               ...thread,
               info: {
                 ...thread.info,
-                responses: thread.info.responses.map((response, j) =>
-                  j === responseIndex
+                responses: thread.info.responses.map((response) =>
+                  response.id === responseId
                     ? {
                         ...response,
                         likes: {
@@ -570,11 +579,12 @@ const ThreadDemo = () => {
             likes={thread.likes}
             isFirst={index === 0}
             onQuestionLikeClick={() => handleQuestionLike(index)}
-            onResponseLikeClick={(responseIndex) =>
-              handleResponseLike(index, responseIndex)
+            onResponseLikeClick={(responseId) =>
+              handleResponseLike(index, responseId)
             }
             onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
               const newResponse = {
+                id: Math.floor(Math.random() * 10000),
                 info: {
                   author: isAnonymous ? 'Anonymous' : name || 'User',
                   timestamp: new Date().toLocaleTimeString('en-US', {

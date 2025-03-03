@@ -57,7 +57,7 @@ export const SidebarContainer: React.FC = () => {
     setActiveQnA(qnaId)
     const qna = qnasRecord[qnaId]
     if (qna?.isActive) {
-      router.push('/qna/live')
+      router.push(`/qna/live/${qnaId}`)
     } else {
       router.push(`/qna/created/${qnaId}`)
     }
