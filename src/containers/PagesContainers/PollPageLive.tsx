@@ -5,18 +5,36 @@ import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
+import { getPollByIdAtom } from '../../../atoms/pollAtom'
 
-export default function Page() {
+export const PollPageLive: React.FC = () => {
+  const router = useRouter()
+
+  const pollId = useMemo(() => {
+    const { id } = router.query
+    return id ? parseInt(id as string, 10) : null
+  }, [router.query])
+
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
   const [pollSettings, setPollSettings] = useAtom(pollSettingsAtom)
-  const router = useRouter()
 
-  const getLayout = (page: React.ReactNode) => (
+  const pollAtom = useMemo(() => {
+    return pollId !== null ? getPollByIdAtom(pollId) : atom(null)
+  }, [pollId])
+
+  const poll = useAtomValue(pollAtom)
+
+  if (!router.isReady || pollId === null || !poll) {
+    return null
+  }
+
+  return (
     <DefaultLayout
       useAlternativeGap
       showFooter={false}
@@ -25,15 +43,15 @@ export default function Page() {
         mode: NavbarModeEnum.Polls,
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
-        title: pollSettings.title || 'Live Q&A Session',
+        title: poll.title,
         date: new Date().toISOString(),
-        count: 0,
-        id: '123456',
+        count: poll.optionsIds.length,
+        id: pollId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push('/poll/create'),
       }}
     >
-      {page}
+      <SEO />
+      <PollLive pollId={pollId} />
       <PollFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
@@ -45,13 +63,4 @@ export default function Page() {
       />
     </DefaultLayout>
   )
-
-  return getLayout(
-    <>
-      <SEO />
-      <PollLive />
-    </>,
-  )
 }
-
-Page.getLayout = (page: React.ReactNode) => page

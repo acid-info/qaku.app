@@ -67,7 +67,7 @@ export const SidebarContainer: React.FC = () => {
     setActivePoll(pollId)
     const poll = pollsRecord[pollId]
     if (poll?.isActive) {
-      router.push('/poll/live')
+      router.push(`/poll/live/${pollId}`)
     } else {
       router.push(`/poll/created/${pollId}`)
     }

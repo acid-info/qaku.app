@@ -1,13 +1,7 @@
-import { mockQnAs } from '@/data/mockQnas'
 import { QnAFilterTypeEnum, QnAType } from '@/types/qna.types'
 import { atom } from 'jotai'
 
-export const qnasRecordAtom = atom<Record<number, QnAType>>(
-  mockQnAs.reduce((acc, qna) => {
-    acc[qna.id] = qna
-    return acc
-  }, {} as Record<number, QnAType>),
-)
+export const qnasRecordAtom = atom<Record<number, QnAType>>({})
 
 export const qnaIdsAtom = atom<number[]>((get) =>
   Object.keys(get(qnasRecordAtom)).map((id) => parseInt(id)),

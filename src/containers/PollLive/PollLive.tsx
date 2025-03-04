@@ -1,50 +1,43 @@
 import { PollOptions } from '@/components/PollOptions'
 import { TitleBlock } from '@/components/TitleBlock'
 import styled from '@emotion/styled'
+import { useAtomValue } from 'jotai'
 import React from 'react'
+import { getPollByIdAtom } from '../../../atoms/pollAtom'
+import { usePollOptions } from '../../../hooks/usePollOptions'
+import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
-export const PollLive: React.FC = () => {
-  const options = [
-    {
-      id: '1',
-      title: 'Option 1',
-      percentage: 65,
-      isChecked: false,
-    },
-    {
-      id: '2',
-      title: 'Option 2',
-      percentage: 20,
-      isChecked: false,
-    },
-    {
-      id: '3',
-      title: 'Option 3',
-      percentage: 5,
-      isChecked: false,
-    },
-    {
-      id: '4',
-      title: 'Option 4',
-      percentage: 10,
-      isChecked: false,
-    },
-    {
-      id: '5',
-      title: 'Option 5',
-      percentage: 0,
-      isChecked: false,
-    },
-  ]
+export type PollLiveProps = {
+  pollId: number
+}
+
+export const PollLive: React.FC<PollLiveProps> = ({ pollId }) => {
+  usePollSubscriptions(pollId)
+  const poll = useAtomValue(getPollByIdAtom(pollId))
+  const { optionsWithStats } = usePollOptions(pollId)
+
+  // Todo move to utils
+  const formattedOptions = optionsWithStats.map((option: any) => ({
+    id: option.id.toString(),
+    title: option.title,
+    percentage: option.percentage,
+    isChecked: false,
+  }))
 
   return (
     <Main className="scrollable-container">
       <Content>
         <TitleBlock
-          title="What is the best approach here? Are there any alternatives?"
-          description="Long description visible to all participants and everyone"
+          title={poll?.question || ''}
+          description={poll?.description || ''}
         />
-        <PollOptions options={options} />
+
+        <PollOptions
+          options={formattedOptions}
+          selectedOptionIds={[]}
+          onOptionSelect={() => {}}
+          hasCheckbox={false}
+        />
       </Content>
     </Main>
   )

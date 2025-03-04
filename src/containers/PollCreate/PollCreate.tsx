@@ -5,10 +5,11 @@ import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { PollOptions } from '@/components/PollOptions'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 export const PollCreate: React.FC = () => {
+  const router = useRouter()
   const [nextId, setNextId] = useState(3)
   const [options, setOptions] = useState([
     {
@@ -40,6 +41,11 @@ export const PollCreate: React.FC = () => {
 
   const handleRemoveOption = (optionId: string) => {
     setOptions(options.filter((option) => option.id !== optionId))
+  }
+
+  const handleCreatePoll = () => {
+    // Todo build real create poll interaction
+    router.push('/poll/live/1')
   }
 
   return (
@@ -74,11 +80,13 @@ export const PollCreate: React.FC = () => {
         </Content>
       </Main>
       <ActionContainer>
-        <Link href="/poll/live">
-          <StyledButton variant="filledPrimary" size="large">
-            Create
-          </StyledButton>
-        </Link>
+        <StyledButton
+          variant="filledPrimary"
+          size="large"
+          onClick={handleCreatePoll}
+        >
+          Create
+        </StyledButton>
       </ActionContainer>
     </Wrapper>
   )

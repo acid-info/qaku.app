@@ -2,17 +2,22 @@ import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
-import { useAnswerInteractions, useQuestionInteractions } from '@/lib/api/hooks'
 import { FilterThreadEnum } from '@/types/thread.types'
-import { filterQuestions, mapQuestionToThread } from '@/utils/thread.utils'
+import {
+  addNewAnswer,
+  likeAnswerById,
+  likeQuestionById,
+  toggleQuestionAnsweredStatus,
+} from '@/utils/api.utils'
 import styled from '@emotion/styled'
 import { useAtom, useAtomValue } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { allQuestionsWithAnswersForQnAAtom } from '../../../atoms/selectors'
 import { userAtom } from '../../../atoms/userAtom'
-
+import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
+import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
+import { filterQuestions, mapQuestionToThread } from '../../utils/thread.utils'
 const CONTENT_WIDTH = 507
 
 const EmptyState = () => (
@@ -33,18 +38,13 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
   const [isAuthorized] = useAtom(isAuthorizedAtom)
   const user = useAtomValue(userAtom)
 
-  const questionsAtom = useMemo(
-    () => allQuestionsWithAnswersForQnAAtom(qnaId),
-    [qnaId],
-  )
-  const questionsWithAnswers = useAtomValue(questionsAtom)
+  useQnaQuestionsAnswersSubscriptions(qnaId)
 
-  const { likeQuestion, toggleQuestionAnswered } = useQuestionInteractions()
-  const { likeAnswer, addAnswer } = useAnswerInteractions()
+  const { questions: qnaQuestions } = useQnaQuestionsWithAnswers(qnaId)
 
   const filteredQuestions = useMemo(() => {
-    return filterQuestions(questionsWithAnswers, activeFilter)
-  }, [questionsWithAnswers, activeFilter])
+    return filterQuestions(qnaQuestions, activeFilter)
+  }, [qnaQuestions, activeFilter])
 
   const threads = useMemo(() => {
     return filteredQuestions.map((question) =>
@@ -52,19 +52,19 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
     )
   }, [filteredQuestions, user.id])
 
-  const handleQuestionLike = (questionId: number) => {
-    likeQuestion(questionId, user.id)
+  const handleQuestionLike = async (questionId: number) => {
+    await likeQuestionById(questionId, user.id)
   }
 
-  const handleResponseLike = (answerId: number) => {
-    likeAnswer(answerId, user.id)
+  const handleResponseLike = async (answerId: number) => {
+    await likeAnswerById(answerId, user.id)
   }
 
-  const handleReply = (
+  const handleReply = async (
     questionId: number,
     params: { message: string; isAnonymous: boolean; name?: string },
   ) => {
-    addAnswer(
+    await addNewAnswer(
       questionId,
       qnaId,
       params.message,
@@ -72,8 +72,8 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
     )
   }
 
-  const handleCheck = (questionId: number) => {
-    toggleQuestionAnswered(questionId)
+  const handleCheck = async (questionId: number) => {
+    await toggleQuestionAnsweredStatus(questionId)
   }
 
   const handleTabChange = useCallback((id: string | number) => {
@@ -96,6 +96,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
             onChange={handleTabChange}
           />
         </TabWrapper>
+
         {threads.length > 0 ? (
           <ThreadsContainer>
             {threads.map((thread, index) => (

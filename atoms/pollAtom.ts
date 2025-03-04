@@ -1,13 +1,7 @@
-import { mockPolls } from '@/data/mockPolls'
 import { PollType } from '@/types/qna.types'
 import { atom } from 'jotai'
 
-export const pollsRecordAtom = atom<Record<number, PollType>>(
-  mockPolls.reduce((acc, poll) => {
-    acc[poll.id] = poll
-    return acc
-  }, {} as Record<number, PollType>),
-)
+export const pollsRecordAtom = atom<Record<number, PollType>>({})
 
 export const pollIdsAtom = atom<number[]>((get) =>
   Object.keys(get(pollsRecordAtom)).map((id) => parseInt(id)),

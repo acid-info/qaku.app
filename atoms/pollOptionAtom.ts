@@ -1,4 +1,3 @@
-import { mockPollOptions } from '@/data/mockPollOptions'
 import { PollOptionType } from '@/types/qna.types'
 import {
   calculateOptionPercentage,
@@ -6,12 +5,7 @@ import {
 } from '@/utils/poll.utils'
 import { atom } from 'jotai'
 
-export const pollOptionsRecordAtom = atom<Record<number, PollOptionType>>(
-  mockPollOptions.reduce((acc, option) => {
-    acc[option.id] = option
-    return acc
-  }, {} as Record<number, PollOptionType>),
-)
+export const pollOptionsRecordAtom = atom<Record<number, PollOptionType>>({})
 
 export const pollOptionIdsAtom = atom<number[]>((get) =>
   Object.keys(get(pollOptionsRecordAtom)).map((id) => parseInt(id)),

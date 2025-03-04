@@ -1,13 +1,7 @@
-import { mockQuestions } from '@/data/mockQuestions'
 import { QuestionType } from '@/types/qna.types'
 import { atom } from 'jotai'
 
-export const questionsRecordAtom = atom<Record<number, QuestionType>>(
-  mockQuestions.reduce((acc, question) => {
-    acc[question.id] = question
-    return acc
-  }, {} as Record<number, QuestionType>),
-)
+export const questionsRecordAtom = atom<Record<number, QuestionType>>({})
 
 export const questionIdsAtom = atom<number[]>((get) =>
   Object.keys(get(questionsRecordAtom)).map((id) => parseInt(id)),
