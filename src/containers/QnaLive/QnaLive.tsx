@@ -2,21 +2,15 @@ import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { useAnswerInteractions, useQuestionInteractions } from '@/lib/api/hooks'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { filterQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
-import { QuestionWithAnswersType } from '../../../atoms'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import {
-  addAnswerAtom,
-  allQuestionsWithAnswersForQnAAtom,
-  answerLikeAtom,
-  questionLikeAtom,
-  toggleAnsweredAtom,
-} from '../../../atoms/selectors'
+import { allQuestionsWithAnswersForQnAAtom } from '../../../atoms/selectors'
 import { userAtom } from '../../../atoms/userAtom'
 
 const CONTENT_WIDTH = 507
@@ -45,10 +39,8 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
   )
   const questionsWithAnswers = useAtomValue(questionsAtom)
 
-  const setQuestionLike = useSetAtom(questionLikeAtom)
-  const setAnswerLike = useSetAtom(answerLikeAtom)
-  const setAddAnswer = useSetAtom(addAnswerAtom)
-  const setToggleAnswered = useSetAtom(toggleAnsweredAtom)
+  const { likeQuestion, toggleQuestionAnswered } = useQuestionInteractions()
+  const { likeAnswer, addAnswer } = useAnswerInteractions()
 
   const filteredQuestions = useMemo(() => {
     return filterQuestions(questionsWithAnswers, activeFilter)
@@ -60,51 +52,29 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
     )
   }, [filteredQuestions, user.id])
 
-  const questionIdMap = useMemo(() => {
-    return filteredQuestions.reduce((map, question) => {
-      map[question.id] = question
-      return map
-    }, {} as Record<number, QuestionWithAnswersType>)
-  }, [filteredQuestions])
+  const handleQuestionLike = (questionId: number) => {
+    likeQuestion(questionId, user.id)
+  }
 
-  const handleQuestionLike = useCallback(
-    (questionId: number) => {
-      setQuestionLike({ questionId, userId: user.id })
-    },
-    [setQuestionLike, user.id],
-  )
+  const handleResponseLike = (answerId: number) => {
+    likeAnswer(answerId, user.id)
+  }
 
-  const handleResponseLike = useCallback(
-    (answerId: number) => {
-      setAnswerLike({
-        answerId,
-        userId: user.id,
-      })
-    },
-    [setAnswerLike, user.id],
-  )
+  const handleReply = (
+    questionId: number,
+    params: { message: string; isAnonymous: boolean; name?: string },
+  ) => {
+    addAnswer(
+      questionId,
+      qnaId,
+      params.message,
+      params.isAnonymous ? 'Anonymous' : params.name || user.id,
+    )
+  }
 
-  const handleReply = useCallback(
-    (
-      questionId: number,
-      params: { message: string; isAnonymous: boolean; name?: string },
-    ) => {
-      setAddAnswer({
-        questionId,
-        qnaId,
-        content: params.message,
-        author: params.isAnonymous ? 'Anonymous' : params.name || user.id,
-      })
-    },
-    [qnaId, setAddAnswer, user.id],
-  )
-
-  const handleCheck = useCallback(
-    (questionId: number) => {
-      setToggleAnswered(questionId)
-    },
-    [setToggleAnswered],
-  )
+  const handleCheck = (questionId: number) => {
+    toggleQuestionAnswered(questionId)
+  }
 
   const handleTabChange = useCallback((id: string | number) => {
     setActiveFilter(id.toString() as FilterThreadEnum)
