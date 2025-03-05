@@ -4,9 +4,12 @@ import { allQuestionsWithAnswersForQnAAtom } from '../atoms/selectors/selectors'
 
 // Hook for accessing questions with their answers for a specific QnA
 export const useQnaQuestionsWithAnswers = (qnaId: number) => {
-  const questionsWithAnswers = useAtomValue(
-    allQuestionsWithAnswersForQnAAtom(qnaId),
+  const questionsWithAnswersAtom = useMemo(
+    () => allQuestionsWithAnswersForQnAAtom(qnaId),
+    [qnaId],
   )
+
+  const questionsWithAnswers = useAtomValue(questionsWithAnswersAtom)
 
   const answeredQuestions = useMemo(() => {
     return questionsWithAnswers.filter((question) => question.isAnswered)

@@ -2,7 +2,7 @@ import { PollOptions } from '@/components/PollOptions'
 import { TitleBlock } from '@/components/TitleBlock'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { getPollByIdAtom } from '../../../atoms/pollAtom'
 import { usePollOptions } from '../../../hooks/usePollOptions'
 import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
@@ -13,7 +13,10 @@ export type PollLiveProps = {
 
 export const PollLive: React.FC<PollLiveProps> = ({ pollId }) => {
   usePollSubscriptions(pollId)
-  const poll = useAtomValue(getPollByIdAtom(pollId))
+
+  const pollAtom = useMemo(() => getPollByIdAtom(pollId), [pollId])
+
+  const poll = useAtomValue(pollAtom)
   const { optionsWithStats } = usePollOptions(pollId)
 
   // Todo move to utils
@@ -34,9 +37,8 @@ export const PollLive: React.FC<PollLiveProps> = ({ pollId }) => {
 
         <PollOptions
           options={formattedOptions}
-          selectedOptionIds={[]}
-          onOptionSelect={() => {}}
-          hasCheckbox={false}
+          hasCheckbox={poll?.hasCorrectAnswers}
+          selectedOptionIds={poll?.correctAnswersIds?.map(String)}
         />
       </Content>
     </Main>
