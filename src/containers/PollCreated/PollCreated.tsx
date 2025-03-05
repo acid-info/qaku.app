@@ -1,39 +1,43 @@
 import { PollOptions } from '@/components/PollOptions'
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
 import { TitleBlock } from '@/components/TitleBlock'
+import { loadPollOptions } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
-import { atom, useAtomValue } from 'jotai'
-import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import React, { useEffect, useMemo } from 'react'
+import { pollOptionsRecordAtom } from '../../../atoms/pollOptionAtom'
 import {
   pollWithOptionsAtom,
   qnaCountsByIdAtom,
 } from '../../../atoms/selectors'
-import { userAtom } from '../../../atoms/userAtom'
+import { usePollOptions } from '../../../hooks/usePollOptions'
 
-const emptyPollAtom = atom(undefined)
 const emptyCountsAtom = atom({
   questionsCount: 0,
   namedAuthorCount: 0,
   anonymousRate: 0,
 })
 
-export const PollCreated: React.FC = () => {
-  const router = useRouter()
-  const user = useAtomValue(userAtom)
+export type PollCreatedProps = {
+  pollId: number
+}
 
-  const pollId = useMemo(() => {
-    const id = router.query.id
-    return typeof id === 'string' ? parseInt(id, 10) || null : null
-  }, [router.query.id])
+export const PollCreated: React.FC<PollCreatedProps> = ({ pollId }) => {
+  const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
-  const pollDataAtom = useMemo(
-    () => (pollId !== null ? pollWithOptionsAtom(pollId) : emptyPollAtom),
-    [pollId],
-  )
+  useEffect(() => {
+    loadPollOptions(pollId, setPollOptionsRecord)
+  }, [pollId, setPollOptionsRecord])
+
+  const pollDataAtom = useMemo(() => pollWithOptionsAtom(pollId), [pollId])
 
   const pollData = useAtomValue(pollDataAtom)
+
+  const pollOptionsResult = usePollOptions(pollId)
+  const optionsWithStats = useMemo(() => {
+    return pollOptionsResult?.optionsWithStats || []
+  }, [pollOptionsResult])
 
   const qnaCountsAtom = useMemo(
     () =>
@@ -46,12 +50,18 @@ export const PollCreated: React.FC = () => {
     anonymousRate: 0,
   }
 
-  const mappedOptions = useMemo(
-    () => mapPollOptionsForDisplay(pollData),
-    [pollData],
-  )
+  const mappedOptions = useMemo(() => {
+    if (pollData && optionsWithStats.length > 0) {
+      return mapPollOptionsForDisplay(
+        optionsWithStats,
+        pollData.hasCorrectAnswers,
+        pollData.correctAnswersIds,
+      )
+    }
+    return []
+  }, [pollData, optionsWithStats])
 
-  if (!router.isReady || pollId === null || !pollData) {
+  if (!pollData) {
     return null
   }
 

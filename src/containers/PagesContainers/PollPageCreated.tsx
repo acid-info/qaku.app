@@ -52,7 +52,7 @@ export const PollPageCreated: React.FC = () => {
       }}
     >
       <SEO />
-      <PollCreated />
+      <PollCreated pollId={pollId} />
     </DefaultLayout>
   )
 }

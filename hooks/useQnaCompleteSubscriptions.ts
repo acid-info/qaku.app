@@ -1,6 +1,7 @@
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
 import { AnswerType, PollType, QuestionType } from '@/types/qna.types'
+import { loadPollOptions, loadQnaData } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { answersRecordAtom } from '../atoms/answerAtom'
@@ -16,25 +17,9 @@ export const useQnaCompleteSubscriptions = (qnaId: number) => {
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
   useEffect(() => {
-    const loadQnaData = async () => {
+    const loadAllQnaData = async () => {
       try {
-        // Load questions for this QnA
-        const questionsResponse = await apiConnector.getQuestionsByQnaId(qnaId)
-        if (questionsResponse.success && questionsResponse.data) {
-          setQuestionsRecord((prev) => ({
-            ...prev,
-            ...questionsResponse.data,
-          }))
-        }
-
-        // Load answers for this QnA
-        const answersResponse = await apiConnector.getAnswersByQnaId(qnaId)
-        if (answersResponse.success && answersResponse.data) {
-          setAnswersRecord((prev) => ({
-            ...prev,
-            ...answersResponse.data,
-          }))
-        }
+        await loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
 
         // Load polls for this QnA
         const pollsResponse = await apiConnector.getPollsByQnaId(qnaId)
@@ -44,18 +29,9 @@ export const useQnaCompleteSubscriptions = (qnaId: number) => {
             ...pollsResponse.data,
           }))
 
-          // Load poll options for each poll
           const pollIds = Object.keys(pollsResponse.data).map(Number)
           for (const pollId of pollIds) {
-            const optionsResponse = await apiConnector.getPollOptionsByPollId(
-              pollId,
-            )
-            if (optionsResponse.success && optionsResponse.data) {
-              setPollOptionsRecord((prev) => ({
-                ...prev,
-                ...optionsResponse.data,
-              }))
-            }
+            await loadPollOptions(pollId, setPollOptionsRecord)
           }
         }
       } catch (error) {
@@ -63,7 +39,7 @@ export const useQnaCompleteSubscriptions = (qnaId: number) => {
       }
     }
 
-    loadQnaData()
+    loadAllQnaData()
 
     const questionSub = apiConnector.subscribe<QuestionType>(
       ApiMessageType.QUESTION_MESSAGE,

@@ -7,6 +7,63 @@ import {
   QuestionType,
 } from '@/types/qna.types'
 
+// Function to load questions and answers for a specific QnA
+export const loadQnaData = async (
+  qnaId: number,
+  setQuestionsRecord: (
+    updater: (
+      prev: Record<number, QuestionType>,
+    ) => Record<number, QuestionType>,
+  ) => void,
+  setAnswersRecord: (
+    updater: (prev: Record<number, AnswerType>) => Record<number, AnswerType>,
+  ) => void,
+): Promise<void> => {
+  try {
+    // Load questions for this QnA
+    const questionsResponse = await apiConnector.getQuestionsByQnaId(qnaId)
+    if (questionsResponse.success && questionsResponse.data) {
+      setQuestionsRecord((prev) => ({
+        ...prev,
+        ...questionsResponse.data,
+      }))
+    }
+
+    // Load answers for this QnA
+    const answersResponse = await apiConnector.getAnswersByQnaId(qnaId)
+    if (answersResponse.success && answersResponse.data) {
+      setAnswersRecord((prev) => ({
+        ...prev,
+        ...answersResponse.data,
+      }))
+    }
+  } catch (error) {
+    console.error(`Error loading data for QnA ${qnaId}:`, error)
+  }
+}
+
+// Function to load poll options for a specific poll
+export const loadPollOptions = async (
+  pollId: number,
+  setPollOptionsRecord: (
+    updater: (
+      prev: Record<number, PollOptionType>,
+    ) => Record<number, PollOptionType>,
+  ) => void,
+): Promise<void> => {
+  try {
+    const optionsResponse = await apiConnector.getPollOptionsByPollId(pollId)
+    if (optionsResponse.success && optionsResponse.data) {
+      setPollOptionsRecord((prev) => ({
+        ...prev,
+        ...optionsResponse.data,
+      }))
+    }
+  } catch (error) {
+    console.error(`Error loading options for poll ${pollId}:`, error)
+  }
+}
+
 export const addNewQuestion = async (
   qnaId: number,
   content: string,

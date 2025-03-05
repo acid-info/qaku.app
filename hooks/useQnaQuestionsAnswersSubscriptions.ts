@@ -1,6 +1,7 @@
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
 import { AnswerType, QuestionType } from '@/types/qna.types'
+import { loadQnaData } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { answersRecordAtom } from '../atoms/answerAtom'
@@ -12,31 +13,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   useEffect(() => {
-    const loadQnaData = async () => {
-      try {
-        // Load questions for this QnA
-        const questionsResponse = await apiConnector.getQuestionsByQnaId(qnaId)
-        if (questionsResponse.success && questionsResponse.data) {
-          setQuestionsRecord((prev) => ({
-            ...prev,
-            ...questionsResponse.data,
-          }))
-        }
-
-        // Load answers for this QnA
-        const answersResponse = await apiConnector.getAnswersByQnaId(qnaId)
-        if (answersResponse.success && answersResponse.data) {
-          setAnswersRecord((prev) => ({
-            ...prev,
-            ...answersResponse.data,
-          }))
-        }
-      } catch (error) {
-        console.error(`Error loading data for QnA ${qnaId}:`, error)
-      }
-    }
-
-    loadQnaData()
+    loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
 
     const questionSub = apiConnector.subscribe<QuestionType>(
       ApiMessageType.QUESTION_MESSAGE,

@@ -1,6 +1,7 @@
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
 import { PollOptionType, PollType } from '@/types/qna.types'
+import { loadPollOptions } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { pollsRecordAtom } from '../atoms/pollAtom'
@@ -12,34 +13,7 @@ export const usePollSubscriptions = (pollId: number) => {
   const setPollsRecord = useSetAtom(pollsRecordAtom)
 
   useEffect(() => {
-    // Load poll-specific data
-    const loadPollData = async () => {
-      try {
-        // Load poll data
-        const pollResponse = await apiConnector.getPoll(pollId)
-        if (pollResponse.success && pollResponse.data) {
-          setPollsRecord((prev) => ({
-            ...prev,
-            [pollId]: pollResponse.data as PollType,
-          }))
-        }
-
-        // Load poll options for this poll
-        const optionsResponse = await apiConnector.getPollOptionsByPollId(
-          pollId,
-        )
-        if (optionsResponse.success && optionsResponse.data) {
-          setPollOptionsRecord((prev) => ({
-            ...prev,
-            ...optionsResponse.data,
-          }))
-        }
-      } catch (error) {
-        console.error(`Error loading data for poll ${pollId}:`, error)
-      }
-    }
-
-    loadPollData()
+    loadPollOptions(pollId, setPollOptionsRecord)
 
     // Set up poll-specific subscriptions
     const pollVoteSub = apiConnector.subscribe<PollOptionType>(
