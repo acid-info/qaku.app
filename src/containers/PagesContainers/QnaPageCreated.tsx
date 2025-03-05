@@ -3,26 +3,37 @@ import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { atom, useAtomValue } from 'jotai'
+import { loadQnaData } from '@/utils/api.utils'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+import { answersRecordAtom } from '../../../atoms/answerAtom'
 import { getQnaByIdAtom } from '../../../atoms/qnaAtom'
+import { questionsRecordAtom } from '../../../atoms/questionAtom'
 
 export const QnaPageCreated: React.FC = () => {
   const router = useRouter()
+  const setQuestionsRecord = useSetAtom(questionsRecordAtom)
+  const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   const qnaId = useMemo(() => {
     const id = router.query.id
-    return typeof id === 'string' ? parseInt(id, 10) : null
+    return parseInt(String(id), 10)
   }, [router.query.id])
 
   const qnaAtom = useMemo(() => {
-    return qnaId !== null ? getQnaByIdAtom(qnaId) : atom(null)
+    if (!qnaId) return atom(null)
+    return getQnaByIdAtom(qnaId)
   }, [qnaId])
 
   const qna = useAtomValue(qnaAtom)
 
-  if (!router.isReady || qnaId === null || !qna) {
+  useEffect(() => {
+    if (!qnaId) return
+    loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
+  }, [qnaId, setQuestionsRecord, setAnswersRecord])
+
+  if (!router.isReady || !qnaId || !qna) {
     return null
   }
 

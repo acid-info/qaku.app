@@ -1,69 +1,45 @@
 import { PollOptions } from '@/components/PollOptions'
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
 import { TitleBlock } from '@/components/TitleBlock'
-import { loadPollOptions } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect, useMemo } from 'react'
-import { pollOptionsRecordAtom } from '../../../atoms/pollOptionAtom'
-import {
-  pollWithOptionsAtom,
-  qnaCountsByIdAtom,
-} from '../../../atoms/selectors'
+import React, { useMemo } from 'react'
+import { PollWithOptionsType } from '../../../atoms/selectors'
 import { usePollOptions } from '../../../hooks/usePollOptions'
 
-const emptyCountsAtom = atom({
-  questionsCount: 0,
-  namedAuthorCount: 0,
-  anonymousRate: 0,
-})
+type QnaCountsType = {
+  questionsCount: number
+  namedAuthorCount: number
+  anonymousRate: number
+}
 
 export type PollCreatedProps = {
   pollId: number
+  pollData: PollWithOptionsType
+  qnaCounts: QnaCountsType
 }
 
-export const PollCreated: React.FC<PollCreatedProps> = ({ pollId }) => {
-  const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
-
-  useEffect(() => {
-    loadPollOptions(pollId, setPollOptionsRecord)
-  }, [pollId, setPollOptionsRecord])
-
-  const pollDataAtom = useMemo(() => pollWithOptionsAtom(pollId), [pollId])
-
-  const pollData = useAtomValue(pollDataAtom)
-
+export const PollCreated: React.FC<PollCreatedProps> = ({
+  pollId,
+  pollData,
+  qnaCounts,
+}) => {
   const pollOptionsResult = usePollOptions(pollId)
   const optionsWithStats = useMemo(() => {
     return pollOptionsResult?.optionsWithStats || []
   }, [pollOptionsResult])
 
-  const qnaCountsAtom = useMemo(
-    () =>
-      pollData?.qnaId ? qnaCountsByIdAtom(pollData.qnaId) : emptyCountsAtom,
-    [pollData?.qnaId],
-  )
-  const qnaCounts = useAtomValue(qnaCountsAtom) || {
-    questionsCount: 0,
-    namedAuthorCount: 0,
-    anonymousRate: 0,
-  }
-
   const mappedOptions = useMemo(() => {
-    if (pollData && optionsWithStats.length > 0) {
-      return mapPollOptionsForDisplay(
-        optionsWithStats,
-        pollData.hasCorrectAnswers,
-        pollData.correctAnswersIds,
-      )
+    if (optionsWithStats.length === 0) {
+      return []
     }
-    return []
-  }, [pollData, optionsWithStats])
 
-  if (!pollData) {
-    return null
-  }
+    return mapPollOptionsForDisplay(
+      optionsWithStats,
+      pollData.hasCorrectAnswers,
+      pollData.correctAnswersIds,
+    )
+  }, [pollData, optionsWithStats])
 
   return (
     <Wrapper>

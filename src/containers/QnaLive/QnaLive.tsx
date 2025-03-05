@@ -10,13 +10,11 @@ import {
   toggleQuestionAnsweredStatus,
 } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { userAtom } from '../../../atoms/userAtom'
-import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
+import { QuestionWithAnswersType } from '../../../atoms/selectors/selectors'
 import { filterQuestions, mapQuestionToThread } from '../../utils/thread.utils'
 const CONTENT_WIDTH = 507
 
@@ -29,18 +27,19 @@ const EmptyState = () => (
 
 export type QnaLiveProps = {
   qnaId: number
+  qnaQuestions: QuestionWithAnswersType[]
+  userId: string
 }
 
-export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
+export const QnaLive: React.FC<QnaLiveProps> = ({
+  qnaId,
+  qnaQuestions,
+  userId,
+}) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
   const [isAuthorized] = useAtom(isAuthorizedAtom)
-  const user = useAtomValue(userAtom)
-
-  useQnaQuestionsAnswersSubscriptions(qnaId)
-
-  const { questions: qnaQuestions } = useQnaQuestionsWithAnswers(qnaId)
 
   const filteredQuestions = useMemo(() => {
     return filterQuestions(qnaQuestions, activeFilter)
@@ -48,16 +47,16 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
 
   const threads = useMemo(() => {
     return filteredQuestions.map((question) =>
-      mapQuestionToThread(question, user.id),
+      mapQuestionToThread(question, userId),
     )
-  }, [filteredQuestions, user.id])
+  }, [filteredQuestions, userId])
 
   const handleQuestionLike = async (questionId: number) => {
-    await likeQuestionById(questionId, user.id)
+    await likeQuestionById(questionId, userId)
   }
 
   const handleResponseLike = async (answerId: number) => {
-    await likeAnswerById(answerId, user.id)
+    await likeAnswerById(answerId, userId)
   }
 
   const handleReply = async (
@@ -68,7 +67,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId }) => {
       questionId,
       qnaId,
       params.message,
-      params.isAnonymous ? 'Anonymous' : params.name || user.id,
+      params.isAnonymous ? 'Anonymous' : params.name || userId,
     )
   }
 

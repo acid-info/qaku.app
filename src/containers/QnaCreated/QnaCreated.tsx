@@ -2,14 +2,11 @@ import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { FilterThreadEnum } from '@/types/thread.types'
-import { loadQnaData } from '@/utils/api.utils'
 import { calculateQnAStats } from '@/utils/qna.utils'
 import { filterQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
-import { useAtomValue, useSetAtom } from 'jotai'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { answersRecordAtom } from '../../../atoms/answerAtom'
-import { questionsRecordAtom } from '../../../atoms/questionAtom'
+import { useAtomValue } from 'jotai'
+import React, { useCallback, useMemo, useState } from 'react'
 import { userAtom } from '../../../atoms/userAtom'
 import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 
@@ -24,12 +21,6 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
     FilterThreadEnum.All,
   )
   const user = useAtomValue(userAtom)
-  const setQuestionsRecord = useSetAtom(questionsRecordAtom)
-  const setAnswersRecord = useSetAtom(answersRecordAtom)
-
-  useEffect(() => {
-    loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
-  }, [qnaId, setQuestionsRecord, setAnswersRecord])
 
   const { questions: questionsWithAnswers, questionsCount } =
     useQnaQuestionsWithAnswers(qnaId)

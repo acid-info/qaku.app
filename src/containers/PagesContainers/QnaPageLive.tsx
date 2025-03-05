@@ -9,6 +9,9 @@ import { useMemo } from 'react'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 import { getQnaByIdAtom } from '../../../atoms/qnaAtom'
 import { qnaSettingsAtom } from '../../../atoms/settings'
+import { userAtom } from '../../../atoms/userAtom'
+import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
+import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {
@@ -17,19 +20,25 @@ export const QnaPageLive: React.FC = () => {
     isSettingsPanelOpenAtom,
   )
   const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
+  const user = useAtomValue(userAtom)
 
   const qnaId = useMemo(() => {
     const id = router.query.id
-    return typeof id === 'string' ? parseInt(id, 10) : null
+    return parseInt(String(id), 10)
   }, [router.query.id])
 
   const qnaAtom = useMemo(() => {
-    return qnaId !== null ? getQnaByIdAtom(qnaId) : atom(null)
+    if (!qnaId) return atom(null)
+    return getQnaByIdAtom(qnaId)
   }, [qnaId])
 
   const qna = useAtomValue(qnaAtom)
 
-  if (!router.isReady || qnaId === null || !qna) {
+  const { questions: allQnaQuestions } = useQnaQuestionsWithAnswers(qnaId)
+
+  useQnaQuestionsAnswersSubscriptions(qnaId)
+
+  if (!qnaId || !qna) {
     return null
   }
 
@@ -51,7 +60,7 @@ export const QnaPageLive: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaLive qnaId={qnaId} />
+      <QnaLive qnaId={qnaId} qnaQuestions={allQnaQuestions} userId={user.id} />
       <QnaFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}

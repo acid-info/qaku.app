@@ -15,9 +15,9 @@ export const PollPageLive: React.FC = () => {
   const router = useRouter()
 
   const pollId = useMemo(() => {
-    const { id } = router.query
-    return id ? parseInt(id as string, 10) : null
-  }, [router.query])
+    const id = router.query.id
+    return parseInt(String(id), 10)
+  }, [router.query.id])
 
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
@@ -25,12 +25,13 @@ export const PollPageLive: React.FC = () => {
   const [pollSettings, setPollSettings] = useAtom(pollSettingsAtom)
 
   const pollAtom = useMemo(() => {
-    return pollId !== null ? getPollByIdAtom(pollId) : atom(null)
+    if (!pollId) return atom(null)
+    return getPollByIdAtom(pollId)
   }, [pollId])
 
   const poll = useAtomValue(pollAtom)
 
-  if (!router.isReady || pollId === null || !poll) {
+  if (!router.isReady || !pollId || !poll) {
     return null
   }
 
