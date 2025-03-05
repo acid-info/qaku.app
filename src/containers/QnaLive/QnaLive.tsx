@@ -14,8 +14,11 @@ import { useAtom } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { QuestionWithAnswersType } from '../../../atoms/selectors/selectors'
-import { filterQuestions, mapQuestionToThread } from '../../utils/thread.utils'
+import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
+import {
+  getFilteredQuestions,
+  mapQuestionToThread,
+} from '../../utils/thread.utils'
 const CONTENT_WIDTH = 507
 
 const EmptyState = () => (
@@ -27,23 +30,36 @@ const EmptyState = () => (
 
 export type QnaLiveProps = {
   qnaId: number
-  qnaQuestions: QuestionWithAnswersType[]
   userId: string
 }
 
-export const QnaLive: React.FC<QnaLiveProps> = ({
-  qnaId,
-  qnaQuestions,
-  userId,
-}) => {
+export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
   const [isAuthorized] = useAtom(isAuthorizedAtom)
 
+  const {
+    questions: allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+  } = useQnaQuestionsWithAnswers(qnaId)
+
   const filteredQuestions = useMemo(() => {
-    return filterQuestions(qnaQuestions, activeFilter)
-  }, [qnaQuestions, activeFilter])
+    return getFilteredQuestions(activeFilter, {
+      allQuestions,
+      answeredQuestions,
+      unansweredQuestions,
+      popularQuestions,
+    })
+  }, [
+    activeFilter,
+    allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+  ])
 
   const threads = useMemo(() => {
     return filteredQuestions.map((question) =>

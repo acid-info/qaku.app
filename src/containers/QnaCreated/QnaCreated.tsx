@@ -3,7 +3,7 @@ import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { calculateQnAStats } from '@/utils/qna.utils'
-import { filterQuestions, mapQuestionToThread } from '@/utils/thread.utils'
+import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -22,21 +22,41 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
   )
   const user = useAtomValue(userAtom)
 
-  const { questions: questionsWithAnswers, questionsCount } =
-    useQnaQuestionsWithAnswers(qnaId)
+  const {
+    questions: allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+    questionsCount,
+  } = useQnaQuestionsWithAnswers(qnaId)
 
   const qnaStats = useMemo(() => {
-    const allAnswers = questionsWithAnswers.flatMap((q) => q.answers || [])
-    return calculateQnAStats(questionsWithAnswers, allAnswers)
-  }, [questionsWithAnswers])
+    const allAnswers = allQuestions.flatMap((q) => q.answers || [])
+    return calculateQnAStats(allQuestions, allAnswers)
+  }, [allQuestions])
+
+  const filteredQuestions = useMemo(() => {
+    return getFilteredQuestions(activeFilter, {
+      allQuestions,
+      answeredQuestions,
+      unansweredQuestions,
+      popularQuestions,
+    })
+  }, [
+    activeFilter,
+    allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+  ])
 
   const threads = useMemo(() => {
-    if (questionsWithAnswers.length === 0) return []
+    if (filteredQuestions.length === 0) return []
 
-    return filterQuestions(questionsWithAnswers, activeFilter).map((question) =>
+    return filteredQuestions.map((question) =>
       mapQuestionToThread(question, user.id),
     )
-  }, [questionsWithAnswers, activeFilter, user.id])
+  }, [filteredQuestions, user.id])
 
   const handleTabChange = useCallback((id: string | number) => {
     setActiveFilter(id.toString() as FilterThreadEnum)

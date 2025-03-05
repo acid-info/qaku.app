@@ -19,13 +19,21 @@ export const useQnaQuestionsWithAnswers = (qnaId: number) => {
     return questionsWithAnswers.filter((question) => !question.isAnswered)
   }, [questionsWithAnswers])
 
+  const popularQuestions = useMemo(() => {
+    return questionsWithAnswers.filter(
+      (question) => question.answers.length >= 2 && !question.isAnswered,
+    )
+  }, [questionsWithAnswers])
+
   return {
     questions: questionsWithAnswers,
     answeredQuestions,
     unansweredQuestions,
+    popularQuestions,
     questionsCount: questionsWithAnswers.length,
     answeredCount: answeredQuestions.length,
     unansweredCount: unansweredQuestions.length,
+    popularCount: popularQuestions.length,
     hasQuestions: questionsWithAnswers.length > 0,
   }
 }

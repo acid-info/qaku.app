@@ -30,20 +30,28 @@ export const mapQuestionToThread = (
   },
 })
 
-export const filterQuestions = (
-  questions: QuestionWithAnswersType[],
-  filter: FilterThreadEnum,
+export const getFilteredQuestions = (
+  activeFilter: FilterThreadEnum,
+  {
+    allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+  }: {
+    allQuestions: QuestionWithAnswersType[]
+    answeredQuestions: QuestionWithAnswersType[]
+    unansweredQuestions: QuestionWithAnswersType[]
+    popularQuestions: QuestionWithAnswersType[]
+  },
 ): QuestionWithAnswersType[] => {
-  switch (filter) {
+  switch (activeFilter) {
     case FilterThreadEnum.All:
-      return questions.filter((question) => !question.isAnswered)
+      return unansweredQuestions
     case FilterThreadEnum.Popular:
-      return questions.filter(
-        (question) => question.answers.length >= 2 && !question.isAnswered,
-      )
+      return popularQuestions
     case FilterThreadEnum.Answered:
-      return questions.filter((question) => question.isAnswered)
+      return answeredQuestions
     default:
-      return questions
+      return allQuestions
   }
 }
