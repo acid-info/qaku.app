@@ -15,37 +15,5 @@ export const questionIdsByQnaIdAtom = (qnaId: number) =>
       .map((question) => question.id)
   })
 
-export const answeredQuestionIdsByQnaIdAtom = (qnaId: number) =>
-  atom<number[]>((get) => {
-    const questionsRecord = get(questionsRecordAtom)
-    return Object.values(questionsRecord)
-      .filter((question) => question.qnaId === qnaId && question.isAnswered)
-      .map((question) => question.id)
-  })
-
-export const unansweredQuestionIdsByQnaIdAtom = (qnaId: number) =>
-  atom<number[]>((get) => {
-    const questionsRecord = get(questionsRecordAtom)
-    return Object.values(questionsRecord)
-      .filter((question) => question.qnaId === qnaId && !question.isAnswered)
-      .map((question) => question.id)
-  })
-
 export const getQuestionByIdAtom = (id: number) =>
   atom((get) => get(questionsRecordAtom)[id])
-
-export const questionStatsByQnaIdAtom = (qnaId: number) =>
-  atom((get) => {
-    const questionsRecord = get(questionsRecordAtom)
-    const questionIds = get(questionIdsByQnaIdAtom(qnaId))
-
-    const answeredCount = questionIds.filter(
-      (id) => questionsRecord[id].isAnswered,
-    ).length
-
-    return {
-      total: questionIds.length,
-      answered: answeredCount,
-      unanswered: questionIds.length - answeredCount,
-    }
-  })

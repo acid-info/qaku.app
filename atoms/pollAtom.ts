@@ -15,21 +15,5 @@ export const pollIdsByQnaIdAtom = (qnaId: number) =>
       .map((poll) => poll.id)
   })
 
-export const activePollIdsByQnaIdAtom = (qnaId: number) =>
-  atom<number[]>((get) => {
-    const pollsRecord = get(pollsRecordAtom)
-    return Object.values(pollsRecord)
-      .filter((poll) => poll.qnaId === qnaId && poll.isActive)
-      .map((poll) => poll.id)
-  })
-
-export const inactivePollIdsByQnaIdAtom = (qnaId: number) =>
-  atom<number[]>((get) => {
-    const pollsRecord = get(pollsRecordAtom)
-    return Object.values(pollsRecord)
-      .filter((poll) => poll.qnaId === qnaId && !poll.isActive)
-      .map((poll) => poll.id)
-  })
-
 export const getPollByIdAtom = (id: number) =>
   atom((get) => get(pollsRecordAtom)[id])

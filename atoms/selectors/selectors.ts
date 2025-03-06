@@ -13,11 +13,7 @@ import {
   answerIdsByQuestionIdAtom,
   answersRecordAtom,
 } from '../answerAtom'
-import {
-  getPollByIdAtom,
-  pollIdsByQnaIdAtom,
-  pollsRecordAtom,
-} from '../pollAtom'
+import { getPollByIdAtom } from '../pollAtom'
 import {
   pollOptionIdsByPollIdAtom,
   pollOptionsRecordAtom,
@@ -51,38 +47,6 @@ export type CompleteQnAType = QnAType & {
   })[]
 }
 
-export const qnaWithQuestionsAtom = (qnaId: number) =>
-  atom<QnAWithQuestionsType | undefined>((get) => {
-    const qna = get(getQnaByIdAtom(qnaId))
-    if (!qna) return undefined
-
-    const questionIds = get(questionIdsByQnaIdAtom(qnaId))
-    const questionsRecord = get(questionsRecordAtom)
-
-    const questions = questionIds.map((id) => questionsRecord[id])
-
-    return {
-      ...qna,
-      questions,
-    }
-  })
-
-export const questionWithAnswersAtom = (questionId: number) =>
-  atom<QuestionWithAnswersType | undefined>((get) => {
-    const question = get(getQuestionByIdAtom(questionId))
-    if (!question) return undefined
-
-    const answerIds = get(answerIdsByQuestionIdAtom(questionId))
-    const answersRecord = get(answersRecordAtom)
-
-    const answers = answerIds.map((id) => answersRecord[id])
-
-    return {
-      ...question,
-      answers,
-    }
-  })
-
 export const pollWithOptionsAtom = (pollId: number) =>
   atom<PollWithOptionsType | undefined>((get) => {
     const poll = get(getPollByIdAtom(pollId))
@@ -99,59 +63,6 @@ export const pollWithOptionsAtom = (pollId: number) =>
     }
   })
 
-// Selector atom for getting a complete QnA with all related data
-export const completeQnAAtom = (qnaId: number) =>
-  atom<CompleteQnAType | undefined>((get) => {
-    const qna = get(getQnaByIdAtom(qnaId))
-    if (!qna) return undefined
-
-    // Get questions with answers
-    const questionIds = get(questionIdsByQnaIdAtom(qnaId))
-    const questionsRecord = get(questionsRecordAtom)
-    const answersRecord = get(answersRecordAtom)
-
-    const questions = questionIds.map((questionId) => {
-      const question = questionsRecord[questionId]
-      const answerIds = get(answerIdsByQuestionIdAtom(questionId))
-      const answers = answerIds.map((id) => answersRecord[id])
-
-      return {
-        ...question,
-        answers,
-      }
-    })
-
-    // Get polls with options
-    const pollIds = get(pollIdsByQnaIdAtom(qnaId))
-    const pollsRecord = get(pollsRecordAtom)
-    const optionsRecord = get(pollOptionsRecordAtom)
-
-    const polls = pollIds.map((pollId) => {
-      const poll = pollsRecord[pollId]
-      const optionIds = get(pollOptionIdsByPollIdAtom(pollId))
-      const options = optionIds.map((id) => optionsRecord[id])
-
-      return {
-        ...poll,
-        options,
-      }
-    })
-
-    return {
-      ...qna,
-      questions,
-      polls,
-    }
-  })
-
-export const allAnswersForQnAAtom = (qnaId: number) =>
-  atom((get) => {
-    const answerIds = get(answerIdsByQnaIdAtom(qnaId))
-    const answersRecord = get(answersRecordAtom)
-
-    return answerIds.map((id) => answersRecord[id])
-  })
-
 export const allQuestionsWithAnswersForQnAAtom = (qnaId: number) =>
   atom((get) => {
     const questionIds = get(questionIdsByQnaIdAtom(qnaId))
@@ -166,24 +77,6 @@ export const allQuestionsWithAnswersForQnAAtom = (qnaId: number) =>
       return {
         ...question,
         answers,
-      }
-    })
-  })
-
-export const allPollsWithOptionsForQnAAtom = (qnaId: number) =>
-  atom((get) => {
-    const pollIds = get(pollIdsByQnaIdAtom(qnaId))
-    const pollsRecord = get(pollsRecordAtom)
-    const optionsRecord = get(pollOptionsRecordAtom)
-
-    return pollIds.map((pollId) => {
-      const poll = pollsRecord[pollId]
-      const optionIds = get(pollOptionIdsByPollIdAtom(pollId))
-      const options = optionIds.map((id) => optionsRecord[id])
-
-      return {
-        ...poll,
-        options,
       }
     })
   })
