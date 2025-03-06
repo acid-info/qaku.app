@@ -13,7 +13,7 @@ export const usePollSubscriptions = (pollId: number) => {
   const setPollsRecord = useSetAtom(pollsRecordAtom)
 
   useEffect(() => {
-    loadPollOptions(pollId, setPollOptionsRecord)
+    loadPollOptions({ pollId, setPollOptionsRecord })
 
     // Set up poll-specific subscriptions
     const pollVoteSub = apiConnector.subscribe<PollOptionType>(

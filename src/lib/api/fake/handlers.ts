@@ -596,17 +596,17 @@ export const getPollOptionsByPollId = async (
 
 export const votePoll = async (
   pollId: number,
-  optionId: number,
+  optionIds: number[],
   voter: string,
-): Promise<ApiResponse<PollOptionType>> => {
+): Promise<ApiResponse<PollOptionType[]>> => {
   try {
     // Validate inputs
     if (pollId === undefined || pollId === null) {
       return { success: false, error: 'Poll ID is required' }
     }
 
-    if (optionId === undefined || optionId === null) {
-      return { success: false, error: 'Option ID is required' }
+    if (!optionIds || !Array.isArray(optionIds) || optionIds.length === 0) {
+      return { success: false, error: 'At least one option ID is required' }
     }
 
     if (!voter || voter.trim() === '') {
@@ -616,22 +616,6 @@ export const votePoll = async (
     // Check if poll exists
     if (!dataStore.polls[pollId]) {
       return { success: false, error: `Poll with ID ${pollId} not found` }
-    }
-
-    // Check if option exists
-    if (!dataStore.pollOptions[optionId]) {
-      return {
-        success: false,
-        error: `Poll option with ID ${optionId} not found`,
-      }
-    }
-
-    // Check if option belongs to poll
-    if (dataStore.pollOptions[optionId].pollId !== pollId) {
-      return {
-        success: false,
-        error: `Poll option with ID ${optionId} does not belong to poll with ID ${pollId}`,
-      }
     }
 
     // Check if poll is active
@@ -659,6 +643,17 @@ export const votePoll = async (
       return { success: false, error: `Poll with ID ${pollId} has expired` }
     }
 
+    // Check if multiple options are allowed
+    if (
+      optionIds.length > 1 &&
+      !dataStore.polls[pollId].hasMultipleOptionsSelect
+    ) {
+      return {
+        success: false,
+        error: `Poll with ID ${pollId} does not allow multiple options selection`,
+      }
+    }
+
     // Check if user has already voted
     const hasVoted = Object.values(dataStore.pollOptions)
       .filter((option) => option.pollId === pollId)
@@ -671,28 +666,52 @@ export const votePoll = async (
       }
     }
 
-    // Check if user has already voted for this specific option
-    if (dataStore.pollOptions[optionId].voters.includes(voter)) {
-      return {
-        success: false,
-        error: `User ${voter} has already voted for option with ID ${optionId}`,
+    // Validate all option IDs
+    for (const optionId of optionIds) {
+      // Check if option exists
+      if (!dataStore.pollOptions[optionId]) {
+        return {
+          success: false,
+          error: `Poll option with ID ${optionId} not found`,
+        }
+      }
+
+      // Check if option belongs to poll
+      if (dataStore.pollOptions[optionId].pollId !== pollId) {
+        return {
+          success: false,
+          error: `Poll option with ID ${optionId} does not belong to poll with ID ${pollId}`,
+        }
+      }
+
+      // Check if user has already voted for this specific option
+      if (dataStore.pollOptions[optionId].voters.includes(voter)) {
+        return {
+          success: false,
+          error: `User ${voter} has already voted for option with ID ${optionId}`,
+        }
       }
     }
 
-    // Update option
-    const updatedOption: PollOptionType = {
-      ...dataStore.pollOptions[optionId],
-      voteCount: dataStore.pollOptions[optionId].voteCount + 1,
-      voters: [...dataStore.pollOptions[optionId].voters, voter],
+    // Update options
+    const updatedOptions: PollOptionType[] = []
+
+    for (const optionId of optionIds) {
+      const updatedOption: PollOptionType = {
+        ...dataStore.pollOptions[optionId],
+        voteCount: dataStore.pollOptions[optionId].voteCount + 1,
+        voters: [...dataStore.pollOptions[optionId].voters, voter],
+      }
+
+      // Update data store
+      dataStore.pollOptions[optionId] = updatedOption
+      updatedOptions.push(updatedOption)
+
+      // Notify subscribers for each option
+      notifySubscribers(ApiMessageType.POLL_VOTE_MESSAGE, updatedOption)
     }
 
-    // Update data store
-    dataStore.pollOptions[optionId] = updatedOption
-
-    // Notify subscribers
-    notifySubscribers(ApiMessageType.POLL_VOTE_MESSAGE, updatedOption)
-
-    return { success: true, data: updatedOption }
+    return { success: true, data: updatedOptions }
   } catch (error) {
     return {
       success: false,

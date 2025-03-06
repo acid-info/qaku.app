@@ -34,11 +34,11 @@ export const PollCreated: React.FC<PollCreatedProps> = ({
       return []
     }
 
-    return mapPollOptionsForDisplay(
+    return mapPollOptionsForDisplay({
       optionsWithStats,
-      pollData.hasCorrectAnswers,
-      pollData.correctAnswersIds,
-    )
+      hasCorrectAnswers: pollData.hasCorrectAnswers,
+      correctAnswersIds: pollData.correctAnswersIds,
+    })
   }, [pollData, optionsWithStats])
 
   return (

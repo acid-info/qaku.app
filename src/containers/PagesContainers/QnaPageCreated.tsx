@@ -30,7 +30,7 @@ export const QnaPageCreated: React.FC = () => {
 
   useEffect(() => {
     if (!qnaId) return
-    loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
+    loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
   }, [qnaId, setQuestionsRecord, setAnswersRecord])
 
   if (!router.isReady || !qnaId || !qna) {

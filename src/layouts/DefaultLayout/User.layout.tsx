@@ -1,34 +1,25 @@
 import { Footer, FooterProps } from '@/components/Footer'
 import UserNav from '@/components/Navbar/UserNav'
-import { NavbarModeEnum } from '@/types/navbar.types'
+import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
 import { PropsWithChildren } from 'react'
 
 type Props = FooterProps & {
-  mode: NavbarModeEnum
+  onModeChange: (mode: NavbarModeEnum) => void
+  navProps?: Partial<DefaultNavbarProps>
 }
 
 export default function UserLayout(props: PropsWithChildren<Props>) {
-  const router = useRouter()
-
-  const handleModeChange = (newMode: NavbarModeEnum) => {
-    if (newMode === NavbarModeEnum.Polls) {
-      router.push('/user/polls')
-    } else {
-      router.push('/user/qna')
-    }
-  }
-
   return (
     <Root>
       <Container>
         <UserNav
-          mode={props.mode}
+          mode={NavbarModeEnum.Qna}
           title=""
           count={0}
           id=""
-          onModeChange={handleModeChange}
+          onModeChange={props.onModeChange}
+          {...props.navProps}
         />
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />

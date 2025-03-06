@@ -23,7 +23,7 @@ export const usePollOptions = (pollId: number) => {
   const optionsWithStats = useMemo(() => {
     return pollOptions.map((option) => ({
       ...option,
-      percentage: calculateOptionPercentage(option, totalVotes),
+      percentage: calculateOptionPercentage({ option, totalVotes }),
     }))
   }, [pollOptions, totalVotes])
 

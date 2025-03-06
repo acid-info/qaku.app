@@ -12,6 +12,12 @@ import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAn
 
 const CONTENT_WIDTH = 507
 
+const NoQuestionsInThisTab = () => (
+  <NoContentMessage>
+    <span>There are not questions in this tab.</span>
+  </NoContentMessage>
+)
+
 export type QnaCreatedProps = {
   qnaId: number
 }
@@ -85,16 +91,20 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
             />
           </TabWrapper>
           <ThreadsContainer>
-            {threads.map((thread, index) => (
-              <Thread
-                key={`${thread.info.author}-${thread.info.timestamp}-${index}`}
-                info={thread.info}
-                likes={thread.likes}
-                isFirst={index === 0}
-                isChecked={thread.info.isAnswered}
-                hasCommentButton={false}
-              />
-            ))}
+            {threads.length > 0 ? (
+              threads.map((thread, index) => (
+                <Thread
+                  key={`${thread.info.author}-${thread.info.timestamp}-${index}`}
+                  info={thread.info}
+                  likes={thread.likes}
+                  isFirst={index === 0}
+                  isChecked={thread.info.isAnswered}
+                  hasCommentButton={false}
+                />
+              ))
+            ) : questionsCount > 0 ? (
+              <NoQuestionsInThisTab />
+            ) : null}
           </ThreadsContainer>
         </Content>
       </Main>
@@ -141,4 +151,18 @@ const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: ${CONTENT_WIDTH}px;
+`
+
+const NoContentMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: ${CONTENT_WIDTH}px;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  & span {
+    font-size: var(--body2-font-size);
+    line-height: var(--body2-line-height);
+  }
 `

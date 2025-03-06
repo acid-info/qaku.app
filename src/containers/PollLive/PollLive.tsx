@@ -16,11 +16,11 @@ export const PollLive: React.FC<PollLiveProps> = ({ pollId, poll }) => {
 
   const formattedOptions = useMemo(
     () =>
-      mapPollOptionsForDisplay(
+      mapPollOptionsForDisplay({
         optionsWithStats,
-        poll?.hasCorrectAnswers,
-        poll?.correctAnswersIds,
-      ),
+        hasCorrectAnswers: poll?.hasCorrectAnswers,
+        correctAnswersIds: poll?.correctAnswersIds,
+      }),
     [optionsWithStats, poll?.hasCorrectAnswers, poll?.correctAnswersIds],
   )
 

@@ -19,7 +19,7 @@ export const useQnaCompleteSubscriptions = (qnaId: number) => {
   useEffect(() => {
     const loadAllQnaData = async () => {
       try {
-        await loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
+        await loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
 
         // Load polls for this QnA
         const pollsResponse = await apiConnector.getPollsByQnaId(qnaId)
@@ -31,7 +31,7 @@ export const useQnaCompleteSubscriptions = (qnaId: number) => {
 
           const pollIds = Object.keys(pollsResponse.data).map(Number)
           for (const pollId of pollIds) {
-            await loadPollOptions(pollId, setPollOptionsRecord)
+            await loadPollOptions({ pollId, setPollOptionsRecord })
           }
         }
       } catch (error) {

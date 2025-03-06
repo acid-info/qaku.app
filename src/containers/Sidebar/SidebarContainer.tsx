@@ -79,12 +79,10 @@ export const SidebarContainer: React.FC = () => {
 
   const handleSearch = (query: string) => {
     // TODO implement search
-    console.log('Search query:', query)
   }
 
   const handleStatusFilterChange = (value: string | number) => {
     // TODO implement status filter
-    console.log('Status filter value:', value)
   }
 
   const activeItemId = activeObject.id ?? undefined

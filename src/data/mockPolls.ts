@@ -25,7 +25,7 @@ export const mockPolls: PollType[] = [
     optionsIds: [1005, 1006, 1007],
     hasCorrectAnswers: true,
     correctAnswersIds: [1007],
-    hasMultipleOptionsSelect: false,
+    hasMultipleOptionsSelect: true,
     isResultVisible: true,
     activeUntil: new Date('2025-03-20T16:00:00Z'),
     isActive: true,

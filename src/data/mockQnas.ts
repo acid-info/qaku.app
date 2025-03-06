@@ -42,4 +42,17 @@ export const mockQnAs: QnAType[] = [
     startDate: new Date('2025-03-01T15:00:00Z'),
     isActive: true,
   },
+  {
+    id: 4,
+    title: 'Q&A with the team',
+    description: 'Q&A with the team',
+    hash: 'qna-with-the-team',
+    owner: 'tech@qaku.app',
+    hasAdmins: true,
+    admins: ['senior-dev@qaku.app'],
+    allowsParticipantsReplies: true,
+    questionsIds: [],
+    startDate: new Date('2025-03-01T15:00:00Z'),
+    isActive: true,
+  },
 ]

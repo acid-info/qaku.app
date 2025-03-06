@@ -1,17 +1,15 @@
-import { Button } from '@/components/Button'
-import { ActionContainer } from '@/components/StyledComponents'
+import { MessageForm } from '@/components/MessageForm'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { FilterThreadEnum } from '@/types/thread.types'
 import {
   addNewAnswer,
+  addNewQuestion,
   likeAnswerById,
   likeQuestionById,
-  toggleQuestionAnsweredStatus,
 } from '@/utils/api.utils'
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
-import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
@@ -19,13 +17,12 @@ import {
   getFilteredQuestions,
   mapQuestionToThread,
 } from '../../utils/thread.utils'
-
 const CONTENT_WIDTH = 507
 
 const EmptyState = () => (
   <NoContentMessage>
-    <h1>Your Q&A is live!</h1>
-    <span>Participants can ask new questions</span>
+    <span>There are not questions yet.</span>
+    <h1>Ask the first one!</h1>
   </NoContentMessage>
 )
 
@@ -35,12 +32,12 @@ const NoQuestionsInThisTab = () => (
   </NoContentMessage>
 )
 
-export type QnaLiveProps = {
+export type QnaUserProps = {
   qnaId: number
   userId: string
 }
 
-export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
+export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
@@ -95,10 +92,6 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
     })
   }
 
-  const handleCheck = async (questionId: number) => {
-    await toggleQuestionAnsweredStatus(questionId)
-  }
-
   const handleTabChange = useCallback((id: string | number) => {
     setActiveFilter(id.toString() as FilterThreadEnum)
   }, [])
@@ -106,6 +99,19 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
   return (
     <Wrapper>
       <Main className="scrollable-container">
+        <StyledMessageForm
+          messagePlaceholder="Type your question"
+          onSubmit={async ({ message, isAnonymous, resetForm, name }) => {
+            await addNewQuestion({
+              qnaId,
+              content: message,
+              author: isAnonymous ? 'Anonymous' : name || userId,
+            })
+            resetForm()
+          }}
+          isAuthorized={isAuthorized}
+        />
+
         <TabWrapper>
           <Tab
             variant="secondary"
@@ -140,9 +146,9 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
                   })
                   resetForm()
                 }}
-                onCheckClick={() => handleCheck(thread.info.questionId)}
                 isChecked={thread.info.isAnswered}
                 isAuthorized={isAuthorized}
+                isUser={true}
               />
             ))}
           </ThreadsContainer>
@@ -152,17 +158,6 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
           <EmptyState />
         )}
       </Main>
-      <ActionContainer>
-        <Link
-          href={`/user/qna/${qnaId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <StyledButton variant="filled" size="large">
-            View as participant
-          </StyledButton>
-        </Link>
-      </ActionContainer>
     </Wrapper>
   )
 }
@@ -185,6 +180,15 @@ const Main = styled.div`
   overflow-y: auto;
 `
 
+const StyledMessageForm = styled(MessageForm)`
+  font-size: var(--h3-font-size);
+  line-height: var(--h3-line-height);
+  ::placeholder {
+  }
+  margin-bottom: 40px;
+  width: ${CONTENT_WIDTH}px;
+`
+
 const TabWrapper = styled.div`
   width: ${CONTENT_WIDTH}px;
 `
@@ -200,7 +204,9 @@ const NoContentMessage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 14px;
   height: 100%;
+  opacity: 0.5;
 
   &.tab-empty-state {
     width: ${CONTENT_WIDTH}px;
@@ -212,8 +218,4 @@ const NoContentMessage = styled.div`
     font-size: var(--body2-font-size);
     line-height: var(--body2-line-height);
   }
-`
-
-const StyledButton = styled(Button)`
-  width: 200px;
 `

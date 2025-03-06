@@ -37,7 +37,10 @@ export const pollOptionStatsByPollIdAtom = (pollId: number) =>
     }, {} as Record<number, number>)
 
     const optionPercentages = optionIds.reduce((acc, id) => {
-      acc[id] = calculateOptionPercentage(pollOptionsRecord[id], totalVotes)
+      acc[id] = calculateOptionPercentage({
+        option: pollOptionsRecord[id],
+        totalVotes,
+      })
       return acc
     }, {} as Record<number, number>)
 

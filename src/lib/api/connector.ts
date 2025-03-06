@@ -164,10 +164,10 @@ export const apiConnector: ApiConnector = {
   // Poll voting
   votePoll: async (
     pollId: number,
-    optionId: number,
+    optionIds: number[],
     voter: string,
-  ): Promise<ApiResponse<PollOptionType>> => {
-    return await votePoll(pollId, optionId, voter)
+  ): Promise<ApiResponse<PollOptionType[]>> => {
+    return await votePoll(pollId, optionIds, voter)
   },
 
   // Enhanced subscribe method with filter support

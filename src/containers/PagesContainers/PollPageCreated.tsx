@@ -27,7 +27,7 @@ export const PollPageCreated: React.FC = () => {
 
   useEffect(() => {
     if (!pollId) return
-    loadPollOptions(pollId, setPollOptionsRecord)
+    loadPollOptions({ pollId, setPollOptionsRecord })
   }, [pollId, setPollOptionsRecord])
 
   const pollAtom = useMemo(() => {

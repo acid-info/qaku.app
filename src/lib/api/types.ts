@@ -96,9 +96,9 @@ export interface ApiConnector {
   ) => Promise<ApiResponse<Record<number, PollOptionType>>>
   votePoll: (
     pollId: number,
-    optionId: number,
+    optionIds: number[],
     voter: string,
-  ) => Promise<ApiResponse<PollOptionType>>
+  ) => Promise<ApiResponse<PollOptionType[]>>
 
   // Subscription methods
   subscribe: <T>(

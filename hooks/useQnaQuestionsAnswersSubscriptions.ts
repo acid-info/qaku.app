@@ -13,7 +13,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   useEffect(() => {
-    loadQnaData(qnaId, setQuestionsRecord, setAnswersRecord)
+    loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
 
     const questionSub = apiConnector.subscribe<QuestionType>(
       ApiMessageType.QUESTION_MESSAGE,

@@ -19,14 +19,14 @@ export const filteredQnAIdsAtom = atom<number[]>((get) => {
   }
 
   const isActive = filter === QnAFilterTypeEnum.Active
-  return qnaIds.filter((id) => qnasRecord[id].isActive === isActive)
+  return qnaIds.filter((id) => qnasRecord[id]?.isActive === isActive)
 })
 
 export const qnaStatsAtom = atom((get) => {
   const qnasRecord = get(qnasRecordAtom)
   const qnaIds = get(qnaIdsAtom)
 
-  const activeCount = qnaIds.filter((id) => qnasRecord[id].isActive).length
+  const activeCount = qnaIds.filter((id) => qnasRecord[id]?.isActive).length
 
   return {
     total: qnaIds.length,
