@@ -11,7 +11,6 @@ import { getQnaByIdAtom } from '../../../atoms/qnaAtom'
 import { qnaSettingsAtom } from '../../../atoms/settings'
 import { userAtom } from '../../../atoms/userAtom'
 import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {
@@ -33,8 +32,6 @@ export const QnaPageLive: React.FC = () => {
   }, [qnaId])
 
   const qna = useAtomValue(qnaAtom)
-
-  const { questions: allQnaQuestions } = useQnaQuestionsWithAnswers(qnaId)
 
   useQnaQuestionsAnswersSubscriptions(qnaId)
 
@@ -60,7 +57,7 @@ export const QnaPageLive: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaLive qnaId={qnaId} qnaQuestions={allQnaQuestions} userId={user.id} />
+      <QnaLive qnaId={qnaId} userId={user.id} />
       <QnaFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}

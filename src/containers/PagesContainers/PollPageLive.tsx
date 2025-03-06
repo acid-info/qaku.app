@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 import { getPollByIdAtom } from '../../../atoms/pollAtom'
+import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 export const PollPageLive: React.FC = () => {
   const router = useRouter()
@@ -30,6 +31,8 @@ export const PollPageLive: React.FC = () => {
   }, [pollId])
 
   const poll = useAtomValue(pollAtom)
+
+  usePollSubscriptions(pollId)
 
   if (!router.isReady || !pollId || !poll) {
     return null
@@ -52,7 +55,7 @@ export const PollPageLive: React.FC = () => {
       }}
     >
       <SEO />
-      <PollLive pollId={pollId} />
+      <PollLive pollId={pollId} poll={poll} />
       <PollFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}

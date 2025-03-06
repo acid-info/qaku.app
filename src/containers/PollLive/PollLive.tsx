@@ -1,22 +1,17 @@
 import { PollOptions } from '@/components/PollOptions'
 import { TitleBlock } from '@/components/TitleBlock'
+import { PollType } from '@/types/qna.types'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
-import { useAtomValue } from 'jotai'
 import React, { useMemo } from 'react'
-import { getPollByIdAtom } from '../../../atoms/pollAtom'
 import { usePollOptions } from '../../../hooks/usePollOptions'
-import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 export type PollLiveProps = {
   pollId: number
+  poll: PollType
 }
 
-export const PollLive: React.FC<PollLiveProps> = ({ pollId }) => {
-  usePollSubscriptions(pollId)
-
-  const pollAtom = useMemo(() => getPollByIdAtom(pollId), [pollId])
-  const poll = useAtomValue(pollAtom)
+export const PollLive: React.FC<PollLiveProps> = ({ pollId, poll }) => {
   const { optionsWithStats } = usePollOptions(pollId)
 
   const formattedOptions = useMemo(
