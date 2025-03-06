@@ -25,9 +25,9 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
       <Container>
         <UserNav
           mode={props.mode}
-          title="Town Hall 2025 - New Positions, Updates, And Plans dasdasd sffsd"
-          count={3}
-          id="3212345"
+          title=""
+          count={0}
+          id=""
           onModeChange={handleModeChange}
         />
         <Main $showFooter={props.showFooter}>{props.children}</Main>

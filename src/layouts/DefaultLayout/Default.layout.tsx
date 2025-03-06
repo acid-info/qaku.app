@@ -20,10 +20,10 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         <DefaultNav
           mode={NavbarModeEnum.Qna}
           isTitleOnly={true}
-          title={props.navProps?.title || 'Polls'}
-          date={'2023-12-25T15:00:00.000Z'}
-          count={5121}
-          id="3212345"
+          title=""
+          date=""
+          count={0}
+          id=""
           {...props.navProps}
         />
         <Main
