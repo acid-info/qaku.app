@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
+import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { CollapsibleToggle } from '@/components/CollapsibleToggle'
@@ -969,6 +970,10 @@ export const TestContainer: React.FC = () => (
     <MessageFormDemo />
 
     <Separator>Components</Separator>
+    <DemoSection title="Badge">
+      <Badge title="Don't forget to mark the correct answer" />
+      <Badge title="Some error happened" variant="red" />
+    </DemoSection>
     <DropdownDemo />
     <DemoSection title="Search">
       <Search onSearch={(value) => console.log('Search:', value)} />
