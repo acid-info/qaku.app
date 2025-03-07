@@ -32,6 +32,59 @@ export const loadAndGetQna = async ({
   return null
 }
 
+export const createQnA = async ({
+  title,
+  description,
+  owner,
+  hasAdmins = false,
+  admins = [],
+  allowsParticipantsReplies = true,
+  hash,
+  setQnasRecord,
+}: {
+  title: string
+  description?: string
+  owner: string
+  hasAdmins?: boolean
+  admins?: string[]
+  allowsParticipantsReplies?: boolean
+  hash: string
+  setQnasRecord: (
+    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+  ) => void
+}): Promise<ApiResponse<QnAType>> => {
+  try {
+    const qnaData: Omit<QnAType, 'id' | 'questionsIds'> = {
+      title,
+      description,
+      owner,
+      hasAdmins,
+      admins,
+      allowsParticipantsReplies,
+      hash,
+      startDate: new Date(),
+      isActive: true,
+    }
+
+    const response = await apiConnector.addQnA(qnaData)
+
+    if (response.success && response.data) {
+      setQnasRecord((prev) => ({
+        ...prev,
+        [response.data!.id]: response.data!,
+      }))
+    }
+
+    return response
+  } catch (error) {
+    console.error('Error creating QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 // Function to load questions and answers for a specific QnA
 export const loadQnaData = async ({
   qnaId,

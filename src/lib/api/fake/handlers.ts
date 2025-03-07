@@ -370,6 +370,44 @@ export const getQnA = async (id: number): Promise<ApiResponse<QnAType>> => {
   }
 }
 
+export const addQnA = async (
+  qnaData: Omit<QnAType, 'id' | 'questionsIds'>,
+): Promise<ApiResponse<QnAType>> => {
+  try {
+    if (!qnaData.title) {
+      return { success: false, error: 'QnA title is required' }
+    }
+
+    const newId =
+      Object.keys(dataStore.qnas).length > 0
+        ? Math.max(...Object.keys(dataStore.qnas).map(Number)) + 1
+        : 1
+
+    const newQnA: QnAType = {
+      ...qnaData,
+      id: newId,
+      questionsIds: [],
+      startDate: new Date(),
+      isActive: true,
+    }
+
+    dataStore.qnas[newId] = newQnA
+
+    // Notify subscribers
+    notifySubscribers(ApiMessageType.CONTROL_MESSAGE, {
+      type: 'qna_created',
+      qna: newQnA,
+    })
+
+    return { success: true, data: newQnA }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 // Poll-related functions
 export const getPolls = async (): Promise<
   ApiResponse<Record<number, PollType>>

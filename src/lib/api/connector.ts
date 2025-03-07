@@ -8,6 +8,7 @@ import {
 import {
   addAnswer,
   addPoll,
+  addQnA,
   addQuestion,
   subscribe as fakeSubscribe,
   getAnswer,
@@ -121,6 +122,12 @@ export const apiConnector: ApiConnector = {
 
   getQnA: async (id: number): Promise<ApiResponse<QnAType>> => {
     return await getQnA(id)
+  },
+
+  addQnA: async (
+    qnaData: Omit<QnAType, 'id' | 'questionsIds'>,
+  ): Promise<ApiResponse<QnAType>> => {
+    return await addQnA(qnaData)
   },
 
   // Poll methods

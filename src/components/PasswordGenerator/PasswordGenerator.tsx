@@ -1,13 +1,39 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
+import { generateRandomPassword } from '../../utils/general.utils'
 import { Button } from '../Button'
 
-export const PasswordGenerator: React.FC = () => {
+export interface PasswordGeneratorProps {
+  onChange?: (password: string) => void
+}
+
+export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
+  onChange,
+}) => {
+  const [password, setPassword] = useState('')
+
+  const generatePassword = () => {
+    const newPassword = generateRandomPassword()
+    setPassword(newPassword)
+    onChange?.(newPassword)
+  }
+
+  // Generate password on component mount
+  useEffect(() => {
+    generatePassword()
+  }, [])
+
+  useEffect(() => {
+    onChange?.(password)
+  }, [onChange, password])
+
   return (
     <Container>
-      <PasswordDisplay>djqrw0xu2n6Bt5S</PasswordDisplay>
-      <Button variant="outlined">Generate New</Button>
+      <PasswordDisplay>{password}</PasswordDisplay>
+      <Button variant="outlined" onClick={generatePassword}>
+        Generate New
+      </Button>
     </Container>
   )
 }

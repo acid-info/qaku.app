@@ -79,6 +79,9 @@ export interface ApiConnector {
   // QnA methods
   getQnAs: () => Promise<ApiResponse<Record<number, QnAType>>>
   getQnA: (id: number) => Promise<ApiResponse<QnAType>>
+  addQnA: (
+    qnaData: Omit<QnAType, 'id' | 'questionsIds'>,
+  ) => Promise<ApiResponse<QnAType>>
 
   // Poll methods
   getPolls: () => Promise<ApiResponse<Record<number, PollType>>>
