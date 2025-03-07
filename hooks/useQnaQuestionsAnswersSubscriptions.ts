@@ -4,8 +4,8 @@ import { AnswerType, QuestionType } from '@/types/qna.types'
 import { loadQnaData } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { answersRecordAtom } from '../atoms/answerAtom'
-import { questionsRecordAtom } from '../atoms/questionAtom'
+import { answersRecordAtom } from '../atoms/answer'
+import { questionsRecordAtom } from '../atoms/question'
 
 // Hook for managing QnA-specific subscriptions and data loading for questions and answers only
 export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {

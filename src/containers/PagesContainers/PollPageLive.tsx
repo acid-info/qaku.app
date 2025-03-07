@@ -9,7 +9,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
-import { getPollByIdAtom } from '../../../atoms/pollAtom'
+import { getPollByIdAtom } from '../../../atoms/poll'
 import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 export const PollPageLive: React.FC = () => {

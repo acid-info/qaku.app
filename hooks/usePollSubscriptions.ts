@@ -4,8 +4,8 @@ import { PollOptionType, PollType } from '@/types/qna.types'
 import { loadPollOptions } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { pollsRecordAtom } from '../atoms/pollAtom'
-import { pollOptionsRecordAtom } from '../atoms/pollOptionAtom'
+import { pollsRecordAtom } from '../atoms/poll'
+import { pollOptionsRecordAtom } from '../atoms/pollOption'
 
 // Hook for managing poll-specific subscriptions and data loading
 export const usePollSubscriptions = (pollId: number) => {

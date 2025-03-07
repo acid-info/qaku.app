@@ -1,14 +1,15 @@
-export * from './answerAtom'
-export * from './pollAtom'
-export * from './pollOptionAtom'
-export * from './qnaAtom'
+export * from './answer'
+export * from './poll'
+export * from './pollOption'
+export * from './qna'
 export * from './qnaWidget'
-export * from './questionAtom'
+export * from './question'
 export * from './selectors'
+export * from './user'
 
 export type {
   CompleteQnAType,
   PollWithOptionsType,
   QnAWithQuestionsType,
   QuestionWithAnswersType,
-} from './selectors'
+} from './selectors/types'

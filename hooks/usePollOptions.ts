@@ -4,7 +4,7 @@ import {
 } from '@/utils/poll.utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { pollOptionsRecordAtom } from '../atoms/pollOptionAtom'
+import { pollOptionsRecordAtom } from '../atoms/pollOption'
 
 // Hook for accessing poll options data for a specific poll
 export const usePollOptions = (pollId: number) => {

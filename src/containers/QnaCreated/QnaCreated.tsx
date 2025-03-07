@@ -7,7 +7,7 @@ import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
-import { userAtom } from '../../../atoms/userAtom'
+import { userAtom } from '../../../atoms/user'
 import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 
 const CONTENT_WIDTH = 507

@@ -7,9 +7,9 @@ import { loadQnaData } from '@/utils/api.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
-import { answersRecordAtom } from '../../../atoms/answerAtom'
-import { getQnaByIdAtom } from '../../../atoms/qnaAtom'
-import { questionsRecordAtom } from '../../../atoms/questionAtom'
+import { answersRecordAtom } from '../../../atoms/answer'
+import { getQnaByIdAtom } from '../../../atoms/qna'
+import { questionsRecordAtom } from '../../../atoms/question'
 
 export const QnaPageCreated: React.FC = () => {
   const router = useRouter()

@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { questionsRecordAtom } from '../atoms/questionAtom'
+import { questionsRecordAtom } from '../atoms/question'
 
 // Hook for accessing questions data for a specific QnA
 export const useQnaQuestions = (qnaId: number) => {
