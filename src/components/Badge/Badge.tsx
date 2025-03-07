@@ -44,7 +44,7 @@ const StyledBadge = styled.div<{
 }>`
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 16px;
   border-radius: 8px;
   gap: 16px;
