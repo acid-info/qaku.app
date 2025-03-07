@@ -53,7 +53,7 @@ export const QnaPageLive: React.FC = () => {
         count: qna.questionsIds.length,
         id: qnaId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push('/poll/create'),
+        onAddPollClick: () => router.push(`/poll/create?qnaId=${qnaId}`),
       }}
     >
       <SEO />

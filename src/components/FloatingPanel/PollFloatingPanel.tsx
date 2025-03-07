@@ -31,8 +31,8 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
   onSave,
 }) => {
   const [values, setValues] = useState<PollSettingsInterface>({
-    multipleOptions: true,
-    markCorrectAnswer: true,
+    multipleOptions: false,
+    markCorrectAnswer: false,
     resultVisibility: ResultVisibilityEnum.Visible,
     title: '',
     showDescription: false,
@@ -41,18 +41,35 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
   })
 
   useEffect(() => {
+    if (isOpen && initialValues) {
+      setValues((prev) => ({ ...prev, ...initialValues }))
+    }
+  }, [isOpen, initialValues])
+
+  const handleSave = () => {
+    if (values.description.trim() === '') {
+      const updatedValues = {
+        ...values,
+        showDescription: false,
+        description: '',
+      }
+      setValues(updatedValues)
+      onSave(updatedValues)
+    } else {
+      onSave(values)
+    }
+    onClose()
+  }
+
+  const handleClose = () => {
     if (initialValues) {
       setValues((prev) => ({ ...prev, ...initialValues }))
     }
-  }, [initialValues])
-
-  const handleSave = () => {
-    onSave(values)
     onClose()
   }
 
   return (
-    <FloatingPanel title="Poll settings" isOpen={isOpen} onClose={onClose}>
+    <FloatingPanel title="Poll settings" isOpen={isOpen} onClose={handleClose}>
       <PanelContent>
         <SettingGroup>
           <SettingField
@@ -124,18 +141,30 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
           >
             <ToggleButton
               isOn={values.showDescription}
-              onChange={(isOn) =>
-                setValues((prev) => ({ ...prev, showDescription: isOn }))
-              }
+              onChange={(isOn) => {
+                if (!isOn) {
+                  setValues((prev) => ({
+                    ...prev,
+                    showDescription: isOn,
+                    description: '',
+                  }))
+                } else {
+                  setValues((prev) => ({ ...prev, showDescription: isOn }))
+                }
+              }}
             />
           </SettingField>
           {values.showDescription && (
             <StyledInput
               placeholder="Type something here.."
               value={values.description}
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, description: e.target.value }))
-              }
+              onChange={(e) => {
+                const newDescription = e.target.value
+                setValues((prev) => ({
+                  ...prev,
+                  description: newDescription,
+                }))
+              }}
             />
           )}
         </SettingGroup>

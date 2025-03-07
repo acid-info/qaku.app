@@ -89,7 +89,10 @@ export interface ApiConnector {
   getPollsByQnaId: (
     qnaId: number,
   ) => Promise<ApiResponse<Record<number, PollType>>>
-  addPoll: (poll: Omit<PollType, 'id'>) => Promise<ApiResponse<PollType>>
+  addPoll: (
+    poll: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
+    pollOptions: { title: string; isCorrectAnswer?: boolean }[],
+  ) => Promise<ApiResponse<PollType>>
 
   // Poll option methods
   getPollOptions: () => Promise<ApiResponse<Record<number, PollOptionType>>>

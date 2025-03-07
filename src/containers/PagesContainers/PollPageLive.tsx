@@ -52,6 +52,7 @@ export const PollPageLive: React.FC = () => {
         count: poll.optionsIds.length,
         id: pollId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
+        onAddPollClick: () => router.push(`/poll/create?qnaId=${poll.qnaId}`),
       }}
     >
       <SEO />

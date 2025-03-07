@@ -11,12 +11,12 @@ type VariantConfigType = {
 
 const VARIANT_CONFIG: Record<BadgeVariantType, VariantConfigType> = {
   green: {
-    backgroundColor: 'var(--green)',
+    backgroundColor: 'color-mix(in srgb, var(--green) 16%, transparent)',
     color: 'var(--green)',
   },
   red: {
-    backgroundColor: 'var(--red)',
-    color: 'var(--red)',
+    backgroundColor: 'color-mix(in srgb, var(--orange) 16%, transparent)',
+    color: 'var(--orange)',
   },
 }
 
@@ -52,8 +52,7 @@ const StyledBadge = styled.div<{
   line-height: var(--body2-line-height);
   white-space: nowrap;
 
-  background-color: ${({ variant }) =>
-    `color-mix(in srgb, ${VARIANT_CONFIG[variant].backgroundColor} 13%, transparent)`};
+  background-color: ${({ variant }) => VARIANT_CONFIG[variant].backgroundColor};
 
   span {
     color: ${({ variant }) => VARIANT_CONFIG[variant].color};

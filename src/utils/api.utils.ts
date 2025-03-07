@@ -265,10 +265,11 @@ export const likeAnswerById = async ({
 }
 
 export const createNewPoll = async (
-  pollData: Omit<PollType, 'id'>,
+  pollData: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
+  pollOptions: { title: string; isCorrectAnswer?: boolean }[] = [],
 ): Promise<ApiResponse<PollType>> => {
   try {
-    return await apiConnector.addPoll(pollData)
+    return await apiConnector.addPoll(pollData, pollOptions)
   } catch (error) {
     console.error('Error creating poll:', error)
     return {

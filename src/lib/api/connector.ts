@@ -7,7 +7,7 @@ import {
 } from '@/types/qna.types'
 import {
   addAnswer,
-  addPoll,
+  addPoll as addPollHandler,
   addQnA,
   addQuestion,
   subscribe as fakeSubscribe,
@@ -146,9 +146,10 @@ export const apiConnector: ApiConnector = {
   },
 
   addPoll: async (
-    poll: Omit<PollType, 'id'>,
+    poll: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
+    pollOptions: { title: string; isCorrectAnswer?: boolean }[] = [],
   ): Promise<ApiResponse<PollType>> => {
-    return await addPoll(poll)
+    return await addPollHandler(poll, pollOptions)
   },
 
   // Poll option methods

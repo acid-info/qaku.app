@@ -472,7 +472,8 @@ export const getPollsByQnaId = async (
 }
 
 export const addPoll = async (
-  pollData: Omit<PollType, 'id'>,
+  pollData: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
+  pollOptions: { title: string; isCorrectAnswer?: boolean }[] = [],
 ): Promise<ApiResponse<PollType>> => {
   try {
     // Validate inputs
@@ -492,10 +493,6 @@ export const addPoll = async (
       return { success: false, error: 'Poll question is required' }
     }
 
-    if (!Array.isArray(pollData.optionsIds) || pollData.optionsIds.length < 2) {
-      return { success: false, error: 'Poll must have at least 2 options' }
-    }
-
     // Check if QnA exists
     if (!dataStore.qnas[pollData.qnaId]) {
       return {
@@ -509,51 +506,66 @@ export const addPoll = async (
       return { success: false, error: 'Cannot add poll to inactive QnA' }
     }
 
-    // Validate that all optionsIds exist in the dataStore
-    for (const optionId of pollData.optionsIds) {
-      if (!dataStore.pollOptions[optionId]) {
-        return {
-          success: false,
-          error: `Poll option with ID ${optionId} not found`,
-        }
+    // Validate poll options
+    if (!pollOptions || pollOptions.length < 2) {
+      return { success: false, error: 'Poll must have at least 2 options' }
+    }
+
+    // Generate new poll ID
+    const newPollId =
+      Math.max(0, ...Object.keys(dataStore.polls).map(Number)) + 1
+
+    // Create poll options
+    const optionIds: number[] = []
+    const correctAnswersIds: number[] = []
+
+    for (const option of pollOptions) {
+      // Generate new option ID
+      const newOptionId =
+        Math.max(0, ...Object.keys(dataStore.pollOptions).map(Number)) + 1
+
+      // Create new poll option
+      const newPollOption: PollOptionType = {
+        id: newOptionId,
+        title: option.title,
+        voteCount: 0,
+        voters: [],
+        pollId: newPollId,
       }
+
+      // Add to data store
+      dataStore.pollOptions[newOptionId] = newPollOption
+
+      // Add to option IDs
+      optionIds.push(newOptionId)
+
+      // If this option is marked as a correct answer, add it to correctAnswersIds
+      if (option.isCorrectAnswer && pollData.hasCorrectAnswers) {
+        correctAnswersIds.push(newOptionId)
+      }
+    }
+
+    // Create new poll with option IDs and correct answers IDs
+    const newPoll: PollType = {
+      id: newPollId,
+      ...pollData,
+      optionsIds: optionIds,
+      correctAnswersIds: pollData.hasCorrectAnswers
+        ? correctAnswersIds
+        : undefined,
     }
 
     // If hasCorrectAnswers is true, validate correctAnswersIds
-    if (pollData.hasCorrectAnswers) {
-      if (
-        !Array.isArray(pollData.correctAnswersIds) ||
-        pollData.correctAnswersIds.length === 0
-      ) {
-        return {
-          success: false,
-          error:
-            'Poll with correct answers must specify at least one correct answer',
-        }
+    if (newPoll.hasCorrectAnswers && correctAnswersIds.length === 0) {
+      return {
+        success: false,
+        error:
+          'Poll with correct answers must specify at least one correct answer',
       }
-
-      // Validate that all correctAnswersIds are in optionsIds
-      for (const answerId of pollData.correctAnswersIds) {
-        if (!pollData.optionsIds.includes(answerId)) {
-          return {
-            success: false,
-            error: `Correct answer ID ${answerId} is not in the options list`,
-          }
-        }
-      }
-    }
-
-    // Generate new ID
-    const newId = Math.max(0, ...Object.keys(dataStore.polls).map(Number)) + 1
-
-    // Create new poll
-    const newPoll: PollType = {
-      id: newId,
-      ...pollData,
     }
 
     // Add to data store
-    dataStore.polls[newId] = newPoll
+    dataStore.polls[newPollId] = newPoll
 
     // Notify subscribers
     notifySubscribers(ApiMessageType.POLL_CREATE_MESSAGE, newPoll)
