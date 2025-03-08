@@ -21,14 +21,14 @@ const CONTENT_WIDTH = 507
 
 const EmptyState = () => (
   <NoContentMessage>
-    <span>There are not questions yet.</span>
+    <span>There are no questions yet.</span>
     <h1>Ask the first one!</h1>
   </NoContentMessage>
 )
 
 const NoQuestionsInThisTab = () => (
   <NoContentMessage className="tab-empty-state">
-    <span>There are not questions in this tab.</span>
+    <span>There are no questions in this tab.</span>
   </NoContentMessage>
 )
 

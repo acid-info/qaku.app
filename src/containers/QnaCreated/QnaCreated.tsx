@@ -14,7 +14,7 @@ const CONTENT_WIDTH = 507
 
 const NoQuestionsInThisTab = () => (
   <NoContentMessage>
-    <span>There are not questions in this tab.</span>
+    <span>There are no questions in this tab.</span>
   </NoContentMessage>
 )
 
