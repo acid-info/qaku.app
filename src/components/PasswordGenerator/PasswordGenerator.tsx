@@ -22,6 +22,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
   // Generate password on component mount
   useEffect(() => {
     generatePassword()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
