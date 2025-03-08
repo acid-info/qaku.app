@@ -200,6 +200,12 @@ export const PollCreate: React.FC = () => {
             </Collapsible>
           </Top>
           <Bottom>
+            {pollSettings.markCorrectAnswer && (
+              <StyledBadge
+                title="Don't forget to mark the correct answer"
+                variant="green"
+              />
+            )}
             <PollOptions
               hasInput={true}
               options={options}
@@ -276,6 +282,10 @@ const Bottom = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
+`
+
+const StyledBadge = styled(Badge)`
+  width: 100%;
 `
 
 const StyledButton = styled(Button)`

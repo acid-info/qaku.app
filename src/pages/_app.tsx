@@ -1,4 +1,3 @@
-import { ApiSubscriptionManager } from '@/components/ApiSubscriptionManager'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { css, Global } from '@emotion/react'
 import { NextComponentType, NextPageContext } from 'next'
@@ -50,8 +49,6 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
           }
         `}
       />
-      {/* todo remove and use targeted subscriptions */}
-      <ApiSubscriptionManager />
       {getLayout(<Component {...pageProps} />)}
     </>
   )

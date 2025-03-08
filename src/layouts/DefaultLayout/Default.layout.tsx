@@ -2,6 +2,7 @@ import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
 import { LayoutContainer } from '@/components/StyledComponents'
+import { ApiSubscriptionManager } from '@/containers/ApiSubscriptionManager'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -15,6 +16,7 @@ type Props = FooterProps & {
 export default function DefaultLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
+      <ApiSubscriptionManager />
       <SidebarContainer>{props.sidebar}</SidebarContainer>
       <LayoutContainer>
         <DefaultNav

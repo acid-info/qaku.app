@@ -1,6 +1,6 @@
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
-import { PollOptionType, PollType } from '@/types/qna.types'
+import { PollType } from '@/types/qna.types'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { pollsRecordAtom } from '../../../atoms/poll'
@@ -55,16 +55,6 @@ export const ApiSubscriptionManager = () => {
       },
     )
 
-    const pollVoteSub = apiConnector.subscribe<PollOptionType>(
-      ApiMessageType.POLL_VOTE_MESSAGE,
-      (option) => {
-        setPollOptionsRecord((prev: Record<number, PollOptionType>) => ({
-          ...prev,
-          [option.id]: option,
-        }))
-      },
-    )
-
     const pollActiveSub = apiConnector.subscribe<PollType>(
       ApiMessageType.POLL_ACTIVE_MESSAGE,
       (poll) => {
@@ -77,7 +67,6 @@ export const ApiSubscriptionManager = () => {
 
     return () => {
       pollCreateSub()
-      pollVoteSub()
       pollActiveSub()
     }
   }, [setPollsRecord, setPollOptionsRecord])
