@@ -1,6 +1,6 @@
+import { PollType } from '@/types/qna.types'
 import {
   BaseFloatingPanelPropsInterface,
-  PollSettingsInterface,
   ResultVisibilityEnum,
   SaveHandlerType,
 } from '@/types/settings.types'
@@ -18,52 +18,79 @@ import {
   SettingStack,
 } from './styledComponents'
 
-export interface PollFloatingPanelProps
+export interface PollFloatingPanelEditProps
   extends BaseFloatingPanelPropsInterface {
-  initialValues?: Partial<PollSettingsInterface>
-  onSave: SaveHandlerType<PollSettingsInterface>
+  poll: PollType
+  onSave: SaveHandlerType<Partial<PollType>>
 }
 
-export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
+export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
   isOpen,
   onClose,
-  initialValues,
+  poll,
   onSave,
 }) => {
-  const [values, setValues] = useState<PollSettingsInterface>({
-    multipleOptions: false,
-    markCorrectAnswer: false,
-    resultVisibility: ResultVisibilityEnum.Visible,
+  const [values, setValues] = useState<{
+    hasMultipleOptionsSelect: boolean
+    hasCorrectAnswers: boolean
+    isResultVisible: boolean
+    title: string
+    showDescription: boolean
+    description: string | undefined
+  }>({
+    hasMultipleOptionsSelect: false,
+    hasCorrectAnswers: false,
+    isResultVisible: true,
     title: '',
     showDescription: false,
     description: '',
-    ...initialValues,
   })
 
   useEffect(() => {
-    if (isOpen && initialValues) {
-      setValues((prev) => ({ ...prev, ...initialValues }))
+    if (isOpen && poll) {
+      setValues({
+        hasMultipleOptionsSelect: poll.hasMultipleOptionsSelect,
+        hasCorrectAnswers: poll.hasCorrectAnswers,
+        isResultVisible: poll.isResultVisible,
+        title: poll.title,
+        showDescription: !!poll.description,
+        description: poll.description || '',
+      })
     }
-  }, [isOpen, initialValues])
+  }, [isOpen, poll])
 
   const handleSave = () => {
-    if (values.description.trim() === '') {
-      const updatedValues = {
-        ...values,
-        showDescription: false,
-        description: '',
-      }
-      setValues(updatedValues)
-      onSave(updatedValues)
-    } else {
-      onSave(values)
+    const updatedPoll: Partial<PollType> = {
+      hasMultipleOptionsSelect: values.hasMultipleOptionsSelect,
+      hasCorrectAnswers: values.hasCorrectAnswers,
+      isResultVisible: values.isResultVisible,
+      title: values.title,
     }
+
+    if (
+      values.showDescription &&
+      values.description &&
+      values.description.trim() !== ''
+    ) {
+      updatedPoll.description = values.description
+    } else {
+      updatedPoll.description = undefined
+    }
+
+    onSave(updatedPoll)
     onClose()
   }
 
   const handleClose = () => {
-    if (initialValues) {
-      setValues((prev) => ({ ...prev, ...initialValues }))
+    if (poll) {
+      setValues({
+        hasMultipleOptionsSelect: poll.hasMultipleOptionsSelect,
+        hasCorrectAnswers: poll.hasCorrectAnswers,
+        isResultVisible: poll.isResultVisible,
+        title: poll.title,
+        showDescription: !!poll.description,
+        description: poll.description || '',
+      })
     }
     onClose()
   }
@@ -78,9 +105,12 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
             isRow
           >
             <ToggleButton
-              isOn={values.multipleOptions}
+              isOn={values.hasMultipleOptionsSelect}
               onChange={(isOn) =>
-                setValues((prev) => ({ ...prev, multipleOptions: isOn }))
+                setValues((prev) => ({
+                  ...prev,
+                  hasMultipleOptionsSelect: isOn,
+                }))
               }
             />
           </SettingField>
@@ -91,9 +121,9 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
             isRow
           >
             <ToggleButton
-              isOn={values.markCorrectAnswer}
+              isOn={values.hasCorrectAnswers}
               onChange={(isOn) =>
-                setValues((prev) => ({ ...prev, markCorrectAnswer: isOn }))
+                setValues((prev) => ({ ...prev, hasCorrectAnswers: isOn }))
               }
             />
           </SettingField>
@@ -110,11 +140,11 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
                 { id: ResultVisibilityEnum.Visible, label: 'Visible' },
                 { id: ResultVisibilityEnum.Hidden, label: 'Hidden' },
               ]}
-              activeId={values.resultVisibility}
+              activeId={values.isResultVisible ? 'visible' : 'hidden'}
               onChange={(id) =>
                 setValues((prev) => ({
                   ...prev,
-                  resultVisibility: id as ResultVisibilityEnum,
+                  isResultVisible: id === 'visible',
                 }))
               }
             />
@@ -157,7 +187,7 @@ export const PollFloatingPanel: React.FC<PollFloatingPanelProps> = ({
           {values.showDescription && (
             <StyledInput
               placeholder="Type something here.."
-              value={values.description}
+              value={values.description || ''}
               onChange={(e) => {
                 const newDescription = e.target.value
                 setValues((prev) => ({

@@ -1,15 +1,15 @@
-import { pollSettingsAtom } from '@/../atoms/settings'
-import { PollFloatingPanel } from '@/components/FloatingPanel'
+import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 import { getPollByIdAtom } from '../../../atoms/poll'
+import { pollsRecordAtom } from '../../../atoms/poll/pollsRecordAtom'
 import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 export const PollPageLive: React.FC = () => {
@@ -23,7 +23,8 @@ export const PollPageLive: React.FC = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
-  const [pollSettings, setPollSettings] = useAtom(pollSettingsAtom)
+
+  const setPollsRecord = useSetAtom(pollsRecordAtom)
 
   const pollAtom = useMemo(() => {
     if (!pollId) return atom(null)
@@ -36,6 +37,17 @@ export const PollPageLive: React.FC = () => {
 
   if (!router.isReady || !pollId || !poll) {
     return null
+  }
+
+  const handleSavePollSettings = (updatedPollData: Partial<typeof poll>) => {
+    setPollsRecord((prev) => ({
+      ...prev,
+      [pollId]: {
+        ...prev[pollId],
+        ...updatedPollData,
+      },
+    }))
+    setIsSettingsPanelOpen(false)
   }
 
   return (
@@ -57,14 +69,11 @@ export const PollPageLive: React.FC = () => {
     >
       <SEO />
       <PollLive pollId={pollId} poll={poll} />
-      <PollFloatingPanel
+      <PollFloatingPanelEdit
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
-        initialValues={pollSettings}
-        onSave={(values) => {
-          setPollSettings(values)
-          setIsSettingsPanelOpen(false)
-        }}
+        poll={poll}
+        onSave={handleSavePollSettings}
       />
     </DefaultLayout>
   )

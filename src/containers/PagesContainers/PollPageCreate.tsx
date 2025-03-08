@@ -1,5 +1,5 @@
 import { pollSettingsAtom } from '@/../atoms/settings'
-import { PollFloatingPanel } from '@/components/FloatingPanel'
+import { PollFloatingPanelCreate } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { PollCreate } from '@/containers/PollCreate/PollCreate'
 import { SidebarContainer } from '@/containers/Sidebar'
@@ -26,7 +26,7 @@ export const PollPageCreate: React.FC = () => {
     >
       <SEO />
       <PollCreate />
-      <PollFloatingPanel
+      <PollFloatingPanelCreate
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
         initialValues={pollSettings}

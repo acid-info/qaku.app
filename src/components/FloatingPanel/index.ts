@@ -1,3 +1,4 @@
 export * from './FloatingPanel'
-export * from './PollFloatingPanel'
+export * from './PollFloatingPanelCreate'
+export * from './PollFloatingPanelEdit'
 export * from './QnaFloatingPanel'
