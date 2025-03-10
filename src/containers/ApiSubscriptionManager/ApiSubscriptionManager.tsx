@@ -12,8 +12,6 @@ export const ApiSubscriptionManager = () => {
   const setPollsRecord = useSetAtom(pollsRecordAtom)
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
-  // Todo don't initialize data here. Initialize in Sidebar container the qna and polls,
-  // Todo init/subscribe to the rest in the QnaLive and PollLive containers and User pages related containers. (cf subs bellow)
   // Load initial data
   useEffect(() => {
     const loadInitialData = async () => {
