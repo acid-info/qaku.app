@@ -1,6 +1,7 @@
 import { PollType } from '@/types/qna.types'
 import {
   BaseFloatingPanelPropsInterface,
+  PollSettingsEditValuesType,
   ResultVisibilityEnum,
   SaveHandlerType,
 } from '@/types/settings.types'
@@ -30,14 +31,7 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
   poll,
   onSave,
 }) => {
-  const [values, setValues] = useState<{
-    hasMultipleOptionsSelect: boolean
-    hasCorrectAnswers: boolean
-    isResultVisible: boolean
-    title: string
-    showDescription: boolean
-    description: string | undefined
-  }>({
+  const [values, setValues] = useState<PollSettingsEditValuesType>({
     hasMultipleOptionsSelect: false,
     hasCorrectAnswers: false,
     isResultVisible: true,
@@ -58,6 +52,47 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
       })
     }
   }, [isOpen, poll])
+
+  const handleMultipleOptionsToggle = (isOn: boolean) => {
+    setValues((prev) => ({
+      ...prev,
+      hasMultipleOptionsSelect: isOn,
+    }))
+  }
+
+  const handleCorrectAnswersToggle = (isOn: boolean) => {
+    setValues((prev) => ({ ...prev, hasCorrectAnswers: isOn }))
+  }
+
+  const handleResultVisibilityChange = (id: string | number) => {
+    setValues((prev) => ({
+      ...prev,
+      isResultVisible: id === ResultVisibilityEnum.Visible,
+    }))
+  }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prev) => ({ ...prev, title: e.target.value }))
+  }
+
+  const handleDescriptionToggle = (isOn: boolean) => {
+    if (!isOn) {
+      setValues((prev) => ({
+        ...prev,
+        showDescription: isOn,
+        description: '',
+      }))
+    } else {
+      setValues((prev) => ({ ...prev, showDescription: isOn }))
+    }
+  }
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prev) => ({
+      ...prev,
+      description: e.target.value,
+    }))
+  }
 
   const handleSave = () => {
     const updatedPoll: Partial<PollType> = {
@@ -106,12 +141,7 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
           >
             <ToggleButton
               isOn={values.hasMultipleOptionsSelect}
-              onChange={(isOn) =>
-                setValues((prev) => ({
-                  ...prev,
-                  hasMultipleOptionsSelect: isOn,
-                }))
-              }
+              onChange={handleMultipleOptionsToggle}
             />
           </SettingField>
 
@@ -122,9 +152,7 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
           >
             <ToggleButton
               isOn={values.hasCorrectAnswers}
-              onChange={(isOn) =>
-                setValues((prev) => ({ ...prev, hasCorrectAnswers: isOn }))
-              }
+              onChange={handleCorrectAnswersToggle}
             />
           </SettingField>
         </SettingGroup>
@@ -140,13 +168,12 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
                 { id: ResultVisibilityEnum.Visible, label: 'Visible' },
                 { id: ResultVisibilityEnum.Hidden, label: 'Hidden' },
               ]}
-              activeId={values.isResultVisible ? 'visible' : 'hidden'}
-              onChange={(id) =>
-                setValues((prev) => ({
-                  ...prev,
-                  isResultVisible: id === 'visible',
-                }))
+              activeId={
+                values.isResultVisible
+                  ? ResultVisibilityEnum.Visible
+                  : ResultVisibilityEnum.Hidden
               }
+              onChange={handleResultVisibilityChange}
             />
           </SettingField>
         </SettingStack>
@@ -157,9 +184,7 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
               <StyledInput
                 placeholder="Type something here.."
                 value={values.title}
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, title: e.target.value }))
-                }
+                onChange={handleTitleChange}
               />
             </SettingField>
           </SettingStack>
@@ -171,30 +196,14 @@ export const PollFloatingPanelEdit: React.FC<PollFloatingPanelEditProps> = ({
           >
             <ToggleButton
               isOn={values.showDescription}
-              onChange={(isOn) => {
-                if (!isOn) {
-                  setValues((prev) => ({
-                    ...prev,
-                    showDescription: isOn,
-                    description: '',
-                  }))
-                } else {
-                  setValues((prev) => ({ ...prev, showDescription: isOn }))
-                }
-              }}
+              onChange={handleDescriptionToggle}
             />
           </SettingField>
           {values.showDescription && (
             <StyledInput
               placeholder="Type something here.."
               value={values.description || ''}
-              onChange={(e) => {
-                const newDescription = e.target.value
-                setValues((prev) => ({
-                  ...prev,
-                  description: newDescription,
-                }))
-              }}
+              onChange={handleDescriptionChange}
             />
           )}
         </SettingGroup>

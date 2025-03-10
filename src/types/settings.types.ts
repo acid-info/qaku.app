@@ -12,6 +12,15 @@ export interface QnaSettingsInterface {
   description: string
 }
 
+export type PollSettingsEditValuesType = {
+  hasMultipleOptionsSelect: boolean
+  hasCorrectAnswers: boolean
+  isResultVisible: boolean
+  title: string
+  showDescription: boolean
+  description: string | undefined
+}
+
 export interface PollSettingsInterface {
   multipleOptions: boolean
   markCorrectAnswer: boolean

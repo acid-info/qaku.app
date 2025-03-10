@@ -43,6 +43,44 @@ export const PollFloatingPanelCreate: React.FC<
     }
   }, [isOpen, initialValues])
 
+  const handleMultipleOptionsToggle = (isOn: boolean) => {
+    setValues((prev) => ({ ...prev, multipleOptions: isOn }))
+  }
+
+  const handleMarkCorrectAnswerToggle = (isOn: boolean) => {
+    setValues((prev) => ({ ...prev, markCorrectAnswer: isOn }))
+  }
+
+  const handleResultVisibilityChange = (id: string | number) => {
+    setValues((prev) => ({
+      ...prev,
+      resultVisibility: id as ResultVisibilityEnum,
+    }))
+  }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prev) => ({ ...prev, title: e.target.value }))
+  }
+
+  const handleDescriptionToggle = (isOn: boolean) => {
+    if (!isOn) {
+      setValues((prev) => ({
+        ...prev,
+        showDescription: isOn,
+        description: '',
+      }))
+    } else {
+      setValues((prev) => ({ ...prev, showDescription: isOn }))
+    }
+  }
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prev) => ({
+      ...prev,
+      description: e.target.value,
+    }))
+  }
+
   const handleSave = () => {
     if (values.description.trim() === '') {
       const updatedValues = {
@@ -76,9 +114,7 @@ export const PollFloatingPanelCreate: React.FC<
           >
             <ToggleButton
               isOn={values.multipleOptions}
-              onChange={(isOn) =>
-                setValues((prev) => ({ ...prev, multipleOptions: isOn }))
-              }
+              onChange={handleMultipleOptionsToggle}
             />
           </SettingField>
 
@@ -89,9 +125,7 @@ export const PollFloatingPanelCreate: React.FC<
           >
             <ToggleButton
               isOn={values.markCorrectAnswer}
-              onChange={(isOn) =>
-                setValues((prev) => ({ ...prev, markCorrectAnswer: isOn }))
-              }
+              onChange={handleMarkCorrectAnswerToggle}
             />
           </SettingField>
         </SettingGroup>
@@ -108,12 +142,7 @@ export const PollFloatingPanelCreate: React.FC<
                 { id: ResultVisibilityEnum.Hidden, label: 'Hidden' },
               ]}
               activeId={values.resultVisibility}
-              onChange={(id) =>
-                setValues((prev) => ({
-                  ...prev,
-                  resultVisibility: id as ResultVisibilityEnum,
-                }))
-              }
+              onChange={handleResultVisibilityChange}
             />
           </SettingField>
         </SettingStack>
@@ -124,9 +153,7 @@ export const PollFloatingPanelCreate: React.FC<
               <StyledInput
                 placeholder="Type something here.."
                 value={values.title}
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, title: e.target.value }))
-                }
+                onChange={handleTitleChange}
               />
             </SettingField>
           </SettingStack>
@@ -138,30 +165,14 @@ export const PollFloatingPanelCreate: React.FC<
           >
             <ToggleButton
               isOn={values.showDescription}
-              onChange={(isOn) => {
-                if (!isOn) {
-                  setValues((prev) => ({
-                    ...prev,
-                    showDescription: isOn,
-                    description: '',
-                  }))
-                } else {
-                  setValues((prev) => ({ ...prev, showDescription: isOn }))
-                }
-              }}
+              onChange={handleDescriptionToggle}
             />
           </SettingField>
           {values.showDescription && (
             <StyledInput
               placeholder="Type something here.."
               value={values.description}
-              onChange={(e) => {
-                const newDescription = e.target.value
-                setValues((prev) => ({
-                  ...prev,
-                  description: newDescription,
-                }))
-              }}
+              onChange={handleDescriptionChange}
             />
           )}
         </SettingGroup>
