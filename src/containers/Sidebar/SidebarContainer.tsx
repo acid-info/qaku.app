@@ -1,6 +1,6 @@
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { PollType, QnAType } from '@/types/qna.types'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import {
@@ -22,9 +22,9 @@ export const SidebarContainer: React.FC = () => {
 
   const activeObject = useAtomValue(activeObjectAtom)
   const expandedQnAIds = useAtomValue(expandedQnAIdsAtom)
-  const [, setActiveQnA] = useAtom(setActiveQnAAtom)
-  const [, setActivePoll] = useAtom(setActivePollAtom)
-  const [, toggleExpandedQnA] = useAtom(toggleExpandedQnAAtom)
+  const setActiveQnA = useSetAtom(setActiveQnAAtom)
+  const setActivePoll = useSetAtom(setActivePollAtom)
+  const toggleExpandedQnA = useSetAtom(toggleExpandedQnAAtom)
 
   const filteredQnAIds = useAtomValue(filteredQnAIdsAtom)
   const qnasRecord = useAtomValue(qnasRecordAtom)

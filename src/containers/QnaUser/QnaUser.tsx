@@ -9,7 +9,7 @@ import {
   likeQuestionById,
 } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
@@ -41,7 +41,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const [isAuthorized] = useAtom(isAuthorizedAtom)
+  const isAuthorized = useAtomValue(isAuthorizedAtom)
 
   const {
     questions: allQuestions,

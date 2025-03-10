@@ -10,7 +10,7 @@ import {
   toggleQuestionAnsweredStatus,
 } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
@@ -44,7 +44,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const [isAuthorized] = useAtom(isAuthorizedAtom)
+  const isAuthorized = useAtomValue(isAuthorizedAtom)
 
   const {
     questions: allQuestions,

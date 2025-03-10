@@ -6,7 +6,7 @@ import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
@@ -16,7 +16,7 @@ import { userAtom } from '../../../atoms/user/userAtom'
 export const QnaCreate: React.FC = () => {
   const user = useAtomValue(userAtom)
   const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
-  const [, setQnasRecord] = useAtom(qnasRecordAtom)
+  const setQnasRecord = useSetAtom(qnasRecordAtom)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [password, setPassword] = useState('')
