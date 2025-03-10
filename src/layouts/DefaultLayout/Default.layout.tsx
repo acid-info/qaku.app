@@ -2,6 +2,7 @@ import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
 import { LayoutContainer } from '@/components/StyledComponents'
+import { ApiSubscriptionManager } from '@/containers/ApiSubscriptionManager'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -15,15 +16,16 @@ type Props = FooterProps & {
 export default function DefaultLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
+      <ApiSubscriptionManager />
       <SidebarContainer>{props.sidebar}</SidebarContainer>
       <LayoutContainer>
         <DefaultNav
           mode={NavbarModeEnum.Qna}
           isTitleOnly={true}
-          title={props.navProps?.title || 'Polls'}
-          date={'2023-12-25T15:00:00.000Z'}
-          count={5121}
-          id="3212345"
+          title=""
+          date=""
+          count={0}
+          id=""
           {...props.navProps}
         />
         <Main

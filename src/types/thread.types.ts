@@ -15,6 +15,7 @@ export type LikeInfoType = {
 }
 
 export interface ThreadResponseInterface {
+  id: number
   info: {
     author: string
     timestamp: string
@@ -26,7 +27,15 @@ export interface ThreadResponseInterface {
 export interface ThreadInterface {
   info: ThreadInfoType & {
     question: string
+    isAnswered: boolean
+    questionId: number
     responses: ThreadResponseInterface[]
   }
   likes: LikeInfoType
+}
+
+export enum FilterThreadEnum {
+  All = 'all',
+  Popular = 'popular',
+  Answered = 'answered',
 }

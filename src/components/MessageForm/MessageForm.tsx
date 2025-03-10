@@ -55,6 +55,12 @@ export const MessageForm = ({
     })
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  }
+
   return (
     <FormContainer ref={formRef} onSubmit={handleSubmit} {...props}>
       <InputContainer $isFocused={isFocused}>
@@ -65,6 +71,7 @@ export const MessageForm = ({
             setMessage(e.target.value)
           }
           onFocus={() => setIsFocused(true)}
+          onKeyDown={handleKeyDown}
           $isFocused={isFocused}
         />
         {isFocused && !hideCharacterLimit && (
@@ -79,6 +86,7 @@ export const MessageForm = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
               }
+              onKeyDown={handleKeyDown}
               $isFocused={isFocused}
             />
             <ButtonsContainer>

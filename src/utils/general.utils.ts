@@ -17,3 +17,14 @@ export function getValidPercentage(value: number): number {
 export function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+export function generateRandomPassword(length: number = 16): string {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let password = ''
+
+  for (let i = 0; i < length; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+
+  return password
+}

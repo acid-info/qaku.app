@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 
+import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { CollapsibleToggle } from '@/components/CollapsibleToggle'
@@ -40,60 +41,102 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
 
 const QnAWidgetDemo = () => {
   const demoQnA = {
-    id: 'qna-1',
+    id: 1,
     title: 'Town Hall Discussion',
+    hash: 'abc123',
+    owner: 'admin',
+    hasAdmins: true,
+    allowsParticipantsReplies: true,
+    questionsIds: [],
+    startDate: new Date(),
+    isActive: true,
   }
   const demoQnA2 = {
-    id: 'qna-2',
+    id: 2,
     title: 'Town Hall Discussion - long title that will be truncated',
+    hash: 'def456',
+    owner: 'admin',
+    hasAdmins: true,
+    allowsParticipantsReplies: true,
+    questionsIds: [],
+    startDate: new Date(),
+    isActive: false,
   }
 
   const polls = [
     {
-      id: 'poll-1',
+      id: 1,
       title: 'Budget Allocation',
+      question: 'How should we allocate the budget?',
+      qnaId: 1,
+      optionsIds: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     },
     {
-      id: 'poll-2',
+      id: 2,
       title: 'Project Timeline',
+      question: 'What is the best timeline for the project?',
+      qnaId: 1,
+      optionsIds: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     },
     {
-      id: 'poll-3',
+      id: 3,
       title: 'Team Structure',
+      question: 'How should we structure the team?',
+      qnaId: 1,
+      optionsIds: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     },
   ]
 
-  const [polls2, setPolls2] = useState<{ id: string; title: string }[]>([])
-  const [activeItemId, setActiveItemId] = useState<string>()
-  const [activeItemId2, setActiveItemId2] = useState<string>()
+  const [polls2, setPolls2] = useState<typeof polls>([])
+  const [activeItemId, setActiveItemId] = useState<number>()
+  const [activeItemId2, setActiveItemId2] = useState<number>()
   const [isExpanded1, setIsExpanded1] = useState(false)
   const [isExpanded2, setIsExpanded2] = useState(true)
 
   const handlePlusClick2 = () => {
     const newPoll = {
-      id: `poll-${polls2.length + 1}`,
+      id: polls2.length + 1,
       title: `New Poll ${polls2.length + 1}`,
+      question: `Question for Poll ${polls2.length + 1}`,
+      qnaId: 2,
+      optionsIds: [],
+      hasCorrectAnswers: false,
+      hasMultipleOptionsSelect: false,
+      isResultVisible: true,
+      isActive: true,
     }
     setPolls2([...polls2, newPoll])
     console.log('Added new poll:', newPoll)
   }
 
-  const handleQnAClick = (id: string) => {
+  const handleQnAClick = (id: number) => {
     setActiveItemId(id)
     console.log('QnA clicked:', id)
   }
 
-  const handleQnAClick2 = (id: string) => {
+  const handleQnAClick2 = (id: number) => {
     setActiveItemId2(id)
     console.log('QnA clicked:', id)
   }
 
-  const handlePollClick = (id: string) => {
+  const handlePollClick = (id: number) => {
     setActiveItemId(id)
     console.log('Poll clicked:', id)
   }
 
-  const handlePollClick2 = (id: string) => {
+  const handlePollClick2 = (id: number) => {
     setActiveItemId2(id)
     console.log('Poll clicked:', id)
   }
@@ -240,7 +283,7 @@ const PollOptionsDemo = () => {
       <div style={{ width: '500px' }}>
         <PollOptions
           options={options}
-          selectedOptionId={selectedOptionId}
+          selectedOptionIds={[String(selectedOptionId)]}
           onOptionSelect={setSelectedOptionId}
         />
       </div>
@@ -379,6 +422,7 @@ const ThreadDemo = () => {
           'What are the key differences between React hooks and class components?',
         responses: [
           {
+            id: 1,
             info: {
               author: 'Bob',
               timestamp: '2025-02-16T11:48:36.135Z',
@@ -387,6 +431,7 @@ const ThreadDemo = () => {
             likes: { count: 12, isLiked: false },
           },
           {
+            id: 2,
             info: {
               author: 'Chalie',
               timestamp: '2025-02-19T11:48:36.135Z',
@@ -395,6 +440,7 @@ const ThreadDemo = () => {
             likes: { count: 12, isLiked: false },
           },
           {
+            id: 3,
             info: {
               author: 'Chalie',
               timestamp: '2025-02-17T11:48:36.135Z',
@@ -403,6 +449,7 @@ const ThreadDemo = () => {
             likes: { count: 12, isLiked: false },
           },
           {
+            id: 4,
             info: {
               author: 'Bob',
               timestamp: '2025-02-18T11:48:36.135Z',
@@ -411,6 +458,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 5,
             info: {
               author: 'Bob',
               timestamp: '2025-02-20T11:48:36.135Z',
@@ -419,6 +467,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 6,
             info: {
               author: 'John',
               timestamp: '2025-02-18T11:48:36.135Z',
@@ -427,6 +476,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 7,
             info: {
               author: 'John',
               timestamp: '2025-02-20T11:48:36.135Z',
@@ -435,6 +485,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 8,
             info: {
               author: 'John',
               timestamp: '2025-02-21T11:48:36.135Z',
@@ -443,6 +494,7 @@ const ThreadDemo = () => {
             likes: { count: 8, isLiked: true },
           },
           {
+            id: 9,
             info: {
               author: 'John',
               timestamp: '2025-02-22T11:48:36.135Z',
@@ -484,7 +536,7 @@ const ThreadDemo = () => {
     )
   }
 
-  const handleResponseLike = (threadIndex: number, responseIndex: number) => {
+  const handleResponseLike = (threadIndex: number, responseId: number) => {
     setThreads((prevThreads) =>
       prevThreads.map((thread, i) =>
         i === threadIndex
@@ -492,8 +544,8 @@ const ThreadDemo = () => {
               ...thread,
               info: {
                 ...thread.info,
-                responses: thread.info.responses.map((response, j) =>
-                  j === responseIndex
+                responses: thread.info.responses.map((response) =>
+                  response.id === responseId
                     ? {
                         ...response,
                         likes: {
@@ -528,11 +580,12 @@ const ThreadDemo = () => {
             likes={thread.likes}
             isFirst={index === 0}
             onQuestionLikeClick={() => handleQuestionLike(index)}
-            onResponseLikeClick={(responseIndex) =>
-              handleResponseLike(index, responseIndex)
+            onResponseLikeClick={(responseId) =>
+              handleResponseLike(index, responseId)
             }
             onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
               const newResponse = {
+                id: Math.floor(Math.random() * 10000),
                 info: {
                   author: isAnonymous ? 'Anonymous' : name || 'User',
                   timestamp: new Date().toLocaleTimeString('en-US', {
@@ -917,6 +970,10 @@ export const TestContainer: React.FC = () => (
     <MessageFormDemo />
 
     <Separator>Components</Separator>
+    <DemoSection title="Badge">
+      <Badge title="Don't forget to mark the correct answer" />
+      <Badge title="Some error happened" variant="red" />
+    </DemoSection>
     <DropdownDemo />
     <DemoSection title="Search">
       <Search onSearch={(value) => console.log('Search:', value)} />

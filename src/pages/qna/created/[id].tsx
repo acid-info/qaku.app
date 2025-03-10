@@ -1,34 +1,7 @@
-import { SEO } from '@/components/SEO'
-import { Sidebar } from '@/components/Sidebar'
-import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
-import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
+import { QnaPageCreated } from '@/containers/PagesContainers'
 
 export default function Page() {
-  const getLayout = (page: React.ReactNode) => (
-    <DefaultLayout
-      showFooter={false}
-      sidebar={<Sidebar />}
-      navProps={{
-        mode: NavbarModeEnum.Qna,
-        isTitleOnly: false,
-        status: QnaProgressStatusEnum.Ended,
-        title: 'Live Q&A Session',
-        date: new Date().toISOString(),
-        count: 0,
-        id: '123456',
-      }}
-    >
-      {page}
-    </DefaultLayout>
-  )
-
-  return getLayout(
-    <>
-      <SEO />
-      <QnaCreated />
-    </>,
-  )
+  return <QnaPageCreated />
 }
 
 Page.getLayout = (page: React.ReactNode) => page

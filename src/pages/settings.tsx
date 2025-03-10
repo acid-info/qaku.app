@@ -1,6 +1,6 @@
 import { SEO } from '@/components/SEO'
-import { Sidebar } from '@/components/Sidebar'
 import { SettingsPage } from '@/containers/Home/SettingsPage'
+import { SidebarContainer } from '@/containers/Sidebar'
 import { HomeLayout } from '@/layouts/HomeLayout'
 
 export default function Page() {
@@ -14,7 +14,11 @@ export default function Page() {
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return (
-    <HomeLayout title="Settings" sidebar={<Sidebar />} showFooter={false}>
+    <HomeLayout
+      title="Settings"
+      sidebar={<SidebarContainer />}
+      showFooter={false}
+    >
       {page}
     </HomeLayout>
   )

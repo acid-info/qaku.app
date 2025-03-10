@@ -1,50 +1,42 @@
 import { PollOptions } from '@/components/PollOptions'
 import { TitleBlock } from '@/components/TitleBlock'
+import { PollType } from '@/types/qna.types'
+import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { usePollOptions } from '../../../hooks/usePollOptions'
 
-export const PollLive: React.FC = () => {
-  const options = [
-    {
-      id: '1',
-      title: 'Option 1',
-      percentage: 65,
-      isChecked: false,
-    },
-    {
-      id: '2',
-      title: 'Option 2',
-      percentage: 20,
-      isChecked: false,
-    },
-    {
-      id: '3',
-      title: 'Option 3',
-      percentage: 5,
-      isChecked: false,
-    },
-    {
-      id: '4',
-      title: 'Option 4',
-      percentage: 10,
-      isChecked: false,
-    },
-    {
-      id: '5',
-      title: 'Option 5',
-      percentage: 0,
-      isChecked: false,
-    },
-  ]
+export type PollLiveProps = {
+  pollId: number
+  poll: PollType
+}
+
+export const PollLive: React.FC<PollLiveProps> = ({ pollId, poll }) => {
+  const { optionsWithStats } = usePollOptions(pollId)
+
+  const formattedOptions = useMemo(
+    () =>
+      mapPollOptionsForDisplay({
+        optionsWithStats,
+        hasCorrectAnswers: poll?.hasCorrectAnswers,
+        correctAnswersIds: poll?.correctAnswersIds,
+      }),
+    [optionsWithStats, poll?.hasCorrectAnswers, poll?.correctAnswersIds],
+  )
 
   return (
     <Main className="scrollable-container">
       <Content>
         <TitleBlock
-          title="What is the best approach here? Are there any alternatives?"
-          description="Long description visible to all participants and everyone"
+          title={poll?.question || ''}
+          description={poll?.description || ''}
         />
-        <PollOptions options={options} />
+
+        <PollOptions
+          options={formattedOptions}
+          hasCheckbox={poll?.hasCorrectAnswers}
+          selectedOptionIds={poll?.correctAnswersIds?.map(String)}
+        />
       </Content>
     </Main>
   )

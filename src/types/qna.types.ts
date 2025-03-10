@@ -1,27 +1,69 @@
-export interface QnAInterface {
-  id: string
+export type QnAType = {
+  id: number
   title: string
-  isLive?: boolean
-  polls: PollInterface[]
+  description?: string
+  hash: string
+  owner: string
+  hasAdmins: boolean
+  admins?: string[]
+  allowsParticipantsReplies: boolean
+  questionsIds: number[]
+  startDate: Date
+  endDate?: Date
+  isActive: boolean
 }
 
-export interface PollInterface {
-  id: string
-  title: string
-  isLive?: boolean
+export type MessageType = {
+  id: number
+  timestamp: Date
+  content: string
+  author: string
+  likesCount: number
+  likers: string[]
 }
 
-export type qnaDataType = {
-  id: string
-  title: string
+export type QuestionType = MessageType & {
+  isAnswered: boolean
+  qnaId: number
 }
 
-export type pollDataType = {
-  id: string
+export type AnswerType = MessageType & {
+  questionId: number
+  qnaId: number
+}
+
+export type PollType = {
+  id: number
   title: string
+  question: string
+  description?: string
+  qnaId: number
+  optionsIds: number[]
+  correctAnswersIds?: number[]
+  hasCorrectAnswers: boolean
+  hasMultipleOptionsSelect: boolean
+  isResultVisible: boolean
+  activeUntil?: Date
+  isActive: boolean
+}
+
+export type PollOptionType = {
+  id: number
+  title: string
+  voteCount: number
+  voters: string[]
+  pollId: number
+}
+
+export type PollVoteType = {
+  id: number
+  optionId: number
+  voter: string
+  pollId: number
 }
 
 export enum QnAFilterTypeEnum {
   All = 'all',
   Active = 'active',
+  Past = 'past',
 }

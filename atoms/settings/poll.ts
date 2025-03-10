@@ -4,9 +4,9 @@ import {
 } from '@/types/settings.types'
 import { atom } from 'jotai'
 
-const defaultPollSettings: PollSettingsInterface = {
-  multipleOptions: true,
-  markCorrectAnswer: true,
+export const defaultPollSettings: PollSettingsInterface = {
+  multipleOptions: false,
+  markCorrectAnswer: false,
   resultVisibility: ResultVisibilityEnum.Visible,
   title: '',
   showDescription: false,

@@ -1,61 +1,111 @@
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
-import {
-  Thread as ThreadType,
-  useThreads,
-} from '@/containers/QnaLive/hooks/useThreads'
-import { mockThreads } from '@/data/mockThreads'
+import { FilterThreadEnum } from '@/types/thread.types'
+import { calculateQnAStats } from '@/utils/qna.utils'
+import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import React from 'react'
+import { useAtomValue } from 'jotai'
+import React, { useCallback, useMemo, useState } from 'react'
+import { userAtom } from '../../../atoms/user'
+import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 
 const CONTENT_WIDTH = 507
 
-const ThreadList: React.FC<{ threads: ThreadType[] }> = ({ threads }) => (
-  <ThreadsContainer>
-    {threads.map((thread, index) => (
-      <Thread
-        key={`${thread.info.author}-${thread.info.timestamp}`}
-        info={thread.info}
-        likes={thread.likes}
-        isFirst={index === 0}
-        onReplySubmit={() => {}}
-      />
-    ))}
-  </ThreadsContainer>
+const NoQuestionsInThisTab = () => (
+  <NoContentMessage>
+    <span>There are no questions in this tab.</span>
+  </NoContentMessage>
 )
 
-export const QnaCreated: React.FC = () => {
-  const router = useRouter()
-  const { id } = router.query
-  const { threads } = useThreads(mockThreads)
+export type QnaCreatedProps = {
+  qnaId: number
+}
+
+export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
+  const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
+    FilterThreadEnum.All,
+  )
+  const user = useAtomValue(userAtom)
+
+  const {
+    questions: allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+    questionsCount,
+  } = useQnaQuestionsWithAnswers(qnaId)
+
+  const qnaStats = useMemo(() => {
+    const allAnswers = allQuestions.flatMap((q) => q.answers || [])
+    return calculateQnAStats(allQuestions, allAnswers)
+  }, [allQuestions])
+
+  const filteredQuestions = useMemo(() => {
+    return getFilteredQuestions(activeFilter, {
+      allQuestions,
+      answeredQuestions,
+      unansweredQuestions,
+      popularQuestions,
+    })
+  }, [
+    activeFilter,
+    allQuestions,
+    answeredQuestions,
+    unansweredQuestions,
+    popularQuestions,
+  ])
+
+  const threads = useMemo(() => {
+    if (filteredQuestions.length === 0) return []
+
+    return filteredQuestions.map((question) =>
+      mapQuestionToThread(question, user.id),
+    )
+  }, [filteredQuestions, user.id])
+
+  const handleTabChange = useCallback((id: string | number) => {
+    setActiveFilter(id.toString() as FilterThreadEnum)
+  }, [])
 
   return (
     <Wrapper>
       <Main>
         <QnaCreatedHeaderStyled
-          questionsCount={threads.length}
-          anonymousRate={50}
-          namedAuthorCount={
-            threads.filter((thread) => thread.info.author !== 'Anonymous')
-              .length
-          }
+          questionsCount={questionsCount}
+          anonymousRate={qnaStats.anonymousRate}
+          namedAuthorCount={qnaStats.namedAuthorCount}
         />
         <Content>
           <TabWrapper>
             <Tab
               variant="secondary"
               options={[
-                { id: 'all', label: 'All' },
-                { id: 'popular', label: 'Popular' },
-                { id: 'answered', label: 'Answered' },
+                { id: FilterThreadEnum.All, label: 'All' },
+                { id: FilterThreadEnum.Popular, label: 'Popular' },
+                { id: FilterThreadEnum.Answered, label: 'Answered' },
               ]}
               itemWidth="100px"
-              activeId="all"
+              activeId={activeFilter}
+              onChange={handleTabChange}
             />
           </TabWrapper>
-          <ThreadList threads={threads} />
+          <ThreadsContainer>
+            {threads.length > 0 ? (
+              threads.map((thread, index) => (
+                <Thread
+                  key={`${thread.info.author}-${thread.info.timestamp}-${index}`}
+                  info={thread.info}
+                  likes={thread.likes}
+                  isFirst={index === 0}
+                  isChecked={thread.info.isAnswered}
+                  hasCommentButton={false}
+                />
+              ))
+            ) : questionsCount > 0 ? (
+              <NoQuestionsInThisTab />
+            ) : null}
+          </ThreadsContainer>
         </Content>
       </Main>
     </Wrapper>
@@ -101,4 +151,18 @@ const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: ${CONTENT_WIDTH}px;
+`
+
+const NoContentMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: ${CONTENT_WIDTH}px;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  & span {
+    font-size: var(--body2-font-size);
+    line-height: var(--body2-line-height);
+  }
 `

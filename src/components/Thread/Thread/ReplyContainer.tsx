@@ -1,14 +1,12 @@
 import { Button } from '@/components/Button'
+import { ThreadResponseInterface } from '@/types/thread.types'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import {
-  ThreadItemResponse,
-  type ThreadItemResponseProps,
-} from '../ThreadItemResponse'
+import { ThreadItemResponse } from '../ThreadItemResponse'
 
 export type ReplyContainerProps = {
-  responses: any
-  onResponseLikeClick?: (index: number) => void
+  responses: ThreadResponseInterface[]
+  onResponseLikeClick?: (answerId: number) => void
 }
 
 export const ReplyContainer: React.FC<ReplyContainerProps> = ({
@@ -26,9 +24,9 @@ export const ReplyContainer: React.FC<ReplyContainerProps> = ({
     }))
   }
 
-  const groupByAuthor = (data: ThreadItemResponseProps[]) => {
+  const groupByAuthor = (data: ThreadResponseInterface[]) => {
     return data.reduce(
-      (acc: Record<string, ThreadItemResponseProps[]>, item) => {
+      (acc: Record<string, ThreadResponseInterface[]>, item) => {
         const author = item.info.author
         if (!acc[author]) {
           acc[author] = []
@@ -41,8 +39,8 @@ export const ReplyContainer: React.FC<ReplyContainerProps> = ({
   }
 
   const sortByTimestamp = (
-    a: ThreadItemResponseProps,
-    b: ThreadItemResponseProps,
+    a: ThreadResponseInterface,
+    b: ThreadResponseInterface,
   ) => {
     return (
       new Date(a.info.timestamp).getTime() -
@@ -61,12 +59,12 @@ export const ReplyContainer: React.FC<ReplyContainerProps> = ({
             <Container key={author}>
               {responses
                 .slice(0, isExpanded ? responses.length : 2)
-                .map((response: ThreadItemResponseProps, index: number) => (
+                .map((response) => (
                   <ThreadItemResponse
                     key={`${response.info.author}-${response.info.timestamp}`}
                     info={response.info}
                     likes={response.likes}
-                    onLikeClick={() => onResponseLikeClick?.(index)}
+                    onLikeClick={() => onResponseLikeClick?.(response.id)}
                   />
                 ))}
               {repliesLeft > 0 && !isExpanded && (

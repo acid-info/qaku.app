@@ -1,87 +1,64 @@
 import { PollOptions } from '@/components/PollOptions'
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
-import { Thread } from '@/components/Thread'
 import { TitleBlock } from '@/components/TitleBlock'
-import {
-  Thread as ThreadType,
-  useThreads,
-} from '@/containers/QnaLive/hooks/useThreads'
-import { mockThreads } from '@/data/mockThreads'
+import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { PollWithOptionsType } from '../../../atoms/selectors'
+import { usePollOptions } from '../../../hooks/usePollOptions'
 
-const CONTENT_WIDTH = 507
+type QnaCountsType = {
+  questionsCount: number
+  namedAuthorCount: number
+  anonymousRate: number
+}
 
-const ThreadList: React.FC<{ threads: ThreadType[] }> = ({ threads }) => (
-  <ThreadsContainer>
-    {threads.map((thread, index) => (
-      <Thread
-        key={`${thread.info.author}-${thread.info.timestamp}`}
-        info={thread.info}
-        likes={thread.likes}
-        isFirst={index === 0}
-        onReplySubmit={() => {}}
-      />
-    ))}
-  </ThreadsContainer>
-)
+export type PollCreatedProps = {
+  pollId: number
+  pollData: PollWithOptionsType
+  qnaCounts: QnaCountsType
+}
 
-export const PollCreated: React.FC = () => {
-  const router = useRouter()
-  const { id } = router.query
-  const { threads } = useThreads(mockThreads)
+export const PollCreated: React.FC<PollCreatedProps> = ({
+  pollId,
+  pollData,
+  qnaCounts,
+}) => {
+  const pollOptionsResult = usePollOptions(pollId)
+  const optionsWithStats = useMemo(() => {
+    return pollOptionsResult?.optionsWithStats || []
+  }, [pollOptionsResult])
 
-  const options = [
-    {
-      id: '1',
-      title: 'Option 1',
-      percentage: 65,
-      isChecked: false,
-    },
-    {
-      id: '2',
-      title: 'Option 2',
-      percentage: 20,
-      isChecked: false,
-    },
-    {
-      id: '3',
-      title: 'Option 3',
-      percentage: 5,
-      isChecked: false,
-    },
-    {
-      id: '4',
-      title: 'Option 4',
-      percentage: 10,
-      isChecked: false,
-    },
-    {
-      id: '5',
-      title: 'Option 5',
-      percentage: 0,
-      isChecked: false,
-    },
-  ]
+  const mappedOptions = useMemo(() => {
+    if (optionsWithStats.length === 0) {
+      return []
+    }
+
+    return mapPollOptionsForDisplay({
+      optionsWithStats,
+      hasCorrectAnswers: pollData.hasCorrectAnswers,
+      correctAnswersIds: pollData.correctAnswersIds,
+    })
+  }, [pollData, optionsWithStats])
 
   return (
     <Wrapper>
       <Main>
         <QnaCreatedHeaderStyled
-          questionsCount={threads.length}
-          anonymousRate={50}
-          namedAuthorCount={
-            threads.filter((thread) => thread.info.author !== 'Anonymous')
-              .length
-          }
+          questionsCount={qnaCounts.questionsCount}
+          anonymousRate={qnaCounts.anonymousRate}
+          namedAuthorCount={qnaCounts.namedAuthorCount}
         />
         <Content>
           <TitleBlock
-            title="What is the best approach here? Are there any alternatives?"
-            description="Long description visible to all participants and everyone"
+            title={pollData.question}
+            description={pollData.description || ''}
           />
-          <PollOptions options={options} />
+          <PollOptions
+            options={mappedOptions}
+            hasCheckbox={pollData.hasCorrectAnswers}
+            selectedOptionIds={pollData.correctAnswersIds?.map(String)}
+          />
         </Content>
       </Main>
     </Wrapper>
@@ -116,10 +93,4 @@ const Content = styled.div`
   gap: 32px;
   height: 100%;
   width: 507px;
-`
-
-const ThreadsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: ${CONTENT_WIDTH}px;
 `
