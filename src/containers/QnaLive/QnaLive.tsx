@@ -13,7 +13,7 @@ import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
+import { walletStateAtom } from '../../../atoms/wallet'
 import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 import {
   getFilteredQuestions,
@@ -44,7 +44,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const isAuthorized = useAtomValue(isAuthorizedAtom)
+  const { status } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -142,7 +142,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
                 }}
                 onCheckClick={() => handleCheck(thread.info.questionId)}
                 isChecked={thread.info.isAnswered}
-                isAuthorized={isAuthorized}
+                isAuthorized={status === 'connected'}
               />
             ))}
           </ThreadsContainer>

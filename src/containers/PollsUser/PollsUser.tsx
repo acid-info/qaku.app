@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
 import { atom, useAtomValue } from 'jotai'
 import React, { useEffect, useMemo, useState } from 'react'
 import { getPollByIdAtom, pollsRecordAtom } from '../../../atoms/poll'
-import { userAtom } from '../../../atoms/user'
+import { walletStateAtom } from '../../../atoms/wallet'
 import { usePollOptions } from '../../../hooks/usePollOptions'
 import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
@@ -20,7 +20,7 @@ export type PollsUserProps = {
 }
 
 export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
-  const user = useAtomValue(userAtom)
+  const { userName } = useAtomValue(walletStateAtom)
   const pollsRecord = useAtomValue(pollsRecordAtom)
 
   const [activePollId, setActivePollId] = useState<number | null>(null)
@@ -46,8 +46,8 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   )
 
   const userHasVoted = useMemo(() => {
-    return hasVoted(user.id)
-  }, [hasVoted, user.id])
+    return hasVoted(userName ?? '')
+  }, [hasVoted, userName])
 
   const formattedOptions = useMemo(() => {
     if (!activePollId) return []
@@ -74,14 +74,14 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   }, [pollIds, pollsRecord])
 
   const handleVote = async () => {
-    if (!activePollId || selectedOptionIds.length === 0) return
+    if (!activePollId || selectedOptionIds.length === 0 || !userName) return
 
     try {
       const optionIds = selectedOptionIds.map((id) => parseInt(id, 10))
       const response = await voteInPoll({
         pollId: activePollId,
         optionIds,
-        voter: user.id,
+        voter: userName,
       })
 
       if (response.success) {

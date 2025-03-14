@@ -6,16 +6,15 @@ import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import { WalletPanel } from '@/components/WalletPanel'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { qnasRecordAtom } from '../../../atoms/qna/qnasRecordAtom'
-import { userAtom } from '../../../atoms/user/userAtom'
+import { walletStateAtom } from '../../../atoms/wallet'
 
 export const QnaCreate: React.FC = () => {
-  const user = useAtomValue(userAtom)
-  const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
+  const { userName } = useAtomValue(walletStateAtom)
+  const { status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -34,7 +33,7 @@ export const QnaCreate: React.FC = () => {
       return
     }
 
-    if (!isAuthorized) {
+    if (status !== 'connected' || !userName) {
       setError('Please connect your wallet first')
       return
     }
@@ -46,7 +45,7 @@ export const QnaCreate: React.FC = () => {
       const response = await createQnA({
         title,
         description: description || undefined,
-        owner: user.id,
+        owner: userName,
         hash: password,
         setQnasRecord,
       })
@@ -70,8 +69,8 @@ export const QnaCreate: React.FC = () => {
         <Content>
           {error && <Badge title={error} variant="red" />}
           <WalletPanel
-            isAuthorized={isAuthorized}
-            onConnect={() => setIsAuthorized(true)}
+            isAuthorized={status === 'connected'}
+            onConnect={() => {}}
           />
           <NameSection>
             <Title>Give it name</Title>

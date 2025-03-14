@@ -48,6 +48,7 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
       </TabWrapper>
       <Nav>
         <WalletConnect
+          connectWalletButtonLabel="Connect for identity"
           secondaryButton={<Button icon={<LinkIcon />}>Share</Button>}
         />
       </Nav>

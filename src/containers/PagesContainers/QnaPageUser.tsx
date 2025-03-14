@@ -8,14 +8,14 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { qnasRecordAtom } from '../../../atoms/qna'
-import { userAtom } from '../../../atoms/user'
+import { walletStateAtom } from '../../../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaUser } from '../QnaUser/QnaUser'
 
 export const QnaPageUser: React.FC = () => {
   const router = useRouter()
 
-  const user = useAtomValue(userAtom)
+  const { userName } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
 
   // Todo might want to use jotai atom here. It's hard fetch qna and then use a derived atom here.
@@ -57,7 +57,7 @@ export const QnaPageUser: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaUser qnaId={qnaId} userId={user.id} />
+      <QnaUser qnaId={qnaId} userId={userName ?? ''} />
     </UserLayout>
   )
 }

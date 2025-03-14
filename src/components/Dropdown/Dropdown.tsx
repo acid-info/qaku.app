@@ -8,6 +8,7 @@ import { ChevronUpIcon } from '../Icons/ChevronUpIcon'
 export type DropdownOptionType = {
   label: string
   value: string | number
+  hidden?: boolean
 }
 
 export type DropdownProps = {
@@ -60,16 +61,18 @@ export const Dropdown = ({
       </DropdownItem>
       {isOpen && (
         <DropdownList $variant={variant}>
-          {options.map((option) => (
-            <DropdownItem
-              key={option.value}
-              variant={variant}
-              active={option.value === value}
-              onClick={() => handleSelect(option.value)}
-            >
-              {option.label}
-            </DropdownItem>
-          ))}
+          {options
+            .filter((option) => !option.hidden)
+            .map((option) => (
+              <DropdownItem
+                key={option.value}
+                variant={variant}
+                active={option.value === value}
+                onClick={() => handleSelect(option.value)}
+              >
+                {option.label}
+              </DropdownItem>
+            ))}
         </DropdownList>
       )}
     </DropdownContainer>

@@ -11,7 +11,7 @@ import {
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
+import { walletStateAtom } from '../../../atoms/wallet'
 import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 import {
   getFilteredQuestions,
@@ -41,7 +41,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const isAuthorized = useAtomValue(isAuthorizedAtom)
+  const { status } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -109,7 +109,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
             })
             resetForm()
           }}
-          isAuthorized={isAuthorized}
+          isAuthorized={status === 'connected'}
         />
 
         <TabWrapper>
@@ -147,7 +147,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
                   resetForm()
                 }}
                 isChecked={thread.info.isAnswered}
-                isAuthorized={isAuthorized}
+                isAuthorized={status === 'connected'}
                 isUser={true}
               />
             ))}

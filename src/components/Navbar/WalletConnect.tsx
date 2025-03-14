@@ -1,23 +1,56 @@
+import { useWalletConnection } from '@/../hooks/useWalletConnection'
+import { truncateAddress } from '@/utils/wallet.utils'
 import styled from '@emotion/styled'
-import { useAtom } from 'jotai'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { Button } from '../Button'
+import { Dropdown } from '../Dropdown'
 
 type WalletConnectProps = {
   secondaryButton?: React.ReactNode
+  connectWalletButtonLabel?: string
 }
 
-const WalletConnect = ({ secondaryButton = null }: WalletConnectProps) => {
-  const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
+const WalletConnect = ({
+  secondaryButton = null,
+  connectWalletButtonLabel = 'Connect Wallet',
+}: WalletConnectProps) => {
+  const { walletState, openWalletPanel, disconnectWallet } =
+    useWalletConnection()
 
-  const handleClick = () => {
-    setIsAuthorized((prev) => !prev)
+  const options = [
+    { label: 'Disconnect wallet', value: 'disconnect' },
+    {
+      label: walletState.ensName ?? truncateAddress(walletState.address ?? ''),
+      value: 'address',
+      hidden: true,
+    },
+  ]
+
+  const handleConnect = () => {
+    openWalletPanel()
+  }
+
+  const handleDisconnect = () => {
+    disconnectWallet()
+  }
+
+  const handleDropdown = (value: string) => {
+    if (value === 'disconnect') {
+      handleDisconnect()
+    }
   }
 
   return (
     <Container>
-      {!isAuthorized && <Button onClick={handleClick}>Connect Wallet</Button>}
       {secondaryButton}
+      {walletState.status !== 'connected' ? (
+        <Button onClick={handleConnect}>{connectWalletButtonLabel}</Button>
+      ) : (
+        <Dropdown
+          options={options}
+          onChange={(value) => handleDropdown(String(value))}
+          value="address"
+        />
+      )}
     </Container>
   )
 }
