@@ -1,9 +1,9 @@
 import { pollSettingsAtom } from '@/../atoms/settings'
 import { PollFloatingPanelCreate } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreate } from '@/containers/PollCreate/PollCreate'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { useAtom } from 'jotai'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 
@@ -14,7 +14,7 @@ export const PollPageCreate: React.FC = () => {
   const [pollSettings, setPollSettings] = useAtom(pollSettingsAtom)
 
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       useAlternativeGap
       showFooter={false}
       sidebar={<SidebarContainer />}
@@ -35,6 +35,6 @@ export const PollPageCreate: React.FC = () => {
           setIsSettingsPanelOpen(false)
         }}
       />
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }

@@ -1,7 +1,7 @@
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
@@ -9,7 +9,7 @@ import { useMemo } from 'react'
 import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 import { getQnaByIdAtom } from '../../../atoms/qna'
 import { qnaSettingsAtom } from '../../../atoms/settings'
-import { userAtom } from '../../../atoms/user'
+import { walletStateAtom } from '../../../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaLive } from '../QnaLive/QnaLive'
 
@@ -19,7 +19,7 @@ export const QnaPageLive: React.FC = () => {
     isSettingsPanelOpenAtom,
   )
   const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
-  const user = useAtomValue(userAtom)
+  const { userName } = useAtomValue(walletStateAtom)
 
   const qnaId = useMemo(() => {
     const id = router.query.id
@@ -40,7 +40,7 @@ export const QnaPageLive: React.FC = () => {
   }
 
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       showFooter={false}
       useAlternativeGap
       sidebar={<SidebarContainer />}
@@ -57,7 +57,7 @@ export const QnaPageLive: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaLive qnaId={qnaId} userId={user.id} />
+      <QnaLive qnaId={qnaId} userId={userName ?? ''} />
       <QnaFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
@@ -67,6 +67,6 @@ export const QnaPageLive: React.FC = () => {
           setIsSettingsPanelOpen(false)
         }}
       />
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }

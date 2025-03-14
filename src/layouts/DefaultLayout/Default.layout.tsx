@@ -1,3 +1,4 @@
+import { WalletFloatingPanel } from '@/components/FloatingPanel/WalletFloatingPanel'
 import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
@@ -11,6 +12,8 @@ type Props = FooterProps & {
   sidebar?: React.ReactNode
   navProps?: Partial<DefaultNavbarProps>
   useAlternativeGap?: boolean
+  isWalletPanelOpen: boolean
+  closeWalletPanel: () => void
 }
 
 export default function DefaultLayout(props: PropsWithChildren<Props>) {
@@ -36,6 +39,10 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         </Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
+      <WalletFloatingPanel
+        isOpen={props.isWalletPanelOpen}
+        onClose={props.closeWalletPanel}
+      />
     </Root>
   )
 }

@@ -1,8 +1,8 @@
 import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -51,7 +51,7 @@ export const PollPageLive: React.FC = () => {
   }
 
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       useAlternativeGap
       showFooter={false}
       sidebar={<SidebarContainer />}
@@ -75,6 +75,6 @@ export const PollPageLive: React.FC = () => {
         poll={poll}
         onSave={handleSavePollSettings}
       />
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }

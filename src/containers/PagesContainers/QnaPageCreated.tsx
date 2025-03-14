@@ -1,7 +1,7 @@
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { loadQnaData } from '@/utils/api.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -38,7 +38,7 @@ export const QnaPageCreated: React.FC = () => {
   }
 
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       showFooter={false}
       sidebar={<SidebarContainer />}
       navProps={{
@@ -53,6 +53,6 @@ export const QnaPageCreated: React.FC = () => {
     >
       <SEO />
       <QnaCreated qnaId={qnaId} />
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }
