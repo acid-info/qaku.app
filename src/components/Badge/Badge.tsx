@@ -33,7 +33,9 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => {
   return (
     <StyledBadge variant={variant} {...props}>
-      <WarningIcon color={VARIANT_CONFIG[variant].color} />
+      <IconContainer>
+        <WarningIcon color={VARIANT_CONFIG[variant].color} />
+      </IconContainer>
       <span>{title}</span>
     </StyledBadge>
   )
@@ -43,18 +45,26 @@ const StyledBadge = styled.div<{
   variant: BadgeVariantType
 }>`
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   padding: 16px;
   border-radius: 8px;
   gap: 16px;
   font-size: var(--body2-font-size);
   line-height: var(--body2-line-height);
-  white-space: nowrap;
 
   background-color: ${({ variant }) => VARIANT_CONFIG[variant].backgroundColor};
 
   span {
     color: ${({ variant }) => VARIANT_CONFIG[variant].color};
+    white-space: pre-line;
   }
+`
+
+const IconContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 4px;
 `

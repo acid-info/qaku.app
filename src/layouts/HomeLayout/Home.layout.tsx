@@ -12,6 +12,7 @@ type Props = FooterProps & {
   sidebar?: React.ReactNode
 }
 
+// TODO remove?
 export default function HomeLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
