@@ -96,8 +96,11 @@ const TagItem = styled.div<{ $type: 'input' | 'tag' }>`
     padding: 0 8px;
   }
 
-  font-size: var(--label1-font-size);
-  line-height: var(--label1-line-height);
+  input,
+  span {
+    font-size: var(--label1-font-size);
+    line-height: var(--label1-line-height);
+  }
 `
 
 const Input = styled.input`
