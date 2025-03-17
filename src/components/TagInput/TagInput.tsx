@@ -87,6 +87,8 @@ const TagItem = styled.div<{ $type: 'input' | 'tag' }>`
   border: 1px solid var(--gray);
   border-radius: 999px;
   padding: 4px;
+  background-color: ${({ $type }) =>
+    $type === 'tag' ? 'var(--gray-ultradark)' : 'transparent'};
 
   input {
     width: ${({ $type }) => ($type === 'tag' ? 'fit-content' : '112px')};
