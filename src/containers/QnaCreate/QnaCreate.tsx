@@ -3,6 +3,7 @@ import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
+import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel } from '@/components/WalletPanel'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
@@ -96,6 +97,16 @@ export const QnaCreate: React.FC = () => {
                   key="password-generator"
                   onChange={handlePasswordChange}
                 />
+              </Stack>
+            </Collapsible>
+            <Collapsible title="Add co-hosts">
+              <Stack>
+                <Text>
+                  Co-hosts can moderate discussions, approve or delete
+                  questions, and ensure smooth interaction. Simply paste the
+                  user&apos;s Qaku address to add one.
+                </Text>
+                <TagInput />
               </Stack>
             </Collapsible>
           </Section>
