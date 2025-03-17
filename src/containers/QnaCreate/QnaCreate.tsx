@@ -18,10 +18,13 @@ export const QnaCreate: React.FC = () => {
   const user = useAtomValue(userAtom)
   const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [coHosts, setCoHosts] = useState<string[]>([])
+
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
@@ -106,7 +109,7 @@ export const QnaCreate: React.FC = () => {
                   questions, and ensure smooth interaction. Simply paste the
                   user&apos;s Qaku address to add one.
                 </Text>
-                <TagInput />
+                <TagInput tags={coHosts} setTags={setCoHosts} />
               </Stack>
             </Collapsible>
           </Section>

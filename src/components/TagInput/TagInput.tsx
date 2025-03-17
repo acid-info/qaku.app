@@ -5,13 +5,16 @@ import { CloseIcon } from '../Icons/CloseIcon'
 import { PlusIcon } from '../Icons/PlusIcon'
 
 interface TagInputProps {
+  tags: string[]
+  setTags: React.Dispatch<React.SetStateAction<string[]>>
   placeholder?: string
 }
 
 const TagInput: React.FC<TagInputProps> = ({
+  tags,
+  setTags,
   placeholder = 'Type an address...',
 }) => {
-  const [tags, setTags] = useState<string[]>([])
   const [inputValue, setInputValue] = useState<string>('')
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
@@ -40,6 +43,10 @@ const TagInput: React.FC<TagInputProps> = ({
     setTags((prevTags) => prevTags.filter((_, index) => index !== removeIndex))
   }
 
+  const trancateTag = (tag: string): string => {
+    return tag.length > 9 ? `${tag.slice(0, 9)}...` : tag
+  }
+
   return (
     <TagContainer>
       <TagItem $type="input">
@@ -65,7 +72,7 @@ const TagInput: React.FC<TagInputProps> = ({
             icon={<CloseIcon />}
             onClick={() => removeTag(index)}
           />
-          <span>{tag.substring(0, 9) + '...'}</span>
+          <span>{trancateTag(tag)}</span>
         </TagItem>
       ))}
     </TagContainer>
