@@ -2,7 +2,6 @@ export enum WalletProviderEnum {
   MetaMask = 'metamask',
   WalletConnect = 'walletconnect',
   CoinbaseWallet = 'coinbasewallet',
-  Coin98 = 'coin98',
 }
 
 export type WalletConnectionStatusType =

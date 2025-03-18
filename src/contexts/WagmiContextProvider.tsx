@@ -17,7 +17,7 @@ if (!WALLET_CONNECT_PROJECT_ID) {
   throw new Error('Project ID is not defined')
 }
 
-// Create the modal
+// Create the walletConnect modal
 createAppKit({
   adapters: [wagmiAdapter],
   projectId: WALLET_CONNECT_PROJECT_ID,

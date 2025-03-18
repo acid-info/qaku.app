@@ -1,9 +1,9 @@
-import { WalletFloatingPanel } from '@/components/FloatingPanel/WalletFloatingPanel'
 import { Footer, FooterProps } from '@/components/Footer'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
 import { LayoutContainer } from '@/components/StyledComponents'
 import { ApiSubscriptionManager } from '@/containers/ApiSubscriptionManager'
+import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -39,7 +39,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         </Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
-      <WalletFloatingPanel
+      <WalletFloatingPanelContainer
         isOpen={props.isWalletPanelOpen}
         onClose={props.closeWalletPanel}
       />
