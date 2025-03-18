@@ -20,11 +20,13 @@ export const WalletPanel: React.FC<WalletPanelProps> = ({
   return (
     <Container>
       <Text>
-        <Title>{!isAuthorized ? 'Connect a wallet' : 'Choose a wallet'}</Title>
+        <Title>
+          {!isAuthorized ? 'Integrate a wallet' : 'Choose a wallet'}
+        </Title>
         <Description>
           {!isAuthorized
-            ? 'You can continue with your local Qaku wallet for quick use or add External for enhanced identity'
-            : 'Select your local Qaku wallet for quick use or External for enhanced identity'}
+            ? 'Add an External wallet for enhanced identity '
+            : 'Select your local Qaku wallet for quick use or External for enhanced identity '}
         </Description>
       </Text>
       <Actions>

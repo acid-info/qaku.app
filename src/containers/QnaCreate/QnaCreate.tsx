@@ -1,3 +1,6 @@
+import { qnasRecordAtom } from '@/../atoms/qna/qnasRecordAtom'
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
@@ -9,13 +12,13 @@ import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { qnasRecordAtom } from '../../../atoms/qna/qnasRecordAtom'
-import { walletStateAtom } from '../../../atoms/wallet'
 
 export const QnaCreate: React.FC = () => {
   const { userName } = useAtomValue(walletStateAtom)
   const { status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
+  const { openWalletPanel } = useWalletConnection()
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [password, setPassword] = useState('')
@@ -70,7 +73,7 @@ export const QnaCreate: React.FC = () => {
           {error && <Badge title={error} variant="red" />}
           <WalletPanel
             isAuthorized={status === 'connected'}
-            onConnect={() => {}}
+            onConnect={openWalletPanel}
           />
           <NameSection>
             <Title>Give it name</Title>
