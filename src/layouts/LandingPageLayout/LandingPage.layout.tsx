@@ -1,12 +1,24 @@
 import { Footer } from '@/components/Footer'
+import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
-export default function LandingPageLayout(props: PropsWithChildren) {
+type Props = {
+  isWalletPanelOpen?: boolean
+  closeWalletPanel?: () => void
+}
+
+export default function LandingPageLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
       <Main>{props.children}</Main>
       <Footer />
+      {props.isWalletPanelOpen !== undefined && props.closeWalletPanel && (
+        <WalletFloatingPanelContainer
+          isOpen={props.isWalletPanelOpen}
+          onClose={props.closeWalletPanel}
+        />
+      )}
     </Root>
   )
 }

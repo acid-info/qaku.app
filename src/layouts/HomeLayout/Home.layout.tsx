@@ -1,30 +1,23 @@
-import { Button } from '@/components/Button'
 import { Footer, FooterProps } from '@/components/Footer'
-import { ChevronDownIcon } from '@/components/Icons/ChevronDownIcon'
 import WalletConnect from '@/components/Navbar/WalletConnect'
 import { SidebarContainer } from '@/components/Sidebar'
 import { LayoutContainer } from '@/components/StyledComponents'
+import { ApiSubscriptionManager } from '@/containers/ApiSubscriptionManager'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 
 type Props = FooterProps & {
-  title?: string
   sidebar?: React.ReactNode
 }
 
-// TODO remove?
 export default function HomeLayout(props: PropsWithChildren<Props>) {
   return (
     <Root>
+      <ApiSubscriptionManager />
       <SidebarContainer>{props.sidebar}</SidebarContainer>
       <LayoutContainer>
         <Navbar>
-          <h1>{props.title}</h1>
-          <WalletConnect
-            secondaryButton={
-              <Button icon={<ChevronDownIcon />}>0xC00B...f441</Button>
-            }
-          />
+          <WalletConnect />
         </Navbar>
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
@@ -40,7 +33,9 @@ const Root = styled.div`
   height: 100vh;
 `
 
-const Main = styled.main<{ $showFooter?: boolean }>`
+const Main = styled.main<{
+  $showFooter?: boolean
+}>`
   width: 100%;
   height: ${({ $showFooter }) =>
     $showFooter
@@ -50,7 +45,6 @@ const Main = styled.main<{ $showFooter?: boolean }>`
 
   .scrollable-container {
     padding-top: var(--navbar-main-gap);
-    // the conntent should not be hidden behind the button, padding-bottom should be at least 100px
     padding-bottom: calc(var(--navbar-main-gap) * 2);
   }
 `
@@ -59,7 +53,6 @@ const Navbar = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
-
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
 `

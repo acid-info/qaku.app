@@ -1,6 +1,6 @@
 import { SEO } from '@/components/SEO'
 import { LandingPage } from '@/containers/LandingPage'
-import { LandingPageLayout } from '@/layouts/LandingPageLayout'
+import { LandingPageLayoutContainer } from '@/containers/LandingPageLayout'
 
 export default function Page() {
   return (
@@ -12,5 +12,5 @@ export default function Page() {
 }
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
-  return <LandingPageLayout>{page}</LandingPageLayout>
+  return <LandingPageLayoutContainer>{page}</LandingPageLayoutContainer>
 }
