@@ -23,7 +23,7 @@ export const QnaCreate: React.FC = () => {
   const [description, setDescription] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [coHosts, setCoHosts] = useState<string[]>([])
+  const [admins, setAdmins] = useState<string[]>([])
 
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -52,7 +52,7 @@ export const QnaCreate: React.FC = () => {
         description: description || undefined,
         owner: user.id,
         hash: password,
-        coHosts: coHosts.length ? coHosts : undefined,
+        admins: admins.length ? admins : undefined,
         setQnasRecord,
       })
 
@@ -110,7 +110,7 @@ export const QnaCreate: React.FC = () => {
                   questions, and ensure smooth interaction. Simply paste the
                   user&apos;s Qaku address to add one.
                 </Text>
-                <TagInput tags={coHosts} setTags={setCoHosts} />
+                <TagInput tags={admins} setTags={setAdmins} />
               </Stack>
             </Collapsible>
           </Section>

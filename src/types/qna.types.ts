@@ -2,7 +2,6 @@ export type QnAType = {
   id: number
   title: string
   description?: string
-  coHosts?: string[]
   hash: string
   owner: string
   hasAdmins: boolean

@@ -35,7 +35,7 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
     title: '',
     showDescription: false,
     description: '',
-    coHosts: [],
+    admins: [],
     ...initialValues,
   })
 
@@ -116,10 +116,10 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
             description="Edit your Q&A title"
             isRow
           >
-            {values.coHosts.length > 0 && (
+            {values.admins.length > 0 && (
               <Button
                 variant="filled"
-                onClick={() => setValues((prev) => ({ ...prev, coHosts: [] }))}
+                onClick={() => setValues((prev) => ({ ...prev, admins: [] }))}
                 icon={<CloseIcon />}
               >
                 RevokeAll
@@ -128,9 +128,9 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
           </SettingField>
           <TagInputContainer>
             <TagInput
-              tags={values.coHosts}
+              tags={values.admins}
               setTags={(tags) =>
-                setValues((prev) => ({ ...prev, coHosts: tags }))
+                setValues((prev) => ({ ...prev, admins: tags }))
               }
             />
           </TagInputContainer>

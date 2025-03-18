@@ -11,7 +11,6 @@ import {
 type QnaCreateParams = {
   title: string
   description?: string
-  coHosts?: string[]
   owner: string
   hasAdmins?: boolean
   admins?: string[]
@@ -49,7 +48,6 @@ export const loadAndGetQna = async ({
 export const createQnA = async ({
   title,
   description,
-  coHosts = [],
   owner,
   hasAdmins = false,
   admins = [],
@@ -61,7 +59,6 @@ export const createQnA = async ({
     const qnaData: Omit<QnAType, 'id' | 'questionsIds'> = {
       title,
       description,
-      coHosts,
       owner,
       hasAdmins,
       admins,
