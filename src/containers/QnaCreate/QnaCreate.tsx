@@ -110,7 +110,12 @@ export const QnaCreate: React.FC = () => {
                   questions, and ensure smooth interaction. Simply paste the
                   user&apos;s Qaku address to add one.
                 </Text>
-                <TagInput tags={admins} setTags={setAdmins} />
+                <TagInput
+                  tags={admins}
+                  setTags={setAdmins}
+                  validator={(value) => value.startsWith('0x')}
+                  onValidationFail={() => alert('Invalid address')}
+                />
               </Stack>
             </Collapsible>
           </Section>

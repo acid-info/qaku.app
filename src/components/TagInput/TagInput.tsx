@@ -8,12 +8,16 @@ interface TagInputProps {
   tags: string[]
   setTags: (tags: string[]) => void
   placeholder?: string
+  validator?: RegExp | ((value: string) => boolean)
+  onValidationFail?: (value: string) => void
 }
 
 const TagInput: React.FC<TagInputProps> = ({
   tags,
   setTags,
   placeholder = 'Type an address...',
+  validator,
+  onValidationFail,
 }) => {
   const [inputValue, setInputValue] = useState<string>('')
 
@@ -29,9 +33,21 @@ const TagInput: React.FC<TagInputProps> = ({
   }
 
   const handleAddTag = (): void => {
-    if (inputValue.trim() !== '' && !tags.includes(inputValue.trim())) {
-      setTags([...tags, inputValue.trim()])
-      setInputValue('')
+    const trimmedValue = inputValue.trim()
+
+    const isValid = validator
+      ? typeof validator === 'function'
+        ? validator(trimmedValue)
+        : validator.test(trimmedValue)
+      : true
+
+    if (trimmedValue !== '' && !tags.includes(trimmedValue)) {
+      if (isValid) {
+        setTags([...tags, trimmedValue])
+        setInputValue('')
+      } else {
+        onValidationFail?.(trimmedValue)
+      }
     }
   }
 

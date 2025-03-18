@@ -132,6 +132,8 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
               setTags={(tags) =>
                 setValues((prev) => ({ ...prev, admins: tags }))
               }
+              validator={(value) => value.startsWith('0x')}
+              onValidationFail={() => alert('Invalid address')}
             />
           </TagInputContainer>
         </SettingStack>
