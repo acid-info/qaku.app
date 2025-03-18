@@ -8,6 +8,20 @@ import {
   QuestionType,
 } from '@/types/qna.types'
 
+type QnaCreateParams = {
+  title: string
+  description?: string
+  coHosts?: string[]
+  owner: string
+  hasAdmins?: boolean
+  admins?: string[]
+  allowsParticipantsReplies?: boolean
+  hash: string
+  setQnasRecord: (
+    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+  ) => void
+}
+
 export const loadAndGetQna = async ({
   qnaId,
   setQnasRecord,
@@ -35,28 +49,19 @@ export const loadAndGetQna = async ({
 export const createQnA = async ({
   title,
   description,
+  coHosts = [],
   owner,
   hasAdmins = false,
   admins = [],
   allowsParticipantsReplies = true,
   hash,
   setQnasRecord,
-}: {
-  title: string
-  description?: string
-  owner: string
-  hasAdmins?: boolean
-  admins?: string[]
-  allowsParticipantsReplies?: boolean
-  hash: string
-  setQnasRecord: (
-    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
-  ) => void
-}): Promise<ApiResponse<QnAType>> => {
+}: QnaCreateParams): Promise<ApiResponse<QnAType>> => {
   try {
     const qnaData: Omit<QnAType, 'id' | 'questionsIds'> = {
       title,
       description,
+      coHosts,
       owner,
       hasAdmins,
       admins,

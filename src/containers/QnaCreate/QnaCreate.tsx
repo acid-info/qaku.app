@@ -52,6 +52,7 @@ export const QnaCreate: React.FC = () => {
         description: description || undefined,
         owner: user.id,
         hash: password,
+        coHosts: coHosts.length ? coHosts : undefined,
         setQnasRecord,
       })
 
