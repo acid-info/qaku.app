@@ -69,3 +69,7 @@ export const ActionBar = styled.div`
   width: 100%;
   margin-top: auto;
 `
+
+export const TagInputContainer = styled.div`
+  padding: 8px 0;
+`

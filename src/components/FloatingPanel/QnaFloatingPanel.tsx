@@ -5,7 +5,9 @@ import {
 } from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
+import { CloseIcon } from '../Icons/CloseIcon'
 import { StyledInput } from '../StyledComponents'
+import TagInput from '../TagInput/TagInput'
 import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
@@ -14,6 +16,7 @@ import {
   PanelContent,
   SettingGroup,
   SettingStack,
+  TagInputContainer,
 } from './styledComponents'
 
 export interface QnaFloatingPanelProps extends BaseFloatingPanelPropsInterface {
@@ -32,6 +35,7 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
     title: '',
     showDescription: false,
     description: '',
+    coHosts: [],
     ...initialValues,
   })
 
@@ -105,6 +109,32 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
             )}
           </SettingStack>
         </SettingGroup>
+
+        <SettingStack>
+          <SettingField
+            title="Co-hosts"
+            description="Edit your Q&A title"
+            isRow
+          >
+            {values.coHosts.length > 0 && (
+              <Button
+                variant="filled"
+                onClick={() => setValues((prev) => ({ ...prev, coHosts: [] }))}
+                icon={<CloseIcon />}
+              >
+                RevokeAll
+              </Button>
+            )}
+          </SettingField>
+          <TagInputContainer>
+            <TagInput
+              tags={values.coHosts}
+              setTags={(tags) =>
+                setValues((prev) => ({ ...prev, coHosts: tags }))
+              }
+            />
+          </TagInputContainer>
+        </SettingStack>
 
         <ActionBar>
           <Button variant="filledPrimary" onClick={handleSave}>

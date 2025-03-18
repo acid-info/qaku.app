@@ -6,7 +6,7 @@ import { PlusIcon } from '../Icons/PlusIcon'
 
 interface TagInputProps {
   tags: string[]
-  setTags: React.Dispatch<React.SetStateAction<string[]>>
+  setTags: (tags: string[]) => void
   placeholder?: string
 }
 
@@ -20,11 +20,7 @@ const TagInput: React.FC<TagInputProps> = ({
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
       e.preventDefault()
-
-      if (inputValue.trim() !== '') {
-        setTags((prevTags) => [...prevTags, inputValue.trim()])
-        setInputValue('')
-      }
+      handleAddTag()
     }
   }
 
@@ -33,17 +29,17 @@ const TagInput: React.FC<TagInputProps> = ({
   }
 
   const handleAddTag = (): void => {
-    if (inputValue.trim() !== '') {
-      setTags((prevTags) => [...prevTags, inputValue.trim()])
+    if (inputValue.trim() !== '' && !tags.includes(inputValue.trim())) {
+      setTags([...tags, inputValue.trim()])
       setInputValue('')
     }
   }
 
   const removeTag = (removeIndex: number): void => {
-    setTags((prevTags) => prevTags.filter((_, index) => index !== removeIndex))
+    setTags(tags.filter((_, index) => index !== removeIndex))
   }
 
-  const trancateTag = (tag: string): string => {
+  const truncateTag = (tag: string): string => {
     return tag.length > 9 ? `${tag.slice(0, 9)}...` : tag
   }
 
@@ -72,7 +68,7 @@ const TagInput: React.FC<TagInputProps> = ({
             icon={<CloseIcon />}
             onClick={() => removeTag(index)}
           />
-          <span>{trancateTag(tag)}</span>
+          <span>{truncateTag(tag)}</span>
         </TagItem>
       ))}
     </TagContainer>
