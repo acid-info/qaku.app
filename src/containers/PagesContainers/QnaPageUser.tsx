@@ -1,5 +1,5 @@
 import { SEO } from '@/components/SEO'
-import UserLayout from '@/layouts/DefaultLayout/User.layout'
+import { UserLayoutContainer } from '@/containers/UserLayout'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
@@ -41,7 +41,7 @@ export const QnaPageUser: React.FC = () => {
   }
 
   return (
-    <UserLayout
+    <UserLayoutContainer
       onModeChange={(mode) =>
         handleUserModeChange({
           newMode: mode,
@@ -58,6 +58,6 @@ export const QnaPageUser: React.FC = () => {
     >
       <SEO />
       <QnaUser qnaId={qnaId} userId={userName ?? ''} />
-    </UserLayout>
+    </UserLayoutContainer>
   )
 }

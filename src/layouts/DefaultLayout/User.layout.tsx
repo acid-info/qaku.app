@@ -1,5 +1,6 @@
 import { Footer, FooterProps } from '@/components/Footer'
 import UserNav from '@/components/Navbar/UserNav'
+import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -7,6 +8,8 @@ import { PropsWithChildren } from 'react'
 type Props = FooterProps & {
   onModeChange: (mode: NavbarModeEnum) => void
   navProps?: Partial<DefaultNavbarProps>
+  isWalletPanelOpen?: boolean
+  closeWalletPanel?: () => void
 }
 
 export default function UserLayout(props: PropsWithChildren<Props>) {
@@ -23,6 +26,12 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
         />
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
+        {props.isWalletPanelOpen !== undefined && props.closeWalletPanel && (
+          <WalletFloatingPanelContainer
+            isOpen={props.isWalletPanelOpen}
+            onClose={props.closeWalletPanel}
+          />
+        )}
       </Container>
     </Root>
   )
