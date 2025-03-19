@@ -1,16 +1,17 @@
+import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
+import { getQnaByIdAtom } from '@/../atoms/qna'
+import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
+import { updateQnA } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
-import { getQnaByIdAtom } from '../../../atoms/qna'
 import { qnaSettingsAtom } from '../../../atoms/settings'
 import { walletStateAtom } from '../../../atoms/wallet'
-import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {
@@ -39,6 +40,11 @@ export const QnaPageLive: React.FC = () => {
     return null
   }
 
+  const handleSaveQna = async (updatedQna: Partial<typeof qna>) => {
+    await updateQnA(qnaId, updatedQna)
+    setIsSettingsPanelOpen(false)
+  }
+
   return (
     <DefaultLayoutContainer
       showFooter={false}
@@ -61,11 +67,8 @@ export const QnaPageLive: React.FC = () => {
       <QnaFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
-        initialValues={qnaSettings}
-        onSave={(values) => {
-          setQnaSettings(values)
-          setIsSettingsPanelOpen(false)
-        }}
+        qna={qna}
+        onSave={handleSaveQna}
       />
     </DefaultLayoutContainer>
   )

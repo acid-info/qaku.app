@@ -6,6 +6,7 @@ const defaultQnaSettings: QnaSettingsInterface = {
   title: '',
   showDescription: false,
   description: '',
+  admins: [],
 }
 
 export const qnaSettingsAtom = atom<QnaSettingsInterface>(defaultQnaSettings)

@@ -4,6 +4,7 @@ import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
+import { updatePoll } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -39,14 +40,10 @@ export const PollPageLive: React.FC = () => {
     return null
   }
 
-  const handleSavePollSettings = (updatedPollData: Partial<typeof poll>) => {
-    setPollsRecord((prev) => ({
-      ...prev,
-      [pollId]: {
-        ...prev[pollId],
-        ...updatedPollData,
-      },
-    }))
+  const handleSavePollSettings = async (
+    updatedPollData: Partial<typeof poll>,
+  ) => {
+    await updatePoll(pollId, updatedPollData)
     setIsSettingsPanelOpen(false)
   }
 

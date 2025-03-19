@@ -8,6 +8,19 @@ import {
   QuestionType,
 } from '@/types/qna.types'
 
+type QnaCreateParams = {
+  title: string
+  description?: string
+  owner: string
+  hasAdmins?: boolean
+  admins?: string[]
+  allowsParticipantsReplies?: boolean
+  hash: string
+  setQnasRecord: (
+    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+  ) => void
+}
+
 export const loadAndGetQna = async ({
   qnaId,
   setQnasRecord,
@@ -41,18 +54,7 @@ export const createQnA = async ({
   allowsParticipantsReplies = true,
   hash,
   setQnasRecord,
-}: {
-  title: string
-  description?: string
-  owner: string
-  hasAdmins?: boolean
-  admins?: string[]
-  allowsParticipantsReplies?: boolean
-  hash: string
-  setQnasRecord: (
-    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
-  ) => void
-}): Promise<ApiResponse<QnAType>> => {
+}: QnaCreateParams): Promise<ApiResponse<QnAType>> => {
   try {
     const qnaData: Omit<QnAType, 'id' | 'questionsIds'> = {
       title,
@@ -78,6 +80,21 @@ export const createQnA = async ({
     return response
   } catch (error) {
     console.error('Error creating QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const updateQnA = async (
+  qnaId: number,
+  qnaData: Partial<QnAType>,
+): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await apiConnector.updateQnA(qnaId, qnaData)
+  } catch (error) {
+    console.error('Error updating QnA:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -272,6 +289,21 @@ export const createNewPoll = async (
     return await apiConnector.addPoll(pollData, pollOptions)
   } catch (error) {
     console.error('Error creating poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const updatePoll = async (
+  pollId: number,
+  pollData: Partial<PollType>,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    return await apiConnector.updatePoll(pollId, pollData)
+  } catch (error) {
+    console.error('Error updating Poll:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
