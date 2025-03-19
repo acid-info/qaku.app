@@ -10,7 +10,6 @@ import { updateQnA } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { qnaSettingsAtom } from '../../../atoms/settings'
 import { walletStateAtom } from '../../../atoms/wallet'
 import { QnaLive } from '../QnaLive/QnaLive'
 
@@ -19,7 +18,6 @@ export const QnaPageLive: React.FC = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
-  const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
   const { userName } = useAtomValue(walletStateAtom)
 
   const qnaId = useMemo(() => {
