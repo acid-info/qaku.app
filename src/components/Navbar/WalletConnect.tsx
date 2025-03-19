@@ -45,7 +45,7 @@ const WalletConnect = ({
       {walletState.status !== 'connected' ? (
         <Button onClick={handleConnect}>{connectWalletButtonLabel}</Button>
       ) : (
-        <Dropdown
+        <StyledDropdown
           options={options}
           onChange={(value) => handleDropdown(String(value))}
           value="address"
@@ -59,6 +59,10 @@ const Container = styled.div`
   display: flex;
   gap: 2px;
   height: 32px;
+`
+
+const StyledDropdown = styled(Dropdown)`
+  min-width: 130px;
 `
 
 export default WalletConnect
