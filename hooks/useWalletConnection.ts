@@ -4,30 +4,20 @@ import {
 } from '@/../atoms/wallet/walletAtom'
 import { WAGMI_CONNECTORS } from '@/configs/wagmi.config'
 import { WalletProviderEnum, WalletStateInterface } from '@/types/wallet.types'
-import {
-  useAppKit,
-  useAppKitAccount,
-  useAppKitNetwork,
-  useDisconnect,
-  useWalletInfo,
-} from '@reown/appkit/react'
 import { useAtom } from 'jotai'
-import { useCallback, useEffect, useState } from 'react'
-import { useConnect as useWagmiConnect } from 'wagmi'
+import { useCallback, useEffect } from 'react'
+import { useAccount, useConnect, useDisconnect, useEnsName } from 'wagmi'
 
 export const useWalletConnection = () => {
   const [walletState, setWalletState] = useAtom(walletStateAtom)
   const [isWalletPanelOpen, setIsWalletPanelOpen] = useAtom(
     isWalletPanelOpenAtom,
   )
-  const [ensName, setEnsName] = useState<string | null>(null)
 
-  const appKit = useAppKit()
-  const { address, isConnected, status } = useAppKitAccount()
-  const { chainId } = useAppKitNetwork()
+  const { address, isConnected, status, chainId } = useAccount()
   const { disconnect } = useDisconnect()
-  const { walletInfo } = useWalletInfo()
-  const { connect: wagmiConnect } = useWagmiConnect()
+  const { connect } = useConnect()
+  const { data: ensName } = useEnsName({ address })
 
   const openWalletPanel = useCallback(() => {
     setIsWalletPanelOpen(true)
@@ -60,16 +50,10 @@ export const useWalletConnection = () => {
         switch (providerId) {
           case WalletProviderEnum.MetaMask:
           case WalletProviderEnum.CoinbaseWallet:
-            wagmiConnect({
+            connect({
               connector: WAGMI_CONNECTORS[providerId],
             })
             break
-
-          case WalletProviderEnum.WalletConnect:
-            appKit.open({
-              view: 'Connect',
-              namespace: 'eip155',
-            })
         }
       } catch (error) {
         console.error('Failed to connect wallet:', error)
@@ -80,42 +64,31 @@ export const useWalletConnection = () => {
         closeWalletPanel()
       }
     },
-    [appKit, setWalletState, closeWalletPanel],
+    [setWalletState, closeWalletPanel],
   )
 
   const disconnectWallet = useCallback(async () => {
     try {
-      await disconnect()
-      await appKit.close()
-
-      setEnsName(null)
+      disconnect()
       resetWalletState()
     } catch (error) {
       console.error('Failed to disconnect wallet:', error)
     }
-  }, [appKit, disconnect, resetWalletState])
-
-  // TODO: Implement ENS name resolution
-  const fetchEnsName = useCallback(() => {
-    setEnsName(null)
-  }, [setEnsName])
+  }, [disconnect, resetWalletState])
 
   // Update wallet state when connection changes
   useEffect(() => {
     const updateWalletState = async () => {
       if (isConnected && address) {
-        await fetchEnsName()
-
         setWalletState({
           status: status === 'connected' ? 'connected' : 'connecting',
           address,
-          chainId: typeof chainId === 'number' ? chainId : null,
+          chainId: chainId ?? null,
           provider: walletState.provider,
           ensName,
           userName: ensName ?? address,
         })
       } else if (!isConnected) {
-        setEnsName(null)
         resetWalletState()
       }
     }
@@ -127,17 +100,10 @@ export const useWalletConnection = () => {
     chainId,
     status,
     ensName,
-    fetchEnsName,
     setWalletState,
     resetWalletState,
     walletState.provider,
   ])
-
-  const walletDetails = {
-    name: walletInfo?.name || null,
-    icon: walletInfo?.icon || null,
-    type: walletInfo?.type || null,
-  }
 
   return {
     walletState,
@@ -146,6 +112,5 @@ export const useWalletConnection = () => {
     closeWalletPanel,
     connectWallet,
     disconnectWallet,
-    walletDetails,
   }
 }

@@ -52,7 +52,7 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
           }
         `}
       />
-      <WagmiContextProvider cookies={pageProps.cookies}>
+      <WagmiContextProvider>
         {getLayout(<Component {...pageProps} />)}
       </WagmiContextProvider>
     </>
