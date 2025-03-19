@@ -1,17 +1,19 @@
+import { getPollByIdAtom, pollsRecordAtom } from '@/../atoms/poll'
+import { walletStateAtom } from '@/../atoms/wallet'
+import { usePollOptions } from '@/../hooks/usePollOptions'
+import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
+import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Button } from '@/components/Button'
 import { PollOptions } from '@/components/PollOptions'
 import { Row } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { TitleBlock } from '@/components/TitleBlock'
+import { ToggleButton } from '@/components/ToggleButton'
 import { voteInPoll } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
 import { atom, useAtomValue } from 'jotai'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getPollByIdAtom, pollsRecordAtom } from '../../../atoms/poll'
-import { walletStateAtom } from '../../../atoms/wallet'
-import { usePollOptions } from '../../../hooks/usePollOptions'
-import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 const BACKUP_POLL_ID = 0
 
@@ -22,10 +24,11 @@ export type PollsUserProps = {
 export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   const { userName } = useAtomValue(walletStateAtom)
   const pollsRecord = useAtomValue(pollsRecordAtom)
+  const { openWalletPanel, walletState } = useWalletConnection()
 
   const [activePollId, setActivePollId] = useState<number | null>(null)
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([])
-
+  const [isAnonymous, setIsAnonymous] = useState(false)
   useEffect(() => {
     if (pollIds.length > 0 && !activePollId) {
       setActivePollId(pollIds[0])
@@ -74,14 +77,14 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   }, [pollIds, pollsRecord])
 
   const handleVote = async () => {
-    if (!activePollId || selectedOptionIds.length === 0 || !userName) return
+    if (!activePollId || selectedOptionIds.length === 0) return
 
     try {
       const optionIds = selectedOptionIds.map((id) => parseInt(id, 10))
       const response = await voteInPoll({
         pollId: activePollId,
         optionIds,
-        voter: userName,
+        voter: isAnonymous || !userName ? 'Anonymous' : userName,
       })
 
       if (response.success) {
@@ -163,10 +166,26 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
                   Send
                 </ActionButton>
               </Row>
-              <div>
-                <p className="connect-wallet">
-                  Voting as Anonymous. <span>Connect Wallet</span>
-                </p>
+              <div className="connect-wallet">
+                {walletState.status !== 'connected' ? (
+                  <WalletNotConnectedActions>
+                    Voting as Anonymous.{' '}
+                    <TextButton onClick={openWalletPanel}>
+                      Connect Wallet
+                    </TextButton>
+                  </WalletNotConnectedActions>
+                ) : (
+                  <WalletConnectedActions>
+                    <span>Voting as {userName}</span>
+                    <div>
+                      <ToggleButton
+                        isOn={isAnonymous}
+                        onChange={setIsAnonymous}
+                      />
+                      <span>Vote Anonymously</span>
+                    </div>
+                  </WalletConnectedActions>
+                )}
               </div>
             </SelectContainer>
           )}
@@ -244,23 +263,53 @@ const SelectContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 16px;
 
-  width: 204px;
-  margin: 32px auto 0;
+  width: 100%;
+  margin: 32px 0;
 
   .connect-wallet {
-    opacity: 0.7;
     font-size: var(--label1-font-size);
     line-height: var(--label1-line-height);
-
-    span {
-      text-decoration: underline;
-    }
+    color: var(--white);
   }
 `
 
 const ActionButton = styled(Button)`
   width: 100px;
   height: 32px;
+`
+
+const TextButton = styled.button`
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+`
+
+const WalletNotConnectedActions = styled.div`
+  opacity: 0.7;
+`
+
+const WalletConnectedActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  span {
+    opacity: 0.7;
+  }
 `
