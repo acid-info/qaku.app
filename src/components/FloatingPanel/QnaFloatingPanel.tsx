@@ -1,11 +1,13 @@
+import { QnAType } from '@/types/qna.types'
 import {
   BaseFloatingPanelPropsInterface,
-  QnaSettingsInterface,
   SaveHandlerType,
 } from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
+import { CloseIcon } from '../Icons/CloseIcon'
 import { StyledInput } from '../StyledComponents'
+import TagInput from '../TagInput/TagInput'
 import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
@@ -14,40 +16,84 @@ import {
   PanelContent,
   SettingGroup,
   SettingStack,
+  TagInputContainer,
 } from './styledComponents'
 
+interface QnaEditValuesType {
+  allowsParticipantsReplies: boolean
+  title: string
+  showDescription: boolean
+  description: string
+  admins: string[]
+}
+
 export interface QnaFloatingPanelProps extends BaseFloatingPanelPropsInterface {
-  initialValues?: Partial<QnaSettingsInterface>
-  onSave: SaveHandlerType<QnaSettingsInterface>
+  qna: QnAType
+  onSave: SaveHandlerType<Partial<QnAType>>
 }
 
 export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
   isOpen,
   onClose,
-  initialValues,
+  qna,
   onSave,
 }) => {
-  const [values, setValues] = useState<QnaSettingsInterface>({
-    allowReplies: true,
+  const [values, setValues] = useState<QnaEditValuesType>({
+    allowsParticipantsReplies: false,
     title: '',
     showDescription: false,
     description: '',
-    ...initialValues,
+    admins: [],
   })
 
   useEffect(() => {
-    if (initialValues) {
-      setValues((prev) => ({ ...prev, ...initialValues }))
+    if (isOpen && qna) {
+      setValues({
+        allowsParticipantsReplies: qna.allowsParticipantsReplies,
+        title: qna.title,
+        showDescription: !!qna.description,
+        description: qna.description || '',
+        admins: qna.admins || [],
+      })
     }
-  }, [initialValues])
+  }, [isOpen, qna])
 
   const handleSave = () => {
-    onSave(values)
+    const updatedQna: Partial<QnAType> = {
+      allowsParticipantsReplies: values.allowsParticipantsReplies,
+      title: values.title,
+      admins: values.admins.length > 0 ? values.admins : undefined,
+      hasAdmins: values.admins.length > 0,
+    }
+
+    if (
+      values.showDescription &&
+      values.description &&
+      values.description.trim() !== ''
+    ) {
+      updatedQna.description = values.description
+    } else {
+      updatedQna.description = undefined
+    }
+
+    onSave(updatedQna)
+  }
+
+  const handleClose = () => {
+    if (qna) {
+      setValues({
+        allowsParticipantsReplies: qna.allowsParticipantsReplies,
+        title: qna.title,
+        showDescription: !!qna.description,
+        description: qna.description || '',
+        admins: qna.admins || [],
+      })
+    }
     onClose()
   }
 
   return (
-    <FloatingPanel title="Q&A settings" isOpen={isOpen} onClose={onClose}>
+    <FloatingPanel title="Q&A settings" isOpen={isOpen} onClose={handleClose}>
       <PanelContent>
         <SettingField
           title="Replies"
@@ -55,9 +101,12 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
           isRow
         >
           <ToggleButton
-            isOn={values.allowReplies}
+            isOn={values.allowsParticipantsReplies}
             onChange={(isOn) =>
-              setValues((prev) => ({ ...prev, allowReplies: isOn }))
+              setValues((prev) => ({
+                ...prev,
+                allowsParticipantsReplies: isOn,
+              }))
             }
           />
         </SettingField>
@@ -105,6 +154,34 @@ export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
             )}
           </SettingStack>
         </SettingGroup>
+
+        <SettingStack>
+          <SettingField
+            title="Co-hosts"
+            description="Add co-hosts to your Q&A"
+            isRow
+          >
+            {values.admins.length > 0 && (
+              <Button
+                variant="filled"
+                onClick={() => setValues((prev) => ({ ...prev, admins: [] }))}
+                icon={<CloseIcon />}
+              >
+                RevokeAll
+              </Button>
+            )}
+          </SettingField>
+          <TagInputContainer>
+            <TagInput
+              tags={values.admins}
+              setTags={(tags) =>
+                setValues((prev) => ({ ...prev, admins: tags }))
+              }
+              validator={(value) => value.startsWith('0x')}
+              onValidationFail={() => alert('Invalid address')}
+            />
+          </TagInputContainer>
+        </SettingStack>
 
         <ActionBar>
           <Button variant="filledPrimary" onClick={handleSave}>

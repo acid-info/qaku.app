@@ -10,6 +10,7 @@ export interface QnaSettingsInterface {
   title: string
   showDescription: boolean
   description: string
+  admins: string[]
 }
 
 export type PollSettingsEditValuesType = {

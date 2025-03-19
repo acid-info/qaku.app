@@ -1,16 +1,16 @@
+import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
+import { getQnaByIdAtom, qnasRecordAtom } from '@/../atoms/qna'
+import { userAtom } from '@/../atoms/user'
+import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { updateQnA } from '@/utils/api.utils'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
-import { getQnaByIdAtom } from '../../../atoms/qna'
-import { qnaSettingsAtom } from '../../../atoms/settings'
-import { userAtom } from '../../../atoms/user'
-import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {
@@ -18,8 +18,8 @@ export const QnaPageLive: React.FC = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
-  const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
   const user = useAtomValue(userAtom)
+  const setQnasRecord = useSetAtom(qnasRecordAtom)
 
   const qnaId = useMemo(() => {
     const id = router.query.id
@@ -37,6 +37,11 @@ export const QnaPageLive: React.FC = () => {
 
   if (!qnaId || !qna) {
     return null
+  }
+
+  const handleSaveQna = async (updatedQna: Partial<typeof qna>) => {
+    await updateQnA(qnaId, updatedQna)
+    setIsSettingsPanelOpen(false)
   }
 
   return (
@@ -61,11 +66,8 @@ export const QnaPageLive: React.FC = () => {
       <QnaFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
-        initialValues={qnaSettings}
-        onSave={(values) => {
-          setQnaSettings(values)
-          setIsSettingsPanelOpen(false)
-        }}
+        qna={qna}
+        onSave={handleSaveQna}
       />
     </DefaultLayout>
   )

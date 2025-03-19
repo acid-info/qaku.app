@@ -16,6 +16,8 @@ export enum ApiMessageType {
   POLL_CREATE_MESSAGE = 'poll_create_msg',
   POLL_VOTE_MESSAGE = 'poll_vote_msg',
   POLL_ACTIVE_MESSAGE = 'poll_active_msg',
+  POLL_UPDATE_MESSAGE = 'poll_update_msg',
+  QNA_UPDATE_MESSAGE = 'qna_update_msg',
   SNAPSHOT = 'snapshot',
   PERSIST_SNAPSHOT = 'persist_snapshot',
 }
@@ -82,6 +84,10 @@ export interface ApiConnector {
   addQnA: (
     qnaData: Omit<QnAType, 'id' | 'questionsIds'>,
   ) => Promise<ApiResponse<QnAType>>
+  updateQnA: (
+    qnaId: number,
+    qnaData: Partial<QnAType>,
+  ) => Promise<ApiResponse<QnAType>>
 
   // Poll methods
   getPolls: () => Promise<ApiResponse<Record<number, PollType>>>
@@ -92,6 +98,10 @@ export interface ApiConnector {
   addPoll: (
     poll: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
     pollOptions: { title: string; isCorrectAnswer?: boolean }[],
+  ) => Promise<ApiResponse<PollType>>
+  updatePoll: (
+    pollId: number,
+    pollData: Partial<PollType>,
   ) => Promise<ApiResponse<PollType>>
 
   // Poll option methods

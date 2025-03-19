@@ -1035,6 +1035,78 @@ export const toggleQuestionAnswered = async (
   }
 }
 
+export const updateQnA = async (
+  qnaId: number,
+  qnaData: Partial<QnAType>,
+): Promise<ApiResponse<QnAType>> => {
+  try {
+    // Validate input
+    if (qnaId === undefined || qnaId === null) {
+      return { success: false, error: 'QnA ID is required' }
+    }
+
+    const qna = dataStore.qnas[qnaId]
+    if (!qna) {
+      return { success: false, error: `QnA with ID ${qnaId} not found` }
+    }
+
+    // Update qna data
+    const updatedQnA: QnAType = {
+      ...qna,
+      ...qnaData,
+    }
+
+    // Update data store
+    dataStore.qnas[qnaId] = updatedQnA
+
+    // Notify subscribers
+    notifySubscribers(ApiMessageType.QNA_UPDATE_MESSAGE, updatedQnA)
+
+    return { success: true, data: updatedQnA }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const updatePoll = async (
+  pollId: number,
+  pollData: Partial<PollType>,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    // Validate input
+    if (pollId === undefined || pollId === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const poll = dataStore.polls[pollId]
+    if (!poll) {
+      return { success: false, error: `Poll with ID ${pollId} not found` }
+    }
+
+    // Update poll data
+    const updatedPoll: PollType = {
+      ...poll,
+      ...pollData,
+    }
+
+    // Update data store
+    dataStore.polls[pollId] = updatedPoll
+
+    // Notify subscribers
+    notifySubscribers(ApiMessageType.POLL_UPDATE_MESSAGE, updatedPoll)
+
+    return { success: true, data: updatedPoll }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 export const subscribe = <T>(
   messageType: ApiMessageType,
   callback: SubscriptionCallback<T>,
