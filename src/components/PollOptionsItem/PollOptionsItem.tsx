@@ -1,6 +1,6 @@
+import { getValidPercentage } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import React from 'react'
-import { getValidPercentage } from '../../utils/general.utils'
 import { IconButtonRound } from '../IconButtonRound'
 import { CheckIcon } from '../Icons/CheckIcon'
 import { CloseIcon } from '../Icons/CloseIcon'

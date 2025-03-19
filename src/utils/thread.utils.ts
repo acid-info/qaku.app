@@ -1,5 +1,5 @@
+import { QuestionWithAnswersType } from '@/../atoms'
 import { FilterThreadEnum, ThreadInterface } from '@/types/thread.types'
-import { QuestionWithAnswersType } from '../../atoms'
 
 export const mapQuestionToThread = (
   question: QuestionWithAnswersType,

@@ -1,5 +1,6 @@
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { getQnaByIdAtom } from '@/../atoms/qna'
+import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
@@ -10,7 +11,6 @@ import { updateQnA } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { walletStateAtom } from '../../../atoms/wallet'
 import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {

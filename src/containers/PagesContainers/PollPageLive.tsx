@@ -1,3 +1,7 @@
+import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
+import { getPollByIdAtom } from '@/../atoms/poll'
+import { pollsRecordAtom } from '@/../atoms/poll/pollsRecordAtom'
+import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
 import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
@@ -8,10 +12,6 @@ import { updatePoll } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
-import { getPollByIdAtom } from '../../../atoms/poll'
-import { pollsRecordAtom } from '../../../atoms/poll/pollsRecordAtom'
-import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 export const PollPageLive: React.FC = () => {
   const router = useRouter()

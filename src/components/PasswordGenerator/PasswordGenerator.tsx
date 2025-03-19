@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 
-import { generateRandomPassword } from '../../utils/general.utils'
+import { generateRandomPassword } from '@/utils/general.utils'
 import { Button } from '../Button'
 
 export interface PasswordGeneratorProps {

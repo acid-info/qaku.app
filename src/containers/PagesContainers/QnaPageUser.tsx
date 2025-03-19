@@ -1,3 +1,6 @@
+import { qnasRecordAtom } from '@/../atoms/qna'
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { SEO } from '@/components/SEO'
 import { UserLayoutContainer } from '@/containers/UserLayout'
 import { NavbarModeEnum } from '@/types/navbar.types'
@@ -7,9 +10,6 @@ import { handleUserModeChange } from '@/utils/navbar.utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { qnasRecordAtom } from '../../../atoms/qna'
-import { walletStateAtom } from '../../../atoms/wallet'
-import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaUser } from '../QnaUser/QnaUser'
 
 export const QnaPageUser: React.FC = () => {

@@ -1,3 +1,5 @@
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
@@ -9,16 +11,11 @@ import {
   likeQuestionById,
   toggleQuestionAnsweredStatus,
 } from '@/utils/api.utils'
+import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
-import { walletStateAtom } from '../../../atoms/wallet'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
-import {
-  getFilteredQuestions,
-  mapQuestionToThread,
-} from '../../utils/thread.utils'
 
 const CONTENT_WIDTH = 507
 

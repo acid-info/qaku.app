@@ -1,8 +1,3 @@
-import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { PollType, QnAType } from '@/types/qna.types'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
 import {
   activeObjectAtom,
   expandedQnAIdsAtom,
@@ -14,7 +9,12 @@ import {
   setActivePollAtom,
   setActiveQnAAtom,
   toggleExpandedQnAAtom,
-} from '../../../atoms'
+} from '@/../atoms'
+import { Sidebar } from '@/components/Sidebar/Sidebar'
+import { PollType, QnAType } from '@/types/qna.types'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useRouter } from 'next/router'
+import React, { useMemo } from 'react'
 
 export const SidebarContainer: React.FC = () => {
   const router = useRouter()

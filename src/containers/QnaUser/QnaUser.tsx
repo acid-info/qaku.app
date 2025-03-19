@@ -1,3 +1,5 @@
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { MessageForm } from '@/components/MessageForm'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
@@ -8,15 +10,10 @@ import {
   likeAnswerById,
   likeQuestionById,
 } from '@/utils/api.utils'
+import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
-import { walletStateAtom } from '../../../atoms/wallet'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
-import {
-  getFilteredQuestions,
-  mapQuestionToThread,
-} from '../../utils/thread.utils'
 const CONTENT_WIDTH = 507
 
 const EmptyState = () => (

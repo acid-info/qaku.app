@@ -1,3 +1,6 @@
+import { answersRecordAtom } from '@/../atoms/answer'
+import { getQnaByIdAtom } from '@/../atoms/qna'
+import { questionsRecordAtom } from '@/../atoms/question'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
@@ -7,9 +10,6 @@ import { loadQnaData } from '@/utils/api.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
-import { answersRecordAtom } from '../../../atoms/answer'
-import { getQnaByIdAtom } from '../../../atoms/qna'
-import { questionsRecordAtom } from '../../../atoms/question'
 
 export const QnaPageCreated: React.FC = () => {
   const router = useRouter()

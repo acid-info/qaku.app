@@ -1,10 +1,10 @@
+import { usePollOptions } from '@/../hooks/usePollOptions'
 import { PollOptions } from '@/components/PollOptions'
 import { TitleBlock } from '@/components/TitleBlock'
 import { PollType } from '@/types/qna.types'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
 import React, { useMemo } from 'react'
-import { usePollOptions } from '../../../hooks/usePollOptions'
 
 export type PollLiveProps = {
   pollId: number

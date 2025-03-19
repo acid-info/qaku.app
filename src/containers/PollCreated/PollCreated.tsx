@@ -1,11 +1,11 @@
+import { PollWithOptionsType } from '@/../atoms/selectors'
+import { usePollOptions } from '@/../hooks/usePollOptions'
 import { PollOptions } from '@/components/PollOptions'
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
 import { TitleBlock } from '@/components/TitleBlock'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
 import React, { useMemo } from 'react'
-import { PollWithOptionsType } from '../../../atoms/selectors'
-import { usePollOptions } from '../../../hooks/usePollOptions'
 
 type QnaCountsType = {
   questionsCount: number

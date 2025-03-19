@@ -1,3 +1,6 @@
+import { pollIdsByQnaIdAtom } from '@/../atoms/poll'
+import { qnasRecordAtom } from '@/../atoms/qna'
+import { useQnaPollsSubscriptions } from '@/../hooks/useQnaPollsSubscriptions'
 import { SEO } from '@/components/SEO'
 import { PollsUser } from '@/containers/PollsUser'
 import { UserLayoutContainer } from '@/containers/UserLayout'
@@ -9,9 +12,6 @@ import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { pollIdsByQnaIdAtom } from '../../../atoms/poll'
-import { qnasRecordAtom } from '../../../atoms/qna'
-import { useQnaPollsSubscriptions } from '../../../hooks/useQnaPollsSubscriptions'
 
 const EmptyState = () => (
   <NoContentMessage>

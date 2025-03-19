@@ -1,3 +1,4 @@
+import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { pollSettingsAtom } from '@/../atoms/settings'
 import { PollFloatingPanelCreate } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
@@ -5,7 +6,6 @@ import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreate } from '@/containers/PollCreate/PollCreate'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { useAtom } from 'jotai'
-import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 
 export const PollPageCreate: React.FC = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(

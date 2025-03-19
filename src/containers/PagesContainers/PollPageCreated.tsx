@@ -1,3 +1,11 @@
+import { getPollByIdAtom } from '@/../atoms/poll'
+import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
+import { getQnaByIdAtom } from '@/../atoms/qna'
+import {
+  getPollTotalVotesCountAtom,
+  pollWithOptionsAtom,
+  qnaCountsByIdAtom,
+} from '@/../atoms/selectors'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreated } from '@/containers/PollCreated'
@@ -7,14 +15,6 @@ import { loadPollOptions } from '@/utils/api.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
-import { getPollByIdAtom } from '../../../atoms/poll'
-import { pollOptionsRecordAtom } from '../../../atoms/pollOption'
-import { getQnaByIdAtom } from '../../../atoms/qna'
-import {
-  getPollTotalVotesCountAtom,
-  pollWithOptionsAtom,
-  qnaCountsByIdAtom,
-} from '../../../atoms/selectors'
 
 export const PollPageCreated: React.FC = () => {
   const router = useRouter()

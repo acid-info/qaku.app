@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import { useRef, useState } from 'react'
 
+import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import { MessageFormSubmitHandlerType } from '@/types/form.types'
-import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
 import { Button } from '../Button'
 import { ProfileIcon } from '../ProfileIcon'
 import { ToggleButton } from '../ToggleButton'
