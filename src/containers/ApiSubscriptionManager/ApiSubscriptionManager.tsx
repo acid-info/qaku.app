@@ -1,6 +1,6 @@
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
-import { PollType } from '@/types/qna.types'
+import { PollType, QnAType } from '@/types/qna.types'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { pollsRecordAtom } from '../../../atoms/poll'
@@ -43,31 +43,45 @@ export const ApiSubscriptionManager = () => {
 
   // Set up global subscriptions
   useEffect(() => {
-    const pollCreateSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_CREATE_MESSAGE,
-      (poll) => {
-        setPollsRecord((prev: Record<number, PollType>) => ({
+    const handlePollUpdate = (poll: PollType) => {
+      setPollsRecord((prev) => ({
+        ...prev,
+        [poll.id]: poll,
+      }))
+    }
+
+    const qnaUpdateSub = apiConnector.subscribe<QnAType>(
+      ApiMessageType.QNA_UPDATE_MESSAGE,
+      (qna) => {
+        setQnasRecord((prev) => ({
           ...prev,
-          [poll.id]: poll,
+          [qna.id]: qna,
         }))
       },
+    )
+
+    const pollUpdateSub = apiConnector.subscribe<PollType>(
+      ApiMessageType.POLL_UPDATE_MESSAGE,
+      handlePollUpdate,
+    )
+
+    const pollCreateSub = apiConnector.subscribe<PollType>(
+      ApiMessageType.POLL_CREATE_MESSAGE,
+      handlePollUpdate,
     )
 
     const pollActiveSub = apiConnector.subscribe<PollType>(
       ApiMessageType.POLL_ACTIVE_MESSAGE,
-      (poll) => {
-        setPollsRecord((prev: Record<number, PollType>) => ({
-          ...prev,
-          [poll.id]: poll,
-        }))
-      },
+      handlePollUpdate,
     )
 
     return () => {
+      qnaUpdateSub()
+      pollUpdateSub()
       pollCreateSub()
       pollActiveSub()
     }
-  }, [setPollsRecord, setPollOptionsRecord])
+  }, [setQnasRecord, setPollsRecord, setPollOptionsRecord])
 
   return null
 }

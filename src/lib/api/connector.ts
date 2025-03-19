@@ -29,6 +29,8 @@ import {
   likeAnswer,
   likeQuestion,
   toggleQuestionAnswered,
+  updatePoll,
+  updateQnA,
   votePoll,
 } from './fake/handlers'
 import {
@@ -130,6 +132,13 @@ export const apiConnector: ApiConnector = {
     return await addQnA(qnaData)
   },
 
+  updateQnA: async (
+    qnaId: number,
+    qnaData: Partial<QnAType>,
+  ): Promise<ApiResponse<QnAType>> => {
+    return await updateQnA(qnaId, qnaData)
+  },
+
   // Poll methods
   getPolls: async (): Promise<ApiResponse<Record<number, PollType>>> => {
     return await getPolls()
@@ -150,6 +159,13 @@ export const apiConnector: ApiConnector = {
     pollOptions: { title: string; isCorrectAnswer?: boolean }[] = [],
   ): Promise<ApiResponse<PollType>> => {
     return await addPollHandler(poll, pollOptions)
+  },
+
+  updatePoll: async (
+    pollId: number,
+    pollData: Partial<PollType>,
+  ): Promise<ApiResponse<PollType>> => {
+    return await updatePoll(pollId, pollData)
   },
 
   // Poll option methods

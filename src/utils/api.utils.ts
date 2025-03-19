@@ -87,6 +87,21 @@ export const createQnA = async ({
   }
 }
 
+export const updateQnA = async (
+  qnaId: number,
+  qnaData: Partial<QnAType>,
+): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await apiConnector.updateQnA(qnaId, qnaData)
+  } catch (error) {
+    console.error('Error updating QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 // Function to load questions and answers for a specific QnA
 export const loadQnaData = async ({
   qnaId,
@@ -274,6 +289,21 @@ export const createNewPoll = async (
     return await apiConnector.addPoll(pollData, pollOptions)
   } catch (error) {
     console.error('Error creating poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const updatePoll = async (
+  pollId: number,
+  pollData: Partial<PollType>,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    return await apiConnector.updatePoll(pollId, pollData)
+  } catch (error) {
+    console.error('Error updating Poll:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
