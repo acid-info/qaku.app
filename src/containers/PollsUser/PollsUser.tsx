@@ -9,6 +9,7 @@ import { Row } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { voteInPoll } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
@@ -167,7 +168,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
                 </ActionButton>
               </Row>
               <div className="connect-wallet">
-                {walletState.status !== 'connected' ? (
+                {walletState.status !== WalletConnectionStatusEnum.Connected ? (
                   <WalletNotConnectedActions>
                     Voting as Anonymous.{' '}
                     <TextButton onClick={openWalletPanel}>

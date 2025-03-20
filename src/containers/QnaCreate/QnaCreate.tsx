@@ -9,6 +9,7 @@ import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel } from '@/components/WalletPanel'
 import { qna } from '@/data/routes'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -40,7 +41,7 @@ export const QnaCreate: React.FC = () => {
       return
     }
 
-    if (status !== 'connected' || !userName) {
+    if (status !== WalletConnectionStatusEnum.Connected || !userName) {
       setError('Please connect your wallet first')
       return
     }
@@ -77,7 +78,7 @@ export const QnaCreate: React.FC = () => {
         <Content>
           {error && <Badge title={error} variant="red" />}
           <WalletPanel
-            isAuthorized={status === 'connected'}
+            isAuthorized={status === WalletConnectionStatusEnum.Connected}
             onConnect={openWalletPanel}
           />
           <NameSection>

@@ -3,14 +3,15 @@ export enum WalletProviderEnum {
   CoinbaseWallet = 'coinbasewallet',
 }
 
-export type WalletConnectionStatusType =
-  | 'connected'
-  | 'connecting'
-  | 'disconnected'
-  | 'error'
+export enum WalletConnectionStatusEnum {
+  Connected = 'connected',
+  Connecting = 'connecting',
+  Disconnected = 'disconnected',
+  Error = 'error',
+}
 
 export interface WalletStateInterface {
-  status: WalletConnectionStatusType
+  status: WalletConnectionStatusEnum
   address: string | null
   chainId: number | null
   provider: WalletProviderEnum | null

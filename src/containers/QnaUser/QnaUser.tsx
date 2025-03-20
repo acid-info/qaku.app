@@ -4,6 +4,7 @@ import { MessageForm } from '@/components/MessageForm'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { FilterThreadEnum } from '@/types/thread.types'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
   addNewAnswer,
   addNewQuestion,
@@ -106,7 +107,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
             })
             resetForm()
           }}
-          isAuthorized={status === 'connected'}
+          isAuthorized={status === WalletConnectionStatusEnum.Connected}
         />
 
         <TabWrapper>
@@ -144,7 +145,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
                   resetForm()
                 }}
                 isChecked={thread.info.isAnswered}
-                isAuthorized={status === 'connected'}
+                isAuthorized={status === WalletConnectionStatusEnum.Connected}
                 isUser={true}
               />
             ))}

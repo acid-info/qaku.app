@@ -1,6 +1,9 @@
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { WalletFloatingPanel } from '@/components/FloatingPanel'
-import { WalletProviderEnum } from '@/types/wallet.types'
+import {
+  WalletConnectionStatusEnum,
+  WalletProviderEnum,
+} from '@/types/wallet.types'
 import { useEffect } from 'react'
 
 interface WalletFloatingPanelContainerProps {
@@ -14,7 +17,7 @@ export const WalletFloatingPanelContainer: React.FC<
   const { connectWallet, walletState } = useWalletConnection()
 
   useEffect(() => {
-    if (walletState.status === 'connected') {
+    if (walletState.status === WalletConnectionStatusEnum.Connected) {
       onClose()
     }
   }, [walletState.status, onClose])

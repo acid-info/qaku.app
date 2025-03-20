@@ -1,4 +1,5 @@
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { truncateAddress } from '@/utils/wallet.utils'
 import styled from '@emotion/styled'
 import { Button } from '../Button'
@@ -42,7 +43,7 @@ const WalletConnect = ({
   return (
     <Container>
       {secondaryButton}
-      {walletState.status !== 'connected' ? (
+      {walletState.status !== WalletConnectionStatusEnum.Connected ? (
         <Button onClick={handleConnect}>{connectWalletButtonLabel}</Button>
       ) : (
         <StyledDropdown

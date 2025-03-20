@@ -4,7 +4,11 @@ import {
   walletStateAtom,
 } from '@/../atoms/wallet/walletAtom'
 import { WAGMI_CONNECTORS } from '@/configs/wagmi.config'
-import { WalletProviderEnum, WalletStateInterface } from '@/types/wallet.types'
+import {
+  WalletConnectionStatusEnum,
+  WalletProviderEnum,
+  WalletStateInterface,
+} from '@/types/wallet.types'
 import { useAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { useAccount, useConnect, useDisconnect, useEnsName } from 'wagmi'
@@ -37,7 +41,7 @@ export const useWalletConnection = () => {
       try {
         setWalletState((prev: WalletStateInterface) => ({
           ...prev,
-          status: 'connecting',
+          status: WalletConnectionStatusEnum.Connecting,
           provider: providerId,
         }))
 
@@ -53,7 +57,7 @@ export const useWalletConnection = () => {
         console.error('Failed to connect wallet:', error)
         setWalletState((prev: WalletStateInterface) => ({
           ...prev,
-          status: 'error',
+          status: WalletConnectionStatusEnum.Error,
         }))
         closeWalletPanel()
       }
@@ -75,7 +79,10 @@ export const useWalletConnection = () => {
     const updateWalletState = async () => {
       if (isConnected && address) {
         setWalletState({
-          status: status === 'connected' ? 'connected' : 'connecting',
+          status:
+            status === 'connected'
+              ? WalletConnectionStatusEnum.Connected
+              : WalletConnectionStatusEnum.Connecting,
           address,
           chainId: chainId ?? null,
           provider: walletState.provider,

@@ -1,8 +1,11 @@
-import { WalletStateInterface } from '@/types/wallet.types'
+import {
+  WalletConnectionStatusEnum,
+  WalletStateInterface,
+} from '@/types/wallet.types'
 import { atom } from 'jotai'
 
 export const initialWalletState: WalletStateInterface = {
-  status: 'disconnected',
+  status: WalletConnectionStatusEnum.Disconnected,
   address: null,
   chainId: null,
   provider: null,

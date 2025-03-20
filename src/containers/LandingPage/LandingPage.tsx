@@ -1,6 +1,7 @@
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Button } from '@/components/Button'
 import { HOME, qna } from '@/data/routes'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -15,14 +16,17 @@ export const LandingPage: React.FC = () => {
   const [isConnecting, setIsConnecting] = useState(false)
 
   useEffect(() => {
-    if (isConnecting && walletState.status === 'connected') {
+    if (
+      isConnecting &&
+      walletState.status === WalletConnectionStatusEnum.Connected
+    ) {
       router.push(HOME)
       setIsConnecting(false)
     }
   }, [walletState.status, router, isConnecting])
 
   const handleConnectWallet = () => {
-    if (walletState.status === 'connected') {
+    if (walletState.status === WalletConnectionStatusEnum.Connected) {
       disconnectWallet()
     } else {
       setIsConnecting(true)
@@ -43,7 +47,7 @@ export const LandingPage: React.FC = () => {
             size="large"
             variant="filledPrimary"
           >
-            {walletState.status === 'connected'
+            {walletState.status === WalletConnectionStatusEnum.Connected
               ? 'Disconnect Wallet'
               : 'Connect Wallet'}
           </Button>

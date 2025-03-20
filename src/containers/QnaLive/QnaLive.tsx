@@ -6,6 +6,7 @@ import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { user } from '@/data/routes'
 import { FilterThreadEnum } from '@/types/thread.types'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
   addNewAnswer,
   likeAnswerById,
@@ -140,7 +141,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
                 }}
                 onCheckClick={() => handleCheck(thread.info.questionId)}
                 isChecked={thread.info.isAnswered}
-                isAuthorized={status === 'connected'}
+                isAuthorized={status === WalletConnectionStatusEnum.Connected}
               />
             ))}
           </ThreadsContainer>
