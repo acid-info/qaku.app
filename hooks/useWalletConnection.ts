@@ -1,4 +1,5 @@
 import {
+  initialWalletState,
   isWalletPanelOpenAtom,
   walletStateAtom,
 } from '@/../atoms/wallet/walletAtom'
@@ -28,14 +29,7 @@ export const useWalletConnection = () => {
   }, [setIsWalletPanelOpen])
 
   const resetWalletState = useCallback(() => {
-    setWalletState({
-      status: 'disconnected',
-      address: null,
-      chainId: null,
-      provider: null,
-      ensName: null,
-      userName: null,
-    })
+    setWalletState(initialWalletState)
   }, [setWalletState])
 
   const connectWallet = useCallback(
