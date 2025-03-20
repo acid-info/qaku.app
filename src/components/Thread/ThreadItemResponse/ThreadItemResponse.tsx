@@ -21,12 +21,12 @@ export const ThreadItemResponse: React.FC<ThreadItemResponseProps> = ({
   likes,
   onLikeClick,
 }) => {
-  const { author, timestamp, response } = info
+  const { author, timestamp, response, isAuthorized } = info
 
   return (
     <Container>
       <ThreadItemHeader
-        info={{ author, timestamp }}
+        info={{ author, timestamp, isAuthorized }}
         likes={likes}
         actions={{
           comment: false,
