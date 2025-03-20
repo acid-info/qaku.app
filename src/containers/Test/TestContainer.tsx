@@ -413,10 +413,11 @@ const SearchAndFilterDemo = () => {
 }
 
 const ThreadDemo = () => {
-  const [threads, setThreads] = useState([
+  const [threads, setThreads] = useState<any[]>([
     {
       info: {
-        author: 'Alice',
+        author: 'Alice.eth',
+        isAuthorized: true,
         timestamp: '2025-02-15T11:48:36.135Z',
         question:
           'What are the key differences between React hooks and class components?',
@@ -424,7 +425,8 @@ const ThreadDemo = () => {
           {
             id: 1,
             info: {
-              author: 'Bob',
+              author: 'Bob.eth',
+              isAuthorized: true,
               timestamp: '2025-02-16T11:48:36.135Z',
               response: 'Response 1',
             },
@@ -544,7 +546,7 @@ const ThreadDemo = () => {
               ...thread,
               info: {
                 ...thread.info,
-                responses: thread.info.responses.map((response) =>
+                responses: thread.info.responses.map((response: any) =>
                   response.id === responseId
                     ? {
                         ...response,

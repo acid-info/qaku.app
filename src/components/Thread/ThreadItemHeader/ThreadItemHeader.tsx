@@ -4,6 +4,7 @@ import React from 'react'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { CheckIcon } from '@/components/Icons/CheckIcon'
+import { NameWithSuffix } from '@/components/NameWithSuffix'
 import { ProfileIcon } from '@/components/ProfileIcon'
 import { TogglePill } from '@/components/TogglePill'
 import {
@@ -33,7 +34,7 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
   onCommentClick,
   onLikeClick,
 }) => {
-  const { author, timestamp } = info
+  const { author, timestamp, isAuthorized } = info
   const { comment = true, like = true, check = true } = actions
 
   return (
@@ -41,7 +42,12 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
       <InfoContainer>
         <ProfileIcon variant={profileIconVariant} character={author} />
         <InfoText>
-          <QuestionAuthor>{author}</QuestionAuthor>
+          {isAuthorized ? (
+            <NameWithSuffix name={author} />
+          ) : (
+            <QuestionAuthor>{author}</QuestionAuthor>
+          )}
+
           <QuestionTimestamp>
             {new Date(timestamp).toLocaleString()}
           </QuestionTimestamp>
