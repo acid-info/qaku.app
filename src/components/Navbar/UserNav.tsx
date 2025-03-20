@@ -2,6 +2,7 @@ import { NavbarModeEnum, UserNavbarProps } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import { useCallback } from 'react'
 import { Button } from '../Button'
 import { LinkIcon } from '../Icons/LinkIcon'
 import { QakuLogo } from '../Icons/QakuLogo'
@@ -19,6 +20,13 @@ const renderUnit = (mode: NavbarModeEnum, count: number) => {
 }
 
 const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
+  const handleShare = useCallback(() => {
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => alert('Link copied to clipboard!'))
+      .catch((err) => console.error('Failed to copy link:', err))
+  }, [])
+
   return (
     <Container>
       <Left>
@@ -48,7 +56,11 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
       </TabWrapper>
       <Nav>
         <WalletConnect
-          secondaryButton={<Button icon={<LinkIcon />}>Share</Button>}
+          secondaryButton={
+            <Button icon={<LinkIcon />} onClick={handleShare}>
+              Share
+            </Button>
+          }
         />
       </Nav>
     </Container>
