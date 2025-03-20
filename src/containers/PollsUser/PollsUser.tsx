@@ -170,7 +170,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
               <div className="connect-wallet">
                 {walletState.status !== WalletConnectionStatusEnum.Connected ? (
                   <WalletNotConnectedActions>
-                    Voting as Anonymous.{' '}
+                    Voting as Anonymous.
                     <TextButton onClick={openWalletPanel}>
                       Connect Wallet
                     </TextButton>
@@ -295,6 +295,8 @@ const TextButton = styled.button`
 
 const WalletNotConnectedActions = styled.div`
   opacity: 0.7;
+  display: flex;
+  gap: 6px;
 `
 
 const WalletConnectedActions = styled.div`
