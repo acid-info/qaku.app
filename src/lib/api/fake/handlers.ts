@@ -705,11 +705,11 @@ export const votePoll = async (
     }
 
     // Check if user has already voted
-    const hasVoted = Object.values(dataStore.pollOptions)
+    const isUserVoted = Object.values(dataStore.pollOptions)
       .filter((option) => option.pollId === pollId)
       .some((option) => option.voters.includes(voter))
 
-    if (hasVoted && !dataStore.polls[pollId].hasMultipleOptionsSelect) {
+    if (isUserVoted && !dataStore.polls[pollId].hasMultipleOptionsSelect) {
       return {
         success: false,
         error: `User ${voter} has already voted in poll with ID ${pollId}`,

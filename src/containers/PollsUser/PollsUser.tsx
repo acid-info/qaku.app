@@ -44,13 +44,13 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
 
   usePollSubscriptions(activePollId || BACKUP_POLL_ID)
 
-  const { optionsWithStats, hasVoted } = usePollOptions(
+  const { optionsWithStats, isUserVoted } = usePollOptions(
     activePollId || BACKUP_POLL_ID,
   )
 
   const userHasVoted = useMemo(() => {
-    return hasVoted(userName ?? '')
-  }, [hasVoted, userName])
+    return isUserVoted(userName ?? '')
+  }, [isUserVoted, userName])
 
   const formattedOptions = useMemo(() => {
     if (!activePollId) return []
