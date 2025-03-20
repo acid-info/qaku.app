@@ -28,6 +28,19 @@ export const QnaPageCreated: React.FC = () => {
 
   const qna = useAtomValue(qnaAtom)
 
+  const handleShareClick = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      const baseUrl = `${url.protocol}//${url.host}`
+      const shareUrl = `${baseUrl}/user/qna/${qnaId}`
+
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => alert('Share link to user QnA view copied to clipboard!'))
+        .catch((err) => console.error('Failed to copy link:', err))
+    }
+  }
+
   useEffect(() => {
     if (!qnaId) return
     loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
@@ -49,6 +62,8 @@ export const QnaPageCreated: React.FC = () => {
         date: qna.startDate.toISOString(),
         count: qna.questionsIds.length,
         id: qnaId.toString(),
+        showShareButton: true,
+        onShareClick: handleShareClick,
       }}
     >
       <SEO />

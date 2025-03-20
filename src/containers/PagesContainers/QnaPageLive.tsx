@@ -44,6 +44,19 @@ export const QnaPageLive: React.FC = () => {
     setIsSettingsPanelOpen(false)
   }
 
+  const handleShareClick = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      const baseUrl = `${url.protocol}//${url.host}`
+      const shareUrl = `${baseUrl}/user/qna/${qnaId}`
+
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => alert('Share link to user QnA view copied to clipboard!'))
+        .catch((err) => console.error('Failed to copy link:', err))
+    }
+  }
+
   return (
     <DefaultLayout
       showFooter={false}
@@ -59,6 +72,8 @@ export const QnaPageLive: React.FC = () => {
         id: qnaId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: () => router.push(`/poll/create?qnaId=${qnaId}`),
+        showShareButton: true,
+        onShareClick: handleShareClick,
       }}
     >
       <SEO />

@@ -47,6 +47,19 @@ export const PollPageLive: React.FC = () => {
     setIsSettingsPanelOpen(false)
   }
 
+  const handleShareClick = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      const baseUrl = `${url.protocol}//${url.host}`
+      const shareUrl = `${baseUrl}/user/qna/${poll.qnaId}/polls?poll=${pollId}`
+
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => alert('Share link to user poll view copied to clipboard!'))
+        .catch((err) => console.error('Failed to copy link:', err))
+    }
+  }
+
   return (
     <DefaultLayout
       useAlternativeGap
@@ -62,6 +75,8 @@ export const PollPageLive: React.FC = () => {
         id: pollId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: () => router.push(`/poll/create?qnaId=${poll.qnaId}`),
+        showShareButton: true,
+        onShareClick: handleShareClick,
       }}
     >
       <SEO />

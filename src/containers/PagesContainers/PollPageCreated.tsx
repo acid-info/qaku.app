@@ -60,6 +60,19 @@ export const PollPageCreated: React.FC = () => {
   }, [poll])
   const qnaCounts = useAtomValue(qnaCountsAtom)
 
+  const handleShareClick = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      const baseUrl = `${url.protocol}//${url.host}`
+      const shareUrl = `${baseUrl}/user/qna/${poll?.qnaId}/polls?poll=${pollId}`
+
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => alert('Share link to user poll view copied to clipboard!'))
+        .catch((err) => console.error('Failed to copy link:', err))
+    }
+  }
+
   if (!router.isReady || !pollId || !poll || !qna || !pollData || !qnaCounts) {
     return null
   }
@@ -76,6 +89,8 @@ export const PollPageCreated: React.FC = () => {
         date: qna.startDate.toISOString(),
         count: totalVotesCount,
         id: poll.id.toString(),
+        showShareButton: true,
+        onShareClick: handleShareClick,
       }}
     >
       <SEO />

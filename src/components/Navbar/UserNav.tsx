@@ -23,7 +23,7 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
   const handleShare = useCallback(() => {
     navigator.clipboard
       .writeText(window.location.href)
-      .then(() => alert('Link copied to clipboard!'))
+      .then(() => alert('Share link copied to clipboard!'))
       .catch((err) => console.error('Failed to copy link:', err))
   }, [])
 
