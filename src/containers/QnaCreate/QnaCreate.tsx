@@ -8,6 +8,7 @@ import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel } from '@/components/WalletPanel'
+import { qna } from '@/data/routes'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -58,7 +59,7 @@ export const QnaCreate: React.FC = () => {
       })
 
       if (response.success && response.data) {
-        router.push(`/qna/live/${response.data.id}`)
+        router.push(qna.LIVE.replace(':id', String(response.data.id)))
       } else {
         setError(response.error || 'Failed to create Q&A')
       }

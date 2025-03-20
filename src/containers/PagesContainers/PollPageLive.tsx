@@ -7,6 +7,7 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
+import { poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updatePoll } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -61,7 +62,8 @@ export const PollPageLive: React.FC = () => {
         count: poll.optionsIds.length,
         id: pollId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`/poll/create?qnaId=${poll.qnaId}`),
+        onAddPollClick: () =>
+          router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
       }}
     >
       <SEO />

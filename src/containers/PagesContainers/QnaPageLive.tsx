@@ -5,13 +5,14 @@ import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsA
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
+import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
+import { poll } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updateQnA } from '@/utils/api.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
@@ -57,7 +58,7 @@ export const QnaPageLive: React.FC = () => {
         count: qna.questionsIds.length,
         id: qnaId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`/poll/create?qnaId=${qnaId}`),
+        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
       }}
     >
       <SEO />

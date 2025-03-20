@@ -1,10 +1,11 @@
+import { QakuLogo } from '@/components/Icons/QakuLogo'
+import { LANDING } from '@/data/routes'
 import { NavbarModeEnum, UserNavbarProps } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { Button } from '../Button'
 import { LinkIcon } from '../Icons/LinkIcon'
-import { QakuLogo } from '../Icons/QakuLogo'
 import { Tab } from '../Tab'
 import WalletConnect from './WalletConnect'
 
@@ -22,7 +23,7 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
   return (
     <Container>
       <Left>
-        <Link href="/">
+        <Link href={LANDING}>
           <QakuLogo width={40} height={40} />
         </Link>
         <Info>

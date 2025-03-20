@@ -1,5 +1,6 @@
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Button } from '@/components/Button'
+import { HOME, qna } from '@/data/routes'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -15,7 +16,7 @@ export const LandingPage: React.FC = () => {
 
   useEffect(() => {
     if (isConnecting && walletState.status === 'connected') {
-      router.push('/home')
+      router.push(HOME)
       setIsConnecting(false)
     }
   }, [walletState.status, router, isConnecting])
@@ -34,7 +35,7 @@ export const LandingPage: React.FC = () => {
       <ContentContainer>
         <Hero />
         <ButtonGroup>
-          <Link href={'/qna/create'}>
+          <Link href={qna.CREATE}>
             <Button size="large">Create quick Q&A</Button>
           </Link>
           <Button

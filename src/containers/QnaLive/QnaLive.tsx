@@ -4,6 +4,7 @@ import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { user } from '@/data/routes'
 import { FilterThreadEnum } from '@/types/thread.types'
 import {
   addNewAnswer,
@@ -151,7 +152,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
       </Main>
       <ActionContainer>
         <Link
-          href={`/user/qna/${qnaId}`}
+          href={user.QNA.replace(':id', String(qnaId))}
           target="_blank"
           rel="noopener noreferrer"
         >
