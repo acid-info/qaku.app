@@ -1,5 +1,6 @@
 import { NavbarModeEnum, UserNavbarProps } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
+import { handleUserViewShare } from '@/utils/navbar.utils'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { Button } from '../Button'
@@ -48,7 +49,11 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
       </TabWrapper>
       <Nav>
         <WalletConnect
-          secondaryButton={<Button icon={<LinkIcon />}>Share</Button>}
+          secondaryButton={
+            <Button icon={<LinkIcon />} onClick={handleUserViewShare}>
+              Share
+            </Button>
+          }
         />
       </Nav>
     </Container>

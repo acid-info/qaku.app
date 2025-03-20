@@ -4,6 +4,7 @@ import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { loadPollOptions } from '@/utils/api.utils'
+import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
@@ -60,6 +61,16 @@ export const PollPageCreated: React.FC = () => {
   }, [poll])
   const qnaCounts = useAtomValue(qnaCountsAtom)
 
+  const handleShareClick = () => {
+    if (poll) {
+      handleShare({
+        qnaId: poll.qnaId,
+        pollId,
+        mode: NavbarModeEnum.Polls,
+      })
+    }
+  }
+
   if (!router.isReady || !pollId || !poll || !qna || !pollData || !qnaCounts) {
     return null
   }
@@ -76,6 +87,8 @@ export const PollPageCreated: React.FC = () => {
         date: qna.startDate.toISOString(),
         count: totalVotesCount,
         id: poll.id.toString(),
+        showShareButton: true,
+        onShareClick: handleShareClick,
       }}
     >
       <SEO />
