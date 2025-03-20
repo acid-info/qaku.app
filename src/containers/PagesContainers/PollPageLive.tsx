@@ -5,6 +5,7 @@ import { SidebarContainer } from '@/containers/Sidebar'
 import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updatePoll } from '@/utils/api.utils'
+import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -48,16 +49,11 @@ export const PollPageLive: React.FC = () => {
   }
 
   const handleShareClick = () => {
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href)
-      const baseUrl = `${url.protocol}//${url.host}`
-      const shareUrl = `${baseUrl}/user/qna/${poll.qnaId}/polls?poll=${pollId}`
-
-      navigator.clipboard
-        .writeText(shareUrl)
-        .then(() => alert('Share link to user poll view copied to clipboard!'))
-        .catch((err) => console.error('Failed to copy link:', err))
-    }
+    handleShare({
+      qnaId: poll.qnaId,
+      pollId,
+      mode: NavbarModeEnum.Polls,
+    })
   }
 
   return (
