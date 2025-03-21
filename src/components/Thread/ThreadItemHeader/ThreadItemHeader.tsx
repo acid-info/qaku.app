@@ -4,6 +4,7 @@ import React from 'react'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { CheckIcon } from '@/components/Icons/CheckIcon'
+import { VerifiedIcon } from '@/components/Icons/VerifiedIcon'
 import { NameWithSuffix } from '@/components/NameWithSuffix'
 import { ProfileIcon } from '@/components/ProfileIcon'
 import { TogglePill } from '@/components/TogglePill'
@@ -42,11 +43,11 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
       <InfoContainer>
         <ProfileIcon variant={profileIconVariant} character={author} />
         <InfoText>
-          {isAuthorized ? (
-            <NameWithSuffix name={author} />
-          ) : (
-            <QuestionAuthor>{author}</QuestionAuthor>
-          )}
+          <NameWithSuffix
+            name={author}
+            suffixDelimiter="."
+            icon={author?.includes('.') ? <VerifiedIcon /> : null}
+          />
 
           <QuestionTimestamp>
             {new Date(timestamp).toLocaleString()}
