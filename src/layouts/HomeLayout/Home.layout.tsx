@@ -19,11 +19,9 @@ export default function HomeLayout(props: PropsWithChildren<Props>) {
       <LayoutContainer>
         <Navbar>
           <h1>{props.title}</h1>
-          <WalletConnect
-            secondaryButton={
-              <Button icon={<ChevronDownIcon />}>0xC00B...f441</Button>
-            }
-          />
+          <WalletConnect>
+            <Button icon={<ChevronDownIcon />}>0xC00B...f441</Button>
+          </WalletConnect>
         </Navbar>
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
