@@ -1,22 +1,20 @@
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { MessageForm } from '@/components/MessageForm'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { FilterThreadEnum } from '@/types/thread.types'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
   addNewAnswer,
   addNewQuestion,
   likeAnswerById,
   likeQuestionById,
 } from '@/utils/api.utils'
+import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
-import {
-  getFilteredQuestions,
-  mapQuestionToThread,
-} from '../../utils/thread.utils'
 const CONTENT_WIDTH = 507
 
 const EmptyState = () => (
@@ -41,7 +39,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const isAuthorized = useAtomValue(isAuthorizedAtom)
+  const { status, userName } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -109,7 +107,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
             })
             resetForm()
           }}
-          isAuthorized={isAuthorized}
+          isAuthorized={status === WalletConnectionStatusEnum.Connected}
         />
 
         <TabWrapper>
@@ -134,6 +132,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
                 info={thread.info}
                 likes={thread.likes}
                 isFirst={index === 0}
+                userName={userName ?? undefined}
                 onQuestionLikeClick={() =>
                   handleQuestionLike(thread.info.questionId)
                 }
@@ -147,7 +146,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
                   resetForm()
                 }}
                 isChecked={thread.info.isAnswered}
-                isAuthorized={isAuthorized}
+                isAuthorized={status === WalletConnectionStatusEnum.Connected}
                 isUser={true}
               />
             ))}

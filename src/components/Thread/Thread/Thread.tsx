@@ -21,6 +21,7 @@ export type ThreadProps = {
   onResponseLikeClick?: (answerId: number) => void
   onReplySubmit?: ThreadItemReplyProps['onSubmit']
   onCheckClick?: () => void
+  userName?: string
   isAuthorized?: boolean
   isFirst?: boolean
   isUser?: boolean
@@ -35,6 +36,7 @@ export const Thread: React.FC<ThreadProps> = ({
   onResponseLikeClick,
   onReplySubmit = () => {},
   onCheckClick,
+  userName,
   isAuthorized = false,
   isFirst = false,
   isUser = false,
@@ -82,6 +84,7 @@ export const Thread: React.FC<ThreadProps> = ({
           onSubmit={handleReplySubmit}
           onClose={handleReplyClose}
           isAuthorized={isAuthorized}
+          userName={userName}
         />
       )}
     </Container>

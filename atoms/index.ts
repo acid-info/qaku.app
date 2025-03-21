@@ -5,7 +5,6 @@ export * from './qna'
 export * from './qnaWidget'
 export * from './question'
 export * from './selectors'
-export * from './user'
 
 export type {
   CompleteQnAType,

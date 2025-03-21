@@ -1,5 +1,8 @@
+import { qnasRecordAtom } from '@/../atoms/qna'
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { SEO } from '@/components/SEO'
-import UserLayout from '@/layouts/DefaultLayout/User.layout'
+import { UserLayoutContainer } from '@/containers/UserLayout'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
@@ -7,15 +10,12 @@ import { handleUserModeChange } from '@/utils/navbar.utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { qnasRecordAtom } from '../../../atoms/qna'
-import { userAtom } from '../../../atoms/user'
-import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaUser } from '../QnaUser/QnaUser'
 
 export const QnaPageUser: React.FC = () => {
   const router = useRouter()
 
-  const user = useAtomValue(userAtom)
+  const { userName } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
 
   // Todo might want to use jotai atom here. It's hard fetch qna and then use a derived atom here.
@@ -41,7 +41,7 @@ export const QnaPageUser: React.FC = () => {
   }
 
   return (
-    <UserLayout
+    <UserLayoutContainer
       onModeChange={(mode) =>
         handleUserModeChange({
           newMode: mode,
@@ -57,7 +57,7 @@ export const QnaPageUser: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaUser qnaId={qnaId} userId={user.id} />
-    </UserLayout>
+      <QnaUser qnaId={qnaId} userId={userName ?? ''} />
+    </UserLayoutContainer>
   )
 }

@@ -27,7 +27,7 @@ export const usePollOptions = (pollId: number) => {
     }))
   }, [pollOptions, totalVotes])
 
-  const hasVoted = (userId: string) => {
+  const isUserVoted = (userId: string) => {
     return pollOptions.some((option) => option.voters.includes(userId))
   }
 
@@ -36,6 +36,6 @@ export const usePollOptions = (pollId: number) => {
     optionsWithStats,
     totalVotes,
     hasOptions: pollOptions.length > 0,
-    hasVoted,
+    isUserVoted,
   }
 }

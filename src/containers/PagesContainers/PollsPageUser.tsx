@@ -1,6 +1,9 @@
+import { pollIdsByQnaIdAtom } from '@/../atoms/poll'
+import { qnasRecordAtom } from '@/../atoms/qna'
+import { useQnaPollsSubscriptions } from '@/../hooks/useQnaPollsSubscriptions'
 import { SEO } from '@/components/SEO'
 import { PollsUser } from '@/containers/PollsUser'
-import UserLayout from '@/layouts/DefaultLayout/User.layout'
+import { UserLayoutContainer } from '@/containers/UserLayout'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
@@ -9,9 +12,6 @@ import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { pollIdsByQnaIdAtom } from '../../../atoms/poll'
-import { qnasRecordAtom } from '../../../atoms/qna'
-import { useQnaPollsSubscriptions } from '../../../hooks/useQnaPollsSubscriptions'
 
 const EmptyState = () => (
   <NoContentMessage>
@@ -48,7 +48,7 @@ export const PollsPageUser: React.FC = () => {
   }
 
   return (
-    <UserLayout
+    <UserLayoutContainer
       onModeChange={(mode) =>
         handleUserModeChange({
           newMode: mode,
@@ -66,7 +66,7 @@ export const PollsPageUser: React.FC = () => {
       <SEO />
       <PollsUser pollIds={pollIds} />
       {pollIds.length === 0 && <EmptyState />}
-    </UserLayout>
+    </UserLayoutContainer>
   )
 }
 

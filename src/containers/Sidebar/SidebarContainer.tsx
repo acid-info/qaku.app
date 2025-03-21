@@ -1,8 +1,3 @@
-import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { PollType, QnAType } from '@/types/qna.types'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
 import {
   activeObjectAtom,
   expandedQnAIdsAtom,
@@ -14,7 +9,13 @@ import {
   setActivePollAtom,
   setActiveQnAAtom,
   toggleExpandedQnAAtom,
-} from '../../../atoms'
+} from '@/../atoms'
+import { Sidebar } from '@/components/Sidebar/Sidebar'
+import { poll, qna } from '@/data/routes'
+import { PollType, QnAType } from '@/types/qna.types'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useRouter } from 'next/router'
+import React, { useMemo } from 'react'
 
 export const SidebarContainer: React.FC = () => {
   const router = useRouter()
@@ -55,21 +56,21 @@ export const SidebarContainer: React.FC = () => {
 
   const handleQnAClick = (qnaId: number) => {
     setActiveQnA(qnaId)
-    const qna = qnasRecord[qnaId]
-    if (qna?.isActive) {
-      router.push(`/qna/live/${qnaId}`)
+    const qna_ = qnasRecord[qnaId]
+    if (qna_?.isActive) {
+      router.push(qna.LIVE.replace(':id', String(qnaId)))
     } else {
-      router.push(`/qna/created/${qnaId}`)
+      router.push(qna.CREATED.replace(':id', String(qnaId)))
     }
   }
 
   const handlePollClick = (pollId: number) => {
     setActivePoll(pollId)
-    const poll = pollsRecord[pollId]
-    if (poll?.isActive) {
-      router.push(`/poll/live/${pollId}`)
+    const poll_ = pollsRecord[pollId]
+    if (poll_?.isActive) {
+      router.push(poll.LIVE.replace(':id', String(pollId)))
     } else {
-      router.push(`/poll/created/${pollId}`)
+      router.push(poll.CREATED.replace(':id', String(pollId)))
     }
   }
 

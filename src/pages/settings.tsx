@@ -1,5 +1,5 @@
 import { SEO } from '@/components/SEO'
-import { SettingsPage } from '@/containers/Home/SettingsPage'
+import { SettingsPage } from '@/containers/PagesContainers/SettingsPage'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { HomeLayout } from '@/layouts/HomeLayout'
 

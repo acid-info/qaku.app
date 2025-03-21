@@ -1,26 +1,26 @@
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
-import { getQnaByIdAtom, qnasRecordAtom } from '@/../atoms/qna'
-import { userAtom } from '@/../atoms/user'
+import { getQnaByIdAtom } from '@/../atoms/qna'
+import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
+import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
+import { poll } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { QnaLive } from '../QnaLive/QnaLive'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
-  const user = useAtomValue(userAtom)
-  const setQnasRecord = useSetAtom(qnasRecordAtom)
+  const { userName } = useAtomValue(walletStateAtom)
 
   const qnaId = useMemo(() => {
     const id = router.query.id
@@ -53,7 +53,7 @@ export const QnaPageLive: React.FC = () => {
   }
 
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       showFooter={false}
       useAlternativeGap
       sidebar={<SidebarContainer />}
@@ -66,19 +66,19 @@ export const QnaPageLive: React.FC = () => {
         count: qna.questionsIds.length,
         id: qnaId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`/poll/create?qnaId=${qnaId}`),
+        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
         showShareButton: true,
         onShareClick: handleShareClick,
       }}
     >
       <SEO />
-      <QnaLive qnaId={qnaId} userId={user.id} />
+      <QnaLive qnaId={qnaId} userId={userName ?? ''} />
       <QnaFloatingPanel
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
         qna={qna}
         onSave={handleSaveQna}
       />
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }

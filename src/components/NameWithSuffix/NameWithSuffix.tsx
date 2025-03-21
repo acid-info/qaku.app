@@ -29,7 +29,7 @@ export function NameWithSuffix({
         {main}
         {parsedSuffix && <Suffix>{parsedSuffix}</Suffix>}
       </span>
-      {icon}
+      {parsedSuffix && icon}
     </Container>
   )
 }

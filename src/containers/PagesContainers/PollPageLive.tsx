@@ -1,18 +1,19 @@
+import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
+import { getPollByIdAtom } from '@/../atoms/poll'
+import { pollsRecordAtom } from '@/../atoms/poll/pollsRecordAtom'
+import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
 import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
+import { poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updatePoll } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
-import { getPollByIdAtom } from '../../../atoms/poll'
-import { pollsRecordAtom } from '../../../atoms/poll/pollsRecordAtom'
-import { usePollSubscriptions } from '../../../hooks/usePollSubscriptions'
 
 export const PollPageLive: React.FC = () => {
   const router = useRouter()
@@ -57,7 +58,7 @@ export const PollPageLive: React.FC = () => {
   }
 
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       useAlternativeGap
       showFooter={false}
       sidebar={<SidebarContainer />}
@@ -70,7 +71,8 @@ export const PollPageLive: React.FC = () => {
         count: poll.optionsIds.length,
         id: pollId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`/poll/create?qnaId=${poll.qnaId}`),
+        onAddPollClick: () =>
+          router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
         showShareButton: true,
         onShareClick: handleShareClick,
       }}
@@ -83,6 +85,6 @@ export const PollPageLive: React.FC = () => {
         poll={poll}
         onSave={handleSavePollSettings}
       />
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }

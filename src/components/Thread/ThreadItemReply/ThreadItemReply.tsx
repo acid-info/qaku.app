@@ -13,12 +13,14 @@ export type ThreadItemReplyProps = {
     name?: string
   }) => void
   isAuthorized?: boolean
+  userName?: string
 }
 
 export const ThreadItemReply: React.FC<ThreadItemReplyProps> = ({
   onClose,
   onSubmit,
   isAuthorized = false,
+  userName,
 }) => {
   return (
     <Container>
@@ -32,6 +34,7 @@ export const ThreadItemReply: React.FC<ThreadItemReplyProps> = ({
         onSubmit={onSubmit}
         isAuthorized={isAuthorized}
         messagePlaceholder="Write your reply"
+        userName={userName}
       />
     </Container>
   )

@@ -6,6 +6,7 @@ import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { PollOptions } from '@/components/PollOptions'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
+import { poll } from '@/data/routes'
 import { createNewPoll } from '@/utils/api.utils'
 import { mapPollDataForCreation } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
@@ -142,7 +143,7 @@ export const PollCreate: React.FC = () => {
 
       if (response.success && response.data) {
         resetFormData()
-        router.push(`/poll/live/${response.data.id}`)
+        router.push(poll.LIVE.replace(':id', String(response.data.id)))
       } else {
         setError(response.error || 'Failed to create poll')
       }

@@ -1,3 +1,4 @@
+import { walletStateAtom } from '@/../atoms/wallet'
 import { Button } from '@/components/Button'
 import { CopyIcon } from '@/components/Icons/CopyIcon'
 import {
@@ -6,17 +7,14 @@ import {
   StyledInput,
 } from '@/components/StyledComponents'
 import styled from '@emotion/styled'
-import React, { useEffect } from 'react'
+import { useAtomValue } from 'jotai'
+import React from 'react'
 
 export const SettingsPage: React.FC = () => {
-  const [key, setKey] = React.useState('')
-
-  useEffect(() => {
-    setKey('0xC00B84D28886213A162b08c6E242893a3222f441')
-  }, [])
+  const { address } = useAtomValue(walletStateAtom)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(key)
+    navigator.clipboard.writeText(address || '')
 
     alert('Key copied to clipboard')
   }
@@ -29,7 +27,7 @@ export const SettingsPage: React.FC = () => {
             <h3>Key Management</h3>
             <div className="wrapper">
               <Key>
-                <span>{key}</span>
+                <span>{address}</span>
                 <IconContainer onClick={handleCopy}>
                   <CopyIcon />
                 </IconContainer>

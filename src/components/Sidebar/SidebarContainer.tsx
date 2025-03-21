@@ -1,4 +1,5 @@
 import { breakpoints } from '@/configs/ui.configs'
+import { LANDING } from '@/data/routes'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
@@ -7,7 +8,7 @@ import { QakuLogo } from '../Icons/QakuLogo'
 export const SidebarContainer = ({ children }: PropsWithChildren) => {
   return (
     <SidebarWrapper>
-      <Link href="/">
+      <Link href={LANDING}>
         <QakuLogo width={40} height={40} />
       </Link>
       {children}

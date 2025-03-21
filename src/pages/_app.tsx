@@ -1,4 +1,5 @@
-import { DefaultLayout } from '@/layouts/DefaultLayout'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
+import { WagmiContextProvider } from '@/contexts/WagmiContextProvider'
 import { css, Global } from '@emotion/react'
 import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
@@ -21,7 +22,9 @@ type AppLayoutProps<P = {}> = AppProps & {
 export default function App({ Component, pageProps }: AppLayoutProps) {
   const getLayout =
     Component.getLayout ||
-    ((page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>)
+    ((page: ReactNode) => (
+      <DefaultLayoutContainer>{page}</DefaultLayoutContainer>
+    ))
 
   return (
     <>
@@ -49,7 +52,9 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
           }
         `}
       />
-      {getLayout(<Component {...pageProps} />)}
+      <WagmiContextProvider>
+        {getLayout(<Component {...pageProps} />)}
+      </WagmiContextProvider>
     </>
   )
 }

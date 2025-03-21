@@ -1,7 +1,7 @@
 import { SEO } from '@/components/SEO'
+import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreate } from '@/containers/QnaCreate/QnaCreate'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { NavbarModeEnum } from '@/types/navbar.types'
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return (
-    <DefaultLayout
+    <DefaultLayoutContainer
       useAlternativeGap
       showFooter={false}
       sidebar={<SidebarContainer />}
@@ -26,6 +26,6 @@ Page.getLayout = function getLayout(page: React.ReactNode) {
       }}
     >
       {page}
-    </DefaultLayout>
+    </DefaultLayoutContainer>
   )
 }

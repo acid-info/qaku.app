@@ -12,7 +12,7 @@ export const mockPolls: PollType[] = [
     hasCorrectAnswers: false,
     hasMultipleOptionsSelect: false,
     isResultVisible: true,
-    activeUntil: new Date('2025-03-14T12:00:00Z'),
+    activeUntil: new Date('2026-03-14T12:00:00Z'),
     isActive: true,
   },
   {
@@ -27,7 +27,7 @@ export const mockPolls: PollType[] = [
     correctAnswersIds: [1007],
     hasMultipleOptionsSelect: true,
     isResultVisible: true,
-    activeUntil: new Date('2025-03-20T16:00:00Z'),
+    activeUntil: new Date('2026-03-20T16:00:00Z'),
     isActive: true,
   },
   {

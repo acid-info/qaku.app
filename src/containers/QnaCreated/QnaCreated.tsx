@@ -1,3 +1,5 @@
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
@@ -7,8 +9,6 @@ import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
-import { userAtom } from '../../../atoms/user'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
 
 const CONTENT_WIDTH = 507
 
@@ -26,7 +26,7 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const user = useAtomValue(userAtom)
+  const { userName } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -60,9 +60,9 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
     if (filteredQuestions.length === 0) return []
 
     return filteredQuestions.map((question) =>
-      mapQuestionToThread(question, user.id),
+      mapQuestionToThread(question, userName ?? ''),
     )
-  }, [filteredQuestions, user.id])
+  }, [filteredQuestions, userName])
 
   const handleTabChange = useCallback((id: string | number) => {
     setActiveFilter(id.toString() as FilterThreadEnum)

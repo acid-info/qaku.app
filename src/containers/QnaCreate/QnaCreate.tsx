@@ -1,3 +1,6 @@
+import { qnasRecordAtom } from '@/../atoms/qna/qnasRecordAtom'
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
@@ -5,19 +8,19 @@ import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel } from '@/components/WalletPanel'
+import { qna } from '@/data/routes'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { qnasRecordAtom } from '../../../atoms/qna/qnasRecordAtom'
-import { userAtom } from '../../../atoms/user/userAtom'
 
 export const QnaCreate: React.FC = () => {
-  const user = useAtomValue(userAtom)
-  const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
+  const { userName } = useAtomValue(walletStateAtom)
+  const { status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
+  const { openWalletPanel } = useWalletConnection()
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -38,7 +41,7 @@ export const QnaCreate: React.FC = () => {
       return
     }
 
-    if (!isAuthorized) {
+    if (status !== WalletConnectionStatusEnum.Connected || !userName) {
       setError('Please connect your wallet first')
       return
     }
@@ -50,14 +53,14 @@ export const QnaCreate: React.FC = () => {
       const response = await createQnA({
         title,
         description: description || undefined,
-        owner: user.id,
+        owner: userName,
         hash: password,
         admins: admins.length ? admins : undefined,
         setQnasRecord,
       })
 
       if (response.success && response.data) {
-        router.push(`/qna/live/${response.data.id}`)
+        router.push(qna.LIVE.replace(':id', String(response.data.id)))
       } else {
         setError(response.error || 'Failed to create Q&A')
       }
@@ -75,8 +78,8 @@ export const QnaCreate: React.FC = () => {
         <Content>
           {error && <Badge title={error} variant="red" />}
           <WalletPanel
-            isAuthorized={isAuthorized}
-            onConnect={() => setIsAuthorized(true)}
+            isAuthorized={status === WalletConnectionStatusEnum.Connected}
+            onConnect={openWalletPanel}
           />
           <NameSection>
             <Title>Give it name</Title>

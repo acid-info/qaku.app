@@ -1,24 +1,56 @@
+import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Button } from '@/components/Button'
+import { HOME, qna } from '@/data/routes'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 import { Hero } from './Hero'
 
 export const LandingPage: React.FC = () => {
+  const { openWalletPanel, disconnectWallet, walletState } =
+    useWalletConnection()
+  const router = useRouter()
+  const [isConnecting, setIsConnecting] = useState(false)
+
+  useEffect(() => {
+    if (
+      isConnecting &&
+      walletState.status === WalletConnectionStatusEnum.Connected
+    ) {
+      router.push(HOME)
+      setIsConnecting(false)
+    }
+  }, [walletState.status, router, isConnecting])
+
+  const handleConnectWallet = () => {
+    if (walletState.status === WalletConnectionStatusEnum.Connected) {
+      disconnectWallet()
+    } else {
+      setIsConnecting(true)
+      openWalletPanel()
+    }
+  }
+
   return (
     <LandingWrapper>
       <ContentContainer>
         <Hero />
         <ButtonGroup>
-          <Link href={'/qna/create'}>
+          <Link href={qna.CREATE}>
             <Button size="large">Create quick Q&A</Button>
           </Link>
-          <Link href={'/home'}>
-            <Button size="large" variant="filledPrimary">
-              Connect Wallet
-            </Button>
-          </Link>
+          <Button
+            onClick={handleConnectWallet}
+            size="large"
+            variant="filledPrimary"
+          >
+            {walletState.status === WalletConnectionStatusEnum.Connected
+              ? 'Disconnect Wallet'
+              : 'Connect Wallet'}
+          </Button>
         </ButtonGroup>
       </ContentContainer>
       <Video autoPlay loop muted playsInline>

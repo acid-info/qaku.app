@@ -1,3 +1,4 @@
+import { SETTINGS } from '@/data/routes'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { IconButtonRound } from '../IconButtonRound'
@@ -6,7 +7,7 @@ import { SettingsIcon } from '../Icons/SettingsIcon'
 
 export const SettingsButton: React.FC = () => {
   const router = useRouter()
-  const isSettingsPage = router.pathname === '/settings'
+  const isSettingsPage = router.pathname === SETTINGS
 
   return isSettingsPage ? (
     <IconButtonRound
@@ -15,7 +16,7 @@ export const SettingsButton: React.FC = () => {
       icon={<ChevronUpIcon />}
     />
   ) : (
-    <Link href="/settings">
+    <Link href={SETTINGS}>
       <IconButtonRound icon={<SettingsIcon />} />
     </Link>
   )

@@ -1,11 +1,11 @@
+import { pollsRecordAtom } from '@/../atoms/poll'
+import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
+import { qnasRecordAtom } from '@/../atoms/qna'
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
 import { PollType, QnAType } from '@/types/qna.types'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { pollsRecordAtom } from '../../../atoms/poll'
-import { pollOptionsRecordAtom } from '../../../atoms/pollOption'
-import { qnasRecordAtom } from '../../../atoms/qna'
 
 export const ApiSubscriptionManager = () => {
   const setQnasRecord = useSetAtom(qnasRecordAtom)

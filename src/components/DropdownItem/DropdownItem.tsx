@@ -19,7 +19,7 @@ const VARIANT_CONFIG: Record<DropdownItemVariantType, VariantConfigType> = {
       active: 'var(--gray-dark)',
       hover: 'var(--gray-dark)',
     },
-    border: 'none',
+    border: '1px solid var(--gray)',
   },
   outlined: {
     background: {

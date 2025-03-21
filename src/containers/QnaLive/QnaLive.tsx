@@ -1,24 +1,23 @@
+import { walletStateAtom } from '@/../atoms/wallet'
+import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { user } from '@/data/routes'
 import { FilterThreadEnum } from '@/types/thread.types'
+import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
   addNewAnswer,
   likeAnswerById,
   likeQuestionById,
   toggleQuestionAnsweredStatus,
 } from '@/utils/api.utils'
+import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
-import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
-import { useQnaQuestionsWithAnswers } from '../../../hooks/useQnaQuestionsWithAnswers'
-import {
-  getFilteredQuestions,
-  mapQuestionToThread,
-} from '../../utils/thread.utils'
 
 const CONTENT_WIDTH = 507
 
@@ -44,7 +43,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const isAuthorized = useAtomValue(isAuthorizedAtom)
+  const { status, userName } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -128,6 +127,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
                 info={thread.info}
                 likes={thread.likes}
                 isFirst={index === 0}
+                userName={userName ?? undefined}
                 onQuestionLikeClick={() =>
                   handleQuestionLike(thread.info.questionId)
                 }
@@ -142,7 +142,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
                 }}
                 onCheckClick={() => handleCheck(thread.info.questionId)}
                 isChecked={thread.info.isAnswered}
-                isAuthorized={isAuthorized}
+                isAuthorized={status === WalletConnectionStatusEnum.Connected}
               />
             ))}
           </ThreadsContainer>
@@ -154,7 +154,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
       </Main>
       <ActionContainer>
         <Link
-          href={`/user/qna/${qnaId}`}
+          href={user.QNA.replace(':id', String(qnaId))}
           target="_blank"
           rel="noopener noreferrer"
         >
