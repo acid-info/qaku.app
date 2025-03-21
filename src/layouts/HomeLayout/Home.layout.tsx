@@ -1,4 +1,6 @@
+import { Button } from '@/components/Button'
 import { Footer, FooterProps } from '@/components/Footer'
+import { ChevronDownIcon } from '@/components/Icons/ChevronDownIcon'
 import WalletConnect from '@/components/Navbar/WalletConnect'
 import { SidebarContainer } from '@/components/Sidebar'
 import { LayoutContainer } from '@/components/StyledComponents'
@@ -17,7 +19,10 @@ export default function HomeLayout(props: PropsWithChildren<Props>) {
       <SidebarContainer>{props.sidebar}</SidebarContainer>
       <LayoutContainer>
         <Navbar>
-          <WalletConnect />
+          <h1>{props.title}</h1>
+          <WalletConnect>
+            <Button icon={<ChevronDownIcon />}>0xC00B...f441</Button>
+          </WalletConnect>
         </Navbar>
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />

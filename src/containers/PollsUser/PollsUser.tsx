@@ -14,6 +14,7 @@ import { voteInPoll } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
 import { atom, useAtomValue } from 'jotai'
+import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 
 const BACKUP_POLL_ID = 0
@@ -26,15 +27,48 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   const { userName } = useAtomValue(walletStateAtom)
   const pollsRecord = useAtomValue(pollsRecordAtom)
   const { openWalletPanel, walletState } = useWalletConnection()
+  const router = useRouter()
 
   const [activePollId, setActivePollId] = useState<number | null>(null)
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([])
   const [isAnonymous, setIsAnonymous] = useState(false)
   useEffect(() => {
-    if (pollIds.length > 0 && !activePollId) {
-      setActivePollId(pollIds[0])
+    if (!pollIds.length || !router.isReady) return
+
+    let newPollId = activePollId
+
+    if (router.query.poll) {
+      const pollIdFromUrl = parseInt(String(router.query.poll), 10)
+      if (pollIds.includes(pollIdFromUrl)) {
+        newPollId = pollIdFromUrl
+      }
     }
-  }, [pollIds, activePollId])
+
+    if (newPollId === null) {
+      newPollId = pollIds[0]
+    }
+    if (newPollId !== activePollId) {
+      setActivePollId(newPollId)
+    }
+  }, [router.isReady, router.query.poll, pollIds, activePollId])
+
+  const handlePollChange = (id: string | number) => {
+    const pollId = parseInt(String(id), 10)
+    setSelectedOptionIds([])
+    setActivePollId(pollId)
+
+    if (router.isReady) {
+      const newQuery = { ...router.query, poll: String(pollId) }
+      router.push(
+        {
+          pathname: router.pathname,
+          query: newQuery,
+        },
+        undefined,
+        { shallow: true },
+      )
+    }
+  }
 
   const activePollAtom = useMemo(() => {
     if (!activePollId) return atom(null)
@@ -129,10 +163,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
         <StyledTab
           options={pollTabOptions}
           activeId={activePollId?.toString()}
-          onChange={(id) => {
-            setActivePollId(parseInt(id as string, 10))
-            setSelectedOptionIds([])
-          }}
+          onChange={handlePollChange}
           variant="secondary"
         />
       </PollList>

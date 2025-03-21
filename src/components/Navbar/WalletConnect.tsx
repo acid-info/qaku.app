@@ -6,12 +6,12 @@ import { Button } from '../Button'
 import { Dropdown } from '../Dropdown'
 
 type WalletConnectProps = {
-  secondaryButton?: React.ReactNode
+  children?: React.ReactNode
   connectWalletButtonLabel?: string
 }
 
 const WalletConnect = ({
-  secondaryButton = null,
+  children = null,
   connectWalletButtonLabel = 'Connect Wallet',
 }: WalletConnectProps) => {
   const { walletState, openWalletPanel, disconnectWallet } =
@@ -42,7 +42,7 @@ const WalletConnect = ({
 
   return (
     <Container>
-      {secondaryButton}
+      {children}
       {walletState.status !== WalletConnectionStatusEnum.Connected ? (
         <Button onClick={handleConnect}>{connectWalletButtonLabel}</Button>
       ) : (

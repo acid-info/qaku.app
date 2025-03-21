@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import { MessageFormSubmitHandlerType } from '@/types/form.types'
 import { Button } from '../Button'
+import { NameWithSuffix } from '../NameWithSuffix'
 import { ProfileIcon } from '../ProfileIcon'
+import { Row } from '../StyledComponents'
 import { ToggleButton } from '../ToggleButton'
 
 export type MessageFormProps = {
@@ -34,7 +36,17 @@ export const MessageForm = ({
   const handleClickOutside = () => {
     if (!message.trim() && !name.trim()) setIsFocused(false)
   }
+
   useOnClickOutside(formRef, handleClickOutside, true)
+
+  // TODO: Remove this temporary name once the API is ready
+  const TEMPORARY_NAME = 'john-marston.eth'
+
+  useEffect(() => {
+    if (isAuthorized) {
+      setName(TEMPORARY_NAME)
+    }
+  }, [isAuthorized])
 
   const resetForm = () => {
     setMessage('')
@@ -79,16 +91,24 @@ export const MessageForm = ({
         )}
         {isFocused && (
           <ActionsContainer>
-            <ProfileIcon character={name || 'A'} />
-            <NameInput
-              placeholder={namePlaceholder}
-              value={name}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
-              }
-              onKeyDown={handleKeyDown}
-              $isFocused={isFocused}
-            />
+            <Profile gap={8}>
+              <ProfileIcon character={name || 'A'} />
+              {isAuthorized ? (
+                <NameWithSuffix
+                  name={name.length > 0 ? name : TEMPORARY_NAME}
+                />
+              ) : (
+                <NameInput
+                  placeholder={namePlaceholder}
+                  value={name}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setName(e.target.value)
+                  }
+                  onKeyDown={handleKeyDown}
+                  $isFocused={isFocused}
+                />
+              )}
+            </Profile>
             <ButtonsContainer>
               {!isAuthorized && <Button variant="filled">Authorize</Button>}
               <Button variant="filledPrimary" type="submit">
@@ -182,4 +202,8 @@ const CharacterLimit = styled.span`
 
   color: rgba(255, 255, 255, 0.4);
   text-align: right;
+`
+
+const Profile = styled(Row)`
+  width: inherit;
 `

@@ -46,6 +46,8 @@ const DefaultNav = ({
   status,
   onSettingsClick,
   onAddPollClick,
+  showShareButton = false,
+  onShareClick,
 }: DefaultNavbarProps) => {
   const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
   const isInProgress = status === QnaProgressStatusEnum.InProgress
@@ -107,7 +109,11 @@ const DefaultNav = ({
           <IconButtonRound icon={<SettingsIcon />} onClick={onSettingsClick} />
         </Row>
         <Row>
-          <Button icon={<LinkIcon />}>Share</Button>
+          {showShareButton && (
+            <Button icon={<LinkIcon />} onClick={onShareClick}>
+              Share
+            </Button>
+          )}
           <WalletConnect />
         </Row>
       </Navbar>

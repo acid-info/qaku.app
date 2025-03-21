@@ -10,6 +10,7 @@ import { SidebarContainer } from '@/containers/Sidebar'
 import { poll } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updateQnA } from '@/utils/api.utils'
+import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -44,6 +45,13 @@ export const QnaPageLive: React.FC = () => {
     setIsSettingsPanelOpen(false)
   }
 
+  const handleShareClick = () => {
+    handleShare({
+      qnaId,
+      mode: NavbarModeEnum.Qna,
+    })
+  }
+
   return (
     <DefaultLayoutContainer
       showFooter={false}
@@ -59,6 +67,8 @@ export const QnaPageLive: React.FC = () => {
         id: qnaId.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
+        showShareButton: true,
+        onShareClick: handleShareClick,
       }}
     >
       <SEO />
