@@ -81,7 +81,7 @@ export const Thread: React.FC<ThreadProps> = ({
         <ThreadItemReply
           onSubmit={handleReplySubmit}
           onClose={handleReplyClose}
-          isAuthorized={info?.isAuthorized}
+          isAuthorized={isAuthorized}
         />
       )}
     </Container>

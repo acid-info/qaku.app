@@ -34,12 +34,12 @@ export const ThreadItem: React.FC<ThreadItemProps> = ({
   onLikeClick,
   children,
 }) => {
-  const { author, timestamp, question, isAuthorized } = info
+  const { author, timestamp, question } = info
 
   return (
     <ThreadItemContainer $isFirst={isFirst}>
       <ThreadItemHeader
-        info={{ author, timestamp, isAuthorized }}
+        info={{ author, timestamp }}
         likes={likes}
         actions={actions}
         isChecked={isChecked}
