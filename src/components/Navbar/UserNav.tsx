@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import { Button } from '../Button'
 import { LinkIcon } from '../Icons/LinkIcon'
+import { PlusIcon } from '../Icons/PlusIcon'
 import { QakuLogo } from '../Icons/QakuLogo'
 import { Tab } from '../Tab'
 import WalletConnect from './WalletConnect'
@@ -48,13 +49,14 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
         />
       </TabWrapper>
       <Nav>
-        <WalletConnect
-          secondaryButton={
-            <Button icon={<LinkIcon />} onClick={handleUserViewShare}>
-              Share
-            </Button>
-          }
-        />
+        <WalletConnect>
+          <Link href="/qna/create" target="_blank" rel="noopener noreferrer">
+            <Button icon={<PlusIcon />}>Create Q&A</Button>
+          </Link>
+          <Button icon={<LinkIcon />} onClick={handleUserViewShare}>
+            Share
+          </Button>
+        </WalletConnect>
       </Nav>
     </Container>
   )

@@ -4,10 +4,10 @@ import { isAuthorizedAtom } from '../../../atoms/navbar/isAuthorizedAtom'
 import { Button } from '../Button'
 
 type WalletConnectProps = {
-  secondaryButton?: React.ReactNode
+  children?: React.ReactNode
 }
 
-const WalletConnect = ({ secondaryButton = null }: WalletConnectProps) => {
+const WalletConnect = ({ children = null }: WalletConnectProps) => {
   const [isAuthorized, setIsAuthorized] = useAtom(isAuthorizedAtom)
 
   const handleClick = () => {
@@ -16,8 +16,8 @@ const WalletConnect = ({ secondaryButton = null }: WalletConnectProps) => {
 
   return (
     <Container>
+      {children}
       {!isAuthorized && <Button onClick={handleClick}>Connect Wallet</Button>}
-      {secondaryButton}
     </Container>
   )
 }
