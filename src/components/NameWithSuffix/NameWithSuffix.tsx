@@ -4,12 +4,12 @@ import { VerifiedIcon } from '../Icons/VerifiedIcon'
 
 interface NameWithSuffixProps {
   name: string
-  suffix?: string
+  suffixDelimiter?: string
   icon?: React.ReactNode
 }
 
-const parseSuffix = (fullName: string, suffix: string) => {
-  const idx = fullName.toLowerCase().lastIndexOf(suffix)
+const parseSuffix = (fullName: string, suffixDelimiter: string) => {
+  const idx = fullName.toLowerCase().lastIndexOf(suffixDelimiter)
   if (idx !== -1) {
     return { main: fullName.slice(0, idx), parsedSuffix: fullName.slice(idx) }
   }
@@ -18,10 +18,10 @@ const parseSuffix = (fullName: string, suffix: string) => {
 
 export function NameWithSuffix({
   name,
-  suffix = '.eth',
+  suffixDelimiter = '.',
   icon = <VerifiedIcon />,
 }: NameWithSuffixProps) {
-  const { main, parsedSuffix } = parseSuffix(name, suffix)
+  const { main, parsedSuffix } = parseSuffix(name, suffixDelimiter)
 
   return (
     <Container>

@@ -417,7 +417,6 @@ const ThreadDemo = () => {
     {
       info: {
         author: 'Alice.eth',
-        isAuthorized: true,
         timestamp: '2025-02-15T11:48:36.135Z',
         question:
           'What are the key differences between React hooks and class components?',
@@ -426,7 +425,6 @@ const ThreadDemo = () => {
             id: 1,
             info: {
               author: 'Bob.eth',
-              isAuthorized: true,
               timestamp: '2025-02-16T11:48:36.135Z',
               response: 'Response 1',
             },
