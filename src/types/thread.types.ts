@@ -6,7 +6,6 @@ export type ActionVisibilityType = {
 
 export type ThreadInfoType = {
   author: string
-  isAuthorized?: boolean
   timestamp: string
 }
 
@@ -21,7 +20,6 @@ export interface ThreadResponseInterface {
     author: string
     timestamp: string
     response: string
-    isAuthorized?: boolean
   }
   likes: LikeInfoType
 }

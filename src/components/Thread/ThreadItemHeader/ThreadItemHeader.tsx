@@ -35,7 +35,7 @@ export const ThreadItemHeader: React.FC<ThreadItemHeaderProps> = ({
   onCommentClick,
   onLikeClick,
 }) => {
-  const { author, timestamp, isAuthorized } = info
+  const { author, timestamp } = info
   const { comment = true, like = true, check = true } = actions
 
   return (
