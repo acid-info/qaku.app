@@ -39,7 +39,7 @@ export const mockAnswers: AnswerType[] = [
     timestamp: new Date('2025-02-19T13:48:36.135Z'),
     content:
       'Custom hooks are great for reusable API logic. Tools like React Query or SWR can also help with caching and state management.',
-    author: 'Henry',
+    author: 'Henry.xyz',
     likesCount: 20,
     likers: ['user11', 'user12'],
     questionId: 3,
@@ -50,7 +50,7 @@ export const mockAnswers: AnswerType[] = [
     timestamp: new Date('2025-02-20T14:48:36.135Z'),
     content:
       'Absolutely agree with using React Query. It handles loading states, caching, and error handling out of the box.',
-    author: 'Henry',
+    author: 'Henry.xyz',
     likesCount: 18,
     likers: ['user13', 'user14'],
     questionId: 3,
