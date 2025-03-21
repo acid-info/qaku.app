@@ -54,6 +54,6 @@ const Navbar = styled.header`
   display: flex;
   width: 100%;
   padding: 16px;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-start;
 `
