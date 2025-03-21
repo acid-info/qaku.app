@@ -16,6 +16,7 @@ export type MessageFormProps = {
   namePlaceholder?: string
   maxLength?: number
   hideCharacterLimit?: boolean
+  userName?: string
 }
 
 export const MessageForm = ({
@@ -25,6 +26,7 @@ export const MessageForm = ({
   namePlaceholder = 'Enter your name (optional)',
   maxLength = 150,
   hideCharacterLimit = false,
+  userName,
   ...props
 }: MessageFormProps) => {
   const formRef = useRef<HTMLFormElement>(null)
@@ -38,15 +40,6 @@ export const MessageForm = ({
   }
 
   useOnClickOutside(formRef, handleClickOutside, true)
-
-  // TODO: Remove this temporary name once the API is ready
-  const TEMPORARY_NAME = 'john-marston.eth'
-
-  useEffect(() => {
-    if (isAuthorized) {
-      setName(TEMPORARY_NAME)
-    }
-  }, [isAuthorized])
 
   const resetForm = () => {
     setMessage('')
@@ -73,6 +66,11 @@ export const MessageForm = ({
     }
   }
 
+  useEffect(() => {
+    if (!userName) return
+    setName(userName)
+  }, [userName])
+
   return (
     <FormContainer ref={formRef} onSubmit={handleSubmit} {...props}>
       <InputContainer $isFocused={isFocused}>
@@ -94,9 +92,7 @@ export const MessageForm = ({
             <Profile gap={8}>
               <ProfileIcon character={name || 'A'} />
               {isAuthorized ? (
-                <NameWithSuffix
-                  name={name.length > 0 ? name : TEMPORARY_NAME}
-                />
+                <NameWithSuffix name={name} />
               ) : (
                 <NameInput
                   placeholder={namePlaceholder}

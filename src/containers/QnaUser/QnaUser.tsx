@@ -39,7 +39,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const { status } = useAtomValue(walletStateAtom)
+  const { status, userName } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -132,6 +132,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
                 info={thread.info}
                 likes={thread.likes}
                 isFirst={index === 0}
+                userName={userName ?? undefined}
                 onQuestionLikeClick={() =>
                   handleQuestionLike(thread.info.questionId)
                 }

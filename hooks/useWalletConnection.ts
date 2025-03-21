@@ -86,7 +86,7 @@ export const useWalletConnection = () => {
           address,
           chainId: chainId ?? null,
           provider: walletState.provider,
-          ensName,
+          ensName: ensName ?? null,
           userName: ensName ?? address,
         })
       } else if (!isConnected) {
