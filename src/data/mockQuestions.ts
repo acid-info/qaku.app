@@ -28,7 +28,7 @@ export const mockQuestions: QuestionType[] = [
     timestamp: new Date('2025-02-17T11:48:36.135Z'),
     content:
       'What are the best practices for handling API calls in React components? Should we use custom hooks?',
-    author: 'Frank',
+    author: 'Frank.eth',
     likesCount: 35,
     likers: ['user1', 'user7'],
     isAnswered: false,
