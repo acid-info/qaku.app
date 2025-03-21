@@ -21,6 +21,7 @@ export const PollPageCreate: React.FC = () => {
       navProps={{
         isTitleOnly: true,
         title: pollSettings.title || 'New Poll',
+        showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
       }}
     >

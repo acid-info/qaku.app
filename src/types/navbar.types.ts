@@ -22,8 +22,9 @@ export interface DefaultNavbarProps extends BaseNavbarProps {
   status?: QnaProgressStatusEnum
   onSettingsClick?: () => void
   onAddPollClick?: () => void
-  showShareButton?: boolean
   onShareClick?: () => void
+  showShareButton?: boolean
+  showSettingsButton?: boolean
 }
 
 export interface UserNavbarProps extends BaseNavbarProps {

@@ -65,6 +65,7 @@ export const QnaPageLive: React.FC = () => {
         date: qna.startDate.toISOString(),
         count: qna.questionsIds.length,
         id: qnaId.toString(),
+        showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
         showShareButton: true,

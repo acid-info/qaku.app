@@ -70,6 +70,7 @@ export const PollPageLive: React.FC = () => {
         date: new Date().toISOString(),
         count: poll.optionsIds.length,
         id: pollId.toString(),
+        showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: () =>
           router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
