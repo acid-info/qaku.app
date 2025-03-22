@@ -7,12 +7,10 @@ import {
 } from '@/types/qna.types'
 
 export enum ApiMessageType {
-  CONTROL_MESSAGE = 'control_msg',
   QUESTION_MESSAGE = 'question_msg',
   ANSWER_MESSAGE = 'answer_msg',
   ANSWERED_MESSAGE = 'answered_msg',
   UPVOTE_MESSAGE = 'upvote_msg',
-  MODERATION_MESSAGE = 'moderation_msg',
   POLL_CREATE_MESSAGE = 'poll_create_msg',
   POLL_VOTE_MESSAGE = 'poll_vote_msg',
   POLL_ACTIVE_MESSAGE = 'poll_active_msg',
@@ -20,8 +18,6 @@ export enum ApiMessageType {
   POLL_DELETE_MESSAGE = 'poll_delete_msg',
   QNA_UPDATE_MESSAGE = 'qna_update_msg',
   QNA_DELETE_MESSAGE = 'qna_delete_msg',
-  SNAPSHOT = 'snapshot',
-  PERSIST_SNAPSHOT = 'persist_snapshot',
 }
 
 export interface ApiResponse<T> {

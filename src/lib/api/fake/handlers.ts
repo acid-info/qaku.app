@@ -393,12 +393,6 @@ export const addQnA = async (
 
     dataStore.qnas[newId] = newQnA
 
-    // Notify subscribers
-    notifySubscribers(ApiMessageType.CONTROL_MESSAGE, {
-      type: 'qna_created',
-      qna: newQnA,
-    })
-
     return { success: true, data: newQnA }
   } catch (error) {
     return {
