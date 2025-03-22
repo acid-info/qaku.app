@@ -118,6 +118,20 @@ export const updateQnA = async (
   }
 }
 
+export const startQnA = async (
+  qnaId: number,
+): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await updateQnA(qnaId, { isActive: true, startDate: new Date() })
+  } catch (error) {
+    console.error('Error starting QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
   try {
     return await updateQnA(qnaId, { isActive: false, endDate: new Date() })
@@ -325,6 +339,20 @@ export const voteInPoll = async ({
     return await apiConnector.votePoll(pollId, optionIds, voter)
   } catch (error) {
     console.error('Error voting in poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const startPoll = async (
+  pollId: number,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    return await updatePoll(pollId, { isActive: true })
+  } catch (error) {
+    console.error('Error starting Poll:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
