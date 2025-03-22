@@ -9,6 +9,7 @@ import { Row } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
+import { NOT_FOUND } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { voteInPoll } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
@@ -154,6 +155,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   }
 
   if (!activePollId) {
+    typeof window !== 'undefined' && router.push(NOT_FOUND)
     return null
   }
 

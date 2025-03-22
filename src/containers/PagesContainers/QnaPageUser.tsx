@@ -3,6 +3,7 @@ import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { SEO } from '@/components/SEO'
 import { UserLayoutContainer } from '@/containers/UserLayout'
+import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
@@ -37,6 +38,7 @@ export const QnaPageUser: React.FC = () => {
   useQnaQuestionsAnswersSubscriptions(qnaId)
 
   if (!qnaId || !qna) {
+    typeof window !== 'undefined' && router.push(NOT_FOUND)
     return null
   }
 

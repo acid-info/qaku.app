@@ -10,6 +10,7 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreated } from '@/containers/PollCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
+import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { loadPollOptions } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
@@ -72,6 +73,7 @@ export const PollPageCreated: React.FC = () => {
   }
 
   if (!router.isReady || !pollId || !poll || !qna || !pollData || !qnaCounts) {
+    typeof window !== 'undefined' && router.push(NOT_FOUND)
     return null
   }
 

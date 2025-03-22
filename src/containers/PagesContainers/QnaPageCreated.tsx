@@ -5,6 +5,7 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
+import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { loadQnaData } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
@@ -42,6 +43,7 @@ export const QnaPageCreated: React.FC = () => {
   }, [qnaId, setQuestionsRecord, setAnswersRecord])
 
   if (!router.isReady || !qnaId || !qna) {
+    typeof window !== 'undefined' && router.push(NOT_FOUND)
     return null
   }
 

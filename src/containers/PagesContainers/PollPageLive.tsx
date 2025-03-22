@@ -7,7 +7,7 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { poll as pollRoutes } from '@/data/routes'
+import { NOT_FOUND, poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updatePoll } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
@@ -39,6 +39,7 @@ export const PollPageLive: React.FC = () => {
   usePollSubscriptions(pollId)
 
   if (!router.isReady || !pollId || !poll) {
+    typeof window !== 'undefined' && router.push(NOT_FOUND)
     return null
   }
 

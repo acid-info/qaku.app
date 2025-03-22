@@ -4,6 +4,7 @@ import { useQnaPollsSubscriptions } from '@/../hooks/useQnaPollsSubscriptions'
 import { SEO } from '@/components/SEO'
 import { PollsUser } from '@/containers/PollsUser'
 import { UserLayoutContainer } from '@/containers/UserLayout'
+import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
@@ -44,6 +45,7 @@ export const PollsPageUser: React.FC = () => {
   const pollIds = useAtomValue(pollIdsAtom)
 
   if (!qnaId || !qna) {
+    typeof window !== 'undefined' && router.push(NOT_FOUND)
     return null
   }
 
