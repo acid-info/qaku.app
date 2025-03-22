@@ -89,3 +89,52 @@ export const mapPollDataForCreation = ({
 
   return { pollData, pollOptions }
 }
+
+export const handlePollUpdateInState = ({
+  poll,
+  setPollsRecord,
+}: {
+  poll: PollType
+  setPollsRecord: (
+    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
+  ) => void
+}): void => {
+  setPollsRecord((prev) => ({
+    ...prev,
+    [poll.id]: poll,
+  }))
+}
+
+export const handlePollDeleteInState = ({
+  pollId,
+  setPollsRecord,
+  setPollOptionsRecord,
+}: {
+  pollId: number
+  setPollsRecord: (
+    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
+  ) => void
+  setPollOptionsRecord: (
+    updater: (
+      prev: Record<number, PollOptionType>,
+    ) => Record<number, PollOptionType>,
+  ) => void
+}): void => {
+  setPollsRecord((prev) => {
+    const newRecord = { ...prev }
+    delete newRecord[pollId]
+    return newRecord
+  })
+
+  // Clean up related poll options
+  setPollOptionsRecord((prevOptions) => {
+    const newOptions = { ...prevOptions }
+    Object.keys(newOptions).forEach((optionId) => {
+      const id = Number(optionId)
+      if (newOptions[id]?.pollId === pollId) {
+        delete newOptions[id]
+      }
+    })
+    return newOptions
+  })
+}

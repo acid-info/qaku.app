@@ -49,11 +49,13 @@ const DefaultNav = ({
   onShareClick,
   onStartClick,
   onEndClick,
+  onDeleteClick,
   showShareButton = false,
   showSettingsButton = false,
 }: DefaultNavbarProps) => {
   const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
   const isInProgress = status === QnaProgressStatusEnum.InProgress
+  const isEnded = status === QnaProgressStatusEnum.Ended
 
   return (
     <Container>
@@ -85,7 +87,7 @@ const DefaultNav = ({
             icon={<PlayArrowIcon />}
             onClick={onStartClick}
           >
-            Start {mode === 'qna' ? 'Q&A' : 'Poll'}
+            Open {mode === 'qna' ? 'Q&A' : 'Poll'}
           </CustomButton>
         )}
         {isInProgress && (
@@ -108,8 +110,8 @@ const DefaultNav = ({
           </Button>
         )}
         <Row gap={0}>
-          {isBeforeStart || isInProgress ? (
-            <IconButtonRound icon={<DeleteIcon />} />
+          {isBeforeStart || isEnded ? (
+            <IconButtonRound icon={<DeleteIcon />} onClick={onDeleteClick} />
           ) : null}
           {showSettingsButton && (
             <IconButtonRound

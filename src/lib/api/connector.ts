@@ -10,6 +10,8 @@ import {
   addPoll as addPollHandler,
   addQnA,
   addQuestion,
+  deletePoll as deletePollHandler,
+  deleteQnA as deleteQnAHandler,
   subscribe as fakeSubscribe,
   getAnswer,
   getAnswers,
@@ -139,6 +141,10 @@ export const apiConnector: ApiConnector = {
     return await updateQnA(qnaId, qnaData)
   },
 
+  deleteQnA: async (qnaId: number): Promise<ApiResponse<boolean>> => {
+    return await deleteQnAHandler(qnaId)
+  },
+
   // Poll methods
   getPolls: async (): Promise<ApiResponse<Record<number, PollType>>> => {
     return await getPolls()
@@ -166,6 +172,10 @@ export const apiConnector: ApiConnector = {
     pollData: Partial<PollType>,
   ): Promise<ApiResponse<PollType>> => {
     return await updatePoll(pollId, pollData)
+  },
+
+  deletePoll: async (pollId: number): Promise<ApiResponse<boolean>> => {
+    return await deletePollHandler(pollId)
   },
 
   // Poll option methods

@@ -62,8 +62,12 @@ export const PollPageLive: React.FC = () => {
     if (!response.success) {
       console.error('Failed to end Poll:', response.error)
     } else {
-      router.push(`/poll/created/${pollId}`)
+      router.push(pollRoutes.CREATED.replace(':id', pollId.toString()))
     }
+  }
+
+  const handleAddPollClick = () => {
+    router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`)
   }
 
   return (
@@ -81,8 +85,7 @@ export const PollPageLive: React.FC = () => {
         id: pollId.toString(),
         showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () =>
-          router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
+        onAddPollClick: handleAddPollClick,
         showShareButton: true,
         onShareClick: handleShareClick,
         onEndClick: handleEndClick,

@@ -7,7 +7,7 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { poll } from '@/data/routes'
+import { poll as pollRoutes, qna as qnaRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { endQnA, updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
@@ -57,8 +57,12 @@ export const QnaPageLive: React.FC = () => {
     if (!response.success) {
       console.error('Failed to end QnA:', response.error)
     } else {
-      router.push(`/qna/created/${qnaId}`)
+      router.push(qnaRoutes.CREATED.replace(':id', qnaId.toString()))
     }
+  }
+
+  const handleAddPollClick = () => {
+    router.push(`${pollRoutes.CREATE}?qnaId=${qnaId}`)
   }
 
   return (
@@ -76,7 +80,7 @@ export const QnaPageLive: React.FC = () => {
         id: qnaId.toString(),
         showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
+        onAddPollClick: handleAddPollClick,
         showShareButton: true,
         onShareClick: handleShareClick,
         onEndClick: handleEndClick,

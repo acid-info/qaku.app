@@ -1,4 +1,4 @@
-import { AnswerType, QuestionType } from '@/types/qna.types'
+import { AnswerType, QnAType, QuestionType } from '@/types/qna.types'
 
 export const countUniqueNamedAuthors = (
   questions: QuestionType[],
@@ -43,4 +43,67 @@ export const calculateQnAStats = (
     namedAuthorCount: uniqueNamedAuthorsCount,
     anonymousRate,
   }
+}
+
+export const handleQnAUpdateInState = ({
+  qna,
+  setQnasRecord,
+}: {
+  qna: QnAType
+  setQnasRecord: (
+    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+  ) => void
+}): void => {
+  setQnasRecord((prev) => ({
+    ...prev,
+    [qna.id]: qna,
+  }))
+}
+
+export const handleQnADeleteInState = ({
+  qnaId,
+  setQnasRecord,
+  setQuestionsRecord,
+  setAnswersRecord,
+}: {
+  qnaId: number
+  setQnasRecord: (
+    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+  ) => void
+  setQuestionsRecord: (
+    updater: (
+      prev: Record<number, QuestionType>,
+    ) => Record<number, QuestionType>,
+  ) => void
+  setAnswersRecord: (
+    updater: (prev: Record<number, AnswerType>) => Record<number, AnswerType>,
+  ) => void
+}): void => {
+  setQnasRecord((prev) => {
+    const newRecord = { ...prev }
+    delete newRecord[qnaId]
+    return newRecord
+  })
+
+  // Clean up related questions
+  setQuestionsRecord((prev) => {
+    const newRecord = { ...prev }
+    Object.values(newRecord).forEach((question) => {
+      if (question.qnaId === qnaId) {
+        delete newRecord[question.id]
+      }
+    })
+    return newRecord
+  })
+
+  // Clean up related answers
+  setAnswersRecord((prev) => {
+    const newRecord = { ...prev }
+    Object.values(newRecord).forEach((answer) => {
+      if (answer.qnaId === qnaId) {
+        delete newRecord[answer.id]
+      }
+    })
+    return newRecord
+  })
 }

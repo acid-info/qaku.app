@@ -25,6 +25,7 @@ export interface DefaultNavbarProps extends BaseNavbarProps {
   onShareClick?: () => void
   onStartClick?: () => void
   onEndClick?: () => void
+  onDeleteClick?: () => void
   showShareButton?: boolean
   showSettingsButton?: boolean
 }

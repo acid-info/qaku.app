@@ -1177,3 +1177,120 @@ export const subscribe = <T>(
     }
   }
 }
+
+export const deleteQnA = async (
+  qnaId: number,
+): Promise<ApiResponse<boolean>> => {
+  try {
+    // Validate input
+    if (qnaId === undefined || qnaId === null) {
+      return { success: false, error: 'QnA ID is required' }
+    }
+
+    const qna = dataStore.qnas[qnaId]
+    if (!qna) {
+      return { success: false, error: `QnA with ID ${qnaId} not found` }
+    }
+
+    // Find all related polls and delete them
+    const relatedPollIds = Object.values(dataStore.polls)
+      .filter((poll) => poll.qnaId === qnaId)
+      .map((poll) => poll.id)
+
+    // Delete all related polls
+    for (const pollId of relatedPollIds) {
+      // Delete poll options
+      const pollOptionIds = Object.values(dataStore.pollOptions)
+        .filter((option) => option.pollId === pollId)
+        .map((option) => option.id)
+
+      for (const optionId of pollOptionIds) {
+        delete dataStore.pollOptions[optionId]
+      }
+
+      // Notify subscribers about poll deletion
+      notifySubscribers(ApiMessageType.POLL_DELETE_MESSAGE, {
+        pollId,
+        qnaId,
+      })
+
+      // Delete the poll
+      delete dataStore.polls[pollId]
+    }
+
+    // Delete all related questions and answers
+    const questionIds = qna.questionsIds
+
+    for (const questionId of questionIds) {
+      // Delete answers for this question
+      const answerIds = Object.values(dataStore.answers)
+        .filter((answer) => answer.questionId === questionId)
+        .map((answer) => answer.id)
+
+      for (const answerId of answerIds) {
+        delete dataStore.answers[answerId]
+      }
+
+      // Delete the question
+      delete dataStore.questions[questionId]
+    }
+
+    // Notify subscribers about QnA deletion
+    notifySubscribers(ApiMessageType.QNA_DELETE_MESSAGE, {
+      qnaId,
+      title: qna.title,
+    })
+
+    // Delete the QnA
+    delete dataStore.qnas[qnaId]
+
+    return { success: true, data: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const deletePoll = async (
+  pollId: number,
+): Promise<ApiResponse<boolean>> => {
+  try {
+    // Validate input
+    if (pollId === undefined || pollId === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const poll = dataStore.polls[pollId]
+    if (!poll) {
+      return { success: false, error: `Poll with ID ${pollId} not found` }
+    }
+
+    // Delete poll options
+    const pollOptionIds = Object.values(dataStore.pollOptions)
+      .filter((option) => option.pollId === pollId)
+      .map((option) => option.id)
+
+    for (const optionId of pollOptionIds) {
+      delete dataStore.pollOptions[optionId]
+    }
+
+    // Notify subscribers about poll deletion
+    notifySubscribers(ApiMessageType.POLL_DELETE_MESSAGE, {
+      pollId,
+      qnaId: poll.qnaId,
+      title: poll.title,
+    })
+
+    // Delete the poll
+    delete dataStore.polls[pollId]
+
+    return { success: true, data: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
