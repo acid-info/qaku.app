@@ -9,7 +9,7 @@ import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { updatePoll } from '@/utils/api.utils'
+import { endPoll, updatePoll } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -57,6 +57,15 @@ export const PollPageLive: React.FC = () => {
     })
   }
 
+  const handleEndClick = async () => {
+    const response = await endPoll(pollId)
+    if (!response.success) {
+      console.error('Failed to end Poll:', response.error)
+    } else {
+      router.push(`/poll/created/${pollId}`)
+    }
+  }
+
   return (
     <DefaultLayoutContainer
       useAlternativeGap
@@ -76,6 +85,7 @@ export const PollPageLive: React.FC = () => {
           router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
         showShareButton: true,
         onShareClick: handleShareClick,
+        onEndClick: handleEndClick,
       }}
     >
       <SEO />

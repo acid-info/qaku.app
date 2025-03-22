@@ -47,6 +47,8 @@ const DefaultNav = ({
   onSettingsClick,
   onAddPollClick,
   onShareClick,
+  onStartClick,
+  onEndClick,
   showShareButton = false,
   showSettingsButton = false,
 }: DefaultNavbarProps) => {
@@ -81,6 +83,7 @@ const DefaultNav = ({
             $color="yellow"
             variant="outlinedPrimary"
             icon={<PlayArrowIcon />}
+            onClick={onStartClick}
           >
             Start {mode === 'qna' ? 'Q&A' : 'Poll'}
           </CustomButton>
@@ -90,6 +93,7 @@ const DefaultNav = ({
             $color="red"
             variant="outlinedPrimary"
             icon={<PauseIcon />}
+            onClick={onEndClick}
           >
             Close {mode === 'qna' ? 'Q&A' : 'Poll'}
           </CustomButton>

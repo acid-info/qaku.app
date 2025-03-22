@@ -70,16 +70,10 @@ export const ApiSubscriptionManager = () => {
       handlePollUpdate,
     )
 
-    const pollActiveSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_ACTIVE_MESSAGE,
-      handlePollUpdate,
-    )
-
     return () => {
       qnaUpdateSub()
       pollUpdateSub()
       pollCreateSub()
-      pollActiveSub()
     }
   }, [setQnasRecord, setPollsRecord, setPollOptionsRecord])
 

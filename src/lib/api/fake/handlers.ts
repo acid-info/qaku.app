@@ -1059,6 +1059,29 @@ export const updateQnA = async (
     // Update data store
     dataStore.qnas[qnaId] = updatedQnA
 
+    // If QnA is being set to inactive, also set all related polls to inactive
+    if (qnaData.isActive === false && qna.isActive === true) {
+      // Find all polls for this QnA
+      const relatedPolls = Object.values(dataStore.polls).filter(
+        (poll) => poll.qnaId === qnaId && poll.isActive,
+      )
+
+      // Update each poll
+      for (const poll of relatedPolls) {
+        const updatedPoll = {
+          ...poll,
+          isActive: false,
+        }
+
+        // Update in data store
+        dataStore.polls[poll.id] = updatedPoll
+
+        // Notify subscribers
+        notifySubscribers(ApiMessageType.POLL_UPDATE_MESSAGE, updatedPoll)
+        notifySubscribers(ApiMessageType.POLL_ACTIVE_MESSAGE, updatedPoll)
+      }
+    }
+
     // Notify subscribers
     notifySubscribers(ApiMessageType.QNA_UPDATE_MESSAGE, updatedQnA)
 
@@ -1097,6 +1120,14 @@ export const updatePoll = async (
 
     // Notify subscribers
     notifySubscribers(ApiMessageType.POLL_UPDATE_MESSAGE, updatedPoll)
+
+    // If isActive status has changed, also notify with POLL_ACTIVE_MESSAGE
+    if (
+      pollData.isActive !== undefined &&
+      pollData.isActive !== poll.isActive
+    ) {
+      notifySubscribers(ApiMessageType.POLL_ACTIVE_MESSAGE, updatedPoll)
+    }
 
     return { success: true, data: updatedPoll }
   } catch (error) {

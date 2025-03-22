@@ -9,7 +9,7 @@ import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { poll } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { updateQnA } from '@/utils/api.utils'
+import { endQnA, updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
@@ -52,6 +52,15 @@ export const QnaPageLive: React.FC = () => {
     })
   }
 
+  const handleEndClick = async () => {
+    const response = await endQnA(qnaId)
+    if (!response.success) {
+      console.error('Failed to end QnA:', response.error)
+    } else {
+      router.push(`/qna/created/${qnaId}`)
+    }
+  }
+
   return (
     <DefaultLayoutContainer
       showFooter={false}
@@ -70,6 +79,7 @@ export const QnaPageLive: React.FC = () => {
         onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
         showShareButton: true,
         onShareClick: handleShareClick,
+        onEndClick: handleEndClick,
       }}
     >
       <SEO />

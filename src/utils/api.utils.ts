@@ -330,3 +330,29 @@ export const voteInPoll = async ({
     }
   }
 }
+
+export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await updateQnA(qnaId, { isActive: false, endDate: new Date() })
+  } catch (error) {
+    console.error('Error ending QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const endPoll = async (
+  pollId: number,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    return await updatePoll(pollId, { isActive: false })
+  } catch (error) {
+    console.error('Error ending Poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
