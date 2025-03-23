@@ -9,7 +9,9 @@ import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import { StopIcon } from '@/components/Icons/StopIcon'
 import { MessageForm } from '@/components/MessageForm'
+import { Modal } from '@/components/Modal/Modal'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import UserNav from '@/components/Navbar/UserNav'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
@@ -948,6 +950,33 @@ const ToggleDemo = () => {
   )
 }
 
+const ModalDemo = () => {
+  const CloseButton = styled(Button)`
+    border-color: var(--red);
+    &:hover {
+      background-color: var(--red);
+    }
+  `
+
+  return (
+    <DemoSection title="Modal">
+      <Modal
+        title="Modal Title"
+        description="Modal Description"
+        onCancel={() => console.log('Cancel')}
+        mainAction={
+          <CloseButton
+            variant="outlinedPrimary"
+            icon={<StopIcon style={{ color: 'var(--red)' }} />}
+          >
+            Close
+          </CloseButton>
+        }
+      />
+    </DemoSection>
+  )
+}
+
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
@@ -987,6 +1016,7 @@ export const TestContainer: React.FC = () => (
     <ButtonDemo />
     <IconButtonDemo />
     <TileDemo />
+    <ModalDemo />
   </Container>
 )
 

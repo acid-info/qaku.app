@@ -10,10 +10,10 @@ import { IconButtonRound } from '../IconButtonRound'
 import { DeleteIcon } from '../Icons/DeleteIcon'
 import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
-import { PauseIcon } from '../Icons/PauseIcon'
 import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { SettingsIcon } from '../Icons/SettingsIcon'
+import { StopIcon } from '../Icons/StopIcon'
 import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
 
@@ -94,7 +94,7 @@ const DefaultNav = ({
           <CustomButton
             $color="red"
             variant="outlinedPrimary"
-            icon={<PauseIcon />}
+            icon={<StopIcon />}
             onClick={onEndClick}
           >
             Close {mode === 'qna' ? 'Q&A' : 'Poll'}
