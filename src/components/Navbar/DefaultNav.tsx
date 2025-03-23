@@ -1,3 +1,4 @@
+import { ModalContainer } from '@/containers/ModalContainer'
 import {
   DefaultNavbarProps,
   NavbarModeEnum,
@@ -5,6 +6,7 @@ import {
 } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
+import { useState } from 'react'
 import { Button } from '../Button'
 import { ButtonRed } from '../ButtonRed'
 import { ButtonYellow } from '../ButtonYellow'
@@ -38,6 +40,8 @@ const renderUnit = (mode: NavbarModeEnum, count: number) => {
     : 'votes'
 }
 
+type ConfirmActionType = 'start' | 'end' | 'delete' | null
+
 const DefaultNav = ({
   mode,
   isTitleOnly = false,
@@ -58,6 +62,75 @@ const DefaultNav = ({
   const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
   const isInProgress = status === QnaProgressStatusEnum.InProgress
   const isEnded = status === QnaProgressStatusEnum.Ended
+
+  const [confirmAction, setConfirmAction] = useState<ConfirmActionType>(null)
+
+  const getModalProps = () => {
+    const isQna = mode === NavbarModeEnum.Qna
+    const contentType = isQna ? 'Q&A' : 'Poll'
+
+    switch (confirmAction) {
+      case 'start':
+        return {
+          title: `Open ${contentType}?`,
+          description: `This will show the ${contentType} in your view and that of your participants.`,
+          mainAction: (
+            <ButtonYellow
+              icon={<PlayArrowIcon />}
+              onClick={() => {
+                onStartClick?.()
+                setConfirmAction(null)
+              }}
+            >
+              Open
+            </ButtonYellow>
+          ),
+          onCancel: () => setConfirmAction(null),
+        }
+      case 'end':
+        return {
+          title: `Close ${contentType}?`,
+          description: `This will hide the ${contentType} from your view and that of your participants. Any existing ${
+            isQna ? 'questions' : 'votes'
+          } will be securely stored.`,
+          mainAction: (
+            <ButtonRed
+              icon={<StopIcon />}
+              onClick={() => {
+                onEndClick?.()
+                setConfirmAction(null)
+              }}
+            >
+              Close
+            </ButtonRed>
+          ),
+          onCancel: () => setConfirmAction(null),
+        }
+      case 'delete':
+        return {
+          title: `Delete ${contentType}?`,
+          description: `All the ${contentType} data will be lost.`,
+          mainAction: (
+            <ButtonRed
+              icon={<DeleteIcon />}
+              onClick={() => {
+                onDeleteClick?.()
+                setConfirmAction(null)
+              }}
+            >
+              Delete
+            </ButtonRed>
+          ),
+          onCancel: () => setConfirmAction(null),
+        }
+      default:
+        return {
+          title: '',
+          description: '',
+          onCancel: () => setConfirmAction(null),
+        }
+    }
+  }
 
   return (
     <Container>
@@ -83,12 +156,18 @@ const DefaultNav = ({
       </Left>
       <Navbar>
         {isBeforeStart && (
-          <ButtonYellow icon={<PlayArrowIcon />} onClick={onStartClick}>
+          <ButtonYellow
+            icon={<PlayArrowIcon />}
+            onClick={() => setConfirmAction('start')}
+          >
             Open {mode === 'qna' ? 'Q&A' : 'Poll'}
           </ButtonYellow>
         )}
         {isInProgress && (
-          <ButtonRed icon={<StopIcon />} onClick={onEndClick}>
+          <ButtonRed
+            icon={<StopIcon />}
+            onClick={() => setConfirmAction('end')}
+          >
             Close {mode === 'qna' ? 'Q&A' : 'Poll'}
           </ButtonRed>
         )}
@@ -103,7 +182,10 @@ const DefaultNav = ({
         )}
         <Row gap={0}>
           {isBeforeStart || isEnded ? (
-            <IconButtonRound icon={<DeleteIcon />} onClick={onDeleteClick} />
+            <IconButtonRound
+              icon={<DeleteIcon />}
+              onClick={() => setConfirmAction('delete')}
+            />
           ) : null}
           {showSettingsButton && (
             <IconButtonRound
@@ -120,6 +202,8 @@ const DefaultNav = ({
           )}
           <WalletConnect />
         </Row>
+
+        {confirmAction && <ModalContainer {...getModalProps()} />}
       </Navbar>
     </Container>
   )
