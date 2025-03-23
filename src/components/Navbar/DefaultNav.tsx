@@ -6,6 +6,8 @@ import {
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import { Button } from '../Button'
+import { ButtonRed } from '../ButtonRed'
+import { ButtonYellow } from '../ButtonYellow'
 import { IconButtonRound } from '../IconButtonRound'
 import { DeleteIcon } from '../Icons/DeleteIcon'
 import { DotIcon } from '../Icons/DotIcon'
@@ -81,24 +83,14 @@ const DefaultNav = ({
       </Left>
       <Navbar>
         {isBeforeStart && (
-          <CustomButton
-            $color="yellow"
-            variant="outlinedPrimary"
-            icon={<PlayArrowIcon />}
-            onClick={onStartClick}
-          >
+          <ButtonYellow icon={<PlayArrowIcon />} onClick={onStartClick}>
             Open {mode === 'qna' ? 'Q&A' : 'Poll'}
-          </CustomButton>
+          </ButtonYellow>
         )}
         {isInProgress && (
-          <CustomButton
-            $color="red"
-            variant="outlinedPrimary"
-            icon={<StopIcon />}
-            onClick={onEndClick}
-          >
+          <ButtonRed icon={<StopIcon />} onClick={onEndClick}>
             Close {mode === 'qna' ? 'Q&A' : 'Poll'}
-          </CustomButton>
+          </ButtonRed>
         )}
         {isInProgress && (
           <Button
@@ -188,23 +180,6 @@ const Badge = styled.div<{ $mode: NavbarModeEnum }>`
   padding: 2px 8px;
   justify-content: center;
   align-items: center;
-`
-
-const CustomButton = styled(Button)<{ $color: 'yellow' | 'red' }>`
-  border-color: ${({ $color }) =>
-    $color === 'yellow' ? 'var(--yellow)' : 'var(--red)'};
-
-  svg path {
-    fill: ${({ $color }) =>
-      $color === 'yellow' ? 'var(--yellow)' : 'var(--red)'};
-  }
-
-  &:not(:disabled):hover {
-    background-color: ${({ $color }) =>
-      $color === 'yellow'
-        ? 'color-mix(in srgb, var(--yellow) 20%, transparent)'
-        : 'color-mix(in srgb, var(--red) 20%, transparent)'};
-  }
 `
 
 const Title = styled.h1`

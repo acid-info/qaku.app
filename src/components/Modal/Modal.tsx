@@ -69,6 +69,6 @@ const ActionsContainer = styled.div`
 `
 
 const CancelButton = styled(Button)`
-  opacity: 0.8;
+  color: color-mix(in srgb, var(--white) 80%, transparent);
   border: none;
 `
