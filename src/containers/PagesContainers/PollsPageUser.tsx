@@ -9,6 +9,7 @@ import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
 import { handleUserModeChange } from '@/utils/navbar.utils'
+import { checkValidQnA } from '@/utils/qna.utils'
 import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -23,46 +24,50 @@ const EmptyState = () => (
 export const PollsPageUser: React.FC = () => {
   const router = useRouter()
   const setQnasRecord = useSetAtom(qnasRecordAtom)
-  const [qna, setQna] = useState<QnAType | null>(null)
+  const id = Number(router.query.id)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
+  const [qna, setQna] = useState<QnAType | null>(null)
 
   // Fetch QnA data to get the title
   useEffect(() => {
     const loadQnaData = async () => {
-      const qnaData = await loadAndGetQna({ qnaId, setQnasRecord })
+      const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
       setQna(qnaData)
     }
     loadQnaData()
-  }, [qnaId, setQnasRecord])
+  }, [id, setQnasRecord])
 
-  useQnaPollsSubscriptions(qnaId)
+  useQnaPollsSubscriptions(id)
 
-  const pollIdsAtom = useMemo(() => pollIdsByQnaIdAtom(qnaId), [qnaId])
+  const pollIdsAtom = useMemo(() => pollIdsByQnaIdAtom(id), [id])
   const pollIds = useAtomValue(pollIdsAtom)
 
-  if (!qnaId || !qna) {
-    typeof window !== 'undefined' && router.push(NOT_FOUND)
-    return null
-  }
+  useEffect(() => {
+    if (router.isReady && id != null) {
+      if (qna == null) {
+        const isValidId = checkValidQnA(id)
+
+        if (!isValidId) {
+          router.push(NOT_FOUND)
+        }
+      }
+    }
+  }, [id, qna, router])
 
   return (
     <UserLayoutContainer
       onModeChange={(mode) =>
         handleUserModeChange({
           newMode: mode,
-          qnaId: String(qnaId),
+          qnaId: String(id),
           router,
         })
       }
       navProps={{
         mode: NavbarModeEnum.Polls,
-        title: qna.title,
+        title: qna?.title,
         count: pollIds.length,
-        id: String(qnaId),
+        id: String(id),
       }}
     >
       <SEO />

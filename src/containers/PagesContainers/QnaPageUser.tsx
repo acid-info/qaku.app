@@ -8,13 +8,15 @@ import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
 import { handleUserModeChange } from '@/utils/navbar.utils'
+import { checkValidQnA } from '@/utils/qna.utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QnaUser } from '../QnaUser/QnaUser'
 
 export const QnaPageUser: React.FC = () => {
   const router = useRouter()
+  const id = Number(router.query.id)
 
   const { userName } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
@@ -22,44 +24,46 @@ export const QnaPageUser: React.FC = () => {
   // Todo might want to use jotai atom here. It's hard fetch qna and then use a derived atom here.
   const [qna, setQna] = useState<QnAType | null>(null)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
-
   useEffect(() => {
     const loadQnaData = async () => {
-      const qna = await loadAndGetQna({ qnaId, setQnasRecord })
+      const qna = await loadAndGetQna({ qnaId: id, setQnasRecord })
       setQna(qna)
     }
     loadQnaData()
-  }, [qnaId, setQnasRecord])
+  }, [id, setQnasRecord])
 
-  useQnaQuestionsAnswersSubscriptions(qnaId)
+  useQnaQuestionsAnswersSubscriptions(id)
 
-  if (!qnaId || !qna) {
-    typeof window !== 'undefined' && router.push(NOT_FOUND)
-    return null
-  }
+  useEffect(() => {
+    if (router.isReady && id != null) {
+      if (qna == null) {
+        const isValidId = checkValidQnA(id)
+
+        if (!isValidId) {
+          router.push(NOT_FOUND)
+        }
+      }
+    }
+  }, [id, qna, router])
 
   return (
     <UserLayoutContainer
       onModeChange={(mode) =>
         handleUserModeChange({
           newMode: mode,
-          qnaId: String(qnaId),
+          qnaId: String(id),
           router,
         })
       }
       navProps={{
         mode: NavbarModeEnum.Qna,
-        title: qna.title,
-        count: qna.questionsIds.length,
-        id: qnaId.toString(),
+        title: qna?.title,
+        count: qna?.questionsIds.length,
+        id: id.toString(),
       }}
     >
       <SEO />
-      <QnaUser qnaId={qnaId} userId={userName ?? ''} />
+      <QnaUser qnaId={id} userId={userName ?? ''} />
     </UserLayoutContainer>
   )
 }

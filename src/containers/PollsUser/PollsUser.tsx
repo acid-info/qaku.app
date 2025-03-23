@@ -12,7 +12,7 @@ import { ToggleButton } from '@/components/ToggleButton'
 import { NOT_FOUND } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { voteInPoll } from '@/utils/api.utils'
-import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
+import { checkValidPoll, mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
@@ -33,6 +33,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   const [activePollId, setActivePollId] = useState<number | null>(null)
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([])
   const [isAnonymous, setIsAnonymous] = useState(false)
+
   useEffect(() => {
     if (!pollIds.length || !router.isReady) return
 
@@ -154,10 +155,15 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
     }
   }
 
-  if (!activePollId) {
-    typeof window !== 'undefined' && router.push(NOT_FOUND)
-    return null
-  }
+  useEffect(() => {
+    if (router.isReady && activePollId != null) {
+      const isValidId = checkValidPoll(activePollId)
+
+      if (!isValidId) {
+        router.push(NOT_FOUND)
+      }
+    }
+  }, [activePollId, router])
 
   return (
     <Wrapper>

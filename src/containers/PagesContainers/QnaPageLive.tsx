@@ -11,44 +11,50 @@ import { NOT_FOUND, poll } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
+import { checkValidQnA } from '@/utils/qna.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
+  const id = Number(router.query.id)
+
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
   const { userName } = useAtomValue(walletStateAtom)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
-
   const qnaAtom = useMemo(() => {
-    if (!qnaId) return atom(null)
-    return getQnaByIdAtom(qnaId)
-  }, [qnaId])
+    if (!id) return atom(null)
+    return getQnaByIdAtom(id)
+  }, [id])
 
   const qna = useAtomValue(qnaAtom)
 
-  useQnaQuestionsAnswersSubscriptions(qnaId)
+  useQnaQuestionsAnswersSubscriptions(id)
 
-  if (!qnaId || !qna) {
-    typeof window !== 'undefined' && router.push(NOT_FOUND)
-    return null
-  }
+  useEffect(() => {
+    if (router.isReady && id != null) {
+      if (qna == null) {
+        const isValidId = checkValidQnA(id)
+
+        if (!isValidId) {
+          router.push(NOT_FOUND)
+        }
+      }
+    }
+  }, [id, qna, router])
 
   const handleSaveQna = async (updatedQna: Partial<typeof qna>) => {
-    await updateQnA(qnaId, updatedQna)
+    if (!updatedQna) return
+    await updateQnA(id, updatedQna)
     setIsSettingsPanelOpen(false)
   }
 
   const handleShareClick = () => {
     handleShare({
-      qnaId,
+      qnaId: id,
       mode: NavbarModeEnum.Qna,
     })
   }
@@ -62,24 +68,26 @@ export const QnaPageLive: React.FC = () => {
         mode: NavbarModeEnum.Qna,
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
-        title: qna.title,
-        date: qna.startDate.toISOString(),
-        count: qna.questionsIds.length,
-        id: qnaId.toString(),
+        title: qna?.title,
+        date: qna?.startDate?.toISOString(),
+        count: qna?.questionsIds?.length,
+        id: id.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
+        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${id}`),
         showShareButton: true,
         onShareClick: handleShareClick,
       }}
     >
       <SEO />
-      <QnaLive qnaId={qnaId} userId={userName ?? ''} />
-      <QnaFloatingPanel
-        isOpen={isSettingsPanelOpen}
-        onClose={() => setIsSettingsPanelOpen(false)}
-        qna={qna}
-        onSave={handleSaveQna}
-      />
+      <QnaLive qnaId={id} userId={userName ?? ''} />
+      {qna && (
+        <QnaFloatingPanel
+          isOpen={isSettingsPanelOpen}
+          onClose={() => setIsSettingsPanelOpen(false)}
+          qna={qna}
+          onSave={handleSaveQna}
+        />
+      )}
     </DefaultLayoutContainer>
   )
 }

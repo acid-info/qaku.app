@@ -9,43 +9,48 @@ import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { loadQnaData } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
+import { checkValidQnA } from '@/utils/qna.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 
 export const QnaPageCreated: React.FC = () => {
   const router = useRouter()
+  const id = Number(router.query.id)
+
   const setQuestionsRecord = useSetAtom(questionsRecordAtom)
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
-
   const qnaAtom = useMemo(() => {
-    if (!qnaId) return atom(null)
-    return getQnaByIdAtom(qnaId)
-  }, [qnaId])
+    if (!id) return atom(null)
+    return getQnaByIdAtom(id)
+  }, [id])
 
   const qna = useAtomValue(qnaAtom)
 
   const handleShareClick = () => {
     handleShare({
-      qnaId,
+      qnaId: id,
       mode: NavbarModeEnum.Qna,
     })
   }
 
   useEffect(() => {
-    if (!qnaId) return
-    loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
-  }, [qnaId, setQuestionsRecord, setAnswersRecord])
+    if (!id) return
+    loadQnaData({ qnaId: id, setQuestionsRecord, setAnswersRecord })
+  }, [id, setQuestionsRecord, setAnswersRecord])
 
-  if (!router.isReady || !qnaId || !qna) {
-    typeof window !== 'undefined' && router.push(NOT_FOUND)
-    return null
-  }
+  useEffect(() => {
+    if (router.isReady && id != null) {
+      if (qna == null) {
+        const isValidId = checkValidQnA(id)
+
+        if (!isValidId) {
+          router.push(NOT_FOUND)
+        }
+      }
+    }
+  }, [id, qna, router])
 
   return (
     <DefaultLayoutContainer
@@ -55,16 +60,16 @@ export const QnaPageCreated: React.FC = () => {
         mode: NavbarModeEnum.Qna,
         isTitleOnly: false,
         status: QnaProgressStatusEnum.Ended,
-        title: qna.title,
-        date: qna.startDate.toISOString(),
-        count: qna.questionsIds.length,
-        id: qnaId.toString(),
+        title: qna?.title,
+        date: qna?.startDate.toISOString(),
+        count: qna?.questionsIds.length,
+        id: id.toString(),
         showShareButton: true,
         onShareClick: handleShareClick,
       }}
     >
       <SEO />
-      <QnaCreated qnaId={qnaId} />
+      <QnaCreated qnaId={id} />
     </DefaultLayoutContainer>
   )
 }

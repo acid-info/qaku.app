@@ -1,3 +1,4 @@
+import { mockQuestions } from '@/data/mockQuestions'
 import { AnswerType, QuestionType } from '@/types/qna.types'
 
 export const countUniqueNamedAuthors = (
@@ -44,3 +45,6 @@ export const calculateQnAStats = (
     anonymousRate,
   }
 }
+
+export const checkValidQnA = (id: number) =>
+  mockQuestions.some((q) => q.id === id)

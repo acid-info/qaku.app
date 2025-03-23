@@ -1,6 +1,5 @@
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { getPollByIdAtom } from '@/../atoms/poll'
-import { pollsRecordAtom } from '@/../atoms/poll/pollsRecordAtom'
 import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
 import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
@@ -11,49 +10,53 @@ import { NOT_FOUND, poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { updatePoll } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { checkValidPoll } from '@/utils/poll.utils'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 export const PollPageLive: React.FC = () => {
   const router = useRouter()
-
-  const pollId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
+  const id = Number(router.query.id)
 
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
 
-  const setPollsRecord = useSetAtom(pollsRecordAtom)
-
   const pollAtom = useMemo(() => {
-    if (!pollId) return atom(null)
-    return getPollByIdAtom(pollId)
-  }, [pollId])
+    if (!id) return atom(null)
+    return getPollByIdAtom(id)
+  }, [id])
 
   const poll = useAtomValue(pollAtom)
 
-  usePollSubscriptions(pollId)
+  usePollSubscriptions(id)
 
-  if (!router.isReady || !pollId || !poll) {
-    typeof window !== 'undefined' && router.push(NOT_FOUND)
-    return null
-  }
+  useEffect(() => {
+    if (router.isReady && id != null) {
+      if (poll == null) {
+        const isValidId = checkValidPoll(id)
+
+        if (!isValidId) {
+          router.push(NOT_FOUND)
+        }
+      }
+    }
+  }, [id, poll, router])
 
   const handleSavePollSettings = async (
     updatedPollData: Partial<typeof poll>,
   ) => {
-    await updatePoll(pollId, updatedPollData)
+    if (!updatedPollData) return
+    await updatePoll(id, updatedPollData)
     setIsSettingsPanelOpen(false)
   }
 
   const handleShareClick = () => {
+    if (!poll) return
     handleShare({
       qnaId: poll.qnaId,
-      pollId,
+      pollId: id,
       mode: NavbarModeEnum.Polls,
     })
   }
@@ -67,25 +70,29 @@ export const PollPageLive: React.FC = () => {
         mode: NavbarModeEnum.Polls,
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
-        title: poll.title,
+        title: poll?.title,
         date: new Date().toISOString(),
-        count: poll.optionsIds.length,
-        id: pollId.toString(),
+        count: poll?.optionsIds.length,
+        id: id.toString(),
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: () =>
-          router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
+          router.push(`${pollRoutes.CREATE}?qnaId=${poll?.qnaId}`),
         showShareButton: true,
         onShareClick: handleShareClick,
       }}
     >
       <SEO />
-      <PollLive pollId={pollId} poll={poll} />
-      <PollFloatingPanelEdit
-        isOpen={isSettingsPanelOpen}
-        onClose={() => setIsSettingsPanelOpen(false)}
-        poll={poll}
-        onSave={handleSavePollSettings}
-      />
+      {poll != null && (
+        <>
+          <PollLive pollId={id} poll={poll} />
+          <PollFloatingPanelEdit
+            isOpen={isSettingsPanelOpen}
+            onClose={() => setIsSettingsPanelOpen(false)}
+            poll={poll}
+            onSave={handleSavePollSettings}
+          />
+        </>
+      )}
     </DefaultLayoutContainer>
   )
 }
