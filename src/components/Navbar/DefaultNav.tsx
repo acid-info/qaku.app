@@ -1,3 +1,4 @@
+import { ModalContainer } from '@/containers/ModalContainer'
 import {
   DefaultNavbarProps,
   NavbarModeEnum,
@@ -5,15 +6,17 @@ import {
 } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
+import { useState } from 'react'
 import { Button } from '../Button'
+import { ButtonColored } from '../ButtonColored/ButtonColored'
 import { IconButtonRound } from '../IconButtonRound'
 import { DeleteIcon } from '../Icons/DeleteIcon'
 import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
-import { PauseIcon } from '../Icons/PauseIcon'
 import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { SettingsIcon } from '../Icons/SettingsIcon'
+import { StopIcon } from '../Icons/StopIcon'
 import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
 
@@ -36,6 +39,8 @@ const renderUnit = (mode: NavbarModeEnum, count: number) => {
     : 'votes'
 }
 
+type ConfirmActionType = 'start' | 'end' | 'delete' | null
+
 const DefaultNav = ({
   mode,
   isTitleOnly = false,
@@ -56,6 +61,78 @@ const DefaultNav = ({
   const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
   const isInProgress = status === QnaProgressStatusEnum.InProgress
   const isEnded = status === QnaProgressStatusEnum.Ended
+
+  const [confirmAction, setConfirmAction] = useState<ConfirmActionType>(null)
+
+  const getModalProps = () => {
+    const isQna = mode === NavbarModeEnum.Qna
+    const contentType = isQna ? 'Q&A' : 'Poll'
+
+    switch (confirmAction) {
+      case 'start':
+        return {
+          title: `Open ${contentType}?`,
+          description: `This will show the ${contentType} in your view and that of your participants.`,
+          mainAction: (
+            <ButtonColored
+              color="var(--yellow)"
+              icon={<PlayArrowIcon />}
+              onClick={() => {
+                onStartClick?.()
+                setConfirmAction(null)
+              }}
+            >
+              Open
+            </ButtonColored>
+          ),
+          onCancel: () => setConfirmAction(null),
+        }
+      case 'end':
+        return {
+          title: `Close ${contentType}?`,
+          description: `This will hide the ${contentType} from your view and that of your participants. Any existing ${
+            isQna ? 'questions' : 'votes'
+          } will be securely stored.`,
+          mainAction: (
+            <ButtonColored
+              color="var(--red)"
+              icon={<StopIcon />}
+              onClick={() => {
+                onEndClick?.()
+                setConfirmAction(null)
+              }}
+            >
+              Close
+            </ButtonColored>
+          ),
+          onCancel: () => setConfirmAction(null),
+        }
+      case 'delete':
+        return {
+          title: `Delete ${contentType}?`,
+          description: `All the ${contentType} data will be lost.`,
+          mainAction: (
+            <ButtonColored
+              color="var(--red)"
+              icon={<DeleteIcon />}
+              onClick={() => {
+                onDeleteClick?.()
+                setConfirmAction(null)
+              }}
+            >
+              Delete
+            </ButtonColored>
+          ),
+          onCancel: () => setConfirmAction(null),
+        }
+      default:
+        return {
+          title: '',
+          description: '',
+          onCancel: () => setConfirmAction(null),
+        }
+    }
+  }
 
   return (
     <Container>
@@ -81,24 +158,22 @@ const DefaultNav = ({
       </Left>
       <Navbar>
         {isBeforeStart && (
-          <CustomButton
-            $color="yellow"
-            variant="outlinedPrimary"
+          <ButtonColored
+            color="var(--yellow)"
             icon={<PlayArrowIcon />}
-            onClick={onStartClick}
+            onClick={() => setConfirmAction('start')}
           >
             Open {mode === 'qna' ? 'Q&A' : 'Poll'}
-          </CustomButton>
+          </ButtonColored>
         )}
         {isInProgress && (
-          <CustomButton
-            $color="red"
-            variant="outlinedPrimary"
-            icon={<PauseIcon />}
-            onClick={onEndClick}
+          <ButtonColored
+            color="var(--red)"
+            icon={<StopIcon />}
+            onClick={() => setConfirmAction('end')}
           >
             Close {mode === 'qna' ? 'Q&A' : 'Poll'}
-          </CustomButton>
+          </ButtonColored>
         )}
         {isInProgress && (
           <Button
@@ -111,7 +186,10 @@ const DefaultNav = ({
         )}
         <Row gap={0}>
           {isBeforeStart || isEnded ? (
-            <IconButtonRound icon={<DeleteIcon />} onClick={onDeleteClick} />
+            <IconButtonRound
+              icon={<DeleteIcon />}
+              onClick={() => setConfirmAction('delete')}
+            />
           ) : null}
           {showSettingsButton && (
             <IconButtonRound
@@ -128,6 +206,8 @@ const DefaultNav = ({
           )}
           <WalletConnect />
         </Row>
+
+        {confirmAction && <ModalContainer {...getModalProps()} />}
       </Navbar>
     </Container>
   )
@@ -188,23 +268,6 @@ const Badge = styled.div<{ $mode: NavbarModeEnum }>`
   padding: 2px 8px;
   justify-content: center;
   align-items: center;
-`
-
-const CustomButton = styled(Button)<{ $color: 'yellow' | 'red' }>`
-  border-color: ${({ $color }) =>
-    $color === 'yellow' ? 'var(--yellow)' : 'var(--red)'};
-
-  svg path {
-    fill: ${({ $color }) =>
-      $color === 'yellow' ? 'var(--yellow)' : 'var(--red)'};
-  }
-
-  &:not(:disabled):hover {
-    background-color: ${({ $color }) =>
-      $color === 'yellow'
-        ? 'color-mix(in srgb, var(--yellow) 20%, transparent)'
-        : 'color-mix(in srgb, var(--red) 20%, transparent)'};
-  }
 `
 
 const Title = styled.h1`
