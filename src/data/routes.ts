@@ -20,3 +20,5 @@ export const user = {
   QNA: '/user/qna/:id',
   POLLS: '/user/qna/:id/polls',
 }
+
+export const NOT_FOUND = '/404'

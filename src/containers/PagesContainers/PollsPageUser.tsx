@@ -4,6 +4,7 @@ import { useQnaPollsSubscriptions } from '@/../hooks/useQnaPollsSubscriptions'
 import { SEO } from '@/components/SEO'
 import { PollsUser } from '@/containers/PollsUser'
 import { UserLayoutContainer } from '@/containers/UserLayout'
+import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
@@ -22,45 +23,56 @@ const EmptyState = () => (
 export const PollsPageUser: React.FC = () => {
   const router = useRouter()
   const setQnasRecord = useSetAtom(qnasRecordAtom)
+  const id = Number(router.query.id)
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
   const [qna, setQna] = useState<QnAType | null>(null)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
+  useQnaPollsSubscriptions(id)
 
-  // Fetch QnA data to get the title
-  useEffect(() => {
-    const loadQnaData = async () => {
-      const qnaData = await loadAndGetQna({ qnaId, setQnasRecord })
-      setQna(qnaData)
-    }
-    loadQnaData()
-  }, [qnaId, setQnasRecord])
-
-  useQnaPollsSubscriptions(qnaId)
-
-  const pollIdsAtom = useMemo(() => pollIdsByQnaIdAtom(qnaId), [qnaId])
+  const pollIdsAtom = useMemo(() => pollIdsByQnaIdAtom(id), [id])
   const pollIds = useAtomValue(pollIdsAtom)
 
-  if (!qnaId || !qna) {
-    return null
-  }
+  useEffect(() => {
+    if (!router.isReady) return
+
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
+        setQna(qnaData)
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [router.isReady, id, setQnasRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !qna) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, qna, isLoading, isDataFetched])
 
   return (
     <UserLayoutContainer
       onModeChange={(mode) =>
         handleUserModeChange({
           newMode: mode,
-          qnaId: String(qnaId),
+          qnaId: String(id),
           router,
         })
       }
       navProps={{
         mode: NavbarModeEnum.Polls,
-        title: qna.title,
+        title: qna?.title,
         count: pollIds.length,
-        id: String(qnaId),
+        id: String(id),
       }}
     >
       <SEO />

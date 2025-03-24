@@ -10,32 +10,28 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreated } from '@/containers/PollCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { HOME } from '@/data/routes'
+import { HOME, NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { deletePoll, loadPollOptions } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const PollPageCreated: React.FC = () => {
   const router = useRouter()
+  const id = Number(router.query.id)
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
+
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
-  const pollId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
-
-  useEffect(() => {
-    if (!pollId) return
-    loadPollOptions({ pollId, setPollOptionsRecord })
-  }, [pollId, setPollOptionsRecord])
-
   const pollAtom = useMemo(() => {
-    if (!pollId) return atom(null)
-    return getPollByIdAtom(pollId)
-  }, [pollId])
+    if (!id) return atom(null)
+    return getPollByIdAtom(id)
+  }, [id])
+
   const poll = useAtomValue(pollAtom)
 
   const totalVotesCountAtom = useMemo(() => {
@@ -51,9 +47,9 @@ export const PollPageCreated: React.FC = () => {
   const qna = useAtomValue(qnaAtom)
 
   const pollDataAtom = useMemo(() => {
-    if (!pollId) return atom(undefined)
-    return pollWithOptionsAtom(pollId)
-  }, [pollId])
+    if (!id) return atom(undefined)
+    return pollWithOptionsAtom(id)
+  }, [id])
   const pollData = useAtomValue(pollDataAtom)
 
   const qnaCountsAtom = useMemo(() => {
@@ -66,7 +62,7 @@ export const PollPageCreated: React.FC = () => {
     if (!poll) return
     handleShare({
       qnaId: poll.qnaId,
-      pollId,
+      pollId: id,
       mode: NavbarModeEnum.Polls,
     })
   }
@@ -81,9 +77,29 @@ export const PollPageCreated: React.FC = () => {
     }
   }
 
-  if (!router.isReady || !pollId || !poll || !qna || !pollData || !qnaCounts) {
-    return null
-  }
+  useEffect(() => {
+    if (!router.isReady) return
+
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        await loadPollOptions({ pollId: id, setPollOptionsRecord })
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [router.isReady, id, setPollOptionsRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !poll) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, poll, isLoading, isDataFetched])
 
   return (
     <DefaultLayoutContainer
@@ -93,17 +109,19 @@ export const PollPageCreated: React.FC = () => {
         mode: NavbarModeEnum.Polls,
         isTitleOnly: false,
         status: QnaProgressStatusEnum.Ended,
-        title: qna.title,
-        date: qna.startDate.toISOString(),
+        title: qna?.title,
+        date: qna?.startDate.toISOString(),
         count: totalVotesCount,
-        id: poll.id.toString(),
+        id: poll?.id.toString(),
         showShareButton: true,
         onShareClick: handleShareClick,
         onDeleteClick: handleDeleteClick,
       }}
     >
       <SEO />
-      <PollCreated pollId={pollId} pollData={pollData} qnaCounts={qnaCounts} />
+      {pollData && qnaCounts && (
+        <PollCreated pollId={id} pollData={pollData} qnaCounts={qnaCounts} />
+      )}
     </DefaultLayoutContainer>
   )
 }

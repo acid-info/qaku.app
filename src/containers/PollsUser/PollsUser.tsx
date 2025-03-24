@@ -32,6 +32,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
   const [activePollId, setActivePollId] = useState<number | null>(null)
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([])
   const [isAnonymous, setIsAnonymous] = useState(false)
+
   useEffect(() => {
     if (!pollIds.length || !router.isReady) return
 
@@ -151,10 +152,6 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
       // Single option selection
       setSelectedOptionIds([optionId])
     }
-  }
-
-  if (!activePollId) {
-    return null
   }
 
   return (

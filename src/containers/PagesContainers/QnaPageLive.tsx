@@ -1,5 +1,7 @@
+import { answersRecordAtom } from '@/../atoms/answer'
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { getQnaByIdAtom } from '@/../atoms/qna'
+import { questionsRecordAtom } from '@/../atoms/question'
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
@@ -7,62 +9,86 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { poll as pollRoutes, qna as qnaRoutes } from '@/data/routes'
+import { NOT_FOUND, poll as pollRoutes, qna as qnaRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { endQnA, updateQnA } from '@/utils/api.utils'
+import { endQnA, loadQnaData, updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
+  const id = Number(router.query.id)
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
+
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
   const { userName } = useAtomValue(walletStateAtom)
 
-  const qnaId = useMemo(() => {
-    const id = router.query.id
-    return parseInt(String(id), 10)
-  }, [router.query.id])
+  const setQuestionsRecord = useSetAtom(questionsRecordAtom)
+  const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   const qnaAtom = useMemo(() => {
-    if (!qnaId) return atom(null)
-    return getQnaByIdAtom(qnaId)
-  }, [qnaId])
+    if (!id) return atom(null)
+    return getQnaByIdAtom(id)
+  }, [id])
 
   const qna = useAtomValue(qnaAtom)
 
-  useQnaQuestionsAnswersSubscriptions(qnaId)
+  useQnaQuestionsAnswersSubscriptions(id)
 
-  if (!qnaId || !qna) {
-    return null
-  }
+  useEffect(() => {
+    if (!router.isReady) return
+
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        await loadQnaData({ qnaId: id, setQuestionsRecord, setAnswersRecord })
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [router.isReady, id, setQuestionsRecord, setAnswersRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !qna) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, qna, isLoading, isDataFetched])
 
   const handleSaveQna = async (updatedQna: Partial<typeof qna>) => {
-    await updateQnA(qnaId, updatedQna)
+    if (!updatedQna) return
+    await updateQnA(id, updatedQna)
     setIsSettingsPanelOpen(false)
   }
 
   const handleShareClick = () => {
     handleShare({
-      qnaId,
+      qnaId: id,
       mode: NavbarModeEnum.Qna,
     })
   }
 
   const handleEndClick = async () => {
-    const response = await endQnA(qnaId)
+    const response = await endQnA(id)
     if (!response.success) {
       console.error('Failed to end QnA:', response.error)
     } else {
-      router.push(qnaRoutes.CREATED.replace(':id', qnaId.toString()))
+      router.push(qnaRoutes.CREATED.replace(':id', id.toString()))
     }
   }
 
   const handleAddPollClick = () => {
-    router.push(`${pollRoutes.CREATE}?qnaId=${qnaId}`)
+    router.push(`${pollRoutes.CREATE}?qnaId=${id}`)
   }
 
   return (
@@ -74,10 +100,10 @@ export const QnaPageLive: React.FC = () => {
         mode: NavbarModeEnum.Qna,
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
-        title: qna.title,
-        date: qna.startDate.toISOString(),
-        count: qna.questionsIds.length,
-        id: qnaId.toString(),
+        title: qna?.title,
+        date: qna?.startDate.toISOString(),
+        count: qna?.questionsIds.length,
+        id: id.toString(),
         showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
         onAddPollClick: handleAddPollClick,
@@ -87,13 +113,15 @@ export const QnaPageLive: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaLive qnaId={qnaId} userId={userName ?? ''} />
-      <QnaFloatingPanel
-        isOpen={isSettingsPanelOpen}
-        onClose={() => setIsSettingsPanelOpen(false)}
-        qna={qna}
-        onSave={handleSaveQna}
-      />
+      <QnaLive qnaId={id} userId={userName ?? ''} />
+      {qna && (
+        <QnaFloatingPanel
+          isOpen={isSettingsPanelOpen}
+          onClose={() => setIsSettingsPanelOpen(false)}
+          qna={qna}
+          onSave={handleSaveQna}
+        />
+      )}
     </DefaultLayoutContainer>
   )
 }
