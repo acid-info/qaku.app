@@ -9,9 +9,9 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { NOT_FOUND, poll } from '@/data/routes'
+import { NOT_FOUND, poll as pollRoutes, qna as qnaRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { loadQnaData, updateQnA } from '@/utils/api.utils'
+import { endQnA, loadQnaData, updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -78,6 +78,19 @@ export const QnaPageLive: React.FC = () => {
     })
   }
 
+  const handleEndClick = async () => {
+    const response = await endQnA(id)
+    if (!response.success) {
+      console.error('Failed to end QnA:', response.error)
+    } else {
+      router.push(qnaRoutes.CREATED.replace(':id', id.toString()))
+    }
+  }
+
+  const handleAddPollClick = () => {
+    router.push(`${pollRoutes.CREATE}?qnaId=${id}`)
+  }
+
   return (
     <DefaultLayoutContainer
       showFooter={false}
@@ -88,13 +101,15 @@ export const QnaPageLive: React.FC = () => {
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
         title: qna?.title,
-        date: qna?.startDate?.toISOString(),
-        count: qna?.questionsIds?.length,
+        date: qna?.startDate.toISOString(),
+        count: qna?.questionsIds.length,
         id: id.toString(),
+        showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${id}`),
+        onAddPollClick: handleAddPollClick,
         showShareButton: true,
         onShareClick: handleShareClick,
+        onEndClick: handleEndClick,
       }}
     >
       <SEO />

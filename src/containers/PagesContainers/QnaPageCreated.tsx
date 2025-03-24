@@ -5,9 +5,9 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { NOT_FOUND } from '@/data/routes'
+import { HOME, NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { loadQnaData } from '@/utils/api.utils'
+import { deleteQnA, loadQnaData } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -35,6 +35,15 @@ export const QnaPageCreated: React.FC = () => {
       qnaId: id,
       mode: NavbarModeEnum.Qna,
     })
+  }
+
+  const handleDeleteClick = async () => {
+    try {
+      await deleteQnA(id)
+      router.push(HOME)
+    } catch (error) {
+      console.error('Failed to delete QnA:', error)
+    }
   }
 
   useEffect(() => {
@@ -75,6 +84,7 @@ export const QnaPageCreated: React.FC = () => {
         id: id.toString(),
         showShareButton: true,
         onShareClick: handleShareClick,
+        onDeleteClick: handleDeleteClick,
       }}
     >
       <SEO />

@@ -10,9 +10,9 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreated } from '@/containers/PollCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { NOT_FOUND } from '@/data/routes'
+import { HOME, NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { loadPollOptions } from '@/utils/api.utils'
+import { deletePoll, loadPollOptions } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -59,12 +59,21 @@ export const PollPageCreated: React.FC = () => {
   const qnaCounts = useAtomValue(qnaCountsAtom)
 
   const handleShareClick = () => {
-    if (poll) {
-      handleShare({
-        qnaId: poll.qnaId,
-        pollId: id,
-        mode: NavbarModeEnum.Polls,
-      })
+    if (!poll) return
+    handleShare({
+      qnaId: poll.qnaId,
+      pollId: id,
+      mode: NavbarModeEnum.Polls,
+    })
+  }
+
+  const handleDeleteClick = async () => {
+    if (!poll) return
+    try {
+      await deletePoll(poll.id)
+      router.push(HOME)
+    } catch (error) {
+      console.error('Failed to delete Poll:', error)
     }
   }
 
@@ -106,6 +115,7 @@ export const PollPageCreated: React.FC = () => {
         id: poll?.id.toString(),
         showShareButton: true,
         onShareClick: handleShareClick,
+        onDeleteClick: handleDeleteClick,
       }}
     >
       <SEO />

@@ -21,6 +21,8 @@ type QnaCreateParams = {
   ) => void
 }
 
+// QnAs
+
 export const loadAndGetQna = async ({
   qnaId,
   setQnasRecord,
@@ -87,6 +89,20 @@ export const createQnA = async ({
   }
 }
 
+export const deleteQnA = async (
+  qnaId: number,
+): Promise<ApiResponse<boolean>> => {
+  try {
+    return await apiConnector.deleteQnA(qnaId)
+  } catch (error) {
+    console.error('Error deleting QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 export const updateQnA = async (
   qnaId: number,
   qnaData: Partial<QnAType>,
@@ -95,6 +111,32 @@ export const updateQnA = async (
     return await apiConnector.updateQnA(qnaId, qnaData)
   } catch (error) {
     console.error('Error updating QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const startQnA = async (
+  qnaId: number,
+): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await updateQnA(qnaId, { isActive: true, startDate: new Date() })
+  } catch (error) {
+    console.error('Error starting QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await updateQnA(qnaId, { isActive: false, endDate: new Date() })
+  } catch (error) {
+    console.error('Error ending QnA:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -141,52 +183,7 @@ export const loadQnaData = async ({
   }
 }
 
-// Function to load poll options for a specific poll
-export const loadPollOptions = async ({
-  pollId,
-  setPollOptionsRecord,
-}: {
-  pollId: number
-  setPollOptionsRecord: (
-    updater: (
-      prev: Record<number, PollOptionType>,
-    ) => Record<number, PollOptionType>,
-  ) => void
-}): Promise<void> => {
-  try {
-    const optionsResponse = await apiConnector.getPollOptionsByPollId(pollId)
-    if (optionsResponse.success && optionsResponse.data) {
-      setPollOptionsRecord((prev) => ({
-        ...prev,
-        ...optionsResponse.data,
-      }))
-    }
-  } catch (error) {
-    console.error(`Error loading options for poll ${pollId}:`, error)
-  }
-}
-
-export const loadPollsByQnaId = async ({
-  qnaId,
-  setPollsRecord,
-}: {
-  qnaId: number
-  setPollsRecord: (
-    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
-  ) => void
-}): Promise<void> => {
-  try {
-    const pollsResponse = await apiConnector.getPollsByQnaId(qnaId)
-    if (pollsResponse.success && pollsResponse.data) {
-      setPollsRecord((prev) => ({
-        ...prev,
-        ...pollsResponse.data,
-      }))
-    }
-  } catch (error) {
-    console.error(`Error loading polls for QnA ${qnaId}:`, error)
-  }
-}
+// Questions
 
 export const addNewQuestion = async ({
   qnaId,
@@ -241,6 +238,8 @@ export const toggleQuestionAnsweredStatus = async (
   }
 }
 
+// Answers
+
 export const addNewAnswer = async ({
   questionId,
   qnaId,
@@ -281,6 +280,8 @@ export const likeAnswerById = async ({
   }
 }
 
+// Polls
+
 export const createNewPoll = async (
   pollData: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
   pollOptions: { title: string; isCorrectAnswer?: boolean }[] = [],
@@ -289,6 +290,20 @@ export const createNewPoll = async (
     return await apiConnector.addPoll(pollData, pollOptions)
   } catch (error) {
     console.error('Error creating poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const deletePoll = async (
+  pollId: number,
+): Promise<ApiResponse<boolean>> => {
+  try {
+    return await apiConnector.deletePoll(pollId)
+  } catch (error) {
+    console.error('Error deleting Poll:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -328,5 +343,80 @@ export const voteInPoll = async ({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
     }
+  }
+}
+
+export const startPoll = async (
+  pollId: number,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    return await updatePoll(pollId, { isActive: true })
+  } catch (error) {
+    console.error('Error starting Poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const endPoll = async (
+  pollId: number,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    return await updatePoll(pollId, { isActive: false })
+  } catch (error) {
+    console.error('Error ending Poll:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+// Function to load poll options for a specific poll
+export const loadPollOptions = async ({
+  pollId,
+  setPollOptionsRecord,
+}: {
+  pollId: number
+  setPollOptionsRecord: (
+    updater: (
+      prev: Record<number, PollOptionType>,
+    ) => Record<number, PollOptionType>,
+  ) => void
+}): Promise<void> => {
+  try {
+    const optionsResponse = await apiConnector.getPollOptionsByPollId(pollId)
+    if (optionsResponse.success && optionsResponse.data) {
+      setPollOptionsRecord((prev) => ({
+        ...prev,
+        ...optionsResponse.data,
+      }))
+    }
+  } catch (error) {
+    console.error(`Error loading options for poll ${pollId}:`, error)
+  }
+}
+
+export const loadPollsByQnaId = async ({
+  qnaId,
+  setPollsRecord,
+}: {
+  qnaId: number
+  setPollsRecord: (
+    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
+  ) => void
+}): Promise<void> => {
+  try {
+    const pollsResponse = await apiConnector.getPollsByQnaId(qnaId)
+    if (pollsResponse.success && pollsResponse.data) {
+      setPollsRecord((prev) => ({
+        ...prev,
+        ...pollsResponse.data,
+      }))
+    }
+  } catch (error) {
+    console.error(`Error loading polls for QnA ${qnaId}:`, error)
   }
 }

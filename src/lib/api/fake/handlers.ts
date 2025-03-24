@@ -393,12 +393,6 @@ export const addQnA = async (
 
     dataStore.qnas[newId] = newQnA
 
-    // Notify subscribers
-    notifySubscribers(ApiMessageType.CONTROL_MESSAGE, {
-      type: 'qna_created',
-      qna: newQnA,
-    })
-
     return { success: true, data: newQnA }
   } catch (error) {
     return {
@@ -1059,6 +1053,29 @@ export const updateQnA = async (
     // Update data store
     dataStore.qnas[qnaId] = updatedQnA
 
+    // If QnA is being set to inactive, also set all related polls to inactive
+    if (qnaData.isActive === false && qna.isActive === true) {
+      // Find all polls for this QnA
+      const relatedPolls = Object.values(dataStore.polls).filter(
+        (poll) => poll.qnaId === qnaId && poll.isActive,
+      )
+
+      // Update each poll
+      for (const poll of relatedPolls) {
+        const updatedPoll = {
+          ...poll,
+          isActive: false,
+        }
+
+        // Update in data store
+        dataStore.polls[poll.id] = updatedPoll
+
+        // Notify subscribers
+        notifySubscribers(ApiMessageType.POLL_UPDATE_MESSAGE, updatedPoll)
+        notifySubscribers(ApiMessageType.POLL_ACTIVE_MESSAGE, updatedPoll)
+      }
+    }
+
     // Notify subscribers
     notifySubscribers(ApiMessageType.QNA_UPDATE_MESSAGE, updatedQnA)
 
@@ -1097,6 +1114,14 @@ export const updatePoll = async (
 
     // Notify subscribers
     notifySubscribers(ApiMessageType.POLL_UPDATE_MESSAGE, updatedPoll)
+
+    // If isActive status has changed, also notify with POLL_ACTIVE_MESSAGE
+    if (
+      pollData.isActive !== undefined &&
+      pollData.isActive !== poll.isActive
+    ) {
+      notifySubscribers(ApiMessageType.POLL_ACTIVE_MESSAGE, updatedPoll)
+    }
 
     return { success: true, data: updatedPoll }
   } catch (error) {
@@ -1143,6 +1168,123 @@ export const subscribe = <T>(
     const index = subscribers.findIndex((sub) => sub.id === id)
     if (index !== -1) {
       subscribers.splice(index, 1)
+    }
+  }
+}
+
+export const deleteQnA = async (
+  qnaId: number,
+): Promise<ApiResponse<boolean>> => {
+  try {
+    // Validate input
+    if (qnaId === undefined || qnaId === null) {
+      return { success: false, error: 'QnA ID is required' }
+    }
+
+    const qna = dataStore.qnas[qnaId]
+    if (!qna) {
+      return { success: false, error: `QnA with ID ${qnaId} not found` }
+    }
+
+    // Find all related polls and delete them
+    const relatedPollIds = Object.values(dataStore.polls)
+      .filter((poll) => poll.qnaId === qnaId)
+      .map((poll) => poll.id)
+
+    // Delete all related polls
+    for (const pollId of relatedPollIds) {
+      // Delete poll options
+      const pollOptionIds = Object.values(dataStore.pollOptions)
+        .filter((option) => option.pollId === pollId)
+        .map((option) => option.id)
+
+      for (const optionId of pollOptionIds) {
+        delete dataStore.pollOptions[optionId]
+      }
+
+      // Notify subscribers about poll deletion
+      notifySubscribers(ApiMessageType.POLL_DELETE_MESSAGE, {
+        pollId,
+        qnaId,
+      })
+
+      // Delete the poll
+      delete dataStore.polls[pollId]
+    }
+
+    // Delete all related questions and answers
+    const questionIds = qna.questionsIds
+
+    for (const questionId of questionIds) {
+      // Delete answers for this question
+      const answerIds = Object.values(dataStore.answers)
+        .filter((answer) => answer.questionId === questionId)
+        .map((answer) => answer.id)
+
+      for (const answerId of answerIds) {
+        delete dataStore.answers[answerId]
+      }
+
+      // Delete the question
+      delete dataStore.questions[questionId]
+    }
+
+    // Notify subscribers about QnA deletion
+    notifySubscribers(ApiMessageType.QNA_DELETE_MESSAGE, {
+      qnaId,
+      title: qna.title,
+    })
+
+    // Delete the QnA
+    delete dataStore.qnas[qnaId]
+
+    return { success: true, data: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const deletePoll = async (
+  pollId: number,
+): Promise<ApiResponse<boolean>> => {
+  try {
+    // Validate input
+    if (pollId === undefined || pollId === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const poll = dataStore.polls[pollId]
+    if (!poll) {
+      return { success: false, error: `Poll with ID ${pollId} not found` }
+    }
+
+    // Delete poll options
+    const pollOptionIds = Object.values(dataStore.pollOptions)
+      .filter((option) => option.pollId === pollId)
+      .map((option) => option.id)
+
+    for (const optionId of pollOptionIds) {
+      delete dataStore.pollOptions[optionId]
+    }
+
+    // Notify subscribers about poll deletion
+    notifySubscribers(ApiMessageType.POLL_DELETE_MESSAGE, {
+      pollId,
+      qnaId: poll.qnaId,
+      title: poll.title,
+    })
+
+    // Delete the poll
+    delete dataStore.polls[pollId]
+
+    return { success: true, data: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     }
   }
 }
