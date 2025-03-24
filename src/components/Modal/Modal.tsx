@@ -22,11 +22,9 @@ export const Modal = ({
       </TextContainer>
       <ActionsContainer>
         {mainAction && mainAction}
-        {
-          <CancelButton variant="outlined" onClick={onCancel}>
-            Cancel
-          </CancelButton>
-        }
+        <CancelButton variant="outlined" onClick={onCancel}>
+          Cancel
+        </CancelButton>
       </ActionsContainer>
     </Container>
   )

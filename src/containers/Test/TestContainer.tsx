@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
-import { ButtonRed } from '@/components/ButtonRed'
+import { ButtonColored } from '@/components/ButtonColored/ButtonColored'
 import { Collapsible } from '@/components/Collapsible'
 import { CollapsibleToggle } from '@/components/CollapsibleToggle'
 import { Dropdown } from '@/components/Dropdown'
@@ -958,7 +958,11 @@ const ModalDemo = () => {
         title="Modal Title"
         description="Modal Description"
         onCancel={() => console.log('Cancel')}
-        mainAction={<ButtonRed icon={<StopIcon />}>Close</ButtonRed>}
+        mainAction={
+          <ButtonColored color="var(--red)" icon={<StopIcon />}>
+            Close
+          </ButtonColored>
+        }
       />
     </DemoSection>
   )

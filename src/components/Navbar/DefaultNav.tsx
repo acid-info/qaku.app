@@ -8,8 +8,7 @@ import { numberWithCommas } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { Button } from '../Button'
-import { ButtonRed } from '../ButtonRed'
-import { ButtonYellow } from '../ButtonYellow'
+import { ButtonColored } from '../ButtonColored/ButtonColored'
 import { IconButtonRound } from '../IconButtonRound'
 import { DeleteIcon } from '../Icons/DeleteIcon'
 import { DotIcon } from '../Icons/DotIcon'
@@ -75,7 +74,8 @@ const DefaultNav = ({
           title: `Open ${contentType}?`,
           description: `This will show the ${contentType} in your view and that of your participants.`,
           mainAction: (
-            <ButtonYellow
+            <ButtonColored
+              color="var(--yellow)"
               icon={<PlayArrowIcon />}
               onClick={() => {
                 onStartClick?.()
@@ -83,7 +83,7 @@ const DefaultNav = ({
               }}
             >
               Open
-            </ButtonYellow>
+            </ButtonColored>
           ),
           onCancel: () => setConfirmAction(null),
         }
@@ -94,7 +94,8 @@ const DefaultNav = ({
             isQna ? 'questions' : 'votes'
           } will be securely stored.`,
           mainAction: (
-            <ButtonRed
+            <ButtonColored
+              color="var(--red)"
               icon={<StopIcon />}
               onClick={() => {
                 onEndClick?.()
@@ -102,7 +103,7 @@ const DefaultNav = ({
               }}
             >
               Close
-            </ButtonRed>
+            </ButtonColored>
           ),
           onCancel: () => setConfirmAction(null),
         }
@@ -111,7 +112,8 @@ const DefaultNav = ({
           title: `Delete ${contentType}?`,
           description: `All the ${contentType} data will be lost.`,
           mainAction: (
-            <ButtonRed
+            <ButtonColored
+              color="var(--red)"
               icon={<DeleteIcon />}
               onClick={() => {
                 onDeleteClick?.()
@@ -119,7 +121,7 @@ const DefaultNav = ({
               }}
             >
               Delete
-            </ButtonRed>
+            </ButtonColored>
           ),
           onCancel: () => setConfirmAction(null),
         }
@@ -156,20 +158,22 @@ const DefaultNav = ({
       </Left>
       <Navbar>
         {isBeforeStart && (
-          <ButtonYellow
+          <ButtonColored
+            color="var(--yellow)"
             icon={<PlayArrowIcon />}
             onClick={() => setConfirmAction('start')}
           >
             Open {mode === 'qna' ? 'Q&A' : 'Poll'}
-          </ButtonYellow>
+          </ButtonColored>
         )}
         {isInProgress && (
-          <ButtonRed
+          <ButtonColored
+            color="var(--red)"
             icon={<StopIcon />}
             onClick={() => setConfirmAction('end')}
           >
             Close {mode === 'qna' ? 'Q&A' : 'Poll'}
-          </ButtonRed>
+          </ButtonColored>
         )}
         {isInProgress && (
           <Button
