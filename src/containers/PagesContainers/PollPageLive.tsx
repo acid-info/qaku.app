@@ -9,7 +9,7 @@ import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { updatePoll } from '@/utils/api.utils'
+import { endPoll, updatePoll } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -57,6 +57,19 @@ export const PollPageLive: React.FC = () => {
     })
   }
 
+  const handleEndClick = async () => {
+    const response = await endPoll(pollId)
+    if (!response.success) {
+      console.error('Failed to end Poll:', response.error)
+    } else {
+      router.push(pollRoutes.CREATED.replace(':id', pollId.toString()))
+    }
+  }
+
+  const handleAddPollClick = () => {
+    router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`)
+  }
+
   return (
     <DefaultLayoutContainer
       useAlternativeGap
@@ -70,11 +83,12 @@ export const PollPageLive: React.FC = () => {
         date: new Date().toISOString(),
         count: poll.optionsIds.length,
         id: pollId.toString(),
+        showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () =>
-          router.push(`${pollRoutes.CREATE}?qnaId=${poll.qnaId}`),
+        onAddPollClick: handleAddPollClick,
         showShareButton: true,
         onShareClick: handleShareClick,
+        onEndClick: handleEndClick,
       }}
     >
       <SEO />

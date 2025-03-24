@@ -7,9 +7,9 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { poll } from '@/data/routes'
+import { poll as pollRoutes, qna as qnaRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { updateQnA } from '@/utils/api.utils'
+import { endQnA, updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
@@ -52,6 +52,19 @@ export const QnaPageLive: React.FC = () => {
     })
   }
 
+  const handleEndClick = async () => {
+    const response = await endQnA(qnaId)
+    if (!response.success) {
+      console.error('Failed to end QnA:', response.error)
+    } else {
+      router.push(qnaRoutes.CREATED.replace(':id', qnaId.toString()))
+    }
+  }
+
+  const handleAddPollClick = () => {
+    router.push(`${pollRoutes.CREATE}?qnaId=${qnaId}`)
+  }
+
   return (
     <DefaultLayoutContainer
       showFooter={false}
@@ -65,10 +78,12 @@ export const QnaPageLive: React.FC = () => {
         date: qna.startDate.toISOString(),
         count: qna.questionsIds.length,
         id: qnaId.toString(),
+        showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
-        onAddPollClick: () => router.push(`${poll.CREATE}?qnaId=${qnaId}`),
+        onAddPollClick: handleAddPollClick,
         showShareButton: true,
         onShareClick: handleShareClick,
+        onEndClick: handleEndClick,
       }}
     >
       <SEO />

@@ -7,19 +7,17 @@ import {
 } from '@/types/qna.types'
 
 export enum ApiMessageType {
-  CONTROL_MESSAGE = 'control_msg',
   QUESTION_MESSAGE = 'question_msg',
   ANSWER_MESSAGE = 'answer_msg',
   ANSWERED_MESSAGE = 'answered_msg',
   UPVOTE_MESSAGE = 'upvote_msg',
-  MODERATION_MESSAGE = 'moderation_msg',
   POLL_CREATE_MESSAGE = 'poll_create_msg',
   POLL_VOTE_MESSAGE = 'poll_vote_msg',
   POLL_ACTIVE_MESSAGE = 'poll_active_msg',
   POLL_UPDATE_MESSAGE = 'poll_update_msg',
+  POLL_DELETE_MESSAGE = 'poll_delete_msg',
   QNA_UPDATE_MESSAGE = 'qna_update_msg',
-  SNAPSHOT = 'snapshot',
-  PERSIST_SNAPSHOT = 'persist_snapshot',
+  QNA_DELETE_MESSAGE = 'qna_delete_msg',
 }
 
 export interface ApiResponse<T> {
@@ -88,6 +86,7 @@ export interface ApiConnector {
     qnaId: number,
     qnaData: Partial<QnAType>,
   ) => Promise<ApiResponse<QnAType>>
+  deleteQnA: (qnaId: number) => Promise<ApiResponse<boolean>>
 
   // Poll methods
   getPolls: () => Promise<ApiResponse<Record<number, PollType>>>
@@ -103,6 +102,7 @@ export interface ApiConnector {
     pollId: number,
     pollData: Partial<PollType>,
   ) => Promise<ApiResponse<PollType>>
+  deletePoll: (pollId: number) => Promise<ApiResponse<boolean>>
 
   // Poll option methods
   getPollOptions: () => Promise<ApiResponse<Record<number, PollOptionType>>>

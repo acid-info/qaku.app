@@ -1,9 +1,19 @@
+import { answersRecordAtom } from '@/../atoms/answer'
 import { pollsRecordAtom } from '@/../atoms/poll'
 import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
 import { qnasRecordAtom } from '@/../atoms/qna'
+import { questionsRecordAtom } from '@/../atoms/question'
 import { apiConnector } from '@/lib/api/connector'
 import { ApiMessageType } from '@/lib/api/types'
 import { PollType, QnAType } from '@/types/qna.types'
+import {
+  handlePollDeleteInState,
+  handlePollUpdateInState,
+} from '@/utils/poll.utils'
+import {
+  handleQnADeleteInState,
+  handleQnAUpdateInState,
+} from '@/utils/qna.utils'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 
@@ -11,6 +21,8 @@ export const ApiSubscriptionManager = () => {
   const setQnasRecord = useSetAtom(qnasRecordAtom)
   const setPollsRecord = useSetAtom(pollsRecordAtom)
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
+  const setQuestionsRecord = useSetAtom(questionsRecordAtom)
+  const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   // Load initial data
   useEffect(() => {
@@ -43,45 +55,64 @@ export const ApiSubscriptionManager = () => {
 
   // Set up global subscriptions
   useEffect(() => {
-    const handlePollUpdate = (poll: PollType) => {
-      setPollsRecord((prev) => ({
-        ...prev,
-        [poll.id]: poll,
-      }))
-    }
-
     const qnaUpdateSub = apiConnector.subscribe<QnAType>(
       ApiMessageType.QNA_UPDATE_MESSAGE,
       (qna) => {
-        setQnasRecord((prev) => ({
-          ...prev,
-          [qna.id]: qna,
-        }))
+        handleQnAUpdateInState({ qna, setQnasRecord })
+      },
+    )
+
+    const qnaDeleteSub = apiConnector.subscribe<{ qnaId: number }>(
+      ApiMessageType.QNA_DELETE_MESSAGE,
+      ({ qnaId }) => {
+        handleQnADeleteInState({
+          qnaId,
+          setQnasRecord,
+          setQuestionsRecord,
+          setAnswersRecord,
+        })
       },
     )
 
     const pollUpdateSub = apiConnector.subscribe<PollType>(
       ApiMessageType.POLL_UPDATE_MESSAGE,
-      handlePollUpdate,
+      (poll) => {
+        handlePollUpdateInState({ poll, setPollsRecord })
+      },
     )
 
     const pollCreateSub = apiConnector.subscribe<PollType>(
       ApiMessageType.POLL_CREATE_MESSAGE,
-      handlePollUpdate,
+      (poll) => {
+        handlePollUpdateInState({ poll, setPollsRecord })
+      },
     )
 
-    const pollActiveSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_ACTIVE_MESSAGE,
-      handlePollUpdate,
+    const pollDeleteSub = apiConnector.subscribe<{ pollId: number }>(
+      ApiMessageType.POLL_DELETE_MESSAGE,
+      ({ pollId }) => {
+        handlePollDeleteInState({
+          pollId,
+          setPollsRecord,
+          setPollOptionsRecord,
+        })
+      },
     )
 
     return () => {
       qnaUpdateSub()
+      qnaDeleteSub()
       pollUpdateSub()
       pollCreateSub()
-      pollActiveSub()
+      pollDeleteSub()
     }
-  }, [setQnasRecord, setPollsRecord, setPollOptionsRecord])
+  }, [
+    setQnasRecord,
+    setPollsRecord,
+    setPollOptionsRecord,
+    setQuestionsRecord,
+    setAnswersRecord,
+  ])
 
   return null
 }
