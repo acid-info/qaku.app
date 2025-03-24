@@ -11,6 +11,8 @@ export const usePollSubscriptions = (pollId: number) => {
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
   useEffect(() => {
+    if (!pollId) return
+
     loadPollOptions({ pollId, setPollOptionsRecord })
 
     // Set up poll-specific subscriptions

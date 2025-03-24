@@ -1,5 +1,7 @@
+import { answersRecordAtom } from '@/../atoms/answer'
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { getQnaByIdAtom } from '@/../atoms/qna'
+import { questionsRecordAtom } from '@/../atoms/question'
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
@@ -9,21 +11,26 @@ import { QnaLive } from '@/containers/QnaLive/QnaLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { NOT_FOUND, poll } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { updateQnA } from '@/utils/api.utils'
+import { loadQnaData, updateQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
-import { checkValidQnA } from '@/utils/qna.utils'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
   const id = Number(router.query.id)
 
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
+
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
   const { userName } = useAtomValue(walletStateAtom)
+
+  const setQuestionsRecord = useSetAtom(questionsRecordAtom)
+  const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   const qnaAtom = useMemo(() => {
     if (!id) return atom(null)
@@ -35,16 +42,28 @@ export const QnaPageLive: React.FC = () => {
   useQnaQuestionsAnswersSubscriptions(id)
 
   useEffect(() => {
-    if (router.isReady && id != null) {
-      if (qna == null) {
-        const isValidId = checkValidQnA(id)
+    if (!router.isReady) return
 
-        if (!isValidId) {
-          router.push(NOT_FOUND)
-        }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        await loadQnaData({ qnaId: id, setQuestionsRecord, setAnswersRecord })
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
       }
     }
-  }, [id, qna, router])
+
+    fetchData()
+  }, [router.isReady, id, setQuestionsRecord, setAnswersRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !qna) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, qna, isLoading, isDataFetched])
 
   const handleSaveQna = async (updatedQna: Partial<typeof qna>) => {
     if (!updatedQna) return

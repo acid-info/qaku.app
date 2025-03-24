@@ -13,6 +13,8 @@ export const useQnaPollsSubscriptions = (qnaId: number) => {
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
   useEffect(() => {
+    if (!qnaId) return
+
     loadPollsByQnaId({ qnaId, setPollsRecord })
 
     const pollCreateSub = apiConnector.subscribe<PollType>(

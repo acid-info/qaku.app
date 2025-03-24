@@ -15,6 +15,7 @@ import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React, { useCallback, useMemo, useState } from 'react'
+
 const CONTENT_WIDTH = 507
 
 const EmptyState = () => (

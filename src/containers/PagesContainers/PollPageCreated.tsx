@@ -14,21 +14,18 @@ import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { loadPollOptions } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
-import { checkValidPoll } from '@/utils/poll.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const PollPageCreated: React.FC = () => {
   const router = useRouter()
   const id = Number(router.query.id)
 
-  const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
 
-  useEffect(() => {
-    if (!id) return
-    loadPollOptions({ pollId: id, setPollOptionsRecord })
-  }, [id, setPollOptionsRecord])
+  const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
   const pollAtom = useMemo(() => {
     if (!id) return atom(null)
@@ -72,16 +69,28 @@ export const PollPageCreated: React.FC = () => {
   }
 
   useEffect(() => {
-    if (router.isReady && id != null) {
-      if (poll == null) {
-        const isValidId = checkValidPoll(id)
+    if (!router.isReady) return
 
-        if (!isValidId) {
-          router.push(NOT_FOUND)
-        }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        await loadPollOptions({ pollId: id, setPollOptionsRecord })
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
       }
     }
-  }, [id, poll, router])
+
+    fetchData()
+  }, [router.isReady, id, setPollOptionsRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !poll) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, poll, isLoading, isDataFetched])
 
   return (
     <DefaultLayoutContainer

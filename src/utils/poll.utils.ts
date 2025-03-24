@@ -1,4 +1,3 @@
-import { mockPolls } from '@/data/mockPolls'
 import { PollOptionType, PollType } from '@/types/qna.types'
 import { ResultVisibilityEnum } from '@/types/settings.types'
 import { getValidPercentage } from './general.utils'
@@ -90,5 +89,3 @@ export const mapPollDataForCreation = ({
 
   return { pollData, pollOptions }
 }
-
-export const checkValidPoll = (id: number) => mockPolls.some((q) => q.id === id)

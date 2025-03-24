@@ -9,7 +9,6 @@ import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
 import { handleUserModeChange } from '@/utils/navbar.utils'
-import { checkValidQnA } from '@/utils/qna.utils'
 import styled from '@emotion/styled'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
@@ -26,16 +25,9 @@ export const PollsPageUser: React.FC = () => {
   const setQnasRecord = useSetAtom(qnasRecordAtom)
   const id = Number(router.query.id)
 
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
   const [qna, setQna] = useState<QnAType | null>(null)
-
-  // Fetch QnA data to get the title
-  useEffect(() => {
-    const loadQnaData = async () => {
-      const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
-      setQna(qnaData)
-    }
-    loadQnaData()
-  }, [id, setQnasRecord])
 
   useQnaPollsSubscriptions(id)
 
@@ -43,16 +35,29 @@ export const PollsPageUser: React.FC = () => {
   const pollIds = useAtomValue(pollIdsAtom)
 
   useEffect(() => {
-    if (router.isReady && id != null) {
-      if (qna == null) {
-        const isValidId = checkValidQnA(id)
+    if (!router.isReady) return
 
-        if (!isValidId) {
-          router.push(NOT_FOUND)
-        }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
+        setQna(qnaData)
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
       }
     }
-  }, [id, qna, router])
+
+    fetchData()
+  }, [router.isReady, id, setQnasRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !qna) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, qna, isLoading, isDataFetched])
 
   return (
     <UserLayoutContainer

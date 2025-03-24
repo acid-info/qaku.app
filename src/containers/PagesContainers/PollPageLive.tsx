@@ -1,5 +1,6 @@
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { getPollByIdAtom } from '@/../atoms/poll'
+import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
 import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
 import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
@@ -8,20 +9,24 @@ import { PollLive } from '@/containers/PollLive/PollLive'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { NOT_FOUND, poll as pollRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { updatePoll } from '@/utils/api.utils'
+import { loadPollOptions, updatePoll } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
-import { checkValidPoll } from '@/utils/poll.utils'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const PollPageLive: React.FC = () => {
   const router = useRouter()
   const id = Number(router.query.id)
 
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
+
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
+
+  const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
   const pollAtom = useMemo(() => {
     if (!id) return atom(null)
@@ -33,16 +38,28 @@ export const PollPageLive: React.FC = () => {
   usePollSubscriptions(id)
 
   useEffect(() => {
-    if (router.isReady && id != null) {
-      if (poll == null) {
-        const isValidId = checkValidPoll(id)
+    if (!router.isReady) return
 
-        if (!isValidId) {
-          router.push(NOT_FOUND)
-        }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        await loadPollOptions({ pollId: id, setPollOptionsRecord })
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
       }
     }
-  }, [id, poll, router])
+
+    fetchData()
+  }, [router.isReady, id, setPollOptionsRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !poll) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, poll, isLoading, isDataFetched])
 
   const handleSavePollSettings = async (
     updatedPollData: Partial<typeof poll>,

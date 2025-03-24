@@ -8,7 +8,6 @@ import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
 import { handleUserModeChange } from '@/utils/navbar.utils'
-import { checkValidQnA } from '@/utils/qna.utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -18,33 +17,39 @@ export const QnaPageUser: React.FC = () => {
   const router = useRouter()
   const id = Number(router.query.id)
 
-  const { userName } = useAtomValue(walletStateAtom)
-  const setQnasRecord = useSetAtom(qnasRecordAtom)
-
-  // Todo might want to use jotai atom here. It's hard fetch qna and then use a derived atom here.
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDataFetched, setIsDataFetched] = useState(false)
   const [qna, setQna] = useState<QnAType | null>(null)
 
-  useEffect(() => {
-    const loadQnaData = async () => {
-      const qna = await loadAndGetQna({ qnaId: id, setQnasRecord })
-      setQna(qna)
-    }
-    loadQnaData()
-  }, [id, setQnasRecord])
+  const { userName } = useAtomValue(walletStateAtom)
+  const setQnasRecord = useSetAtom(qnasRecordAtom)
 
   useQnaQuestionsAnswersSubscriptions(id)
 
   useEffect(() => {
-    if (router.isReady && id != null) {
-      if (qna == null) {
-        const isValidId = checkValidQnA(id)
+    if (!router.isReady) return
 
-        if (!isValidId) {
-          router.push(NOT_FOUND)
-        }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
+        setQna(qnaData)
+        setIsDataFetched(true)
+        setIsLoading(false)
+      } catch (_) {
+        setIsLoading(false)
       }
     }
-  }, [id, qna, router])
+
+    fetchData()
+  }, [router.isReady, id, setQnasRecord])
+
+  useEffect(() => {
+    if (!router.isReady || id == null) return
+    if (isDataFetched && !isLoading && !qna) {
+      router.push(NOT_FOUND)
+    }
+  }, [router, id, qna, isLoading, isDataFetched])
 
   return (
     <UserLayoutContainer
