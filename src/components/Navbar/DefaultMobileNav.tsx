@@ -1,6 +1,7 @@
 import { breakpoints } from '@/configs/ui.configs'
-import { HOME } from '@/data/routes'
+import { HOME, qna } from '@/data/routes'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { IconButtonRound } from '../IconButtonRound'
@@ -13,24 +14,18 @@ import WalletConnect from './WalletConnect'
 
 type Props = {
   sidebar?: React.ReactNode
-  onClickLogo?: () => void
   onClickPlus?: () => void
 }
 
-const DefaultMobileNav = ({
-  sidebar,
-  onClickLogo,
-  onClickPlus,
-  ...props
-}: Props) => {
+const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
   const router = useRouter()
 
-  const onClickLogoDefault = () => {
-    router.push(HOME)
+  const onClickPlusDefault = () => {
+    router.push(qna.CREATE)
   }
 
-  const handleLogoClick = onClickLogo || onClickLogoDefault
+  const handlePlusClick = onClickPlus || onClickPlusDefault
 
   const handleSideBar = () => {
     setIsSidebarOpen((prev) => !prev)
@@ -43,9 +38,11 @@ const DefaultMobileNav = ({
         variant="filled"
         icon={isSidebarOpen ? <CloseIcon /> : <HamburgerIcon />}
       />
-      <QakuLogo onClick={handleLogoClick} width={30} height={30} />
+      <Link href={HOME}>
+        <QakuLogo width={30} height={30} />
+      </Link>
       <IconButtonRound
-        onClick={onClickPlus}
+        onClick={handlePlusClick}
         variant="filledPrimary"
         icon={<PlusIcon />}
       />
@@ -68,6 +65,10 @@ const Container = styled.div`
   align-items: center;
   margin: 8px;
   padding: 8px;
+
+  svg {
+    cursor: pointer;
+  }
 
   @media (min-width: ${breakpoints.sm + 1}px) {
     display: none;

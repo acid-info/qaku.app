@@ -2,33 +2,20 @@ import { breakpoints } from '@/configs/ui.configs'
 import { HOME } from '@/data/routes'
 import { NavbarModeEnum, UserNavbarProps } from '@/types/navbar.types'
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { QakuLogo } from '../Icons/QakuLogo'
 import { Tab } from '../Tab'
 
 type Props = Omit<UserNavbarProps, 'title' | 'count' | 'id'> & {
   navProps?: Partial<UserNavbarProps>
-  onClickLogo?: () => void
 }
 
-const UserMobileNav = ({
-  mode,
-  navProps,
-  onModeChange,
-  onClickLogo,
-  ...props
-}: Props) => {
-  const router = useRouter()
-
-  const onClickLogoDefault = () => {
-    router.push(HOME)
-  }
-
-  const handleLogoClick = onClickLogo || onClickLogoDefault
-
+const UserMobileNav = ({ mode, navProps, onModeChange, ...props }: Props) => {
   return (
     <Container {...props}>
-      <QakuLogo onClick={handleLogoClick} width={30} height={30} />
+      <Link href={HOME}>
+        <QakuLogo width={30} height={30} />
+      </Link>
       <TabWrapper>
         <Tab
           options={[
@@ -51,6 +38,10 @@ const Container = styled.div`
   align-items: center;
   margin: 8px;
   padding: 8px;
+
+  svg {
+    cursor: pointer;
+  }
 
   @media (min-width: ${breakpoints.sm + 1}px) {
     display: none;
