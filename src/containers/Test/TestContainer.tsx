@@ -6,6 +6,7 @@ import { Button } from '@/components/Button'
 import { ButtonColored } from '@/components/ButtonColored/ButtonColored'
 import { Collapsible } from '@/components/Collapsible'
 import { CollapsibleToggle } from '@/components/CollapsibleToggle'
+import { DateInput } from '@/components/DateInput'
 import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
@@ -968,6 +969,31 @@ const ModalDemo = () => {
   )
 }
 
+const DateInputDemo = () => {
+  const [date, setDate] = useState<Date>()
+
+  return (
+    <DemoSection title="Date Input">
+      <div style={{ width: '300px' }}>
+        <h3>Default</h3>
+        <DateInput value={date} onChange={setDate} />
+      </div>
+      <div style={{ width: '300px' }}>
+        <h3>With Value</h3>
+        <DateInput value={new Date()} />
+      </div>
+      <div style={{ width: '300px' }}>
+        <h3>Disabled</h3>
+        <DateInput disabled />
+      </div>
+      <div style={{ width: '300px' }}>
+        <h3>Custom Placeholder</h3>
+        <DateInput placeholder="Pick a date please.." />
+      </div>
+    </DemoSection>
+  )
+}
+
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
@@ -990,6 +1016,7 @@ export const TestContainer: React.FC = () => (
     <MessageFormDemo />
 
     <Separator>Components</Separator>
+    <DateInputDemo />
     <DemoSection title="Badge">
       <Badge title="Don't forget to mark the correct answer" />
       <Badge title="Some error happened" variant="red" />
