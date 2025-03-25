@@ -3,7 +3,8 @@ import { HOME, qna } from '@/data/routes'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useOnClickOutside } from '../../../hooks'
 import { IconButtonRound } from '../IconButtonRound'
 import { CloseIcon } from '../Icons/CloseIcon'
 import { HamburgerIcon } from '../Icons/HamburgerIcon'
@@ -20,6 +21,14 @@ type Props = {
 const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
   const router = useRouter()
+
+  const sidebarRef = useRef<HTMLDivElement>(null)
+
+  useOnClickOutside(sidebarRef, () => {
+    if (isSidebarOpen) {
+      setIsSidebarOpen(false)
+    }
+  })
 
   const onClickPlusDefault = () => {
     router.push(qna.CREATE)
@@ -47,7 +56,7 @@ const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
         icon={<PlusIcon />}
       />
       {isSidebarOpen && (
-        <MobileSidebar>
+        <MobileSidebar ref={sidebarRef}>
           {sidebar}
           <BottomItems>
             <WalletConnect />
