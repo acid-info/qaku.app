@@ -87,7 +87,7 @@ const Container = styled.div`
 const MobileSidebar = styled.div`
   --top-margin: 64px;
   --default-margin: 16px;
-  --mobile-sidebar-z-index: 1000;
+  --mobile-sidebar-z-index: 5;
 
   position: fixed;
 

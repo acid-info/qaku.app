@@ -6,7 +6,7 @@ const MobileBottomPanel = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Container = styled.div`
-  --mobile-bottom-panel-z-index: 1000;
+  --mobile-bottom-panel-z-index: 3;
 
   position: fixed;
   z-index: var(--mobile-bottom-panel-z-index);
@@ -17,9 +17,8 @@ const Container = styled.div`
   gap: 24px;
 
   border: 1px solid var(--gray);
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-  background: var(--gray-ultradar);
+  border-radius: 8px;
+  background: var(--gray-ultradark);
 
   @media (min-width: ${breakpoints.sm + 1}px) {
     display: none;
