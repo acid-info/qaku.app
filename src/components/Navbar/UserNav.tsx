@@ -1,4 +1,5 @@
 import { QakuLogo } from '@/components/Icons/QakuLogo'
+import { breakpoints } from '@/configs/ui.configs'
 import { LANDING } from '@/data/routes'
 import { NavbarModeEnum, UserNavbarProps } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
@@ -70,6 +71,10 @@ const Container = styled.header`
   gap: 16px;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    display: none;
+  }
 `
 
 const Left = styled.div`

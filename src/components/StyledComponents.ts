@@ -44,3 +44,9 @@ export const StyledInput = styled.input`
     outline: none;
   }
 `
+
+export const WalletConnectWrapper = styled.div`
+  @media (max-width: ${breakpoints.sm}px) {
+    display: none;
+  }
+`

@@ -1,7 +1,12 @@
 import { Footer, FooterProps } from '@/components/Footer'
+import DefaultMobileNav from '@/components/Navbar/DefaultMobileNav'
 import WalletConnect from '@/components/Navbar/WalletConnect'
 import { SidebarContainer } from '@/components/Sidebar'
-import { LayoutContainer } from '@/components/StyledComponents'
+import {
+  LayoutContainer,
+  WalletConnectWrapper,
+} from '@/components/StyledComponents'
+import { breakpoints } from '@/configs/ui.configs'
 import { ApiSubscriptionManager } from '@/containers/ApiSubscriptionManager'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -18,8 +23,11 @@ export default function HomeLayout(props: PropsWithChildren<Props>) {
       <LayoutContainer>
         <Navbar>
           <h1>{props.title}</h1>
-          <WalletConnect />
+          <WalletConnectWrapper>
+            <WalletConnect />
+          </WalletConnectWrapper>
         </Navbar>
+        <DefaultMobileNav sidebar={props.sidebar} />
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
@@ -56,4 +64,8 @@ const Navbar = styled.header`
   padding: 16px;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    display: none;
+  }
 `

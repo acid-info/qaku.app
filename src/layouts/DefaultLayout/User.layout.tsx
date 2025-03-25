@@ -1,4 +1,7 @@
+import { Button } from '@/components/Button'
 import { Footer, FooterProps } from '@/components/Footer'
+import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
+import UserMobileNav from '@/components/Navbar/UserMobileNav'
 import UserNav from '@/components/Navbar/UserNav'
 import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
@@ -24,6 +27,11 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
           onModeChange={props.onModeChange}
           {...props.navProps}
         />
+        <UserMobileNav
+          mode={props.navProps?.mode || NavbarModeEnum.Qna}
+          navProps={props.navProps}
+          onModeChange={props.onModeChange}
+        />
         <Main $showFooter={props.showFooter}>{props.children}</Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
         {props.isWalletPanelOpen !== undefined && props.closeWalletPanel && (
@@ -32,6 +40,13 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
             onClose={props.closeWalletPanel}
           />
         )}
+        <MobileBottomPanel>
+          <p>Town Hall 2025 – New Positions, Updates, And Plans</p>
+          <p>3 polls </p>
+          <div>
+            <Button>Connect for Identity</Button>
+          </div>
+        </MobileBottomPanel>
       </Container>
     </Root>
   )

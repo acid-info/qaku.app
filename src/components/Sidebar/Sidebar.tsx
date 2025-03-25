@@ -1,3 +1,4 @@
+import { breakpoints } from '@/configs/ui.configs'
 import { qna } from '@/data/routes'
 import { PollType, QnAFilterTypeEnum, QnAType } from '@/types/qna.types'
 import styled from '@emotion/styled'
@@ -114,12 +115,22 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    margin-top: 0;
+  }
 `
 
 const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    & > div {
+      display: none;
+    }
+  }
 `
 
 const Title = styled.h2`
@@ -132,6 +143,12 @@ const SidebarContent = styled.div`
   width: 100%;
   gap: 24px;
   min-height: 0;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    & > div:first-of-type > div {
+      width: 100%;
+    }
+  }
 `
 
 const QnaWidgetContainer = styled.div`

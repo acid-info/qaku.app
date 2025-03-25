@@ -1,3 +1,4 @@
+import { breakpoints } from '@/configs/ui.configs'
 import { ModalContainer } from '@/containers/ModalContainer'
 import {
   DefaultNavbarProps,
@@ -220,6 +221,10 @@ const Container = styled.header`
   gap: 16px;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    display: none;
+  }
 `
 
 const Left = styled.div`
