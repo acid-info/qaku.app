@@ -1,4 +1,6 @@
+import { Button } from '@/components/Button'
 import { Footer, FooterProps } from '@/components/Footer'
+import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
 import UserMobileNav from '@/components/Navbar/UserMobileNav'
 import UserNav from '@/components/Navbar/UserNav'
 import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
@@ -38,6 +40,13 @@ export default function UserLayout(props: PropsWithChildren<Props>) {
             onClose={props.closeWalletPanel}
           />
         )}
+        <MobileBottomPanel>
+          <p>Town Hall 2025 – New Positions, Updates, And Plans</p>
+          <p>3 polls </p>
+          <div>
+            <Button>Connect for Identity</Button>
+          </div>
+        </MobileBottomPanel>
       </Container>
     </Root>
   )
