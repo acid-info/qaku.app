@@ -23,6 +23,8 @@ Page.getLayout = function getLayout(page: React.ReactNode) {
         mode: NavbarModeEnum.Qna,
         isTitleOnly: true,
         title: 'New Qaku',
+        showScheduleQnaButton: true,
+        onScheduleQnaClick: () => {},
       }}
     >
       {page}

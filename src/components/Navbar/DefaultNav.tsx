@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { Button } from '../Button'
 import { ButtonColored } from '../ButtonColored/ButtonColored'
 import { IconButtonRound } from '../IconButtonRound'
+import { CalendarIcon } from '../Icons/CalendarIcon/CalendarIcon'
 import { DeleteIcon } from '../Icons/DeleteIcon'
 import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
@@ -55,8 +56,10 @@ const DefaultNav = ({
   onStartClick,
   onEndClick,
   onDeleteClick,
+  onScheduleQnaClick,
   showShareButton = false,
   showSettingsButton = false,
+  showScheduleQnaButton = false,
 }: DefaultNavbarProps) => {
   const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
   const isInProgress = status === QnaProgressStatusEnum.InProgress
@@ -191,6 +194,12 @@ const DefaultNav = ({
               onClick={() => setConfirmAction('delete')}
             />
           ) : null}
+          {showScheduleQnaButton && (
+            <IconButtonRound
+              icon={<CalendarIcon />}
+              onClick={onScheduleQnaClick}
+            />
+          )}
           {showSettingsButton && (
             <IconButtonRound
               icon={<SettingsIcon />}

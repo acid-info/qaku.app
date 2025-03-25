@@ -26,8 +26,10 @@ export interface DefaultNavbarProps extends BaseNavbarProps {
   onStartClick?: () => void
   onEndClick?: () => void
   onDeleteClick?: () => void
+  onScheduleQnaClick?: () => void
   showShareButton?: boolean
   showSettingsButton?: boolean
+  showScheduleQnaButton?: boolean
 }
 
 export interface UserNavbarProps extends BaseNavbarProps {
