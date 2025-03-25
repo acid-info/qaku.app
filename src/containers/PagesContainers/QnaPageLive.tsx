@@ -5,6 +5,7 @@ import { questionsRecordAtom } from '@/../atoms/question'
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
+import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
@@ -122,6 +123,9 @@ export const QnaPageLive: React.FC = () => {
           onSave={handleSaveQna}
         />
       )}
+      <MobileBottomPanel>
+        <p>Content</p>
+      </MobileBottomPanel>
     </DefaultLayoutContainer>
   )
 }
