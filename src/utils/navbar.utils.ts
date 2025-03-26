@@ -1,4 +1,4 @@
-import { user } from '@/data/routes'
+import { USER } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { NextRouter } from 'next/router'
 
@@ -12,9 +12,9 @@ export const handleUserModeChange = ({
   router: NextRouter
 }) => {
   if (newMode === NavbarModeEnum.Polls) {
-    router.push(user.POLLS.replace(':id', qnaId))
+    router.push(USER.POLLS.replace(':id', qnaId))
   } else {
-    router.push(user.QNA.replace(':id', qnaId))
+    router.push(USER.QNA.replace(':id', qnaId))
   }
 }
 
