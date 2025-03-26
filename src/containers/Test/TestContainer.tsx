@@ -7,6 +7,7 @@ import { ButtonColored } from '@/components/ButtonColored/ButtonColored'
 import { Collapsible } from '@/components/Collapsible'
 import { CollapsibleToggle } from '@/components/CollapsibleToggle'
 import { DateInput } from '@/components/DateInput'
+import { DateRangePill } from '@/components/DateRangePill/DateRangePill'
 import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
@@ -994,6 +995,31 @@ const DateInputDemo = () => {
   )
 }
 
+const DateRangePillDemo = () => {
+  // Same year examples
+  const startDate1 = new Date(2025, 1, 15) // Feb 15, 2025
+  const endDate1 = new Date(2025, 2, 10) // Mar 10, 2025
+
+  // Different year examples
+  const startDate2 = new Date(2023, 1, 15) // Feb 15, 2023
+  const endDate2 = new Date(2025, 2, 10) // Mar 10, 2025
+
+  return (
+    <DemoSection title="Date Range Pill">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div>
+          <h3>Same Year Range</h3>
+          <DateRangePill startDate={startDate1} endDate={endDate1} />
+        </div>
+        <div>
+          <h3>Different Year Range</h3>
+          <DateRangePill startDate={startDate2} endDate={endDate2} />
+        </div>
+      </div>
+    </DemoSection>
+  )
+}
+
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
@@ -1017,6 +1043,7 @@ export const TestContainer: React.FC = () => (
 
     <Separator>Components</Separator>
     <DateInputDemo />
+    <DateRangePillDemo />
     <DemoSection title="Badge">
       <Badge title="Don't forget to mark the correct answer" />
       <Badge title="Some error happened" variant="red" />
