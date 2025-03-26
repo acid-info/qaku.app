@@ -1,9 +1,16 @@
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
+import { Button } from '@/components/Button'
+import { LinkIcon } from '@/components/Icons/LinkIcon'
+import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
+import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { breakpoints } from '@/configs/ui.configs'
+import { qna as QNA_ROUTE } from '@/data/routes'
+import { NavbarModeEnum } from '@/types/navbar.types'
+import { QnAType } from '@/types/qna.types'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
@@ -12,9 +19,11 @@ import {
   likeAnswerById,
   likeQuestionById,
 } from '@/utils/api.utils'
+import { handleShare } from '@/utils/navbar.utils'
 import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
+import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 
 const CONTENT_WIDTH = 507
@@ -33,15 +42,17 @@ const NoQuestionsInThisTab = () => (
 )
 
 export type QnaUserProps = {
+  qna?: QnAType | null
   qnaId: number
   userId: string
 }
 
-export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
+export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
   const { status, userName } = useAtomValue(walletStateAtom)
+  console.log('qna', qna)
 
   const {
     questions: allQuestions,
@@ -159,6 +170,44 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qnaId, userId }) => {
           <EmptyState />
         )}
       </Main>
+      <MobileBottomPanel>
+        <h3>{qna?.title}</h3>
+        <div className="row">
+          <p>
+            {questionsCount} {questionsCount === 1 ? 'question' : 'questions'}
+          </p>
+          <p className="id">#{qnaId}</p>
+        </div>
+        <MobileStyledMessageForm
+          messagePlaceholder="Type your question"
+          onSubmit={async ({ message, isAnonymous, resetForm, name }) => {
+            await addNewQuestion({
+              qnaId,
+              content: message,
+              author: isAnonymous ? 'Anonymous' : name || userId,
+            })
+            resetForm()
+          }}
+          isAuthorized={status === WalletConnectionStatusEnum.Connected}
+        />
+        <div className="row">
+          <Button>Connect for Identity</Button>
+          <Button
+            icon={<LinkIcon />}
+            onClick={() =>
+              handleShare({
+                qnaId: qnaId,
+                mode: NavbarModeEnum.Qna,
+              })
+            }
+          >
+            Share
+          </Button>
+          <Link href={QNA_ROUTE.CREATE}>
+            <Button icon={<PlusIcon />}>Create Q&A</Button>
+          </Link>
+        </div>
+      </MobileBottomPanel>
     </Wrapper>
   )
 }
@@ -191,6 +240,15 @@ const StyledMessageForm = styled(MessageForm)`
 
   @media (max-width: ${breakpoints.sm}px) {
     display: none;
+  }
+`
+
+const MobileStyledMessageForm = styled(MessageForm)`
+  display: none;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    display: block;
+    margin-bottom: 16px;
   }
 `
 
