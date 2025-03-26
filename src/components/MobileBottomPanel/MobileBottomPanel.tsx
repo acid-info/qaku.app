@@ -11,9 +11,12 @@ const Container = styled.div`
   position: fixed;
   z-index: var(--mobile-bottom-panel-z-index);
   bottom: 0;
+  left: 0;
   width: 100%;
   flex-direction: column;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 
   border: 1px solid var(--gray);

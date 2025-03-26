@@ -76,7 +76,7 @@ export const PollsPageUser: React.FC = () => {
       }}
     >
       <SEO />
-      <PollsUser pollIds={pollIds} />
+      <PollsUser qna={qna} pollIds={pollIds} />
       {pollIds.length === 0 && <EmptyState />}
     </UserLayoutContainer>
   )
