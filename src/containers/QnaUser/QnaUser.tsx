@@ -179,14 +179,6 @@ const Main = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
-
-  // TBD : hide scrollbar
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &.container::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 const StyledMessageForm = styled(MessageForm)`
