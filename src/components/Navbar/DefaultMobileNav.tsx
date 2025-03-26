@@ -60,7 +60,9 @@ const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
           {sidebar}
           <BottomItems>
             <WalletConnect />
-            <SettingsButton />
+            <div onClick={handleSideBar}>
+              <SettingsButton />
+            </div>
           </BottomItems>
         </MobileSidebar>
       )}
@@ -72,7 +74,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 8px;
+  margin: 8px 8px 0 8px;
   padding: 8px;
 
   svg {

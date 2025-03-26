@@ -6,6 +6,7 @@ import {
   Row,
   StyledInput,
 } from '@/components/StyledComponents'
+import { breakpoints } from '@/configs/ui.configs'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
 import React from 'react'
@@ -79,6 +80,11 @@ const Main = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-inline: 16px;
+    padding-top: 92px !important;
+  }
 `
 
 const Column = styled.div`
@@ -106,10 +112,22 @@ const Column = styled.div`
       opacity: 0.7;
     }
   }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-bottom: 80px;
+  }
 `
 
 const StyledButton = styled(Button)`
   width: 200px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 60px;
+    height: 32px;
+    font-size: var(--label1-font-size);
+    line-height: var(--label1-line-height);
+    padding: 8px 16px;
+  }
 `
 
 const KeyManagement = styled.div`
@@ -143,6 +161,13 @@ const Key = styled.div`
   gap: 16px;
   align-self: stretch;
   background: var(--gray-ultradark);
+
+  span {
+    // ellipsis
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `
 
 const IconContainer = styled.div`
