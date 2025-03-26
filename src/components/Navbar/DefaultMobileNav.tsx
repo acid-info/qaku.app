@@ -1,5 +1,5 @@
 import { breakpoints } from '@/configs/ui.configs'
-import { HOME, qna } from '@/data/routes'
+import { HOME, QnA } from '@/data/routes'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -31,7 +31,7 @@ const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
   })
 
   const onClickPlusDefault = () => {
-    router.push(qna.CREATE)
+    router.push(QnA.CREATE)
   }
 
   const handlePlusClick = onClickPlus || onClickPlusDefault

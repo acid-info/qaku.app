@@ -8,7 +8,7 @@ import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { breakpoints } from '@/configs/ui.configs'
-import { qna as QNA_ROUTE } from '@/data/routes'
+import { QnA as QNA_ROUTE } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { FilterThreadEnum } from '@/types/thread.types'
@@ -52,7 +52,6 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
     FilterThreadEnum.All,
   )
   const { status, userName } = useAtomValue(walletStateAtom)
-  console.log('qna', qna)
 
   const {
     questions: allQuestions,

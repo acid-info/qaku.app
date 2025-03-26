@@ -1,6 +1,6 @@
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Button } from '@/components/Button'
-import { HOME, qna } from '@/data/routes'
+import { HOME, QnA } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import styled from '@emotion/styled'
 import Link from 'next/link'
@@ -40,7 +40,7 @@ export const LandingPage: React.FC = () => {
       <ContentContainer>
         <Hero />
         <ButtonGroup>
-          <Link href={qna.CREATE}>
+          <Link href={QnA.CREATE}>
             <Button size="large">Create quick Q&A</Button>
           </Link>
           <Button

@@ -4,7 +4,7 @@ import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
-import { user } from '@/data/routes'
+import { USER } from '@/data/routes'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
@@ -154,7 +154,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
       </Main>
       <ActionContainer>
         <Link
-          href={user.QNA.replace(':id', String(qnaId))}
+          href={USER.QNA.replace(':id', String(qnaId))}
           target="_blank"
           rel="noopener noreferrer"
         >

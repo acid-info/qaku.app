@@ -1,5 +1,5 @@
 import { breakpoints } from '@/configs/ui.configs'
-import { qna } from '@/data/routes'
+import { QnA } from '@/data/routes'
 import { PollType, QnAFilterTypeEnum, QnAType } from '@/types/qna.types'
 import styled from '@emotion/styled'
 import Link from 'next/link'
@@ -48,7 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <Title>Your Q&As</Title>
         <Row gap={8}>
           <SettingsButton />
-          <Link href={qna.CREATE}>
+          <Link href={QnA.CREATE}>
             <Button variant="filledPrimary" icon={<PlusIcon />}>
               Create
             </Button>

@@ -1,4 +1,4 @@
-import { qna } from '@/data/routes'
+import { QnA } from '@/data/routes'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import React from 'react'
@@ -8,7 +8,7 @@ import { PlusIcon } from '../Icons/PlusIcon'
 export const CreateNewQaku: React.FC = () => {
   return (
     <CreateNewQakuWrapper>
-      <Link href={qna.CREATE}>
+      <Link href={QnA.CREATE}>
         <CreateNewQakuText>Create new Qaku</CreateNewQakuText>
         <IconButtonRound
           variant="filledPrimary"
