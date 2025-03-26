@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
+import { breakpoints } from '@/configs/ui.configs'
 import { Hero } from './Hero'
 
 export const LandingPage: React.FC = () => {
@@ -66,6 +67,11 @@ const LandingWrapper = styled.div`
   width: 100%;
   padding: 24px;
   position: relative;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    flex-direction: column;
+    gap: 82px;
+  }
 `
 
 const ContentContainer = styled.div`
@@ -73,11 +79,34 @@ const ContentContainer = styled.div`
   flex: 1;
   flex-direction: column;
   width: 574px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const ButtonGroup = styled.div`
   display: flex;
   margin-top: 32px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    width: calc(100% - 32px);
+
+    button {
+      font-size: var(--body2-font-size);
+      line-height: var(--body2-line-height);
+      height: 64px;
+      padding: unset;
+    }
+
+    a,
+    button {
+      width: 100%;
+    }
+  }
 `
 
 const Video = styled.video`
@@ -88,9 +117,10 @@ const Video = styled.video`
   top: 0;
   right: -10%;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoints.sm}px) {
+    position: relative;
     height: fit-content;
-    top: 340px;
     right: 0;
+    margin-bottom: 238px;
   }
 `

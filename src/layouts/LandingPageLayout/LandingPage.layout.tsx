@@ -1,4 +1,5 @@
 import { Footer } from '@/components/Footer'
+import { breakpoints } from '@/configs/ui.configs'
 import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
@@ -27,6 +28,10 @@ const Root = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    height: 100%;
+  }
 `
 
 const Main = styled.main`

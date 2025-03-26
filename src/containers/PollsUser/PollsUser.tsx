@@ -246,14 +246,6 @@ const Main = styled.div`
     margin-top: calc(var(--button-height) + var(--navbar-main-gap) + 24px);
     padding-top: 0 !important;
   }
-
-  // TBD : hide scrollbar
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &.container::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 const PollList = styled.div`
