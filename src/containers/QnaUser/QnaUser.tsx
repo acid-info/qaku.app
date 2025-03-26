@@ -3,6 +3,7 @@ import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswer
 import { MessageForm } from '@/components/MessageForm'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { breakpoints } from '@/configs/ui.configs'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import {
@@ -187,16 +188,28 @@ const StyledMessageForm = styled(MessageForm)`
   }
   margin-bottom: 40px;
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    display: none;
+  }
 `
 
 const TabWrapper = styled.div`
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const NoContentMessage = styled.div`

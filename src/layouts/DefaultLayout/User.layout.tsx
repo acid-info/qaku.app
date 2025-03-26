@@ -3,6 +3,7 @@ import { Footer, FooterProps } from '@/components/Footer'
 import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
 import UserMobileNav from '@/components/Navbar/UserMobileNav'
 import UserNav from '@/components/Navbar/UserNav'
+import { breakpoints } from '@/configs/ui.configs'
 import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
 import styled from '@emotion/styled'
@@ -76,5 +77,9 @@ const Main = styled.main<{ $showFooter?: boolean }>`
   .scrollable-container {
     padding-top: var(--navbar-main-gap);
     padding-bottom: calc(var(--navbar-main-gap) * 2);
+  }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-inline: 16px;
   }
 `

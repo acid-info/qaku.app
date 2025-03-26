@@ -9,6 +9,7 @@ import { Row } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { TitleBlock } from '@/components/TitleBlock'
 import { ToggleButton } from '@/components/ToggleButton'
+import { breakpoints } from '@/configs/ui.configs'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { voteInPoll } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
@@ -239,28 +240,48 @@ const Main = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    --button-height: 54px;
+    margin-top: calc(var(--button-height) + var(--navbar-main-gap) + 24px);
+    padding-top: 0 !important;
+  }
+
+  // TBD : hide scrollbar
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &.container::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const PollList = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: var(--navbar-main-gap);
+  margin-top: var(--navbar-main-gap);
   left: 0;
+
   width: 224px;
   margin-left: 16px;
 
   & > div {
     width: 100%;
   }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+    margin-left: 0;
+    top: 0;
+  }
 `
 
 const StyledTab = styled(Tab)`
   flex-direction: column;
-
-  & > div:not(:first-of-type) {
-    margin-top: -1px;
-  }
+  height: fit-content;
 
   button {
     padding: 16px;
@@ -274,6 +295,15 @@ const StyledTab = styled(Tab)`
     word-break: normal;
     max-width: 100%;
   }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    flex-direction: row;
+    width: fit-content !important;
+
+    button {
+      width: 172px;
+    }
+  }
 `
 
 const Column = styled.div`
@@ -281,6 +311,10 @@ const Column = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 507px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-bottom: 100px;
+  }
 `
 
 const PollsWrapper = styled.div`

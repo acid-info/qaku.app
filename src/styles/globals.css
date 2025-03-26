@@ -151,3 +151,9 @@ textarea::placeholder {
 textarea:focus {
   outline: none;
 }
+
+@media (max-width: 768px) {
+  :root {
+    --navbar-main-gap: 40px;
+  }
+}
