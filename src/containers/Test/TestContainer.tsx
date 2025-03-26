@@ -203,7 +203,7 @@ const NavbarDemo = () => {
             mode={NavbarModeEnum.Qna}
             isTitleOnly={true}
             title="Polls"
-            date={'2023-12-25T15:00:00.000Z'}
+            startDate={new Date('2023-12-25T15:00:00.000Z')}
             count={3}
             id="3212345"
           />
@@ -216,7 +216,7 @@ const NavbarDemo = () => {
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }
-              date={'2023-12-25T15:00:00.000Z'}
+              startDate={new Date('2023-12-25T15:00:00.000Z')}
               count={1236}
               id="3212345"
               status={status}
@@ -228,7 +228,7 @@ const NavbarDemo = () => {
             mode={NavbarModeEnum.Polls}
             isTitleOnly={true}
             title="New Poll"
-            date={'2023-12-25T15:00:00.000Z'}
+            startDate={new Date('2023-12-25T15:00:00.000Z')}
             count={3}
             id="3212345"
           />
@@ -241,7 +241,7 @@ const NavbarDemo = () => {
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }
-              date={'2023-12-25T15:00:00.000Z'}
+              startDate={new Date('2023-12-25T15:00:00.000Z')}
               count={1236}
               id="3212345"
               status={status}

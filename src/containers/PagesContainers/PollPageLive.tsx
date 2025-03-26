@@ -102,7 +102,7 @@ export const PollPageLive: React.FC = () => {
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
         title: poll?.title,
-        date: new Date().toISOString(),
+        startDate: new Date(),
         count: poll?.optionsIds.length,
         id: id.toString(),
         showSettingsButton: true,

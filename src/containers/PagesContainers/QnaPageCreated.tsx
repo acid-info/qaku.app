@@ -94,7 +94,8 @@ export const QnaPageCreated: React.FC = () => {
         status:
           (qna && getQnaProgressStatus(qna)) || QnaProgressStatusEnum.Ended,
         title: qna?.title,
-        date: qna?.startDate.toISOString(),
+        startDate: qna?.startDate,
+        endDate: qna?.endDate,
         count: qna?.questionsIds.length,
         id: id.toString(),
         showShareButton: true,

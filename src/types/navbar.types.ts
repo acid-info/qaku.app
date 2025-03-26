@@ -18,7 +18,8 @@ export interface BaseNavbarProps {
 
 export interface DefaultNavbarProps extends BaseNavbarProps {
   isTitleOnly?: boolean
-  date: string
+  startDate: Date
+  endDate?: Date
   status?: QnaProgressStatusEnum
   onSettingsClick?: () => void
   onAddPollClick?: () => void
