@@ -12,7 +12,7 @@ import { PlusIcon } from '../Icons/PlusIcon'
 import { Tab } from '../Tab'
 import WalletConnect from './WalletConnect'
 
-const renderUnit = (mode: NavbarModeEnum, count: number) => {
+export const renderUnit = (mode: NavbarModeEnum, count: number) => {
   return count < 1
     ? mode === NavbarModeEnum.Qna
       ? 'question'

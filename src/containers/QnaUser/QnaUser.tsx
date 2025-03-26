@@ -1,14 +1,10 @@
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
-import { Button } from '@/components/Button'
-import { LinkIcon } from '@/components/Icons/LinkIcon'
-import { PlusIcon } from '@/components/Icons/PlusIcon'
 import { MessageForm } from '@/components/MessageForm'
-import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
+import UserNavMobileBottomPanel from '@/components/MobileBottomPanel/UserNavMobileBottomPanel'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { breakpoints } from '@/configs/ui.configs'
-import { QnA as QNA_ROUTE } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
 import { QnAType } from '@/types/qna.types'
 import { FilterThreadEnum } from '@/types/thread.types'
@@ -19,11 +15,9 @@ import {
   likeAnswerById,
   likeQuestionById,
 } from '@/utils/api.utils'
-import { handleShare } from '@/utils/navbar.utils'
 import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
 import styled from '@emotion/styled'
 import { useAtomValue } from 'jotai'
-import Link from 'next/link'
 import React, { useCallback, useMemo, useState } from 'react'
 
 const CONTENT_WIDTH = 507
@@ -169,14 +163,12 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
           <EmptyState />
         )}
       </Main>
-      <MobileBottomPanel>
-        <h3>{qna?.title}</h3>
-        <div className="row">
-          <p>
-            {questionsCount} {questionsCount === 1 ? 'question' : 'questions'}
-          </p>
-          <p className="id">#{qnaId}</p>
-        </div>
+      <UserNavMobileBottomPanel
+        mode={NavbarModeEnum.Qna}
+        title={qna?.title || ''}
+        count={questionsCount}
+        id={qnaId}
+      >
         <MobileStyledMessageForm
           messagePlaceholder="Type your question"
           onSubmit={async ({ message, isAnonymous, resetForm, name }) => {
@@ -189,24 +181,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
           }}
           isAuthorized={status === WalletConnectionStatusEnum.Connected}
         />
-        <div className="row">
-          <Button>Connect for Identity</Button>
-          <Button
-            icon={<LinkIcon />}
-            onClick={() =>
-              handleShare({
-                qnaId: qnaId,
-                mode: NavbarModeEnum.Qna,
-              })
-            }
-          >
-            Share
-          </Button>
-          <Link href={QNA_ROUTE.CREATE}>
-            <Button icon={<PlusIcon />}>Create Q&A</Button>
-          </Link>
-        </div>
-      </MobileBottomPanel>
+      </UserNavMobileBottomPanel>
     </Wrapper>
   )
 }
@@ -247,7 +222,6 @@ const MobileStyledMessageForm = styled(MessageForm)`
 
   @media (max-width: ${breakpoints.sm}px) {
     display: block;
-    margin-bottom: 16px;
   }
 `
 

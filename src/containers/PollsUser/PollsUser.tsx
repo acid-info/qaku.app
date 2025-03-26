@@ -3,28 +3,30 @@ import { walletStateAtom } from '@/../atoms/wallet'
 import { usePollOptions } from '@/../hooks/usePollOptions'
 import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
-import { Button } from '@/components/Button'
+import DesktopOnly from '@/components/DesktopOnly/DesktopOnly'
+import UserNavMobileBottomPanel from '@/components/MobileBottomPanel/UserNavMobileBottomPanel'
 import { PollOptions } from '@/components/PollOptions'
-import { Row } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { TitleBlock } from '@/components/TitleBlock'
-import { ToggleButton } from '@/components/ToggleButton'
 import { breakpoints } from '@/configs/ui.configs'
-import { WalletConnectionStatusEnum } from '@/types/wallet.types'
+import { NavbarModeEnum } from '@/types/navbar.types'
+import { QnAType } from '@/types/qna.types'
 import { voteInPoll } from '@/utils/api.utils'
 import { mapPollOptionsForDisplay } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
+import UserVote from './UserVote'
 
 const BACKUP_POLL_ID = 0
 
 export type PollsUserProps = {
+  qna?: QnAType | null
   pollIds: number[]
 }
 
-export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
+export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
   const { userName } = useAtomValue(walletStateAtom)
   const pollsRecord = useAtomValue(pollsRecordAtom)
   const { openWalletPanel, walletState } = useWalletConnection()
@@ -187,40 +189,38 @@ export const PollsUser: React.FC<PollsUserProps> = ({ pollIds }) => {
             />
           </PollsWrapper>
           {selectedOptionIds.length > 0 && !userHasVoted && (
-            <SelectContainer>
-              <Row gap={0}>
-                <ActionButton variant="filled" onClick={handleCancelVote}>
-                  Cancel
-                </ActionButton>
-                <ActionButton variant="filledPrimary" onClick={handleVote}>
-                  Send
-                </ActionButton>
-              </Row>
-              <div className="connect-wallet">
-                {walletState.status !== WalletConnectionStatusEnum.Connected ? (
-                  <WalletNotConnectedActions>
-                    Voting as Anonymous.
-                    <TextButton onClick={openWalletPanel}>
-                      Connect Wallet
-                    </TextButton>
-                  </WalletNotConnectedActions>
-                ) : (
-                  <WalletConnectedActions>
-                    <span>Voting as {userName}</span>
-                    <div>
-                      <ToggleButton
-                        isOn={isAnonymous}
-                        onChange={setIsAnonymous}
-                      />
-                      <span>Vote Anonymously</span>
-                    </div>
-                  </WalletConnectedActions>
-                )}
-              </div>
-            </SelectContainer>
+            <DesktopOnly>
+              <UserVote
+                handleCancelVote={handleCancelVote}
+                handleVote={handleVote}
+                walletState={walletState}
+                openWalletPanel={openWalletPanel}
+                userName={userName || ''}
+                isAnonymous={isAnonymous}
+                setIsAnonymous={setIsAnonymous}
+              />
+            </DesktopOnly>
           )}
         </Column>
       </Main>
+      <UserNavMobileBottomPanel
+        mode={NavbarModeEnum.Polls}
+        title={qna?.title || ''}
+        count={pollIds.length}
+        id={activePollId || 0}
+      >
+        {selectedOptionIds.length > 0 && !userHasVoted && (
+          <UserVote
+            handleCancelVote={handleCancelVote}
+            handleVote={handleVote}
+            walletState={walletState}
+            openWalletPanel={openWalletPanel}
+            userName={userName || ''}
+            isAnonymous={isAnonymous}
+            setIsAnonymous={setIsAnonymous}
+          />
+        )}
+      </UserNavMobileBottomPanel>
     </Wrapper>
   )
 }
@@ -260,6 +260,13 @@ const PollList = styled.div`
 
   & > div {
     width: 100%;
+  }
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 
   @media (max-width: ${breakpoints.sm}px) {
@@ -312,61 +319,4 @@ const Column = styled.div`
 const PollsWrapper = styled.div`
   margin-top: 32px;
   width: 100%;
-`
-
-const SelectContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-
-  width: 100%;
-  margin: 32px 0;
-
-  .connect-wallet {
-    font-size: var(--label1-font-size);
-    line-height: var(--label1-line-height);
-    color: var(--white);
-  }
-`
-
-const ActionButton = styled(Button)`
-  width: 100px;
-  height: 32px;
-`
-
-const TextButton = styled.button`
-  padding: 0;
-  margin: 0;
-  background: none;
-  border: none;
-  text-decoration: underline;
-  cursor: pointer;
-  color: inherit;
-  font: inherit;
-`
-
-const WalletNotConnectedActions = styled.div`
-  opacity: 0.7;
-  display: flex;
-  gap: 6px;
-`
-
-const WalletConnectedActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-
-  span {
-    opacity: 0.7;
-  }
 `
