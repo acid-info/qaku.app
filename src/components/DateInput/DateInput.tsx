@@ -1,5 +1,6 @@
+import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import styled from '@emotion/styled'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { IconButtonRound } from '../IconButtonRound'
 import { CalendarIcon } from '../Icons/CalendarIcon'
 import { ChevronLeftIcon } from '../Icons/ChevronLeftIcon'
@@ -23,21 +24,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   const [currentMonth, setCurrentMonth] = useState(() => value || new Date())
   const calendarRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+  useOnClickOutside(calendarRef, () => setIsOpen(false), isOpen)
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date)
