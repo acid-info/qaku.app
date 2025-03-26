@@ -155,7 +155,7 @@ export const DateInput: React.FC<DateInputProps> = ({
         $disabled={disabled}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
-        <CalendarIcon />
+        <CalendarIcon color="var(--white)" />
       </CalendarIconContainer>
       {isOpen && (
         <CalendarContainer ref={calendarRef}>
@@ -256,6 +256,7 @@ const DayOfWeek = styled.div`
   align-items: center;
   justify-content: center;
   padding: 11px;
+  color: var(--white);
 `
 
 const CalendarDays = styled.div`
