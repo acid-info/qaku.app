@@ -1,3 +1,4 @@
+import { QnaProgressStatusEnum } from '@/types/navbar.types'
 import { AnswerType, QnAType, QuestionType } from '@/types/qna.types'
 
 export const countUniqueNamedAuthors = (
@@ -106,4 +107,10 @@ export const handleQnADeleteInState = ({
     })
     return newRecord
   })
+}
+
+export const getQnaProgressStatus = (qna: QnAType) => {
+  return new Date(qna.startDate) > new Date()
+    ? QnaProgressStatusEnum.BeforeStart
+    : QnaProgressStatusEnum.Ended
 }

@@ -149,6 +149,18 @@ export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
   }
 }
 
+export const openQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await updateQnA(qnaId, { isActive: true, startDate: new Date() })
+  } catch (error) {
+    console.error('Error opening QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 // Function to load questions and answers for a specific QnA
 export const loadQnaData = async ({
   qnaId,
