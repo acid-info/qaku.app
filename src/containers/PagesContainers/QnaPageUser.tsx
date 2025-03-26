@@ -68,7 +68,7 @@ export const QnaPageUser: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaUser qnaId={id} userId={userName ?? ''} />
+      <QnaUser qna={qna} qnaId={id} userId={userName ?? ''} />
     </UserLayoutContainer>
   )
 }
