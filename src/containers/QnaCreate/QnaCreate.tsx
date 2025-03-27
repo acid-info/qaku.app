@@ -5,10 +5,15 @@ import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { QnaScheduleFloatingPanel } from '@/components/FloatingPanel'
+import { IconButtonRound } from '@/components/IconButtonRound'
+import { CalendarIcon } from '@/components/Icons/CalendarIcon'
+import MobileOnly from '@/components/MobileOnly/MobileOnly'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
+import { SettingsButton } from '@/components/SettingsButton'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel } from '@/components/WalletPanel'
+import { breakpoints } from '@/configs/ui.configs'
 import { QnA } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { createQnA } from '@/utils/api.utils'
@@ -171,6 +176,13 @@ export const QnaCreate: React.FC<{
         >
           {isLoading ? 'Creating...' : 'Create'}
         </StyledButton>
+        <MobileOnly>
+          <SettingsButton />
+          <IconButtonRound
+            icon={<CalendarIcon />}
+            onClick={() => setIsSchedulePanelOpen(true)}
+          />
+        </MobileOnly>
       </ActionContainer>
       <QnaScheduleFloatingPanel
         isOpen={isSchedulePanelOpen}
@@ -188,6 +200,10 @@ const Wrapper = styled.div`
   gap: 16px;
   width: 100%;
   height: 100%;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding: 0 16px;
+  }
 `
 
 const Main = styled.div`
@@ -204,6 +220,10 @@ const Content = styled.div`
   flex-direction: column;
   gap: 48px;
   width: 507px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const NameSection = styled.div`
@@ -241,4 +261,8 @@ const Text = styled.span`
 
 const StyledButton = styled(Button)`
   width: 200px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
