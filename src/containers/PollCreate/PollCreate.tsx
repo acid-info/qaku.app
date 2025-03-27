@@ -4,8 +4,11 @@ import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import MobileOnly from '@/components/MobileOnly/MobileOnly'
 import { PollOptions } from '@/components/PollOptions'
+import { SettingsButton } from '@/components/SettingsButton'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
+import { breakpoints } from '@/configs/ui.configs'
 import { POLL } from '@/data/routes'
 import { createNewPoll } from '@/utils/api.utils'
 import { mapPollDataForCreation } from '@/utils/poll.utils'
@@ -233,6 +236,9 @@ export const PollCreate: React.FC = () => {
         >
           {isLoading ? 'Creating...' : 'Create'}
         </StyledButton>
+        <MobileOnly>
+          <SettingsButton />
+        </MobileOnly>
       </ActionContainer>
     </Wrapper>
   )
@@ -244,6 +250,10 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding: 0 16px;
+  }
 `
 
 const Main = styled.div`
@@ -260,6 +270,10 @@ const Content = styled.div`
   flex-direction: column;
   gap: 48px;
   width: 507px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const Top = styled.div`
@@ -291,4 +305,8 @@ const StyledBadge = styled(Badge)`
 
 const StyledButton = styled(Button)`
   width: 200px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
