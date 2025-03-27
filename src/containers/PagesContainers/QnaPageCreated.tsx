@@ -6,10 +6,11 @@ import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { HOME, NOT_FOUND } from '@/data/routes'
+import { HOME, NOT_FOUND, qna as qnaRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
-import { deleteQnA, loadQnaData } from '@/utils/api.utils'
+import { deleteQnA, loadQnaData, openQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
+import { getQnaProgressStatus } from '@/utils/qna.utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -47,6 +48,19 @@ export const QnaPageCreated: React.FC = () => {
     }
   }
 
+  const handleOpenClick = async () => {
+    try {
+      const response = await openQnA(id)
+      if (!response.success) {
+        console.error('Failed to open QnA:', response.error)
+      } else {
+        router.push(qnaRoutes.LIVE.replace(':id', id.toString()))
+      }
+    } catch (error) {
+      console.error('Failed to open QnA:', error)
+    }
+  }
+
   useEffect(() => {
     if (!router.isReady) return
 
@@ -78,14 +92,17 @@ export const QnaPageCreated: React.FC = () => {
       navProps={{
         mode: NavbarModeEnum.Qna,
         isTitleOnly: false,
-        status: QnaProgressStatusEnum.Ended,
+        status:
+          (qna && getQnaProgressStatus(qna)) || QnaProgressStatusEnum.Ended,
         title: qna?.title,
-        date: qna?.startDate.toISOString(),
+        startDate: qna?.startDate,
+        endDate: qna?.endDate,
         count: qna?.questionsIds.length,
         id: id.toString(),
         showShareButton: true,
         onShareClick: handleShareClick,
         onDeleteClick: handleDeleteClick,
+        onStartClick: handleOpenClick,
       }}
     >
       <SEO />

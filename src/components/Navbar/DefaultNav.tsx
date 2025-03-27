@@ -10,7 +10,9 @@ import styled from '@emotion/styled'
 import { useState } from 'react'
 import { Button } from '../Button'
 import { ButtonColored } from '../ButtonColored/ButtonColored'
+import { DateRangePill } from '../DateRangePill/DateRangePill'
 import { IconButtonRound } from '../IconButtonRound'
+import { CalendarIcon } from '../Icons/CalendarIcon/CalendarIcon'
 import { DeleteIcon } from '../Icons/DeleteIcon'
 import { DotIcon } from '../Icons/DotIcon'
 import { LinkIcon } from '../Icons/LinkIcon'
@@ -22,8 +24,8 @@ import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
 
 // TODO : handing TODAY, days agp
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('en-GB', {
+const formatDate = (date: Date) => {
+  return date?.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -46,7 +48,8 @@ const DefaultNav = ({
   mode,
   isTitleOnly = false,
   title,
-  date,
+  startDate,
+  endDate,
   count,
   id,
   status,
@@ -56,8 +59,10 @@ const DefaultNav = ({
   onStartClick,
   onEndClick,
   onDeleteClick,
+  onScheduleQnaClick,
   showShareButton = false,
   showSettingsButton = false,
+  showScheduleQnaButton = false,
 }: DefaultNavbarProps) => {
   const isBeforeStart = status === QnaProgressStatusEnum.BeforeStart
   const isInProgress = status === QnaProgressStatusEnum.InProgress
@@ -146,7 +151,11 @@ const DefaultNav = ({
             <Details>
               <Badge $mode={mode}>{mode === 'qna' ? 'Q&A' : 'Polls'}</Badge>
               <Row gap={8}>
-                <p>{formatDate(date)}</p>
+                {isBeforeStart && startDate && endDate ? (
+                  <DateRangePill startDate={startDate} endDate={endDate} />
+                ) : (
+                  <p>{formatDate(startDate)}</p>
+                )}
                 <DotIcon color="var(--white)" />
                 <p>
                   {numberWithCommas(count)} {renderUnit(mode, count)}
@@ -192,6 +201,12 @@ const DefaultNav = ({
               onClick={() => setConfirmAction('delete')}
             />
           ) : null}
+          {showScheduleQnaButton && (
+            <IconButtonRound
+              icon={<CalendarIcon />}
+              onClick={onScheduleQnaClick}
+            />
+          )}
           {showSettingsButton && (
             <IconButtonRound
               icon={<SettingsIcon />}

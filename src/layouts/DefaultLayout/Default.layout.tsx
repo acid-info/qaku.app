@@ -27,7 +27,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
           mode={NavbarModeEnum.Qna}
           isTitleOnly={true}
           title=""
-          date=""
+          startDate={new Date()}
           count={0}
           id=""
           {...props.navProps}

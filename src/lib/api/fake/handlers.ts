@@ -383,12 +383,23 @@ export const addQnA = async (
         ? Math.max(...Object.keys(dataStore.qnas).map(Number)) + 1
         : 1
 
+    const today = new Date()
+    const providedStartDate = qnaData.startDate
+      ? new Date(qnaData.startDate)
+      : null
+
+    const isStartingToday = providedStartDate
+      ? providedStartDate.getFullYear() === today.getFullYear() &&
+        providedStartDate.getMonth() === today.getMonth() &&
+        providedStartDate.getDate() === today.getDate()
+      : true
+
     const newQnA: QnAType = {
       ...qnaData,
       id: newId,
       questionsIds: [],
-      startDate: new Date(),
-      isActive: true,
+      startDate: qnaData.startDate || new Date(),
+      isActive: !providedStartDate || isStartingToday,
     }
 
     dataStore.qnas[newId] = newQnA

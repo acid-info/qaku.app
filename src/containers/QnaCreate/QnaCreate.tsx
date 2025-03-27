@@ -4,6 +4,7 @@ import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
+import { QnaScheduleFloatingPanel } from '@/components/FloatingPanel'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
@@ -16,7 +17,10 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
-export const QnaCreate: React.FC = () => {
+export const QnaCreate: React.FC<{
+  isSchedulePanelOpen: boolean
+  setIsSchedulePanelOpen: (isOpen: boolean) => void
+}> = ({ isSchedulePanelOpen, setIsSchedulePanelOpen }) => {
   const { userName } = useAtomValue(walletStateAtom)
   const { status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
@@ -35,7 +39,13 @@ export const QnaCreate: React.FC = () => {
     setPassword(newPassword)
   }
 
-  const handleCreateQnA = async () => {
+  const createQnAWithRedirect = async (params: {
+    startDate?: Date
+    endDate?: Date
+    redirectRoute: string
+  }) => {
+    const { startDate, endDate, redirectRoute } = params
+
     if (!title.trim()) {
       setError('Please provide a title for your Q&A')
       return
@@ -44,6 +54,18 @@ export const QnaCreate: React.FC = () => {
     if (status !== WalletConnectionStatusEnum.Connected || !userName) {
       setError('Please connect your wallet first')
       return
+    }
+
+    if (startDate && endDate) {
+      if (startDate < new Date()) {
+        setError('Start date cannot be in the past')
+        return
+      }
+
+      if (endDate <= startDate) {
+        setError('End date must be after start date')
+        return
+      }
     }
 
     setIsLoading(true)
@@ -56,13 +78,15 @@ export const QnaCreate: React.FC = () => {
         owner: userName,
         hash: password,
         admins: admins.length ? admins : undefined,
+        ...(startDate && { startDate }),
+        ...(endDate && { endDate }),
         setQnasRecord,
       })
 
       if (response.success && response.data) {
-        router.push(qna.LIVE.replace(':id', String(response.data.id)))
+        router.push(redirectRoute.replace(':id', String(response.data.id)))
       } else {
-        setError(response.error || 'Failed to create Q&A')
+        setError('Failed to create Q&A')
       }
     } catch (err) {
       setError('An unexpected error occurred')
@@ -70,6 +94,20 @@ export const QnaCreate: React.FC = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleSchedule = async (startDate: Date, endDate: Date) => {
+    await createQnAWithRedirect({
+      startDate,
+      endDate,
+      redirectRoute: qna.CREATED,
+    })
+  }
+
+  const handleCreateQnA = async () => {
+    await createQnAWithRedirect({
+      redirectRoute: qna.LIVE,
+    })
   }
 
   return (
@@ -134,6 +172,11 @@ export const QnaCreate: React.FC = () => {
           {isLoading ? 'Creating...' : 'Create'}
         </StyledButton>
       </ActionContainer>
+      <QnaScheduleFloatingPanel
+        isOpen={isSchedulePanelOpen}
+        onClose={() => setIsSchedulePanelOpen(false)}
+        onSchedule={handleSchedule}
+      />
     </Wrapper>
   )
 }

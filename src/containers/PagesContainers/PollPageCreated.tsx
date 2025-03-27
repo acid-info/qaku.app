@@ -110,7 +110,7 @@ export const PollPageCreated: React.FC = () => {
         isTitleOnly: false,
         status: QnaProgressStatusEnum.Ended,
         title: qna?.title,
-        date: qna?.startDate.toISOString(),
+        startDate: qna?.startDate,
         count: totalVotesCount,
         id: poll?.id.toString(),
         showShareButton: true,

@@ -102,7 +102,7 @@ export const QnaPageLive: React.FC = () => {
         isTitleOnly: false,
         status: QnaProgressStatusEnum.InProgress,
         title: qna?.title,
-        date: qna?.startDate.toISOString(),
+        startDate: qna?.startDate,
         count: qna?.questionsIds.length,
         id: id.toString(),
         showSettingsButton: true,

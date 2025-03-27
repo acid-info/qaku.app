@@ -102,9 +102,9 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
                   hasCommentButton={false}
                 />
               ))
-            ) : questionsCount > 0 ? (
+            ) : (
               <NoQuestionsInThisTab />
-            ) : null}
+            )}
           </ThreadsContainer>
         </Content>
       </Main>

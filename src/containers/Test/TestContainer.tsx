@@ -6,6 +6,8 @@ import { Button } from '@/components/Button'
 import { ButtonColored } from '@/components/ButtonColored/ButtonColored'
 import { Collapsible } from '@/components/Collapsible'
 import { CollapsibleToggle } from '@/components/CollapsibleToggle'
+import { DateInput } from '@/components/DateInput'
+import { DateRangePill } from '@/components/DateRangePill/DateRangePill'
 import { Dropdown } from '@/components/Dropdown'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { ChatBubbleOutlineIcon } from '@/components/Icons/ChatBubbleOutlineIcon'
@@ -201,7 +203,7 @@ const NavbarDemo = () => {
             mode={NavbarModeEnum.Qna}
             isTitleOnly={true}
             title="Polls"
-            date={'2023-12-25T15:00:00.000Z'}
+            startDate={new Date('2023-12-25T15:00:00.000Z')}
             count={3}
             id="3212345"
           />
@@ -214,7 +216,7 @@ const NavbarDemo = () => {
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }
-              date={'2023-12-25T15:00:00.000Z'}
+              startDate={new Date('2023-12-25T15:00:00.000Z')}
               count={1236}
               id="3212345"
               status={status}
@@ -226,7 +228,7 @@ const NavbarDemo = () => {
             mode={NavbarModeEnum.Polls}
             isTitleOnly={true}
             title="New Poll"
-            date={'2023-12-25T15:00:00.000Z'}
+            startDate={new Date('2023-12-25T15:00:00.000Z')}
             count={3}
             id="3212345"
           />
@@ -239,7 +241,7 @@ const NavbarDemo = () => {
                   ? 'Town Hall 2025'
                   : 'Town Hall 2025 - New Positions, Updates, And Plans'
               }
-              date={'2023-12-25T15:00:00.000Z'}
+              startDate={new Date('2023-12-25T15:00:00.000Z')}
               count={1236}
               id="3212345"
               status={status}
@@ -968,6 +970,56 @@ const ModalDemo = () => {
   )
 }
 
+const DateInputDemo = () => {
+  const [date, setDate] = useState<Date>()
+
+  return (
+    <DemoSection title="Date Input">
+      <div style={{ width: '300px' }}>
+        <h3>Default</h3>
+        <DateInput value={date} onChange={setDate} />
+      </div>
+      <div style={{ width: '300px' }}>
+        <h3>With Value</h3>
+        <DateInput value={new Date()} />
+      </div>
+      <div style={{ width: '300px' }}>
+        <h3>Disabled</h3>
+        <DateInput disabled />
+      </div>
+      <div style={{ width: '300px' }}>
+        <h3>Custom Placeholder</h3>
+        <DateInput placeholder="Pick a date please.." />
+      </div>
+    </DemoSection>
+  )
+}
+
+const DateRangePillDemo = () => {
+  // Same year examples
+  const startDate1 = new Date(2025, 1, 15) // Feb 15, 2025
+  const endDate1 = new Date(2025, 2, 10) // Mar 10, 2025
+
+  // Different year examples
+  const startDate2 = new Date(2023, 1, 15) // Feb 15, 2023
+  const endDate2 = new Date(2025, 2, 10) // Mar 10, 2025
+
+  return (
+    <DemoSection title="Date Range Pill">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div>
+          <h3>Same Year Range</h3>
+          <DateRangePill startDate={startDate1} endDate={endDate1} />
+        </div>
+        <div>
+          <h3>Different Year Range</h3>
+          <DateRangePill startDate={startDate2} endDate={endDate2} />
+        </div>
+      </div>
+    </DemoSection>
+  )
+}
+
 export const TestContainer: React.FC = () => (
   <Container>
     <Separator style={{ marginTop: '0' }}>Patterns</Separator>
@@ -990,6 +1042,8 @@ export const TestContainer: React.FC = () => (
     <MessageFormDemo />
 
     <Separator>Components</Separator>
+    <DateInputDemo />
+    <DateRangePillDemo />
     <DemoSection title="Badge">
       <Badge title="Don't forget to mark the correct answer" />
       <Badge title="Some error happened" variant="red" />

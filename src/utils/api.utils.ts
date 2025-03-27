@@ -16,6 +16,8 @@ type QnaCreateParams = {
   admins?: string[]
   allowsParticipantsReplies?: boolean
   hash: string
+  startDate?: Date
+  endDate?: Date
   setQnasRecord: (
     updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
   ) => void
@@ -55,6 +57,8 @@ export const createQnA = async ({
   admins = [],
   allowsParticipantsReplies = true,
   hash,
+  startDate,
+  endDate,
   setQnasRecord,
 }: QnaCreateParams): Promise<ApiResponse<QnAType>> => {
   try {
@@ -66,7 +70,8 @@ export const createQnA = async ({
       admins,
       allowsParticipantsReplies,
       hash,
-      startDate: new Date(),
+      startDate: startDate || new Date(),
+      endDate,
       isActive: true,
     }
 
@@ -137,6 +142,18 @@ export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
     return await updateQnA(qnaId, { isActive: false, endDate: new Date() })
   } catch (error) {
     console.error('Error ending QnA:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const openQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
+  try {
+    return await updateQnA(qnaId, { isActive: true, startDate: new Date() })
+  } catch (error) {
+    console.error('Error opening QnA:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
