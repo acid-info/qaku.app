@@ -9,6 +9,7 @@ import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel } from '@/components/WalletPanel'
+import { QnA } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
@@ -99,13 +100,13 @@ export const QnaCreate: React.FC<{
     await createQnAWithRedirect({
       startDate,
       endDate,
-      redirectRoute: qna.CREATED,
+      redirectRoute: QnA.CREATED,
     })
   }
 
   const handleCreateQnA = async () => {
     await createQnAWithRedirect({
-      redirectRoute: qna.LIVE,
+      redirectRoute: QnA.LIVE,
     })
   }
 
