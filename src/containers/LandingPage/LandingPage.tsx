@@ -96,8 +96,6 @@ const ButtonGroup = styled.div`
     width: calc(100% - 32px);
 
     button {
-      font-size: var(--body2-font-size);
-      line-height: var(--body2-line-height);
       height: 64px;
       padding: unset;
     }
