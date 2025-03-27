@@ -11,16 +11,22 @@ import { HamburgerIcon } from '../Icons/HamburgerIcon'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { QakuLogo } from '../Icons/QakuLogo'
 import { SettingsButton } from '../SettingsButton'
+import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
 
 type Props = {
   sidebar?: React.ReactNode
   onClickPlus?: () => void
+  navProps?: {
+    title?: string
+  }
 }
 
 const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
   const router = useRouter()
+
+  console.log('props', props)
 
   const sidebarRef = useRef<HTMLDivElement>(null)
 
@@ -48,7 +54,10 @@ const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
         icon={isSidebarOpen ? <CloseIcon /> : <HamburgerIcon />}
       />
       <Link href={HOME}>
-        <QakuLogo width={30} height={30} />
+        <Row gap={8}>
+          <QakuLogo width={30} height={30} />
+          {props?.navProps?.title && <h3>{props.navProps.title}</h3>}
+        </Row>
       </Link>
       <IconButtonRound
         onClick={handlePlusClick}
