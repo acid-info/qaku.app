@@ -25,6 +25,12 @@ export const ActionContainer = styled.div`
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: calc(100% - 32px);
+    bottom: 16px;
+    gap: 8px;
+  }
 `
 
 export const StyledInput = styled.input`
