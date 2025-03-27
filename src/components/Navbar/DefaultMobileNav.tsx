@@ -26,8 +26,6 @@ const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
   const router = useRouter()
 
-  console.log('props', props)
-
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   useOnClickOutside(sidebarRef, () => {
