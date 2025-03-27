@@ -1,7 +1,7 @@
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { MessageForm } from '@/components/MessageForm'
-import UserNavMobileBottomPanel from '@/components/MobileBottomPanel/UserNavMobileBottomPanel'
+import { UserNavMobileBottomPanel } from '@/components/MobileBottomPanel'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
 import { breakpoints } from '@/configs/ui.configs'

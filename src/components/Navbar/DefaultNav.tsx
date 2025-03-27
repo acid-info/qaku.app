@@ -6,6 +6,11 @@ import {
   QnaProgressStatusEnum,
 } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
+import {
+  ConfirmActionType,
+  formatDate,
+  getNavModalProps,
+} from '@/utils/navbar.utils'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { Button } from '../Button'
@@ -20,17 +25,9 @@ import { PlayArrowIcon } from '../Icons/PlayArrowIcon'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { SettingsIcon } from '../Icons/SettingsIcon'
 import { StopIcon } from '../Icons/StopIcon'
+import { Pill } from '../Pill'
 import { Row } from '../StyledComponents'
 import WalletConnect from './WalletConnect'
-
-// TODO : handing TODAY, days agp
-const formatDate = (date: Date) => {
-  return date?.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  })
-}
 
 const renderUnit = (mode: NavbarModeEnum, count: number) => {
   return count < 1
@@ -41,8 +38,6 @@ const renderUnit = (mode: NavbarModeEnum, count: number) => {
     ? 'questions'
     : 'votes'
 }
-
-type ConfirmActionType = 'start' | 'end' | 'delete' | null
 
 const DefaultNav = ({
   mode,
@@ -70,75 +65,14 @@ const DefaultNav = ({
 
   const [confirmAction, setConfirmAction] = useState<ConfirmActionType>(null)
 
-  const getModalProps = () => {
-    const isQna = mode === NavbarModeEnum.Qna
-    const contentType = isQna ? 'Q&A' : 'Poll'
-
-    switch (confirmAction) {
-      case 'start':
-        return {
-          title: `Open ${contentType}?`,
-          description: `This will show the ${contentType} in your view and that of your participants.`,
-          mainAction: (
-            <ButtonColored
-              color="var(--yellow)"
-              icon={<PlayArrowIcon />}
-              onClick={() => {
-                onStartClick?.()
-                setConfirmAction(null)
-              }}
-            >
-              Open
-            </ButtonColored>
-          ),
-          onCancel: () => setConfirmAction(null),
-        }
-      case 'end':
-        return {
-          title: `Close ${contentType}?`,
-          description: `This will hide the ${contentType} from your view and that of your participants. Any existing ${
-            isQna ? 'questions' : 'votes'
-          } will be securely stored.`,
-          mainAction: (
-            <ButtonColored
-              color="var(--red)"
-              icon={<StopIcon />}
-              onClick={() => {
-                onEndClick?.()
-                setConfirmAction(null)
-              }}
-            >
-              Close
-            </ButtonColored>
-          ),
-          onCancel: () => setConfirmAction(null),
-        }
-      case 'delete':
-        return {
-          title: `Delete ${contentType}?`,
-          description: `All the ${contentType} data will be lost.`,
-          mainAction: (
-            <ButtonColored
-              color="var(--red)"
-              icon={<DeleteIcon />}
-              onClick={() => {
-                onDeleteClick?.()
-                setConfirmAction(null)
-              }}
-            >
-              Delete
-            </ButtonColored>
-          ),
-          onCancel: () => setConfirmAction(null),
-        }
-      default:
-        return {
-          title: '',
-          description: '',
-          onCancel: () => setConfirmAction(null),
-        }
-    }
-  }
+  const modalProps = getNavModalProps({
+    confirmAction,
+    mode,
+    onStartClick,
+    onEndClick,
+    onDeleteClick,
+    setConfirmAction,
+  })
 
   return (
     <Container>
@@ -149,7 +83,10 @@ const DefaultNav = ({
           <Info>
             <Title>{title}</Title>
             <Details>
-              <Badge $mode={mode}>{mode === 'qna' ? 'Q&A' : 'Polls'}</Badge>
+              <Pill
+                title={mode === NavbarModeEnum.Qna ? 'Q&A' : 'Polls'}
+                variant={mode === NavbarModeEnum.Qna ? 'orange' : 'green'}
+              />
               <Row gap={8}>
                 {isBeforeStart && startDate && endDate ? (
                   <DateRangePill startDate={startDate} endDate={endDate} />
@@ -195,12 +132,12 @@ const DefaultNav = ({
           </Button>
         )}
         <Row gap={0}>
-          {isBeforeStart || isEnded ? (
+          {(isBeforeStart || isEnded) && (
             <IconButtonRound
               icon={<DeleteIcon />}
               onClick={() => setConfirmAction('delete')}
             />
-          ) : null}
+          )}
           {showScheduleQnaButton && (
             <IconButtonRound
               icon={<CalendarIcon />}
@@ -223,7 +160,7 @@ const DefaultNav = ({
           <WalletConnect />
         </Row>
 
-        {confirmAction && <ModalContainer {...getModalProps()} />}
+        {confirmAction && <ModalContainer {...modalProps} />}
       </Navbar>
     </Container>
   )
@@ -274,20 +211,6 @@ const Details = styled.div`
   span {
     opacity: 0.5;
   }
-`
-
-const Badge = styled.div<{ $mode: NavbarModeEnum }>`
-  display: flex;
-  background-color: ${({ $mode }) =>
-    $mode === NavbarModeEnum.Qna ? 'var(--orange)' : 'var(--green)'};
-  color: var(--black);
-  border-radius: 32px;
-  font-size: var(--label1-font-size);
-  line-height: var(--label1-line-height);
-  text-transform: capitalize;
-  padding: 2px 8px;
-  justify-content: center;
-  align-items: center;
 `
 
 const Title = styled.h1`

@@ -7,7 +7,7 @@ import { Button } from '../Button'
 import { LinkIcon } from '../Icons/LinkIcon'
 import { PlusIcon } from '../Icons/PlusIcon'
 import { renderUnit } from '../Navbar/UserNav'
-import MobileBottomPanel from './MobileBottomPanel'
+import { MobileBottomPanel } from './MobileBottomPanel'
 
 type Props = {
   mode: NavbarModeEnum
@@ -17,7 +17,7 @@ type Props = {
   children?: React.ReactNode
 }
 
-const UserNavMobileBottomPanel = ({
+export const UserNavMobileBottomPanel = ({
   mode,
   title,
   count,
@@ -56,5 +56,3 @@ const UserNavMobileBottomPanel = ({
     </MobileBottomPanel>
   )
 }
-
-export default UserNavMobileBottomPanel

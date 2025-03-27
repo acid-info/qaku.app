@@ -1,12 +1,15 @@
 import { answersRecordAtom } from '@/../atoms/answer'
 import { getQnaByIdAtom } from '@/../atoms/qna'
 import { questionsRecordAtom } from '@/../atoms/question'
-import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
+import {
+  DefaultNavMobileBottomPanel,
+  MobileBottomPanel,
+} from '@/components/MobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
 import { SidebarContainer } from '@/containers/Sidebar'
-import { HOME, NOT_FOUND, qna as qnaRoutes } from '@/data/routes'
+import { HOME, NOT_FOUND, QnA as qnaRoutes } from '@/data/routes'
 import { NavbarModeEnum, QnaProgressStatusEnum } from '@/types/navbar.types'
 import { deleteQnA, loadQnaData, openQnA } from '@/utils/api.utils'
 import { handleShare } from '@/utils/navbar.utils'
@@ -110,6 +113,21 @@ export const QnaPageCreated: React.FC = () => {
       <MobileBottomPanel>
         <p>Content</p>
       </MobileBottomPanel>
+      <DefaultNavMobileBottomPanel
+        title={qna?.title ?? ''}
+        mode={NavbarModeEnum.Qna}
+        status={
+          (qna && getQnaProgressStatus(qna)) || QnaProgressStatusEnum.Ended
+        }
+        count={qna?.questionsIds.length ?? 0}
+        id={id.toString()}
+        startDate={qna?.startDate ?? new Date()}
+        endDate={qna?.endDate}
+        showShareButton={true}
+        onShareClick={handleShareClick}
+        onDeleteClick={handleDeleteClick}
+        onStartClick={handleOpenClick}
+      />
     </DefaultLayoutContainer>
   )
 }

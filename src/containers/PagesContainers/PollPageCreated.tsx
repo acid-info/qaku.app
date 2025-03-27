@@ -6,6 +6,7 @@ import {
   pollWithOptionsAtom,
   qnaCountsByIdAtom,
 } from '@/../atoms/selectors'
+import { DefaultNavMobileBottomPanel } from '@/components/MobileBottomPanel/DefaultNavMobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollCreated } from '@/containers/PollCreated'
@@ -122,6 +123,17 @@ export const PollPageCreated: React.FC = () => {
       {pollData && qnaCounts && (
         <PollCreated pollId={id} pollData={pollData} qnaCounts={qnaCounts} />
       )}
+      <DefaultNavMobileBottomPanel
+        title={qna?.title ?? ''}
+        mode={NavbarModeEnum.Polls}
+        status={QnaProgressStatusEnum.Ended}
+        count={totalVotesCount}
+        id={poll?.id.toString() ?? ''}
+        startDate={qna?.startDate ?? new Date()}
+        showShareButton={true}
+        onShareClick={handleShareClick}
+        onDeleteClick={handleDeleteClick}
+      />
     </DefaultLayoutContainer>
   )
 }
