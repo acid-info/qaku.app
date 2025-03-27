@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { Modal, ModalProps } from '../../components/Modal/Modal'
+import { breakpoints } from '../../configs/ui.configs'
 
 export const ModalContainer = (props: ModalProps) => {
   return (
@@ -20,4 +21,13 @@ const Overlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 10;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    align-items: flex-end;
+    padding: 0 16px 16px;
+
+    > div {
+      width: 100%;
+    }
+  }
 `
