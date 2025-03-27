@@ -32,7 +32,7 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
           id=""
           {...props.navProps}
         />
-        <DefaultMobileNav sidebar={props.sidebar} />
+        <DefaultMobileNav sidebar={props.sidebar} {...props} />
         <Main
           $showFooter={props.showFooter}
           $useAlternativeGap={props.useAlternativeGap}
