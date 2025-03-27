@@ -2,10 +2,7 @@ import { Footer, FooterProps } from '@/components/Footer'
 import DefaultMobileNav from '@/components/Navbar/DefaultMobileNav'
 import DefaultNav from '@/components/Navbar/DefaultNav'
 import { SidebarContainer } from '@/components/Sidebar'
-import {
-  LayoutContainer,
-  WalletConnectWrapper,
-} from '@/components/StyledComponents'
+import { LayoutContainer } from '@/components/StyledComponents'
 import { ApiSubscriptionManager } from '@/containers/ApiSubscriptionManager'
 import { WalletFloatingPanelContainer } from '@/containers/WalletFloatingPanelContainer'
 import { DefaultNavbarProps, NavbarModeEnum } from '@/types/navbar.types'
@@ -44,12 +41,10 @@ export default function DefaultLayout(props: PropsWithChildren<Props>) {
         </Main>
         <Footer showFooter={props.showFooter} showLogo={props.showLogo} />
       </LayoutContainer>
-      <WalletConnectWrapper>
-        <WalletFloatingPanelContainer
-          isOpen={props.isWalletPanelOpen}
-          onClose={props.closeWalletPanel}
-        />
-      </WalletConnectWrapper>
+      <WalletFloatingPanelContainer
+        isOpen={props.isWalletPanelOpen}
+        onClose={props.closeWalletPanel}
+      />
     </Root>
   )
 }

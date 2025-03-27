@@ -6,7 +6,7 @@ const MobileBottomPanel = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Container = styled.div`
-  --mobile-bottom-panel-z-index: 3;
+  --mobile-bottom-panel-z-index: 2;
 
   position: fixed;
   z-index: var(--mobile-bottom-panel-z-index);

@@ -1,3 +1,4 @@
+import { breakpoints } from '@/configs/ui.configs'
 import { WalletProviderEnum } from '@/types/wallet.types'
 import styled from '@emotion/styled'
 import React from 'react'
@@ -37,6 +38,10 @@ const Container = styled.div`
 
   &:hover {
     background-color: var(--gray-light);
+  }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    height: 98px;
   }
 `
 
