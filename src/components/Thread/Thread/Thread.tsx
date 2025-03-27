@@ -20,6 +20,7 @@ export type ThreadProps = {
   onQuestionLikeClick?: () => void
   onResponseLikeClick?: (answerId: number) => void
   onReplySubmit?: ThreadItemReplyProps['onSubmit']
+  onCommentClick?: () => void
   onCheckClick?: () => void
   userName?: string
   isAuthorized?: boolean
@@ -27,7 +28,7 @@ export type ThreadProps = {
   isUser?: boolean
   isChecked?: boolean
   hasCommentButton?: boolean
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
 export const Thread: React.FC<ThreadProps> = ({
   info,
@@ -35,6 +36,7 @@ export const Thread: React.FC<ThreadProps> = ({
   onQuestionLikeClick,
   onResponseLikeClick,
   onReplySubmit = () => {},
+  onCommentClick,
   onCheckClick,
   userName,
   isAuthorized = false,
@@ -42,11 +44,13 @@ export const Thread: React.FC<ThreadProps> = ({
   isUser = false,
   isChecked = false,
   hasCommentButton = true,
+  ...props
 }) => {
   const { responses, ...questionInfo } = info
   const [showReply, setShowReply] = useState<boolean>(false)
 
   const handleCommentClick = () => {
+    onCommentClick?.()
     setShowReply((prev) => !prev)
   }
 
@@ -60,7 +64,7 @@ export const Thread: React.FC<ThreadProps> = ({
   }
 
   return (
-    <Container>
+    <Container {...props}>
       <ThreadItem
         info={questionInfo}
         isFirst={isFirst}
