@@ -3,6 +3,7 @@ import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswer
 import { QnaCreatedHeader } from '@/components/QnaCreatedHeader/QnaCreatedHeader'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { breakpoints } from '@/configs/ui.configs'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { calculateQnAStats } from '@/utils/qna.utils'
 import { getFilteredQuestions, mapQuestionToThread } from '@/utils/thread.utils'
@@ -71,42 +72,44 @@ export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {
   return (
     <Wrapper>
       <Main>
-        <QnaCreatedHeaderStyled
-          questionsCount={questionsCount}
-          anonymousRate={qnaStats.anonymousRate}
-          namedAuthorCount={qnaStats.namedAuthorCount}
-        />
-        <Content>
-          <TabWrapper>
-            <Tab
-              variant="secondary"
-              options={[
-                { id: FilterThreadEnum.All, label: 'All' },
-                { id: FilterThreadEnum.Popular, label: 'Popular' },
-                { id: FilterThreadEnum.Answered, label: 'Answered' },
-              ]}
-              itemWidth="100px"
-              activeId={activeFilter}
-              onChange={handleTabChange}
-            />
-          </TabWrapper>
-          <ThreadsContainer>
-            {threads.length > 0 ? (
-              threads.map((thread, index) => (
-                <Thread
-                  key={`${thread.info.author}-${thread.info.timestamp}-${index}`}
-                  info={thread.info}
-                  likes={thread.likes}
-                  isFirst={index === 0}
-                  isChecked={thread.info.isAnswered}
-                  hasCommentButton={false}
-                />
-              ))
-            ) : (
-              <NoQuestionsInThisTab />
-            )}
-          </ThreadsContainer>
-        </Content>
+        <ScrollWrapper>
+          <QnaCreatedHeaderStyled
+            questionsCount={questionsCount}
+            anonymousRate={qnaStats.anonymousRate}
+            namedAuthorCount={qnaStats.namedAuthorCount}
+          />
+          <Content>
+            <TabWrapper>
+              <Tab
+                variant="secondary"
+                options={[
+                  { id: FilterThreadEnum.All, label: 'All' },
+                  { id: FilterThreadEnum.Popular, label: 'Popular' },
+                  { id: FilterThreadEnum.Answered, label: 'Answered' },
+                ]}
+                itemWidth="100px"
+                activeId={activeFilter}
+                onChange={handleTabChange}
+              />
+            </TabWrapper>
+            <ThreadsContainer>
+              {threads.length > 0 ? (
+                threads.map((thread, index) => (
+                  <Thread
+                    key={`${thread.info.author}-${thread.info.timestamp}-${index}`}
+                    info={thread.info}
+                    likes={thread.likes}
+                    isFirst={index === 0}
+                    isChecked={thread.info.isAnswered}
+                    hasCommentButton={false}
+                  />
+                ))
+              ) : (
+                <NoQuestionsInThisTab />
+              )}
+            </ThreadsContainer>
+          </Content>
+        </ScrollWrapper>
       </Main>
     </Wrapper>
   )
@@ -118,20 +121,35 @@ const Wrapper = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding: 0 16px;
+  }
 `
 
 const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 56px;
   height: 100%;
   width: 100%;
-  overflow-y: auto;
+`
+
+const ScrollWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-top: 40px;
+    padding-bottom: 140px;
+  }
 `
 
 const QnaCreatedHeaderStyled = styled(QnaCreatedHeader)`
   padding: 16px 16px 0;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding: 0;
+  }
 `
 
 const Content = styled.div`
@@ -145,12 +163,20 @@ const Content = styled.div`
 
 const TabWrapper = styled.div`
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const NoContentMessage = styled.div`
@@ -158,11 +184,16 @@ const NoContentMessage = styled.div`
   flex-direction: column;
   height: 100%;
   width: ${CONTENT_WIDTH}px;
+
   align-items: flex-start;
   justify-content: flex-start;
 
   & span {
     font-size: var(--body2-font-size);
     line-height: var(--body2-line-height);
+  }
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
   }
 `
