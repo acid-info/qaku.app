@@ -106,7 +106,6 @@ export const MessageForm = ({
               )}
             </Profile>
             <ButtonsContainer>
-              {!isAuthorized && <Button variant="filled">Authorize</Button>}
               <Button variant="filledPrimary" type="submit">
                 Send
               </Button>
@@ -165,6 +164,7 @@ const ActionsContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  min-width: 0;
 `
 
 const NameInput = styled(MessageInput)`
@@ -202,4 +202,5 @@ const CharacterLimit = styled.span`
 
 const Profile = styled(Row)`
   width: inherit;
+  min-width: 0;
 `
