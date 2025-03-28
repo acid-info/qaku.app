@@ -1,5 +1,5 @@
 import { breakpoints } from '@/configs/ui.configs'
-import { HOME, QnA } from '@/data/routes'
+import { HOME, POLL, QnA } from '@/data/routes'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -23,7 +23,7 @@ type Props = {
 }
 
 const isCreatePage = (url: string): boolean => {
-  return url === '/poll/create' || url === '/qna/create'
+  return url === QnA.CREATE || url === POLL.CREATE
 }
 
 const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
