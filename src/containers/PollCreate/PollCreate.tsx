@@ -240,10 +240,12 @@ export const PollCreate: React.FC = () => {
           {isLoading ? 'Creating...' : 'Create'}
         </StyledButton>
         <MobileOnly>
-          <IconButtonRound
-            icon={<SettingsIcon />}
-            onClick={() => setIsSettingsPanelOpen(true)}
-          />
+          <MobileButtonsContainer>
+            <IconButtonRound
+              icon={<SettingsIcon />}
+              onClick={() => setIsSettingsPanelOpen(true)}
+            />
+          </MobileButtonsContainer>
         </MobileOnly>
       </ActionContainer>
     </Wrapper>
@@ -315,4 +317,9 @@ const StyledButton = styled(Button)`
   @media (max-width: ${breakpoints.sm}px) {
     width: 100%;
   }
+`
+
+const MobileButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `

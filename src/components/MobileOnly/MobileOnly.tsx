@@ -13,7 +13,7 @@ const Container = styled.div`
   display: none;
 
   @media (max-width: ${breakpoints.sm}px) {
-    display: block;
+    display: contents;
   }
 `
 
