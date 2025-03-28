@@ -4,7 +4,7 @@ import { css, Global } from '@emotion/react'
 import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import '../styles/globals.css'
 
 type NextLayoutComponentType<P = {}> = NextComponentType<
@@ -25,6 +25,27 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
     ((page: ReactNode) => (
       <DefaultLayoutContainer>{page}</DefaultLayoutContainer>
     ))
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const ua = navigator.userAgent.toLowerCase()
+      const uaData = (navigator as any).userAgentData
+
+      const isWindows = ua.includes('windows')
+      const isAndroid = ua.includes('android')
+
+      const platformHint = uaData?.platform?.toLowerCase?.() || ''
+
+      if (
+        isWindows ||
+        isAndroid ||
+        platformHint.includes('windows') ||
+        platformHint.includes('android')
+      ) {
+        document.body.classList.add('use-inter')
+      }
+    }
+  }, [])
 
   return (
     <>

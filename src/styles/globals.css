@@ -86,6 +86,10 @@ h6 {
   font-weight: 400;
 }
 
+body.use-inter {
+  font-family: 'Inter', sans-serif;
+}
+
 html,
 body {
   margin: 0;
