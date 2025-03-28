@@ -4,6 +4,7 @@ import { Button } from '@/components/Button'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
+import { breakpoints } from '@/configs/ui.configs'
 import { USER } from '@/data/routes'
 import { FilterThreadEnum } from '@/types/thread.types'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
@@ -173,6 +174,10 @@ const Wrapper = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding: 0 16px;
+  }
 `
 
 const Main = styled.div`
@@ -183,16 +188,29 @@ const Main = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-top: 40px !important;
+    padding-bottom: 140px !important;
+  }
 `
 
 const TabWrapper = styled.div`
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const ThreadsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: ${CONTENT_WIDTH}px;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    width: 100%;
+  }
 `
 
 const NoContentMessage = styled.div`
@@ -206,6 +224,10 @@ const NoContentMessage = styled.div`
     width: ${CONTENT_WIDTH}px;
     align-items: flex-start;
     justify-content: flex-start;
+
+    @media (max-width: ${breakpoints.sm}px) {
+      width: 100%;
+    }
   }
 
   & span {
