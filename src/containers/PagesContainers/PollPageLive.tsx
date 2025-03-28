@@ -3,6 +3,7 @@ import { getPollByIdAtom } from '@/../atoms/poll'
 import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
 import { usePollSubscriptions } from '@/../hooks/usePollSubscriptions'
 import { PollFloatingPanelEdit } from '@/components/FloatingPanel'
+import { DefaultNavMobileBottomPanel } from '@/components/MobileBottomPanel/DefaultNavMobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { PollLive } from '@/containers/PollLive/PollLive'
@@ -125,6 +126,20 @@ export const PollPageLive: React.FC = () => {
           />
         </>
       )}
+      <DefaultNavMobileBottomPanel
+        title={poll?.title ?? ''}
+        mode={NavbarModeEnum.Polls}
+        status={QnaProgressStatusEnum.InProgress}
+        count={poll?.optionsIds.length ?? 0}
+        id={id.toString()}
+        startDate={new Date()}
+        showSettingsButton={true}
+        onSettingsClick={() => setIsSettingsPanelOpen(true)}
+        onAddPollClick={handleAddPollClick}
+        showShareButton={true}
+        onShareClick={handleShareClick}
+        onEndClick={handleEndClick}
+      />
     </DefaultLayoutContainer>
   )
 }
