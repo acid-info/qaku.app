@@ -1,3 +1,4 @@
+import { breakpoints } from '@/configs/ui.configs'
 import { getValidPercentage } from '@/utils/general.utils'
 import styled from '@emotion/styled'
 import React from 'react'
@@ -159,6 +160,10 @@ const HoverIconButtonRound = styled(IconButtonRound)`
   background-color: var(--gray-darker);
   border-color: var(--gray-darker);
   opacity: 0;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    opacity: 1;
+  }
 `
 
 const StyledCloseIcon = styled(CloseIcon)`
