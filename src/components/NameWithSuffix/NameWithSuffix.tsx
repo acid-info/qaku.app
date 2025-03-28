@@ -40,9 +40,6 @@ const Container = styled.div`
   gap: 4px;
   font-size: 12px;
   overflow: hidden;
-  min-width: 0;
-  flex-shrink: 1;
-  width: 100%;
 
   span {
     font-size: var(--label1-font-size);
@@ -50,8 +47,6 @@ const Container = styled.div`
     color: var(--white);
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
-    min-width: 0;
   }
 `
 
