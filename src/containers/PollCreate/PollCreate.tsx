@@ -4,18 +4,19 @@ import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { PlusIcon } from '@/components/Icons/PlusIcon'
+import { SettingsIcon } from '@/components/Icons/SettingsIcon'
 import MobileOnly from '@/components/MobileOnly/MobileOnly'
 import { PollOptions } from '@/components/PollOptions'
-import { SettingsButton } from '@/components/SettingsButton'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import { breakpoints } from '@/configs/ui.configs'
 import { POLL } from '@/data/routes'
 import { createNewPoll } from '@/utils/api.utils'
 import { mapPollDataForCreation } from '@/utils/poll.utils'
 import styled from '@emotion/styled'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { isSettingsPanelOpenAtom } from '../../../atoms/navbar/isSettingsPanelOpenAtom'
 
 export const PollCreate: React.FC = () => {
   const router = useRouter()
@@ -27,6 +28,8 @@ export const PollCreate: React.FC = () => {
   const [correctAnswers, setCorrectAnswers] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const setIsSettingsPanelOpen = useSetAtom(isSettingsPanelOpenAtom)
 
   const [options, setOptions] = useState([
     {
@@ -237,7 +240,10 @@ export const PollCreate: React.FC = () => {
           {isLoading ? 'Creating...' : 'Create'}
         </StyledButton>
         <MobileOnly>
-          <SettingsButton />
+          <IconButtonRound
+            icon={<SettingsIcon />}
+            onClick={() => setIsSettingsPanelOpen(true)}
+          />
         </MobileOnly>
       </ActionContainer>
     </Wrapper>
