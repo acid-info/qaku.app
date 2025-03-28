@@ -117,9 +117,9 @@ const Video = styled.video`
   @media (max-width: ${breakpoints.sm}px) {
     position: absolute;
     height: fit-content;
-    top: 36vh;
     right: 0;
     left: 0;
+    bottom: -5vh;
     width: 75vw;
     margin: auto;
   }
