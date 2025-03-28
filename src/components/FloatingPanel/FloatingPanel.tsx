@@ -9,6 +9,7 @@ export type FloatingPanelProps = {
   children: ReactNode
   isOpen: boolean
   onClose: () => void
+  className?: string
 }
 
 export const FloatingPanel: React.FC<FloatingPanelProps> = ({
@@ -16,9 +17,10 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
   children,
   isOpen,
   onClose,
+  className,
 }) => {
   return (
-    <Container $isOpen={isOpen}>
+    <Container $isOpen={isOpen} className={className}>
       <Panel $isOpen={isOpen}>
         <Header>
           <h2>{title}</h2>
@@ -47,6 +49,10 @@ const Container = styled.div<{ $isOpen: boolean }>`
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   transition: opacity 0.2s ease;
+
+  &.is-above-all {
+    z-index: 6;
+  }
 
   @media (max-width: ${breakpoints.sm}px) {
     background-color: color-mix(in srgb, var(--black) 50%, transparent);
