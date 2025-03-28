@@ -1,6 +1,8 @@
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsWithAnswers } from '@/../hooks/useQnaQuestionsWithAnswers'
 import { Button } from '@/components/Button'
+import DesktopOnly from '@/components/DesktopOnly/DesktopOnly'
+import MobileOnly from '@/components/MobileOnly/MobileOnly'
 import { ActionContainer } from '@/components/StyledComponents'
 import { Tab } from '@/components/Tab'
 import { Thread } from '@/components/Thread'
@@ -22,10 +24,21 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 const CONTENT_WIDTH = 507
 
-const EmptyState = () => (
+const EmptyState = ({ qnaId }: { qnaId: number }) => (
   <NoContentMessage>
     <h1>Your Q&A is live!</h1>
     <span>Participants can ask new questions</span>
+    <MobileOnly>
+      <Link
+        href={USER.QNA.replace(':id', String(qnaId))}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button variant="filled" size="medium">
+          View as participant
+        </Button>
+      </Link>
+    </MobileOnly>
   </NoContentMessage>
 )
 
@@ -150,20 +163,22 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
         ) : questionsCount > 0 ? (
           <NoQuestionsInThisTab />
         ) : (
-          <EmptyState />
+          <EmptyState qnaId={qnaId} />
         )}
       </Main>
-      <ActionContainer>
-        <Link
-          href={USER.QNA.replace(':id', String(qnaId))}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <StyledButton variant="filled" size="large">
-            View as participant
-          </StyledButton>
-        </Link>
-      </ActionContainer>
+      <DesktopOnly>
+        <ActionContainer>
+          <Link
+            href={USER.QNA.replace(':id', String(qnaId))}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <StyledButton variant="filled" size="large">
+              View as participant
+            </StyledButton>
+          </Link>
+        </ActionContainer>
+      </DesktopOnly>
     </Wrapper>
   )
 }
@@ -233,6 +248,10 @@ const NoContentMessage = styled.div`
   & span {
     font-size: var(--body2-font-size);
     line-height: var(--body2-line-height);
+  }
+
+  button {
+    margin-top: 24px;
   }
 `
 
