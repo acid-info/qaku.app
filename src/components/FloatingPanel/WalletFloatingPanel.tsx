@@ -21,7 +21,12 @@ export const WalletFloatingPanel: React.FC<WalletFloatingPanelProps> = ({
   onWalletSelect,
 }) => {
   return (
-    <FloatingPanel title="Connect" isOpen={isOpen} onClose={onClose}>
+    <FloatingPanel
+      className="is-above-all"
+      title="Connect"
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <PanelContent>
         <SettingStack>
           <Badge title={BADGE_MESSAGE} />
