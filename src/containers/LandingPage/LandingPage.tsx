@@ -70,7 +70,6 @@ const LandingWrapper = styled.div`
 
   @media (max-width: ${breakpoints.sm}px) {
     flex-direction: column;
-    gap: 82px;
   }
 `
 
@@ -116,9 +115,12 @@ const Video = styled.video`
   right: -10%;
 
   @media (max-width: ${breakpoints.sm}px) {
-    position: relative;
+    position: absolute;
     height: fit-content;
+    top: 36vh;
     right: 0;
-    margin-bottom: 238px;
+    left: 0;
+    width: 75vw;
+    margin: auto;
   }
 `
