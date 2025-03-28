@@ -88,6 +88,7 @@ export const useWalletConnection = () => {
           provider: walletState.provider,
           ensName: ensName ?? null,
           userName: ensName ?? address,
+          localAddress: initialWalletState.localAddress,
         })
       } else if (!isConnected) {
         resetWalletState()
