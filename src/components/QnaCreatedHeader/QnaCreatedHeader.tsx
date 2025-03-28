@@ -39,9 +39,7 @@ const Wrapper = styled.div`
 
   @media (max-width: ${breakpoints.sm}px) {
     overflow-x: auto;
-    display: block;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    min-height: 73px;
   }
 `
 

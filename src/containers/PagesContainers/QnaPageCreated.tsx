@@ -1,10 +1,7 @@
 import { answersRecordAtom } from '@/../atoms/answer'
 import { getQnaByIdAtom } from '@/../atoms/qna'
 import { questionsRecordAtom } from '@/../atoms/question'
-import {
-  DefaultNavMobileBottomPanel,
-  MobileBottomPanel,
-} from '@/components/MobileBottomPanel'
+import { DefaultNavMobileBottomPanel } from '@/components/MobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreated } from '@/containers/QnaCreated/QnaCreated'
@@ -110,9 +107,6 @@ export const QnaPageCreated: React.FC = () => {
     >
       <SEO />
       <QnaCreated qnaId={id} />
-      <MobileBottomPanel>
-        <p>Content</p>
-      </MobileBottomPanel>
       <DefaultNavMobileBottomPanel
         title={qna?.title ?? ''}
         mode={NavbarModeEnum.Qna}
