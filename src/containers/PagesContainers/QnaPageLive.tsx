@@ -5,7 +5,7 @@ import { questionsRecordAtom } from '@/../atoms/question'
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
 import { QnaFloatingPanel } from '@/components/FloatingPanel'
-import MobileBottomPanel from '@/components/MobileBottomPanel/MobileBottomPanel'
+import { DefaultNavMobileBottomPanel } from '@/components/MobileBottomPanel/DefaultNavMobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaLive } from '@/containers/QnaLive/QnaLive'
@@ -123,9 +123,20 @@ export const QnaPageLive: React.FC = () => {
           onSave={handleSaveQna}
         />
       )}
-      <MobileBottomPanel>
-        <p>Content</p>
-      </MobileBottomPanel>
+      <DefaultNavMobileBottomPanel
+        title={qna?.title ?? ''}
+        mode={NavbarModeEnum.Qna}
+        status={QnaProgressStatusEnum.InProgress}
+        count={qna?.questionsIds.length ?? 0}
+        id={id.toString()}
+        startDate={qna?.startDate ?? new Date()}
+        showSettingsButton={true}
+        onSettingsClick={() => setIsSettingsPanelOpen(true)}
+        onAddPollClick={handleAddPollClick}
+        showShareButton={true}
+        onShareClick={handleShareClick}
+        onEndClick={handleEndClick}
+      />
     </DefaultLayoutContainer>
   )
 }

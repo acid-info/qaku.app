@@ -1,11 +1,17 @@
 import { breakpoints } from '@/configs/ui.configs'
 import styled from '@emotion/styled'
 
-const MobileBottomPanel = ({ children }: { children: React.ReactNode }) => {
-  return <Container>{children}</Container>
+export const MobileBottomPanel = ({
+  gap = 24,
+  children,
+}: {
+  gap?: number
+  children: React.ReactNode
+}) => {
+  return <Container $gap={gap}>{children}</Container>
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $gap: number }>`
   --mobile-bottom-panel-z-index: 2;
 
   position: fixed;
@@ -17,7 +23,7 @@ const Container = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: ${({ $gap }) => $gap}px;
 
   border: 1px solid var(--gray);
   border-radius: 8px;
@@ -30,6 +36,9 @@ const Container = styled.div`
   h3 {
     font-size: var(--body1-font-size);
     line-height: var(--body1-line-height);
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
   }
 
   p {
@@ -49,11 +58,13 @@ const Container = styled.div`
     &::-webkit-scrollbar {
       display: none;
     }
+
+    & > * {
+      flex-shrink: 0;
+    }
   }
 
   .id {
     opacity: 0.5;
   }
 `
-
-export default MobileBottomPanel
