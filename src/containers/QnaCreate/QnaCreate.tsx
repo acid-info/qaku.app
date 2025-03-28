@@ -27,8 +27,7 @@ export const QnaCreate: React.FC<{
   isSchedulePanelOpen: boolean
   setIsSchedulePanelOpen: (isOpen: boolean) => void
 }> = ({ isSchedulePanelOpen, setIsSchedulePanelOpen }) => {
-  const { userName } = useAtomValue(walletStateAtom)
-  const { status } = useAtomValue(walletStateAtom)
+  const { userName, localAddress, status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
   const { openWalletPanel } = useWalletConnection()
 
@@ -37,12 +36,24 @@ export const QnaCreate: React.FC<{
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [admins, setAdmins] = useState<string[]>([])
+  const [useExternalWallet, setUseExternalWallet] = useState(true)
 
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
+  }
+
+  const handleWalletSelect = (walletType: 'external' | 'qaku') => {
+    setUseExternalWallet(walletType === 'external')
+  }
+
+  const getOwnerAddress = () => {
+    if (status === WalletConnectionStatusEnum.Connected && useExternalWallet) {
+      return userName || localAddress
+    }
+    return localAddress
   }
 
   const createQnAWithRedirect = async (params: {
@@ -54,11 +65,6 @@ export const QnaCreate: React.FC<{
 
     if (!title.trim()) {
       setError('Please provide a title for your Q&A')
-      return
-    }
-
-    if (status !== WalletConnectionStatusEnum.Connected || !userName) {
-      setError('Please connect your wallet first')
       return
     }
 
@@ -81,7 +87,7 @@ export const QnaCreate: React.FC<{
       const response = await createQnA({
         title,
         description: description || undefined,
-        owner: userName,
+        owner: getOwnerAddress(),
         hash: password,
         admins: admins.length ? admins : undefined,
         ...(startDate && { startDate }),
@@ -125,12 +131,16 @@ export const QnaCreate: React.FC<{
             <WalletPanel
               isAuthorized={status === WalletConnectionStatusEnum.Connected}
               onConnect={openWalletPanel}
+              onWalletSelect={handleWalletSelect}
+              selectedWallet={useExternalWallet ? 'external' : 'qaku'}
             />
           </DesktopOnly>
           <MobileOnly>
             <WalletPanelMobile
               isAuthorized={status === WalletConnectionStatusEnum.Connected}
               onConnect={openWalletPanel}
+              onWalletSelect={handleWalletSelect}
+              selectedWallet={useExternalWallet ? 'external' : 'qaku'}
             />
           </MobileOnly>
           <NameSection>

@@ -13,6 +13,7 @@ export enum WalletConnectionStatusEnum {
 export interface WalletStateInterface {
   status: WalletConnectionStatusEnum
   address: string | null
+  localAddress: string
   chainId: number | null
   provider: WalletProviderEnum | null
   ensName?: string | null

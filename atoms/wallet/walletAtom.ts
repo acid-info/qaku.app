@@ -6,7 +6,8 @@ import { atom } from 'jotai'
 
 export const initialWalletState: WalletStateInterface = {
   status: WalletConnectionStatusEnum.Disconnected,
-  address: '0xDefaultAddress',
+  address: null,
+  localAddress: '0xDefaultAddress',
   chainId: null,
   provider: null,
   ensName: null,
