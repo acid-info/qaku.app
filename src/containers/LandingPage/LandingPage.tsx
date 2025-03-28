@@ -70,6 +70,7 @@ const LandingWrapper = styled.div`
 
   @media (max-width: ${breakpoints.sm}px) {
     flex-direction: column;
+    padding: 16px;
   }
 `
 
