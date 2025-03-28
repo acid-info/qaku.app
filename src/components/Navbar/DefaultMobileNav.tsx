@@ -22,9 +22,14 @@ type Props = {
   }
 }
 
+const isCreatePage = (url: string): boolean => {
+  return url === '/poll/create' || url === '/qna/create'
+}
+
 const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
   const router = useRouter()
+  const showTitle = props?.navProps?.title && isCreatePage(router.pathname)
 
   const sidebarRef = useRef<HTMLDivElement>(null)
 
@@ -54,7 +59,7 @@ const DefaultMobileNav = ({ sidebar, onClickPlus, ...props }: Props) => {
       <Link href={HOME}>
         <Row gap={8}>
           <QakuLogo width={30} height={30} />
-          {props?.navProps?.title && <h3>{props.navProps.title}</h3>}
+          {showTitle && <h3>{props?.navProps?.title}</h3>}
         </Row>
       </Link>
       <IconButtonRound
