@@ -39,11 +39,19 @@ const Container = styled.div`
   align-items: center;
   gap: 4px;
   font-size: 12px;
+  overflow: hidden;
+  min-width: 0;
+  flex-shrink: 1;
+  width: 100%;
 
   span {
     font-size: var(--label1-font-size);
     line-height: var(--label1-line-height);
     color: var(--white);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 0;
   }
 `
 
