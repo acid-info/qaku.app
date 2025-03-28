@@ -113,6 +113,7 @@ const Video = styled.video`
   z-index: -1;
   top: 0;
   right: -10%;
+  scale: 0.9;
 
   @media (max-width: ${breakpoints.sm}px) {
     position: absolute;
@@ -122,5 +123,6 @@ const Video = styled.video`
     bottom: -5vh;
     width: 75vw;
     margin: auto;
+    scale: 0.95;
   }
 `
