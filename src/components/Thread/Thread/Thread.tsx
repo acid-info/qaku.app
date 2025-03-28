@@ -4,7 +4,7 @@ import {
   type LikeInfoType,
 } from '@/types/thread.types'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ThreadItem } from '../ThreadItem'
 import { ThreadItemReply, type ThreadItemReplyProps } from '../ThreadItemReply'
 import { ReplyContainer } from './ReplyContainer'
@@ -45,6 +45,7 @@ export const Thread: React.FC<ThreadProps> = ({
 }) => {
   const { responses, ...questionInfo } = info
   const [showReply, setShowReply] = useState<boolean>(false)
+  const replyRef = useRef<HTMLDivElement>(null)
 
   const handleCommentClick = () => {
     setShowReply((prev) => !prev)
@@ -58,6 +59,12 @@ export const Thread: React.FC<ThreadProps> = ({
     onReplySubmit(params)
     setShowReply(false)
   }
+
+  useEffect(() => {
+    if (showReply && replyRef.current) {
+      replyRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [showReply])
 
   return (
     <Container>
@@ -80,12 +87,14 @@ export const Thread: React.FC<ThreadProps> = ({
         />
       </ThreadItem>
       {showReply && (
-        <ThreadItemReply
-          onSubmit={handleReplySubmit}
-          onClose={handleReplyClose}
-          isAuthorized={isAuthorized}
-          userName={userName}
-        />
+        <div ref={replyRef}>
+          <ThreadItemReply
+            onSubmit={handleReplySubmit}
+            onClose={handleReplyClose}
+            isAuthorized={isAuthorized}
+            userName={userName}
+          />
+        </div>
       )}
     </Container>
   )
