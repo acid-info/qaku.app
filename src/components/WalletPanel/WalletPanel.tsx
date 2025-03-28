@@ -1,48 +1,19 @@
 import styled from '@emotion/styled'
 import React from 'react'
+import { WalletPanelActions, walletPanelTexts } from './WalletPanelCore'
+import { WalletPanelProps } from './walletpanel.types'
 
-import { Button } from '../Button'
-import { Tab } from '../Tab'
+export const WalletPanel: React.FC<WalletPanelProps> = (props) => {
+  const { isAuthorized } = props
 
-export type WalletPanelProps = {
-  isAuthorized: boolean
-  onConnect?: () => void
-  onWalletSelect?: (walletType: 'external' | 'qaku') => void
-  selectedWallet?: 'external' | 'qaku'
-}
-
-export const WalletPanel: React.FC<WalletPanelProps> = ({
-  isAuthorized,
-  onConnect,
-  onWalletSelect,
-  selectedWallet,
-}) => {
   return (
     <Container>
       <Text>
-        <Title>
-          {!isAuthorized ? 'Integrate a wallet' : 'Choose a wallet'}
-        </Title>
-        <Description>
-          {!isAuthorized
-            ? 'Add an External wallet for enhanced identity '
-            : 'Select your local Qaku wallet for quick use or External for enhanced identity '}
-        </Description>
+        <Title>{walletPanelTexts.title(isAuthorized)}</Title>
+        <Description>{walletPanelTexts.description(isAuthorized)}</Description>
       </Text>
       <Actions>
-        {!isAuthorized ? (
-          <CustomButton onClick={onConnect}>Connect</CustomButton>
-        ) : (
-          <TabStyled
-            variant="tertiary"
-            options={[
-              { id: 'external', label: 'External' },
-              { id: 'qaku', label: 'Qaku' },
-            ]}
-            activeId={selectedWallet}
-            onChange={(id) => onWalletSelect?.(id as 'external' | 'qaku')}
-          />
-        )}
+        <WalletPanelActions {...props} />
       </Actions>
     </Container>
   )
@@ -79,12 +50,4 @@ const Actions = styled.div`
   display: flex;
   align-items: center;
   flex-grow: 1;
-`
-
-const CustomButton = styled(Button)`
-  width: 100%;
-`
-
-const TabStyled = styled(Tab)`
-  width: 100%;
 `

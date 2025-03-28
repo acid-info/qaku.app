@@ -4,6 +4,7 @@ import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
+import DesktopOnly from '@/components/DesktopOnly/DesktopOnly'
 import { QnaScheduleFloatingPanel } from '@/components/FloatingPanel'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { CalendarIcon } from '@/components/Icons/CalendarIcon'
@@ -12,7 +13,7 @@ import { PasswordGenerator } from '@/components/PasswordGenerator'
 import { SettingsButton } from '@/components/SettingsButton'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
-import { WalletPanel } from '@/components/WalletPanel'
+import { WalletPanel, WalletPanelMobile } from '@/components/WalletPanel'
 import { breakpoints } from '@/configs/ui.configs'
 import { QnA } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
@@ -120,10 +121,18 @@ export const QnaCreate: React.FC<{
       <Main className="scrollable-container">
         <Content>
           {error && <Badge title={error} variant="red" />}
-          <WalletPanel
-            isAuthorized={status === WalletConnectionStatusEnum.Connected}
-            onConnect={openWalletPanel}
-          />
+          <DesktopOnly>
+            <WalletPanel
+              isAuthorized={status === WalletConnectionStatusEnum.Connected}
+              onConnect={openWalletPanel}
+            />
+          </DesktopOnly>
+          <MobileOnly>
+            <WalletPanelMobile
+              isAuthorized={status === WalletConnectionStatusEnum.Connected}
+              onConnect={openWalletPanel}
+            />
+          </MobileOnly>
           <NameSection>
             <Title>Give it name</Title>
             <StyledInput
@@ -177,11 +186,13 @@ export const QnaCreate: React.FC<{
           {isLoading ? 'Creating...' : 'Create'}
         </StyledButton>
         <MobileOnly>
-          <SettingsButton />
-          <IconButtonRound
-            icon={<CalendarIcon />}
-            onClick={() => setIsSchedulePanelOpen(true)}
-          />
+          <MobileButtonsContainer>
+            <SettingsButton />
+            <IconButtonRound
+              icon={<CalendarIcon />}
+              onClick={() => setIsSchedulePanelOpen(true)}
+            />
+          </MobileButtonsContainer>
         </MobileOnly>
       </ActionContainer>
       <QnaScheduleFloatingPanel
@@ -213,6 +224,10 @@ const Main = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+
+  @media (max-width: ${breakpoints.sm}px) {
+    padding-top: 8px !important;
+  }
 `
 
 const Content = styled.div`
@@ -265,4 +280,9 @@ const StyledButton = styled(Button)`
   @media (max-width: ${breakpoints.sm}px) {
     width: 100%;
   }
+`
+
+const MobileButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `
