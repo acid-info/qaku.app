@@ -164,6 +164,11 @@ textarea:focus {
   outline: none;
 }
 
+input::placeholder,
+textarea::placeholder {
+  color: var(--white);
+}
+
 @media (max-width: 768px) {
   :root {
     --navbar-main-gap: 40px;
