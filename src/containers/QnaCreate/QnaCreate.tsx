@@ -5,12 +5,15 @@ import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import DesktopOnly from '@/components/DesktopOnly/DesktopOnly'
-import { QnaScheduleFloatingPanel } from '@/components/FloatingPanel'
+import {
+  QnaFloatingPanel,
+  QnaScheduleFloatingPanel,
+} from '@/components/FloatingPanel'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { CalendarIcon } from '@/components/Icons/CalendarIcon'
+import { SettingsIcon } from '@/components/Icons/SettingsIcon'
 import MobileOnly from '@/components/MobileOnly/MobileOnly'
 import { PasswordGenerator } from '@/components/PasswordGenerator'
-import { SettingsButton } from '@/components/SettingsButton'
 import { ActionContainer, StyledInput } from '@/components/StyledComponents'
 import TagInput from '@/components/TagInput/TagInput'
 import { WalletPanel, WalletPanelMobile } from '@/components/WalletPanel'
@@ -26,7 +29,14 @@ import React, { useState } from 'react'
 export const QnaCreate: React.FC<{
   isSchedulePanelOpen: boolean
   setIsSchedulePanelOpen: (isOpen: boolean) => void
-}> = ({ isSchedulePanelOpen, setIsSchedulePanelOpen }) => {
+  isSettingsPanelOpen: boolean
+  setIsSettingsPanelOpen: (isOpen: boolean) => void
+}> = ({
+  isSchedulePanelOpen,
+  setIsSchedulePanelOpen,
+  isSettingsPanelOpen,
+  setIsSettingsPanelOpen,
+}) => {
   const { userName, localAddress, status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
   const { openWalletPanel } = useWalletConnection()
@@ -122,6 +132,8 @@ export const QnaCreate: React.FC<{
     })
   }
 
+  const TBD_MOCK_DATA = null as any
+
   return (
     <Wrapper>
       <Main className="scrollable-container">
@@ -197,7 +209,10 @@ export const QnaCreate: React.FC<{
         </StyledButton>
         <MobileOnly>
           <MobileButtonsContainer>
-            <SettingsButton />
+            <IconButtonRound
+              icon={<SettingsIcon />}
+              onClick={() => setIsSettingsPanelOpen(true)}
+            />
             <IconButtonRound
               icon={<CalendarIcon />}
               onClick={() => setIsSchedulePanelOpen(true)}
@@ -209,6 +224,12 @@ export const QnaCreate: React.FC<{
         isOpen={isSchedulePanelOpen}
         onClose={() => setIsSchedulePanelOpen(false)}
         onSchedule={handleSchedule}
+      />
+      <QnaFloatingPanel
+        isOpen={isSettingsPanelOpen}
+        onClose={() => setIsSettingsPanelOpen(false)}
+        qna={TBD_MOCK_DATA}
+        onSave={handleCreateQnA}
       />
     </Wrapper>
   )

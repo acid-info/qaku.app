@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 export const QnaPageCreate: React.FC = () => {
   const [isSchedulePanelOpen, setIsSchedulePanelOpen] = useState(false)
+  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false)
 
   return (
     <DefaultLayoutContainer
@@ -19,12 +20,16 @@ export const QnaPageCreate: React.FC = () => {
         title: 'New Qaku',
         showScheduleQnaButton: true,
         onScheduleQnaClick: () => setIsSchedulePanelOpen(true),
+        showSettingsButton: true,
+        onSettingsClick: () => setIsSettingsPanelOpen(true),
       }}
     >
       <SEO />
       <QnaCreate
         isSchedulePanelOpen={isSchedulePanelOpen}
         setIsSchedulePanelOpen={setIsSchedulePanelOpen}
+        isSettingsPanelOpen={isSettingsPanelOpen}
+        setIsSettingsPanelOpen={setIsSettingsPanelOpen}
       />
     </DefaultLayoutContainer>
   )
