@@ -6,7 +6,7 @@ export enum ResultVisibilityEnum {
 }
 
 export interface QnaSettingsInterface {
-  allowReplies: boolean
+  allowsParticipantsReplies: boolean
   title: string
   showDescription: boolean
   description: string
