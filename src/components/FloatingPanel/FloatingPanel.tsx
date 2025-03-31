@@ -17,10 +17,10 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
   children,
   isOpen,
   onClose,
-  className,
+  ...props
 }) => {
   return (
-    <Container $isOpen={isOpen} className={className}>
+    <Container $isOpen={isOpen} {...props}>
       <Panel $isOpen={isOpen}>
         <Header>
           <h2>{title}</h2>
