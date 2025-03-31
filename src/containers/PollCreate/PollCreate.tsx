@@ -22,7 +22,7 @@ export const PollCreate: React.FC = () => {
   const router = useRouter()
   const { qnaId } = router.query
   const [nextId, setNextId] = useState(3)
-  const [title, setTitle] = useState('')
+  const [question, setQuestion] = useState('')
   const [description, setDescription] = useState('')
   const [pollSettings, setPollSettings] = useAtom(pollSettingsAtom)
   const [correctAnswers, setCorrectAnswers] = useState<string[]>([])
@@ -58,14 +58,11 @@ export const PollCreate: React.FC = () => {
   }, [correctAnswers, pollSettings.markCorrectAnswer])
 
   useEffect(() => {
-    setTitle(pollSettings.title)
     setDescription(pollSettings.description)
   }, [pollSettings])
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value
-    setTitle(newTitle)
-    setPollSettings((prev) => ({ ...prev, title: newTitle }))
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuestion(e.target.value)
   }
 
   const handleDescriptionChange = (
@@ -120,8 +117,8 @@ export const PollCreate: React.FC = () => {
       return
     }
 
-    if (!title.trim()) {
-      setError('Please provide a title for your poll')
+    if (!question.trim()) {
+      setError('Please provide a question for your poll')
       return
     }
 
@@ -135,7 +132,8 @@ export const PollCreate: React.FC = () => {
 
     try {
       const { pollData, pollOptions } = mapPollDataForCreation({
-        title,
+        title: pollSettings.title || defaultPollSettings.title,
+        question,
         description: description || undefined,
         qnaId: Number(qnaId),
         correctAnswers,
@@ -162,7 +160,7 @@ export const PollCreate: React.FC = () => {
   }
 
   const resetFormData = () => {
-    setTitle('')
+    setQuestion('')
     setDescription('')
     setCorrectAnswers([])
     setOptions([
@@ -180,7 +178,7 @@ export const PollCreate: React.FC = () => {
       },
     ])
     setNextId(3)
-    setPollSettings(defaultPollSettings)
+    setPollSettings(() => ({ ...defaultPollSettings }))
   }
 
   return (
@@ -193,8 +191,8 @@ export const PollCreate: React.FC = () => {
               <h3>What would you like to ask?</h3>
               <StyledInput
                 placeholder="Type something here.."
-                value={title}
-                onChange={handleTitleChange}
+                value={question}
+                onChange={handleQuestionChange}
               />
             </TitleWithInput>
             <Collapsible title="Add description">

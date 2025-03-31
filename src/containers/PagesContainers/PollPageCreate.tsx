@@ -1,5 +1,5 @@
 import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
-import { pollSettingsAtom } from '@/../atoms/settings'
+import { defaultPollSettings, pollSettingsAtom } from '@/../atoms/settings'
 import { PollFloatingPanelCreate } from '@/components/FloatingPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
@@ -20,7 +20,7 @@ export const PollPageCreate: React.FC = () => {
       sidebar={<SidebarContainer />}
       navProps={{
         isTitleOnly: true,
-        title: pollSettings.title || 'New Poll',
+        title: pollSettings.title || defaultPollSettings.title,
         showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
       }}

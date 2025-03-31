@@ -1,3 +1,4 @@
+import { defaultPollSettings } from '@/../atoms/settings'
 import {
   BaseFloatingPanelPropsInterface,
   PollSettingsInterface,
@@ -28,12 +29,7 @@ export const PollFloatingPanelCreate: React.FC<
   PollFloatingPanelCreateProps
 > = ({ isOpen, onClose, initialValues, onSave }) => {
   const [values, setValues] = useState<PollSettingsInterface>({
-    multipleOptions: false,
-    markCorrectAnswer: false,
-    resultVisibility: ResultVisibilityEnum.Visible,
-    title: '',
-    showDescription: false,
-    description: '',
+    ...defaultPollSettings,
     ...initialValues,
   })
 
@@ -59,7 +55,8 @@ export const PollFloatingPanelCreate: React.FC<
   }
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues((prev) => ({ ...prev, title: e.target.value }))
+    const newTitle = e.target.value || defaultPollSettings.title
+    setValues((prev) => ({ ...prev, title: newTitle }))
   }
 
   const handleDescriptionToggle = (isOn: boolean) => {
