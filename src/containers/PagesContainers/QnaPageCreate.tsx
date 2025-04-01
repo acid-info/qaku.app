@@ -6,6 +6,7 @@ import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { QnaCreate } from '@/containers/QnaCreate/QnaCreate'
 import { SidebarContainer } from '@/containers/Sidebar'
 import { NavbarModeEnum } from '@/types/navbar.types'
+import { QnaSettingsInterface } from '@/types/settings.types'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
 
@@ -15,6 +16,11 @@ export const QnaPageCreate: React.FC = () => {
     isSettingsPanelOpenAtom,
   )
   const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
+
+  const handleSaveQnaSettings = (values: QnaSettingsInterface) => {
+    setQnaSettings(values)
+    setIsSettingsPanelOpen(false)
+  }
 
   return (
     <DefaultLayoutContainer
@@ -40,10 +46,7 @@ export const QnaPageCreate: React.FC = () => {
         isOpen={isSettingsPanelOpen}
         onClose={() => setIsSettingsPanelOpen(false)}
         initialValues={qnaSettings}
-        onSave={(values) => {
-          setQnaSettings(values)
-          setIsSettingsPanelOpen(false)
-        }}
+        onSave={handleSaveQnaSettings}
       />
     </DefaultLayoutContainer>
   )
