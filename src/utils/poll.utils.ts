@@ -47,6 +47,7 @@ export const mapPollOptionsForDisplay = ({
 
 export type PollCreationData = {
   title: string
+  question: string
   description?: string
   qnaId: number
   correctAnswers: string[]
@@ -58,6 +59,7 @@ export type PollCreationData = {
 
 export const mapPollDataForCreation = ({
   title,
+  question,
   description,
   qnaId,
   correctAnswers,
@@ -71,7 +73,7 @@ export const mapPollDataForCreation = ({
 } => {
   const pollData: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'> = {
     title,
-    question: title,
+    question,
     description,
     qnaId: Number(qnaId),
     hasCorrectAnswers: markCorrectAnswer,

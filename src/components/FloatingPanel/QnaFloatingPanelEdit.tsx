@@ -1,3 +1,4 @@
+import { defaultQnaSettings } from '@/../atoms/settings/qna'
 import { QnAType } from '@/types/qna.types'
 import {
   BaseFloatingPanelPropsInterface,
@@ -32,18 +33,14 @@ export interface QnaFloatingPanelProps extends BaseFloatingPanelPropsInterface {
   onSave: SaveHandlerType<Partial<QnAType>>
 }
 
-export const QnaFloatingPanel: React.FC<QnaFloatingPanelProps> = ({
+export const QnaFloatingPanelEdit: React.FC<QnaFloatingPanelProps> = ({
   isOpen,
   onClose,
   qna,
   onSave,
 }) => {
   const [values, setValues] = useState<QnaEditValuesType>({
-    allowsParticipantsReplies: false,
-    title: '',
-    showDescription: false,
-    description: '',
-    admins: [],
+    ...defaultQnaSettings,
   })
 
   useEffect(() => {

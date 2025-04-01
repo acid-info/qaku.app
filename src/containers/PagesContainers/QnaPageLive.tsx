@@ -4,7 +4,7 @@ import { getQnaByIdAtom } from '@/../atoms/qna'
 import { questionsRecordAtom } from '@/../atoms/question'
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useQnaQuestionsAnswersSubscriptions } from '@/../hooks/useQnaQuestionsAnswersSubscriptions'
-import { QnaFloatingPanel } from '@/components/FloatingPanel'
+import { QnaFloatingPanelEdit } from '@/components/FloatingPanel'
 import { DefaultNavMobileBottomPanel } from '@/components/MobileBottomPanel/DefaultNavMobileBottomPanel'
 import { SEO } from '@/components/SEO'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
@@ -116,7 +116,7 @@ export const QnaPageLive: React.FC = () => {
       <SEO />
       <QnaLive qnaId={id} userId={userName ?? ''} />
       {qna && (
-        <QnaFloatingPanel
+        <QnaFloatingPanelEdit
           isOpen={isSettingsPanelOpen}
           onClose={() => setIsSettingsPanelOpen(false)}
           qna={qna}

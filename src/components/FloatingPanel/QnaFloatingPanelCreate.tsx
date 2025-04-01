@@ -1,14 +1,14 @@
-import { defaultPollSettings } from '@/../atoms/settings'
+import { defaultQnaSettings } from '@/../atoms/settings/qna'
 import {
   BaseFloatingPanelPropsInterface,
-  PollSettingsInterface,
-  ResultVisibilityEnum,
+  QnaSettingsInterface,
   SaveHandlerType,
 } from '@/types/settings.types'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
+import { CloseIcon } from '../Icons/CloseIcon'
 import { StyledInput } from '../StyledComponents'
-import { Tab } from '../Tab'
+import TagInput from '../TagInput/TagInput'
 import { ToggleButton } from '../ToggleButton'
 import { FloatingPanel } from './FloatingPanel'
 import { SettingField } from './SettingItem'
@@ -17,19 +17,23 @@ import {
   PanelContent,
   SettingGroup,
   SettingStack,
+  TagInputContainer,
 } from './styledComponents'
 
-export interface PollFloatingPanelCreateProps
+export interface QnaFloatingPanelCreateProps
   extends BaseFloatingPanelPropsInterface {
-  initialValues?: Partial<PollSettingsInterface>
-  onSave: SaveHandlerType<PollSettingsInterface>
+  initialValues?: Partial<QnaSettingsInterface>
+  onSave: SaveHandlerType<QnaSettingsInterface>
 }
 
-export const PollFloatingPanelCreate: React.FC<
-  PollFloatingPanelCreateProps
-> = ({ isOpen, onClose, initialValues, onSave }) => {
-  const [values, setValues] = useState<PollSettingsInterface>({
-    ...defaultPollSettings,
+export const QnaFloatingPanelCreate: React.FC<QnaFloatingPanelCreateProps> = ({
+  isOpen,
+  onClose,
+  initialValues,
+  onSave,
+}) => {
+  const [values, setValues] = useState<QnaSettingsInterface>({
+    ...defaultQnaSettings,
     ...initialValues,
   })
 
@@ -39,23 +43,12 @@ export const PollFloatingPanelCreate: React.FC<
     }
   }, [isOpen, initialValues])
 
-  const handleMultipleOptionsToggle = (isOn: boolean) => {
-    setValues((prev) => ({ ...prev, multipleOptions: isOn }))
-  }
-
-  const handleMarkCorrectAnswerToggle = (isOn: boolean) => {
-    setValues((prev) => ({ ...prev, markCorrectAnswer: isOn }))
-  }
-
-  const handleResultVisibilityChange = (id: string | number) => {
-    setValues((prev) => ({
-      ...prev,
-      resultVisibility: id as ResultVisibilityEnum,
-    }))
+  const handleRepliesToggle = (isOn: boolean) => {
+    setValues((prev) => ({ ...prev, allowsParticipantsReplies: isOn }))
   }
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value || defaultPollSettings.title
+    const newTitle = e.target.value || defaultQnaSettings.title
     setValues((prev) => ({ ...prev, title: newTitle }))
   }
 
@@ -101,52 +94,25 @@ export const PollFloatingPanelCreate: React.FC<
   }
 
   return (
-    <FloatingPanel title="Poll settings" isOpen={isOpen} onClose={handleClose}>
+    <FloatingPanel title="Q&A settings" isOpen={isOpen} onClose={handleClose}>
       <PanelContent>
-        <SettingGroup>
-          <SettingField
-            title="Multiple options"
-            description="Participants can select more than one option"
-            isRow
-          >
-            <ToggleButton
-              isOn={values.multipleOptions}
-              onChange={handleMultipleOptionsToggle}
-            />
-          </SettingField>
-
-          <SettingField
-            title="Mark correct answer"
-            description="Select and show the correct answer to participants"
-            isRow
-          >
-            <ToggleButton
-              isOn={values.markCorrectAnswer}
-              onChange={handleMarkCorrectAnswerToggle}
-            />
-          </SettingField>
-        </SettingGroup>
-
-        <SettingStack>
-          <SettingField
-            title="Poll result"
-            description="Participants will see the results after they vote"
-          >
-            <Tab
-              variant="secondary"
-              options={[
-                { id: ResultVisibilityEnum.Visible, label: 'Visible' },
-                { id: ResultVisibilityEnum.Hidden, label: 'Hidden' },
-              ]}
-              activeId={values.resultVisibility}
-              onChange={handleResultVisibilityChange}
-            />
-          </SettingField>
-        </SettingStack>
+        <SettingField
+          title="Replies"
+          description="Allow participants to reply to questions"
+          isRow
+        >
+          <ToggleButton
+            isOn={values.allowsParticipantsReplies}
+            onChange={handleRepliesToggle}
+          />
+        </SettingField>
 
         <SettingGroup>
           <SettingStack>
-            <SettingField title="Poll title" description="Edit your title">
+            <SettingField
+              title="Q&A title"
+              description="Edit your Q&A title here"
+            >
               <StyledInput
                 placeholder="Type something here.."
                 value={values.title}
@@ -156,7 +122,7 @@ export const PollFloatingPanelCreate: React.FC<
           </SettingStack>
 
           <SettingField
-            title="Poll description"
+            title="Q&A description"
             description="Add a description"
             isRow
           >
@@ -173,6 +139,34 @@ export const PollFloatingPanelCreate: React.FC<
             />
           )}
         </SettingGroup>
+
+        <SettingStack>
+          <SettingField
+            title="Co-hosts"
+            description="Add co-hosts to your Q&A"
+            isRow
+          >
+            {values.admins.length > 0 && (
+              <Button
+                variant="filled"
+                onClick={() => setValues((prev) => ({ ...prev, admins: [] }))}
+                icon={<CloseIcon />}
+              >
+                RevokeAll
+              </Button>
+            )}
+          </SettingField>
+          <TagInputContainer>
+            <TagInput
+              tags={values.admins}
+              setTags={(tags) =>
+                setValues((prev) => ({ ...prev, admins: tags }))
+              }
+              validator={(value) => value.startsWith('0x')}
+              onValidationFail={() => alert('Invalid address')}
+            />
+          </TagInputContainer>
+        </SettingStack>
 
         <ActionBar>
           <Button variant="filledPrimary" onClick={handleSave}>

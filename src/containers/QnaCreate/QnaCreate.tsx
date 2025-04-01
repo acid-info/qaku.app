@@ -1,14 +1,13 @@
+import { isSettingsPanelOpenAtom } from '@/../atoms/navbar/isSettingsPanelOpenAtom'
 import { qnasRecordAtom } from '@/../atoms/qna/qnasRecordAtom'
+import { defaultQnaSettings, qnaSettingsAtom } from '@/../atoms/settings/qna'
 import { walletStateAtom } from '@/../atoms/wallet'
 import { useWalletConnection } from '@/../hooks/useWalletConnection'
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { Collapsible } from '@/components/Collapsible'
 import DesktopOnly from '@/components/DesktopOnly/DesktopOnly'
-import {
-  QnaFloatingPanel,
-  QnaScheduleFloatingPanel,
-} from '@/components/FloatingPanel'
+import { QnaScheduleFloatingPanel } from '@/components/FloatingPanel'
 import { IconButtonRound } from '@/components/IconButtonRound'
 import { CalendarIcon } from '@/components/Icons/CalendarIcon'
 import { SettingsIcon } from '@/components/Icons/SettingsIcon'
@@ -22,37 +21,78 @@ import { QnA } from '@/data/routes'
 import { WalletConnectionStatusEnum } from '@/types/wallet.types'
 import { createQnA } from '@/utils/api.utils'
 import styled from '@emotion/styled'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+// Default form data for creating a QnA
+const defaultFormData = {
+  title: '',
+  description: '',
+  password: '',
+  admins: [],
+  useExternalWallet: true,
+}
 
 export const QnaCreate: React.FC<{
   isSchedulePanelOpen: boolean
   setIsSchedulePanelOpen: (isOpen: boolean) => void
-  isSettingsPanelOpen: boolean
-  setIsSettingsPanelOpen: (isOpen: boolean) => void
-}> = ({
-  isSchedulePanelOpen,
-  setIsSchedulePanelOpen,
-  isSettingsPanelOpen,
-  setIsSettingsPanelOpen,
-}) => {
+}> = ({ isSchedulePanelOpen, setIsSchedulePanelOpen }) => {
   const { userName, localAddress, status } = useAtomValue(walletStateAtom)
   const setQnasRecord = useSetAtom(qnasRecordAtom)
+  const setIsSettingsPanelOpen = useSetAtom(isSettingsPanelOpenAtom)
   const { openWalletPanel } = useWalletConnection()
+  const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
 
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [password, setPassword] = useState('')
+  const [title, setTitle] = useState(defaultFormData.title)
+  const [description, setDescription] = useState(defaultFormData.description)
+  const [password, setPassword] = useState(defaultFormData.password)
   const [isLoading, setIsLoading] = useState(false)
-  const [admins, setAdmins] = useState<string[]>([])
-  const [useExternalWallet, setUseExternalWallet] = useState(true)
+  const [admins, setAdmins] = useState<string[]>(defaultFormData.admins)
+  const [useExternalWallet, setUseExternalWallet] = useState(
+    defaultFormData.useExternalWallet,
+  )
 
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
+  useEffect(() => {
+    setTitle(qnaSettings.title)
+    setDescription(qnaSettings.description)
+    setAdmins(qnaSettings.admins)
+  }, [qnaSettings])
+
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
+  }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value
+    setTitle(newTitle)
+    setQnaSettings((prev) => ({
+      ...prev,
+      title: newTitle,
+    }))
+  }
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const newDescription = e.target.value
+    setDescription(newDescription)
+    setQnaSettings((prev) => ({
+      ...prev,
+      description: newDescription,
+      showDescription: newDescription.trim() !== '',
+    }))
+  }
+
+  const handleAdminsChange = (newAdmins: string[]) => {
+    setAdmins(newAdmins)
+    setQnaSettings((prev) => ({
+      ...prev,
+      admins: newAdmins,
+    }))
   }
 
   const handleWalletSelect = (walletType: 'external' | 'qaku') => {
@@ -100,12 +140,14 @@ export const QnaCreate: React.FC<{
         owner: getOwnerAddress(),
         hash: password,
         admins: admins.length ? admins : undefined,
+        allowsParticipantsReplies: qnaSettings.allowsParticipantsReplies,
         ...(startDate && { startDate }),
         ...(endDate && { endDate }),
         setQnasRecord,
       })
 
       if (response.success && response.data) {
+        resetFormData()
         router.push(redirectRoute.replace(':id', String(response.data.id)))
       } else {
         setError('Failed to create Q&A')
@@ -132,7 +174,14 @@ export const QnaCreate: React.FC<{
     })
   }
 
-  const TBD_MOCK_DATA = null as any
+  const resetFormData = () => {
+    setTitle(defaultFormData.title)
+    setDescription(defaultFormData.description)
+    setPassword(defaultFormData.password)
+    setAdmins(defaultFormData.admins)
+    setUseExternalWallet(defaultFormData.useExternalWallet)
+    setQnaSettings(defaultQnaSettings)
+  }
 
   return (
     <Wrapper>
@@ -160,7 +209,7 @@ export const QnaCreate: React.FC<{
             <StyledInput
               placeholder="New Q&A.."
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleTitleChange}
             />
           </NameSection>
           <Section>
@@ -168,7 +217,7 @@ export const QnaCreate: React.FC<{
               <TextArea
                 placeholder="Type something here.."
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleDescriptionChange}
               />
             </Collapsible>
             <Collapsible title="Review password">
@@ -189,7 +238,7 @@ export const QnaCreate: React.FC<{
                 </Text>
                 <TagInput
                   tags={admins}
-                  setTags={setAdmins}
+                  setTags={handleAdminsChange}
                   validator={(value) => value.startsWith('0x')}
                   onValidationFail={() => alert('Invalid address')}
                 />
@@ -224,12 +273,6 @@ export const QnaCreate: React.FC<{
         isOpen={isSchedulePanelOpen}
         onClose={() => setIsSchedulePanelOpen(false)}
         onSchedule={handleSchedule}
-      />
-      <QnaFloatingPanel
-        isOpen={isSettingsPanelOpen}
-        onClose={() => setIsSettingsPanelOpen(false)}
-        qna={TBD_MOCK_DATA}
-        onSave={handleCreateQnA}
       />
     </Wrapper>
   )
