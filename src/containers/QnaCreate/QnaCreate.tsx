@@ -25,6 +25,15 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
+// Default form data for creating a QnA
+const defaultFormData = {
+  title: '',
+  description: '',
+  password: '',
+  admins: [],
+  useExternalWallet: true,
+}
+
 export const QnaCreate: React.FC<{
   isSchedulePanelOpen: boolean
   setIsSchedulePanelOpen: (isOpen: boolean) => void
@@ -35,12 +44,14 @@ export const QnaCreate: React.FC<{
   const { openWalletPanel } = useWalletConnection()
   const [qnaSettings, setQnaSettings] = useAtom(qnaSettingsAtom)
 
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [password, setPassword] = useState('')
+  const [title, setTitle] = useState(defaultFormData.title)
+  const [description, setDescription] = useState(defaultFormData.description)
+  const [password, setPassword] = useState(defaultFormData.password)
   const [isLoading, setIsLoading] = useState(false)
-  const [admins, setAdmins] = useState<string[]>([])
-  const [useExternalWallet, setUseExternalWallet] = useState(true)
+  const [admins, setAdmins] = useState<string[]>(defaultFormData.admins)
+  const [useExternalWallet, setUseExternalWallet] = useState(
+    defaultFormData.useExternalWallet,
+  )
 
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -164,10 +175,11 @@ export const QnaCreate: React.FC<{
   }
 
   const resetFormData = () => {
-    setTitle('')
-    setDescription('')
-    setPassword('')
-    setAdmins([])
+    setTitle(defaultFormData.title)
+    setDescription(defaultFormData.description)
+    setPassword(defaultFormData.password)
+    setAdmins(defaultFormData.admins)
+    setUseExternalWallet(defaultFormData.useExternalWallet)
     setQnaSettings(defaultQnaSettings)
   }
 
