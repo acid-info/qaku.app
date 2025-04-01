@@ -27,6 +27,7 @@ export const ActionContainer = styled.div`
   transform: translateX(-50%);
 
   @media (max-width: ${breakpoints.sm}px) {
+    position: fixed;
     width: calc(100% - 32px);
     bottom: 16px;
     gap: 8px;
