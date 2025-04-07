@@ -6,13 +6,13 @@ export enum ActiveObjectTypeEnum {
 }
 
 export type ActiveObjectType = {
-  id: number | null
+  id: string | null
   type: ActiveObjectTypeEnum | null
 }
 
 export type QnAWidgetStateType = {
   activeObject: ActiveObjectType
-  expandedQnAIds: number[]
+  expandedQnAIds: string[]
 }
 
 const initialState: QnAWidgetStateType = {

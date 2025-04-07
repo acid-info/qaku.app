@@ -18,7 +18,7 @@ export type ThreadProps = {
   info: ThreadInfoType
   likes: LikeInfoType
   onQuestionLikeClick?: () => void
-  onResponseLikeClick?: (answerId: number) => void
+  onResponseLikeClick?: (answerId: string) => void
   onReplySubmit?: ThreadItemReplyProps['onSubmit']
   onCheckClick?: () => void
   userName?: string

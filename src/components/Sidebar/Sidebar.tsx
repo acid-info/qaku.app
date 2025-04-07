@@ -19,12 +19,12 @@ export type SidebarProps = {
     active: number
   }
   filter: QnAFilterTypeEnum
-  activeItemId?: number
-  expandedQnAIds: Set<number>
+  activeItemId?: string
+  expandedQnAIds: Set<string>
   onFilterChange: (filter: QnAFilterTypeEnum) => void
-  onQnAClick: (qnaId: number) => void
-  onPollClick: (pollId: number) => void
-  onHeaderClick: (qnaId: number) => void
+  onQnAClick: (qnaId: string) => void
+  onPollClick: (pollId: string) => void
+  onHeaderClick: (qnaId: string) => void
   onSearch?: (query: string) => void
   onStatusFilterChange?: (value: string | number) => void
 }

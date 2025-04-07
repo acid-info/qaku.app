@@ -62,7 +62,7 @@ export const ApiSubscriptionManager = () => {
       },
     )
 
-    const qnaDeleteSub = apiConnector.subscribe<{ qnaId: number }>(
+    const qnaDeleteSub = apiConnector.subscribe<{ qnaId: string }>(
       ApiMessageType.QNA_DELETE_MESSAGE,
       ({ qnaId }) => {
         handleQnADeleteInState({
@@ -88,7 +88,7 @@ export const ApiSubscriptionManager = () => {
       },
     )
 
-    const pollDeleteSub = apiConnector.subscribe<{ pollId: number }>(
+    const pollDeleteSub = apiConnector.subscribe<{ pollId: string }>(
       ApiMessageType.POLL_DELETE_MESSAGE,
       ({ pollId }) => {
         handlePollDeleteInState({

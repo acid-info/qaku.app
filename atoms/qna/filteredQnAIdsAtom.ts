@@ -4,7 +4,7 @@ import { qnaFilterAtom } from './qnaFilterAtom'
 import { qnaIdsAtom } from './qnaIdsAtom'
 import { qnasRecordAtom } from './qnasRecordAtom'
 
-export const filteredQnAIdsAtom = atom<number[]>((get) => {
+export const filteredQnAIdsAtom = atom<string[]>((get) => {
   const qnasRecord = get(qnasRecordAtom)
   const filter = get(qnaFilterAtom)
   const qnaIds = get(qnaIdsAtom)

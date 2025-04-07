@@ -1,10 +1,10 @@
 import { atom } from 'jotai'
 import { pollsRecordAtom } from './pollsRecordAtom'
 
-export const pollIdsByQnaIdAtom = (qnaId: number) =>
-  atom<number[]>((get) => {
-    const pollsRecord = get(pollsRecordAtom)
-    return Object.values(pollsRecord)
+export const pollIdsByQnaIdAtom = (qnaId: string) =>
+  atom<string[]>((get) => {
+    const polls = get(pollsRecordAtom)
+    return Object.values(polls)
       .filter((poll) => poll.qnaId === qnaId)
       .map((poll) => poll.id)
   })

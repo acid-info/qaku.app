@@ -4,7 +4,7 @@ import { pollOptionIdsByPollIdAtom } from '../pollOption/pollOptionIdsByPollIdAt
 import { pollOptionsRecordAtom } from '../pollOption/pollOptionsRecordAtom'
 import { PollWithOptionsType } from './types'
 
-export const pollWithOptionsAtom = (pollId: number) =>
+export const pollWithOptionsAtom = (pollId: string) =>
   atom<PollWithOptionsType | undefined>((get) => {
     const poll = get(getPollByIdAtom(pollId))
     if (!poll) return undefined

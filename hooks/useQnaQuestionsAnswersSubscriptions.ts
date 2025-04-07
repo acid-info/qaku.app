@@ -8,7 +8,7 @@ import { answersRecordAtom } from '../atoms/answer'
 import { questionsRecordAtom } from '../atoms/question'
 
 // Hook for managing QnA-specific subscriptions and data loading for questions and answers only
-export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
+export const useQnaQuestionsAnswersSubscriptions = (qnaId: string) => {
   const setQuestionsRecord = useSetAtom(questionsRecordAtom)
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
@@ -21,7 +21,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
       ApiMessageType.QUESTION_MESSAGE,
       (question) => {
         if (question.qnaId === qnaId) {
-          setQuestionsRecord((prev: Record<number, QuestionType>) => ({
+          setQuestionsRecord((prev: Record<string, QuestionType>) => ({
             ...prev,
             [question.id]: question,
           }))
@@ -34,7 +34,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
       ApiMessageType.ANSWER_MESSAGE,
       (answer) => {
         if (answer.qnaId === qnaId) {
-          setAnswersRecord((prev: Record<number, AnswerType>) => ({
+          setAnswersRecord((prev: Record<string, AnswerType>) => ({
             ...prev,
             [answer.id]: answer,
           }))
@@ -49,7 +49,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
         if ('questionId' in data) {
           // It's an answer
           if (data.qnaId === qnaId) {
-            setAnswersRecord((prev: Record<number, AnswerType>) => ({
+            setAnswersRecord((prev: Record<string, AnswerType>) => ({
               ...prev,
               [data.id]: data as AnswerType,
             }))
@@ -57,7 +57,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
         } else {
           // It's a question
           if (data.qnaId === qnaId) {
-            setQuestionsRecord((prev: Record<number, QuestionType>) => ({
+            setQuestionsRecord((prev: Record<string, QuestionType>) => ({
               ...prev,
               [data.id]: data as QuestionType,
             }))
@@ -71,7 +71,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: number) => {
       ApiMessageType.ANSWERED_MESSAGE,
       (question) => {
         if (question.qnaId === qnaId) {
-          setQuestionsRecord((prev: Record<number, QuestionType>) => ({
+          setQuestionsRecord((prev: Record<string, QuestionType>) => ({
             ...prev,
             [question.id]: question,
           }))

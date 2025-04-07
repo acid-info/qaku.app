@@ -8,7 +8,7 @@ import { pollsRecordAtom } from '../atoms/poll'
 import { pollOptionsRecordAtom } from '../atoms/pollOption'
 
 // Hook for managing polls-specific subscriptions and data loading for polls
-export const useQnaPollsSubscriptions = (qnaId: number) => {
+export const useQnaPollsSubscriptions = (qnaId: string) => {
   const setPollsRecord = useSetAtom(pollsRecordAtom)
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
@@ -21,7 +21,7 @@ export const useQnaPollsSubscriptions = (qnaId: number) => {
       ApiMessageType.POLL_CREATE_MESSAGE,
       (poll) => {
         if (poll.qnaId === qnaId) {
-          setPollsRecord((prev: Record<number, PollType>) => ({
+          setPollsRecord((prev: Record<string, PollType>) => ({
             ...prev,
             [poll.id]: poll,
           }))
@@ -34,7 +34,7 @@ export const useQnaPollsSubscriptions = (qnaId: number) => {
       ApiMessageType.POLL_ACTIVE_MESSAGE,
       (poll) => {
         if (poll.qnaId === qnaId) {
-          setPollsRecord((prev: Record<number, PollType>) => ({
+          setPollsRecord((prev: Record<string, PollType>) => ({
             ...prev,
             [poll.id]: poll,
           }))

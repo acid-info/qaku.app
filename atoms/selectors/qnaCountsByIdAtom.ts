@@ -5,7 +5,7 @@ import { answersRecordAtom } from '../answer/answersRecordAtom'
 import { getQnaByIdAtom } from '../qna/getQnaByIdAtom'
 import { getQuestionByIdAtom } from '../question/getQuestionByIdAtom'
 
-export const qnaCountsByIdAtom = (id: number) =>
+export const qnaCountsByIdAtom = (id: string) =>
   atom((get) => {
     const qna = get(getQnaByIdAtom(id))
     if (!qna) return undefined

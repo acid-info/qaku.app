@@ -34,7 +34,7 @@ export const mapPollOptionsForDisplay = ({
 }: {
   optionsWithStats: Array<PollOptionType & { percentage: number }>
   hasCorrectAnswers: boolean
-  correctAnswersIds?: number[]
+  correctAnswersIds?: string[]
 }): MappedPollOption[] => {
   return optionsWithStats.map((option) => ({
     id: option.id.toString(),
@@ -49,7 +49,7 @@ export type PollCreationData = {
   title: string
   question: string
   description?: string
-  qnaId: number
+  qnaId: string
   correctAnswers: string[]
   markCorrectAnswer: boolean
   multipleOptions: boolean
@@ -75,7 +75,7 @@ export const mapPollDataForCreation = ({
     title,
     question,
     description,
-    qnaId: Number(qnaId),
+    qnaId: String(qnaId),
     hasCorrectAnswers: markCorrectAnswer,
     hasMultipleOptionsSelect: multipleOptions,
     isResultVisible: resultVisibility === ResultVisibilityEnum.Visible,
@@ -98,7 +98,7 @@ export const handlePollUpdateInState = ({
 }: {
   poll: PollType
   setPollsRecord: (
-    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
+    updater: (prev: Record<string, PollType>) => Record<string, PollType>,
   ) => void
 }): void => {
   setPollsRecord((prev) => ({
@@ -112,14 +112,14 @@ export const handlePollDeleteInState = ({
   setPollsRecord,
   setPollOptionsRecord,
 }: {
-  pollId: number
+  pollId: string
   setPollsRecord: (
-    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
+    updater: (prev: Record<string, PollType>) => Record<string, PollType>,
   ) => void
   setPollOptionsRecord: (
     updater: (
-      prev: Record<number, PollOptionType>,
-    ) => Record<number, PollOptionType>,
+      prev: Record<string, PollOptionType>,
+    ) => Record<string, PollOptionType>,
   ) => void
 }): void => {
   setPollsRecord((prev) => {
@@ -132,7 +132,7 @@ export const handlePollDeleteInState = ({
   setPollOptionsRecord((prevOptions) => {
     const newOptions = { ...prevOptions }
     Object.keys(newOptions).forEach((optionId) => {
-      const id = Number(optionId)
+      const id = String(optionId)
       if (newOptions[id]?.pollId === pollId) {
         delete newOptions[id]
       }

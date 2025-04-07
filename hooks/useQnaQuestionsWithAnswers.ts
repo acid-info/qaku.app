@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { allQuestionsWithAnswersForQnAAtom } from '../atoms/selectors'
 
 // Hook for accessing questions with their answers for a specific QnA
-export const useQnaQuestionsWithAnswers = (qnaId: number) => {
+export const useQnaQuestionsWithAnswers = (qnaId: string) => {
   const questionsWithAnswersAtom = useMemo(
     () => allQuestionsWithAnswersForQnAAtom(qnaId),
     [qnaId],

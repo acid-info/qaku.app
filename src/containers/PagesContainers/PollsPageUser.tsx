@@ -23,7 +23,7 @@ const EmptyState = () => (
 export const PollsPageUser: React.FC = () => {
   const router = useRouter()
   const setQnasRecord = useSetAtom(qnasRecordAtom)
-  const id = Number(router.query.id)
+  const id = String(router.query.id)
 
   const [isLoading, setIsLoading] = useState(true)
   const [isDataFetched, setIsDataFetched] = useState(false)

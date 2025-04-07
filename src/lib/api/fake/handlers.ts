@@ -19,33 +19,33 @@ import {
 
 // In-memory data store
 const dataStore = {
-  questions: {} as Record<number, QuestionType>,
-  answers: {} as Record<number, AnswerType>,
-  qnas: {} as Record<number, QnAType>,
-  polls: {} as Record<number, PollType>,
-  pollOptions: {} as Record<number, PollOptionType>,
+  questions: {} as Record<string, QuestionType>,
+  answers: {} as Record<string, AnswerType>,
+  qnas: {} as Record<string, QnAType>,
+  polls: {} as Record<string, PollType>,
+  pollOptions: {} as Record<string, PollOptionType>,
 }
 
 // Initialize the store with mock data
 const initializeStore = () => {
   mockQuestions.forEach((question) => {
-    dataStore.questions[question.id] = question
+    dataStore.questions[question.id.toString()] = question
   })
 
   mockAnswers.forEach((answer) => {
-    dataStore.answers[answer.id] = answer
+    dataStore.answers[answer.id.toString()] = answer
   })
 
   mockQnAs.forEach((qna) => {
-    dataStore.qnas[qna.id] = qna
+    dataStore.qnas[qna.id.toString()] = qna
   })
 
   mockPolls.forEach((poll) => {
-    dataStore.polls[poll.id] = poll
+    dataStore.polls[poll.id.toString()] = poll
   })
 
   mockPollOptions.forEach((option) => {
-    dataStore.pollOptions[option.id] = option
+    dataStore.pollOptions[option.id.toString()] = option
   })
 }
 
@@ -85,7 +85,8 @@ const notifySubscribers = (messageType: ApiMessageType, data: any) => {
         if (
           'id' in data &&
           'voters' in data &&
-          dataStore.pollOptions[data.id]?.pollId !== sub.filter.pollId
+          dataStore.pollOptions[data.id]?.pollId !==
+            sub.filter.pollId.toString()
         )
           return false
       }
@@ -110,7 +111,7 @@ const notifySubscribers = (messageType: ApiMessageType, data: any) => {
 
 // Question-related functions
 export const getQuestions = async (): Promise<
-  ApiResponse<Record<number, QuestionType>>
+  ApiResponse<Record<string, QuestionType>>
 > => {
   try {
     return { success: true, data: dataStore.questions }
@@ -123,7 +124,7 @@ export const getQuestions = async (): Promise<
 }
 
 export const getQuestion = async (
-  id: number,
+  id: string,
 ): Promise<ApiResponse<QuestionType>> => {
   try {
     if (id === undefined || id === null) {
@@ -145,8 +146,8 @@ export const getQuestion = async (
 }
 
 export const getQuestionsByQnaId = async (
-  qnaId: number,
-): Promise<ApiResponse<Record<number, QuestionType>>> => {
+  qnaId: string,
+): Promise<ApiResponse<Record<string, QuestionType>>> => {
   try {
     if (qnaId === undefined || qnaId === null) {
       return { success: false, error: 'QnA ID is required' }
@@ -162,7 +163,7 @@ export const getQuestionsByQnaId = async (
       .reduce((acc, question) => {
         acc[question.id] = question
         return acc
-      }, {} as Record<number, QuestionType>)
+      }, {} as Record<string, QuestionType>)
 
     return { success: true, data: filteredQuestions }
   } catch (error) {
@@ -174,7 +175,7 @@ export const getQuestionsByQnaId = async (
 }
 
 export const addQuestion = async (
-  qnaId: number,
+  qnaId: string,
   content: string,
   author: string,
 ): Promise<ApiResponse<QuestionType>> => {
@@ -208,7 +209,7 @@ export const addQuestion = async (
 
     // Create new question
     const newQuestion: QuestionType = {
-      id: newId,
+      id: newId.toString(),
       timestamp: new Date(),
       content,
       author,
@@ -219,12 +220,12 @@ export const addQuestion = async (
     }
 
     // Add to data store
-    dataStore.questions[newId] = newQuestion
+    dataStore.questions[newId.toString()] = newQuestion
 
     // Update QnA's questionsIds
     dataStore.qnas[qnaId] = {
       ...dataStore.qnas[qnaId],
-      questionsIds: [...dataStore.qnas[qnaId].questionsIds, newId],
+      questionsIds: [...dataStore.qnas[qnaId].questionsIds, newId.toString()],
     }
 
     // Notify subscribers
@@ -241,7 +242,7 @@ export const addQuestion = async (
 
 // Answer-related functions
 export const getAnswers = async (): Promise<
-  ApiResponse<Record<number, AnswerType>>
+  ApiResponse<Record<string, AnswerType>>
 > => {
   try {
     return { success: true, data: dataStore.answers }
@@ -254,7 +255,7 @@ export const getAnswers = async (): Promise<
 }
 
 export const getAnswer = async (
-  id: number,
+  id: string,
 ): Promise<ApiResponse<AnswerType>> => {
   try {
     if (id === undefined || id === null) {
@@ -276,8 +277,8 @@ export const getAnswer = async (
 }
 
 export const getAnswersByQuestionId = async (
-  questionId: number,
-): Promise<ApiResponse<Record<number, AnswerType>>> => {
+  questionId: string,
+): Promise<ApiResponse<Record<string, AnswerType>>> => {
   try {
     if (questionId === undefined || questionId === null) {
       return { success: false, error: 'Question ID is required' }
@@ -296,7 +297,7 @@ export const getAnswersByQuestionId = async (
       .reduce((acc, answer) => {
         acc[answer.id] = answer
         return acc
-      }, {} as Record<number, AnswerType>)
+      }, {} as Record<string, AnswerType>)
 
     return { success: true, data: filteredAnswers }
   } catch (error) {
@@ -308,8 +309,8 @@ export const getAnswersByQuestionId = async (
 }
 
 export const getAnswersByQnaId = async (
-  qnaId: number,
-): Promise<ApiResponse<Record<number, AnswerType>>> => {
+  qnaId: string,
+): Promise<ApiResponse<Record<string, AnswerType>>> => {
   try {
     if (qnaId === undefined || qnaId === null) {
       return { success: false, error: 'QnA ID is required' }
@@ -325,7 +326,7 @@ export const getAnswersByQnaId = async (
       .reduce((acc, answer) => {
         acc[answer.id] = answer
         return acc
-      }, {} as Record<number, AnswerType>)
+      }, {} as Record<string, AnswerType>)
 
     return { success: true, data: filteredAnswers }
   } catch (error) {
@@ -338,7 +339,7 @@ export const getAnswersByQnaId = async (
 
 // QnA-related functions
 export const getQnAs = async (): Promise<
-  ApiResponse<Record<number, QnAType>>
+  ApiResponse<Record<string, QnAType>>
 > => {
   try {
     return { success: true, data: dataStore.qnas }
@@ -350,7 +351,7 @@ export const getQnAs = async (): Promise<
   }
 }
 
-export const getQnA = async (id: number): Promise<ApiResponse<QnAType>> => {
+export const getQnA = async (id: string): Promise<ApiResponse<QnAType>> => {
   try {
     if (id === undefined || id === null) {
       return { success: false, error: 'QnA ID is required' }
@@ -396,13 +397,13 @@ export const addQnA = async (
 
     const newQnA: QnAType = {
       ...qnaData,
-      id: newId,
+      id: newId.toString(),
       questionsIds: [],
       startDate: qnaData.startDate || new Date(),
       isActive: !providedStartDate || isStartingToday,
     }
 
-    dataStore.qnas[newId] = newQnA
+    dataStore.qnas[newId.toString()] = newQnA
 
     return { success: true, data: newQnA }
   } catch (error) {
@@ -415,7 +416,7 @@ export const addQnA = async (
 
 // Poll-related functions
 export const getPolls = async (): Promise<
-  ApiResponse<Record<number, PollType>>
+  ApiResponse<Record<string, PollType>>
 > => {
   try {
     return { success: true, data: dataStore.polls }
@@ -427,7 +428,7 @@ export const getPolls = async (): Promise<
   }
 }
 
-export const getPoll = async (id: number): Promise<ApiResponse<PollType>> => {
+export const getPoll = async (id: string): Promise<ApiResponse<PollType>> => {
   try {
     if (id === undefined || id === null) {
       return { success: false, error: 'Poll ID is required' }
@@ -448,8 +449,8 @@ export const getPoll = async (id: number): Promise<ApiResponse<PollType>> => {
 }
 
 export const getPollsByQnaId = async (
-  qnaId: number,
-): Promise<ApiResponse<Record<number, PollType>>> => {
+  qnaId: string,
+): Promise<ApiResponse<Record<string, PollType>>> => {
   try {
     if (qnaId === undefined || qnaId === null) {
       return { success: false, error: 'QnA ID is required' }
@@ -465,7 +466,7 @@ export const getPollsByQnaId = async (
       .reduce((acc, poll) => {
         acc[poll.id] = poll
         return acc
-      }, {} as Record<number, PollType>)
+      }, {} as Record<string, PollType>)
 
     return { success: true, data: filteredPolls }
   } catch (error) {
@@ -521,8 +522,8 @@ export const addPoll = async (
       Math.max(0, ...Object.keys(dataStore.polls).map(Number)) + 1
 
     // Create poll options
-    const optionIds: number[] = []
-    const correctAnswersIds: number[] = []
+    const optionIds: string[] = []
+    const correctAnswersIds: string[] = []
 
     for (const option of pollOptions) {
       // Generate new option ID
@@ -531,28 +532,28 @@ export const addPoll = async (
 
       // Create new poll option
       const newPollOption: PollOptionType = {
-        id: newOptionId,
+        id: newOptionId.toString(),
         title: option.title,
         voteCount: 0,
         voters: [],
-        pollId: newPollId,
+        pollId: newPollId.toString(),
       }
 
       // Add to data store
-      dataStore.pollOptions[newOptionId] = newPollOption
+      dataStore.pollOptions[newOptionId.toString()] = newPollOption
 
       // Add to option IDs
-      optionIds.push(newOptionId)
+      optionIds.push(newOptionId.toString())
 
       // If this option is marked as a correct answer, add it to correctAnswersIds
       if (option.isCorrectAnswer && pollData.hasCorrectAnswers) {
-        correctAnswersIds.push(newOptionId)
+        correctAnswersIds.push(newOptionId.toString())
       }
     }
 
     // Create new poll with option IDs and correct answers IDs
     const newPoll: PollType = {
-      id: newPollId,
+      id: newPollId.toString(),
       ...pollData,
       optionsIds: optionIds,
       correctAnswersIds: pollData.hasCorrectAnswers
@@ -570,7 +571,7 @@ export const addPoll = async (
     }
 
     // Add to data store
-    dataStore.polls[newPollId] = newPoll
+    dataStore.polls[newPollId.toString()] = newPoll
 
     // Notify subscribers
     notifySubscribers(ApiMessageType.POLL_CREATE_MESSAGE, newPoll)
@@ -586,7 +587,7 @@ export const addPoll = async (
 
 // Poll option-related functions
 export const getPollOptions = async (): Promise<
-  ApiResponse<Record<number, PollOptionType>>
+  ApiResponse<Record<string, PollOptionType>>
 > => {
   try {
     return { success: true, data: dataStore.pollOptions }
@@ -599,7 +600,7 @@ export const getPollOptions = async (): Promise<
 }
 
 export const getPollOption = async (
-  id: number,
+  id: string,
 ): Promise<ApiResponse<PollOptionType>> => {
   try {
     if (id === undefined || id === null) {
@@ -621,8 +622,8 @@ export const getPollOption = async (
 }
 
 export const getPollOptionsByPollId = async (
-  pollId: number,
-): Promise<ApiResponse<Record<number, PollOptionType>>> => {
+  pollId: string,
+): Promise<ApiResponse<Record<string, PollOptionType>>> => {
   try {
     if (pollId === undefined || pollId === null) {
       return { success: false, error: 'Poll ID is required' }
@@ -638,7 +639,7 @@ export const getPollOptionsByPollId = async (
       .reduce((acc, option) => {
         acc[option.id] = option
         return acc
-      }, {} as Record<number, PollOptionType>)
+      }, {} as Record<string, PollOptionType>)
 
     return { success: true, data: filteredOptions }
   } catch (error) {
@@ -650,8 +651,8 @@ export const getPollOptionsByPollId = async (
 }
 
 export const votePoll = async (
-  pollId: number,
-  optionIds: number[],
+  pollId: string,
+  optionIds: string[],
   voter: string,
 ): Promise<ApiResponse<PollOptionType[]>> => {
   try {
@@ -777,7 +778,7 @@ export const votePoll = async (
 
 // Update existing functions to use the data store instead of Jotai atoms
 export const likeQuestion = async (
-  questionId: number,
+  questionId: string,
   userId: string,
 ): Promise<ApiResponse<QuestionType>> => {
   try {
@@ -833,7 +834,7 @@ export const likeQuestion = async (
 }
 
 export const likeAnswer = async (
-  answerId: number,
+  answerId: string,
   userId: string,
 ): Promise<ApiResponse<AnswerType>> => {
   try {
@@ -886,8 +887,8 @@ export const likeAnswer = async (
 }
 
 export const addAnswer = async (
-  questionId: number,
-  qnaId: number,
+  questionId: string,
+  qnaId: string,
   content: string,
   author: string,
 ): Promise<ApiResponse<AnswerType>> => {
@@ -956,7 +957,7 @@ export const addAnswer = async (
     const newId = Math.max(0, ...Object.keys(dataStore.answers).map(Number)) + 1
 
     const newAnswer: AnswerType = {
-      id: newId,
+      id: newId.toString(),
       questionId,
       qnaId,
       content,
@@ -967,7 +968,7 @@ export const addAnswer = async (
     }
 
     // Update data store
-    dataStore.answers[newId] = newAnswer
+    dataStore.answers[newId.toString()] = newAnswer
 
     // Notify subscribers
     notifySubscribers(ApiMessageType.ANSWER_MESSAGE, newAnswer)
@@ -982,7 +983,7 @@ export const addAnswer = async (
 }
 
 export const toggleQuestionAnswered = async (
-  questionId: number,
+  questionId: string,
 ): Promise<ApiResponse<QuestionType>> => {
   try {
     // Validate input
@@ -1041,7 +1042,7 @@ export const toggleQuestionAnswered = async (
 }
 
 export const updateQnA = async (
-  qnaId: number,
+  qnaId: string,
   qnaData: Partial<QnAType>,
 ): Promise<ApiResponse<QnAType>> => {
   try {
@@ -1100,7 +1101,7 @@ export const updateQnA = async (
 }
 
 export const updatePoll = async (
-  pollId: number,
+  pollId: string,
   pollData: Partial<PollType>,
 ): Promise<ApiResponse<PollType>> => {
   try {
@@ -1184,7 +1185,7 @@ export const subscribe = <T>(
 }
 
 export const deleteQnA = async (
-  qnaId: number,
+  qnaId: string,
 ): Promise<ApiResponse<boolean>> => {
   try {
     // Validate input
@@ -1259,7 +1260,7 @@ export const deleteQnA = async (
 }
 
 export const deletePoll = async (
-  pollId: number,
+  pollId: string,
 ): Promise<ApiResponse<boolean>> => {
   try {
     // Validate input

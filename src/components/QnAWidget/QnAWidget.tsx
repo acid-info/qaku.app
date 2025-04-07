@@ -12,19 +12,19 @@ export type QnAWidgetProps = {
   isLive?: boolean
   isExpanded: boolean
   onHeaderClick: () => void
-  activeItemId?: number
+  activeItemId?: string
   hasPlusButton?: boolean
   onPlusClick?: () => void
-  onQnAClick?: (qnaId: number) => void
-  onPollClick?: (pollId: number) => void
+  onQnAClick?: (qnaId: string) => void
+  onPollClick?: (pollId: string) => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 const INITIAL_VISIBLE_POLLS = 2
 
 const PollsList: React.FC<{
   polls: PollType[]
-  activeItemId?: number
-  onPollClick?: (id: number) => void
+  activeItemId?: string
+  onPollClick?: (id: string) => void
   showPlusButton?: boolean
   onPlusClick?: () => void
 }> = ({ polls, activeItemId, onPollClick, showPlusButton, onPlusClick }) => (

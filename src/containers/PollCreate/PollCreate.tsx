@@ -135,7 +135,7 @@ export const PollCreate: React.FC = () => {
         title: pollSettings.title || defaultPollSettings.title,
         question,
         description: description || undefined,
-        qnaId: Number(qnaId),
+        qnaId: String(qnaId),
         correctAnswers,
         markCorrectAnswer: pollSettings.markCorrectAnswer,
         multipleOptions: pollSettings.multipleOptions,

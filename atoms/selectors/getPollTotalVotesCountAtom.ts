@@ -3,7 +3,7 @@ import { atom } from 'jotai'
 import { pollOptionIdsByPollIdAtom } from '../pollOption/pollOptionIdsByPollIdAtom'
 import { pollOptionsRecordAtom } from '../pollOption/pollOptionsRecordAtom'
 
-export const getPollTotalVotesCountAtom = (pollId: number) =>
+export const getPollTotalVotesCountAtom = (pollId: string) =>
   atom((get) => {
     const optionIds = get(pollOptionIdsByPollIdAtom(pollId))
     const optionsRecord = get(pollOptionsRecordAtom)

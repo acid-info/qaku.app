@@ -15,7 +15,7 @@ export type LikeInfoType = {
 }
 
 export interface ThreadResponseInterface {
-  id: number
+  id: string
   info: {
     author: string
     timestamp: string
@@ -28,7 +28,7 @@ export interface ThreadInterface {
   info: ThreadInfoType & {
     question: string
     isAnswered: boolean
-    questionId: number
+    questionId: string
     responses: ThreadResponseInterface[]
   }
   likes: LikeInfoType

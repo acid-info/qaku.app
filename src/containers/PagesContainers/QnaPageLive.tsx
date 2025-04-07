@@ -20,7 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
-  const id = Number(router.query.id)
+  const id = String(router.query.id)
 
   const [isLoading, setIsLoading] = useState(true)
   const [isDataFetched, setIsDataFetched] = useState(false)

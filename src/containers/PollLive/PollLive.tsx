@@ -10,7 +10,7 @@ import React, { useMemo } from 'react'
 const CONTENT_WIDTH = 507
 
 export type PollLiveProps = {
-  pollId: number
+  pollId: string
   poll: PollType
 }
 

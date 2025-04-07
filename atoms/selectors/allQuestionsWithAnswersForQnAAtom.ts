@@ -4,7 +4,7 @@ import { answersRecordAtom } from '../answer/answersRecordAtom'
 import { questionIdsByQnaIdAtom } from '../question/questionIdsByQnaIdAtom'
 import { questionsRecordAtom } from '../question/questionsRecordAtom'
 
-export const allQuestionsWithAnswersForQnAAtom = (qnaId: number) =>
+export const allQuestionsWithAnswersForQnAAtom = (qnaId: string) =>
   atom((get) => {
     const questionIds = get(questionIdsByQnaIdAtom(qnaId))
     const questionsRecord = get(questionsRecordAtom)

@@ -46,23 +46,23 @@ import {
 export const apiConnector: ApiConnector = {
   // Question methods
   getQuestions: async (): Promise<
-    ApiResponse<Record<number, QuestionType>>
+    ApiResponse<Record<string, QuestionType>>
   > => {
     return await getQuestions()
   },
 
-  getQuestion: async (id: number): Promise<ApiResponse<QuestionType>> => {
+  getQuestion: async (id: string): Promise<ApiResponse<QuestionType>> => {
     return await getQuestion(id)
   },
 
   getQuestionsByQnaId: async (
-    qnaId: number,
-  ): Promise<ApiResponse<Record<number, QuestionType>>> => {
+    qnaId: string,
+  ): Promise<ApiResponse<Record<string, QuestionType>>> => {
     return await getQuestionsByQnaId(qnaId)
   },
 
   addQuestion: async (
-    qnaId: number,
+    qnaId: string,
     content: string,
     author: string,
   ): Promise<ApiResponse<QuestionType>> => {
@@ -70,42 +70,42 @@ export const apiConnector: ApiConnector = {
   },
 
   likeQuestion: async (
-    questionId: number,
+    questionId: string,
     userId: string,
   ): Promise<ApiResponse<QuestionType>> => {
     return await likeQuestion(questionId, userId)
   },
 
   toggleQuestionAnswered: async (
-    questionId: number,
+    questionId: string,
   ): Promise<ApiResponse<QuestionType>> => {
     return await toggleQuestionAnswered(questionId)
   },
 
   // Answer methods
-  getAnswers: async (): Promise<ApiResponse<Record<number, AnswerType>>> => {
+  getAnswers: async (): Promise<ApiResponse<Record<string, AnswerType>>> => {
     return await getAnswers()
   },
 
-  getAnswer: async (id: number): Promise<ApiResponse<AnswerType>> => {
+  getAnswer: async (id: string): Promise<ApiResponse<AnswerType>> => {
     return await getAnswer(id)
   },
 
   getAnswersByQuestionId: async (
-    questionId: number,
-  ): Promise<ApiResponse<Record<number, AnswerType>>> => {
+    questionId: string,
+  ): Promise<ApiResponse<Record<string, AnswerType>>> => {
     return await getAnswersByQuestionId(questionId)
   },
 
   getAnswersByQnaId: async (
-    qnaId: number,
-  ): Promise<ApiResponse<Record<number, AnswerType>>> => {
+    qnaId: string,
+  ): Promise<ApiResponse<Record<string, AnswerType>>> => {
     return await getAnswersByQnaId(qnaId)
   },
 
   addAnswer: async (
-    questionId: number,
-    qnaId: number,
+    questionId: string,
+    qnaId: string,
     content: string,
     author: string,
   ): Promise<ApiResponse<AnswerType>> => {
@@ -113,18 +113,18 @@ export const apiConnector: ApiConnector = {
   },
 
   likeAnswer: async (
-    answerId: number,
+    answerId: string,
     userId: string,
   ): Promise<ApiResponse<AnswerType>> => {
     return await likeAnswer(answerId, userId)
   },
 
   // QnA methods
-  getQnAs: async (): Promise<ApiResponse<Record<number, QnAType>>> => {
+  getQnAs: async (): Promise<ApiResponse<Record<string, QnAType>>> => {
     return await getQnAs()
   },
 
-  getQnA: async (id: number): Promise<ApiResponse<QnAType>> => {
+  getQnA: async (id: string): Promise<ApiResponse<QnAType>> => {
     return await getQnA(id)
   },
 
@@ -135,28 +135,28 @@ export const apiConnector: ApiConnector = {
   },
 
   updateQnA: async (
-    qnaId: number,
+    qnaId: string,
     qnaData: Partial<QnAType>,
   ): Promise<ApiResponse<QnAType>> => {
     return await updateQnA(qnaId, qnaData)
   },
 
-  deleteQnA: async (qnaId: number): Promise<ApiResponse<boolean>> => {
+  deleteQnA: async (qnaId: string): Promise<ApiResponse<boolean>> => {
     return await deleteQnAHandler(qnaId)
   },
 
   // Poll methods
-  getPolls: async (): Promise<ApiResponse<Record<number, PollType>>> => {
+  getPolls: async (): Promise<ApiResponse<Record<string, PollType>>> => {
     return await getPolls()
   },
 
-  getPoll: async (id: number): Promise<ApiResponse<PollType>> => {
+  getPoll: async (id: string): Promise<ApiResponse<PollType>> => {
     return await getPoll(id)
   },
 
   getPollsByQnaId: async (
-    qnaId: number,
-  ): Promise<ApiResponse<Record<number, PollType>>> => {
+    qnaId: string,
+  ): Promise<ApiResponse<Record<string, PollType>>> => {
     return await getPollsByQnaId(qnaId)
   },
 
@@ -168,37 +168,37 @@ export const apiConnector: ApiConnector = {
   },
 
   updatePoll: async (
-    pollId: number,
+    pollId: string,
     pollData: Partial<PollType>,
   ): Promise<ApiResponse<PollType>> => {
     return await updatePoll(pollId, pollData)
   },
 
-  deletePoll: async (pollId: number): Promise<ApiResponse<boolean>> => {
+  deletePoll: async (pollId: string): Promise<ApiResponse<boolean>> => {
     return await deletePollHandler(pollId)
   },
 
   // Poll option methods
   getPollOptions: async (): Promise<
-    ApiResponse<Record<number, PollOptionType>>
+    ApiResponse<Record<string, PollOptionType>>
   > => {
     return await getPollOptions()
   },
 
-  getPollOption: async (id: number): Promise<ApiResponse<PollOptionType>> => {
+  getPollOption: async (id: string): Promise<ApiResponse<PollOptionType>> => {
     return await getPollOption(id)
   },
 
   getPollOptionsByPollId: async (
-    pollId: number,
-  ): Promise<ApiResponse<Record<number, PollOptionType>>> => {
+    pollId: string,
+  ): Promise<ApiResponse<Record<string, PollOptionType>>> => {
     return await getPollOptionsByPollId(pollId)
   },
 
   // Poll voting
   votePoll: async (
-    pollId: number,
-    optionIds: number[],
+    pollId: string,
+    optionIds: string[],
     voter: string,
   ): Promise<ApiResponse<PollOptionType[]>> => {
     return await votePoll(pollId, optionIds, voter)

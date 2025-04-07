@@ -1,4 +1,3 @@
-export { answerIdsAtom } from './answerIdsAtom'
 export { answerIdsByQnaIdAtom } from './answerIdsByQnaIdAtom'
 export { answerIdsByQuestionIdAtom } from './answerIdsByQuestionIdAtom'
 export { answersRecordAtom } from './answersRecordAtom'
