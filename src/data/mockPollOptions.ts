@@ -2,8 +2,8 @@ import { PollOptionType } from '@/types/qna.types'
 
 export const mockPollOptions: PollOptionType[] = [
   {
-    id: 1001,
-    pollId: 501,
+    id: '1001',
+    pollId: '501',
     title: 'React Query',
     voteCount: 12,
     voters: [
@@ -22,8 +22,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1002,
-    pollId: 501,
+    id: '1002',
+    pollId: '501',
     title: 'SWR',
     voteCount: 8,
     voters: [
@@ -38,8 +38,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1003,
-    pollId: 501,
+    id: '1003',
+    pollId: '501',
     title: 'Apollo Client',
     voteCount: 15,
     voters: [
@@ -61,15 +61,15 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1004,
-    pollId: 501,
+    id: '1004',
+    pollId: '501',
     title: 'Custom hooks with fetch',
     voteCount: 5,
     voters: ['user36', 'user37', 'user38', 'user39', 'user40'],
   },
   {
-    id: 1005,
-    pollId: 502,
+    id: '1005',
+    pollId: '502',
     title: 'Strongly typed',
     voteCount: 20,
     voters: [
@@ -96,8 +96,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1006,
-    pollId: 502,
+    id: '1006',
+    pollId: '502',
     title: 'Runtime checking',
     voteCount: 7,
     voters: [
@@ -111,15 +111,15 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1007,
-    pollId: 502,
+    id: '1007',
+    pollId: '502',
     title: 'No validation',
     voteCount: 3,
     voters: ['user68', 'user69', 'user70'],
   },
   {
-    id: 1008,
-    pollId: 503,
+    id: '1008',
+    pollId: '503',
     title: 'Styled Components',
     voteCount: 15,
     voters: [
@@ -141,8 +141,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1009,
-    pollId: 503,
+    id: '1009',
+    pollId: '503',
     title: 'Emotion',
     voteCount: 12,
     voters: [
@@ -161,8 +161,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1010,
-    pollId: 503,
+    id: '1010',
+    pollId: '503',
     title: 'CSS Modules',
     voteCount: 10,
     voters: [
@@ -179,8 +179,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1011,
-    pollId: 503,
+    id: '1011',
+    pollId: '503',
     title: 'Tailwind CSS',
     voteCount: 18,
     voters: [
@@ -205,8 +205,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1012,
-    pollId: 504,
+    id: '1012',
+    pollId: '504',
     title: 'Emotion',
     voteCount: 12,
     voters: [
@@ -225,8 +225,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1013,
-    pollId: 504,
+    id: '1013',
+    pollId: '504',
     title: 'CSS Modules',
     voteCount: 10,
     voters: [
@@ -243,8 +243,8 @@ export const mockPollOptions: PollOptionType[] = [
     ],
   },
   {
-    id: 1014,
-    pollId: 504,
+    id: '1014',
+    pollId: '504',
     title: 'Tailwind CSS',
     voteCount: 18,
     voters: [

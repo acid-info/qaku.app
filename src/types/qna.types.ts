@@ -1,5 +1,5 @@
 export type QnAType = {
-  id: number
+  id: string
   title: string
   description?: string
   hash: string
@@ -7,14 +7,14 @@ export type QnAType = {
   hasAdmins: boolean
   admins?: string[]
   allowsParticipantsReplies: boolean
-  questionsIds: number[]
+  questionsIds: string[]
   startDate: Date
   endDate?: Date
   isActive: boolean
 }
 
 export type MessageType = {
-  id: number
+  id: string
   timestamp: Date
   content: string
   author: string
@@ -24,22 +24,22 @@ export type MessageType = {
 
 export type QuestionType = MessageType & {
   isAnswered: boolean
-  qnaId: number
+  qnaId: string
 }
 
 export type AnswerType = MessageType & {
-  questionId: number
-  qnaId: number
+  questionId: string
+  qnaId: string
 }
 
 export type PollType = {
-  id: number
+  id: string
   title: string
   question: string
   description?: string
-  qnaId: number
-  optionsIds: number[]
-  correctAnswersIds?: number[]
+  qnaId: string
+  optionsIds: string[]
+  correctAnswersIds?: string[]
   hasCorrectAnswers: boolean
   hasMultipleOptionsSelect: boolean
   isResultVisible: boolean
@@ -48,18 +48,18 @@ export type PollType = {
 }
 
 export type PollOptionType = {
-  id: number
+  id: string
   title: string
   voteCount: number
   voters: string[]
-  pollId: number
+  pollId: string
 }
 
 export type PollVoteType = {
-  id: number
-  optionId: number
+  id: string
+  optionId: string
   voter: string
-  pollId: number
+  pollId: string
 }
 
 export enum QnAFilterTypeEnum {

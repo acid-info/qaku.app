@@ -37,7 +37,7 @@ const NoQuestionsInThisTab = () => (
 
 export type QnaUserProps = {
   qna?: QnAType | null
-  qnaId: number
+  qnaId: string
   userId: string
 }
 
@@ -76,16 +76,16 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
     )
   }, [filteredQuestions, userId])
 
-  const handleQuestionLike = async (questionId: number) => {
+  const handleQuestionLike = async (questionId: string) => {
     await likeQuestionById({ questionId, userId })
   }
 
-  const handleResponseLike = async (answerId: number) => {
+  const handleResponseLike = async (answerId: string) => {
     await likeAnswerById({ answerId, userId })
   }
 
   const handleReply = async (
-    questionId: number,
+    questionId: string,
     params: { message: string; isAnonymous: boolean; name?: string },
   ) => {
     await addNewAnswer({

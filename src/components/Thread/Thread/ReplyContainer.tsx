@@ -6,7 +6,7 @@ import { ThreadItemResponse } from '../ThreadItemResponse'
 
 export type ReplyContainerProps = {
   responses: ThreadResponseInterface[]
-  onResponseLikeClick?: (answerId: number) => void
+  onResponseLikeClick?: (answerId: string) => void
 }
 
 export const ReplyContainer: React.FC<ReplyContainerProps> = ({

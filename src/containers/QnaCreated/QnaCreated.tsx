@@ -20,7 +20,7 @@ const NoQuestionsInThisTab = () => (
 )
 
 export type QnaCreatedProps = {
-  qnaId: number
+  qnaId: string
 }
 
 export const QnaCreated: React.FC<QnaCreatedProps> = ({ qnaId }) => {

@@ -46,7 +46,7 @@ const DemoSection: React.FC<DemoSectionProps> = ({ title, children }) => (
 
 const QnAWidgetDemo = () => {
   const demoQnA = {
-    id: 1,
+    id: '1',
     title: 'Town Hall Discussion',
     hash: 'abc123',
     owner: 'admin',
@@ -57,7 +57,7 @@ const QnAWidgetDemo = () => {
     isActive: true,
   }
   const demoQnA2 = {
-    id: 2,
+    id: '2',
     title: 'Town Hall Discussion - long title that will be truncated',
     hash: 'def456',
     owner: 'admin',
@@ -70,10 +70,10 @@ const QnAWidgetDemo = () => {
 
   const polls = [
     {
-      id: 1,
+      id: '1',
       title: 'Budget Allocation',
       question: 'How should we allocate the budget?',
-      qnaId: 1,
+      qnaId: '1',
       optionsIds: [],
       hasCorrectAnswers: false,
       hasMultipleOptionsSelect: false,
@@ -81,10 +81,10 @@ const QnAWidgetDemo = () => {
       isActive: true,
     },
     {
-      id: 2,
+      id: '2',
       title: 'Project Timeline',
       question: 'What is the best timeline for the project?',
-      qnaId: 1,
+      qnaId: '1',
       optionsIds: [],
       hasCorrectAnswers: false,
       hasMultipleOptionsSelect: false,
@@ -92,10 +92,10 @@ const QnAWidgetDemo = () => {
       isActive: true,
     },
     {
-      id: 3,
+      id: '3',
       title: 'Team Structure',
       question: 'How should we structure the team?',
-      qnaId: 1,
+      qnaId: '1',
       optionsIds: [],
       hasCorrectAnswers: false,
       hasMultipleOptionsSelect: false,
@@ -105,17 +105,17 @@ const QnAWidgetDemo = () => {
   ]
 
   const [polls2, setPolls2] = useState<typeof polls>([])
-  const [activeItemId, setActiveItemId] = useState<number>()
-  const [activeItemId2, setActiveItemId2] = useState<number>()
+  const [activeItemId, setActiveItemId] = useState<string>()
+  const [activeItemId2, setActiveItemId2] = useState<string>()
   const [isExpanded1, setIsExpanded1] = useState(false)
   const [isExpanded2, setIsExpanded2] = useState(true)
 
   const handlePlusClick2 = () => {
     const newPoll = {
-      id: polls2.length + 1,
+      id: String(polls2.length + 1),
       title: `New Poll ${polls2.length + 1}`,
       question: `Question for Poll ${polls2.length + 1}`,
-      qnaId: 2,
+      qnaId: '2',
       optionsIds: [],
       hasCorrectAnswers: false,
       hasMultipleOptionsSelect: false,
@@ -126,22 +126,22 @@ const QnAWidgetDemo = () => {
     console.log('Added new poll:', newPoll)
   }
 
-  const handleQnAClick = (id: number) => {
+  const handleQnAClick = (id: string) => {
     setActiveItemId(id)
     console.log('QnA clicked:', id)
   }
 
-  const handleQnAClick2 = (id: number) => {
+  const handleQnAClick2 = (id: string) => {
     setActiveItemId2(id)
     console.log('QnA clicked:', id)
   }
 
-  const handlePollClick = (id: number) => {
+  const handlePollClick = (id: string) => {
     setActiveItemId(id)
     console.log('Poll clicked:', id)
   }
 
-  const handlePollClick2 = (id: number) => {
+  const handlePollClick2 = (id: string) => {
     setActiveItemId2(id)
     console.log('Poll clicked:', id)
   }
@@ -541,7 +541,7 @@ const ThreadDemo = () => {
     )
   }
 
-  const handleResponseLike = (threadIndex: number, responseId: number) => {
+  const handleResponseLike = (threadIndex: number, responseId: string) => {
     setThreads((prevThreads) =>
       prevThreads.map((thread, i) =>
         i === threadIndex

@@ -24,7 +24,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 const CONTENT_WIDTH = 507
 
-const EmptyState = ({ qnaId }: { qnaId: number }) => (
+const EmptyState = ({ qnaId }: { qnaId: string }) => (
   <NoContentMessage>
     <h1>Your Q&A is live!</h1>
     <span>Participants can ask new questions</span>
@@ -49,7 +49,7 @@ const NoQuestionsInThisTab = () => (
 )
 
 export type QnaLiveProps = {
-  qnaId: number
+  qnaId: string
   userId: string
 }
 
@@ -88,16 +88,16 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
     )
   }, [filteredQuestions, userId])
 
-  const handleQuestionLike = async (questionId: number) => {
+  const handleQuestionLike = async (questionId: string) => {
     await likeQuestionById({ questionId, userId })
   }
 
-  const handleResponseLike = async (answerId: number) => {
+  const handleResponseLike = async (answerId: string) => {
     await likeAnswerById({ answerId, userId })
   }
 
   const handleReply = async (
-    questionId: number,
+    questionId: string,
     params: { message: string; isAnonymous: boolean; name?: string },
   ) => {
     await addNewAnswer({
@@ -108,7 +108,7 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
     })
   }
 
-  const handleCheck = async (questionId: number) => {
+  const handleCheck = async (questionId: string) => {
     await toggleQuestionAnsweredStatus(questionId)
   }
 
