@@ -31,88 +31,88 @@ export interface SubscriptionCallback<T> {
 }
 
 export interface SubscriptionFilter {
-  qnaId?: number
-  pollId?: number
-  questionId?: number
+  qnaId?: string
+  pollId?: string
+  questionId?: string
 }
 
 export interface ApiConnector {
   // Question methods
-  getQuestions: () => Promise<ApiResponse<Record<number, QuestionType>>>
-  getQuestion: (id: number) => Promise<ApiResponse<QuestionType>>
+  getQuestions: () => Promise<ApiResponse<Record<string, QuestionType>>>
+  getQuestion: (id: string) => Promise<ApiResponse<QuestionType>>
   getQuestionsByQnaId: (
-    qnaId: number,
-  ) => Promise<ApiResponse<Record<number, QuestionType>>>
+    qnaId: string,
+  ) => Promise<ApiResponse<Record<string, QuestionType>>>
   addQuestion: (
-    qnaId: number,
+    qnaId: string,
     content: string,
     author: string,
   ) => Promise<ApiResponse<QuestionType>>
   likeQuestion: (
-    questionId: number,
+    questionId: string,
     userId: string,
   ) => Promise<ApiResponse<QuestionType>>
   toggleQuestionAnswered: (
-    questionId: number,
+    questionId: string,
   ) => Promise<ApiResponse<QuestionType>>
 
   // Answer methods
-  getAnswers: () => Promise<ApiResponse<Record<number, AnswerType>>>
-  getAnswer: (id: number) => Promise<ApiResponse<AnswerType>>
+  getAnswers: () => Promise<ApiResponse<Record<string, AnswerType>>>
+  getAnswer: (id: string) => Promise<ApiResponse<AnswerType>>
   getAnswersByQuestionId: (
-    questionId: number,
-  ) => Promise<ApiResponse<Record<number, AnswerType>>>
+    questionId: string,
+  ) => Promise<ApiResponse<Record<string, AnswerType>>>
   getAnswersByQnaId: (
-    qnaId: number,
-  ) => Promise<ApiResponse<Record<number, AnswerType>>>
+    qnaId: string,
+  ) => Promise<ApiResponse<Record<string, AnswerType>>>
   addAnswer: (
-    questionId: number,
-    qnaId: number,
+    questionId: string,
+    qnaId: string,
     content: string,
     author: string,
   ) => Promise<ApiResponse<AnswerType>>
   likeAnswer: (
-    answerId: number,
+    answerId: string,
     userId: string,
   ) => Promise<ApiResponse<AnswerType>>
 
   // QnA methods
-  getQnAs: () => Promise<ApiResponse<Record<number, QnAType>>>
-  getQnA: (id: number) => Promise<ApiResponse<QnAType>>
+  getQnAs: () => Promise<ApiResponse<Record<string, QnAType>>>
+  getQnA: (id: string) => Promise<ApiResponse<QnAType>>
   addQnA: (
     qnaData: Omit<QnAType, 'id' | 'questionsIds'>,
   ) => Promise<ApiResponse<QnAType>>
   updateQnA: (
-    qnaId: number,
+    qnaId: string,
     qnaData: Partial<QnAType>,
   ) => Promise<ApiResponse<QnAType>>
-  deleteQnA: (qnaId: number) => Promise<ApiResponse<boolean>>
+  deleteQnA: (qnaId: string) => Promise<ApiResponse<boolean>>
 
   // Poll methods
-  getPolls: () => Promise<ApiResponse<Record<number, PollType>>>
-  getPoll: (id: number) => Promise<ApiResponse<PollType>>
+  getPolls: () => Promise<ApiResponse<Record<string, PollType>>>
+  getPoll: (id: string) => Promise<ApiResponse<PollType>>
   getPollsByQnaId: (
-    qnaId: number,
-  ) => Promise<ApiResponse<Record<number, PollType>>>
+    qnaId: string,
+  ) => Promise<ApiResponse<Record<string, PollType>>>
   addPoll: (
     poll: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
     pollOptions: { title: string; isCorrectAnswer?: boolean }[],
   ) => Promise<ApiResponse<PollType>>
   updatePoll: (
-    pollId: number,
+    pollId: string,
     pollData: Partial<PollType>,
   ) => Promise<ApiResponse<PollType>>
-  deletePoll: (pollId: number) => Promise<ApiResponse<boolean>>
+  deletePoll: (pollId: string) => Promise<ApiResponse<boolean>>
 
   // Poll option methods
-  getPollOptions: () => Promise<ApiResponse<Record<number, PollOptionType>>>
-  getPollOption: (id: number) => Promise<ApiResponse<PollOptionType>>
+  getPollOptions: () => Promise<ApiResponse<Record<string, PollOptionType>>>
+  getPollOption: (id: string) => Promise<ApiResponse<PollOptionType>>
   getPollOptionsByPollId: (
-    pollId: number,
-  ) => Promise<ApiResponse<Record<number, PollOptionType>>>
+    pollId: string,
+  ) => Promise<ApiResponse<Record<string, PollOptionType>>>
   votePoll: (
-    pollId: number,
-    optionIds: number[],
+    pollId: string,
+    optionIds: string[],
     voter: string,
   ) => Promise<ApiResponse<PollOptionType[]>>
 

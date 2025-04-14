@@ -116,8 +116,8 @@ export const handleShare = ({
   pollId,
   mode,
 }: {
-  qnaId: string | number
-  pollId?: string | number
+  qnaId: string
+  pollId?: string
   mode: NavbarModeEnum
 }) => {
   if (typeof window === 'undefined') return

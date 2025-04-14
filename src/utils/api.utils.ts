@@ -19,7 +19,7 @@ type QnaCreateParams = {
   startDate?: Date
   endDate?: Date
   setQnasRecord: (
-    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+    updater: (prev: Record<string, QnAType>) => Record<string, QnAType>,
   ) => void
 }
 
@@ -29,19 +29,20 @@ export const loadAndGetQna = async ({
   qnaId,
   setQnasRecord,
 }: {
-  qnaId: number
+  qnaId: string
   setQnasRecord: (
-    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+    updater: (prev: Record<string, QnAType>) => Record<string, QnAType>,
   ) => void
 }): Promise<QnAType | null> => {
   try {
     const qnaResponse = await apiConnector.getQnA(qnaId)
     if (qnaResponse.success && qnaResponse.data) {
+      const qnaData = qnaResponse.data
       setQnasRecord((prev) => ({
         ...prev,
-        ...qnaResponse.data,
+        [qnaData.id]: qnaData,
       }))
-      return qnaResponse.data
+      return qnaData
     }
   } catch (error) {
     console.error(`Error loading QnA ${qnaId}:`, error)
@@ -95,7 +96,7 @@ export const createQnA = async ({
 }
 
 export const deleteQnA = async (
-  qnaId: number,
+  qnaId: string,
 ): Promise<ApiResponse<boolean>> => {
   try {
     return await apiConnector.deleteQnA(qnaId)
@@ -109,7 +110,7 @@ export const deleteQnA = async (
 }
 
 export const updateQnA = async (
-  qnaId: number,
+  qnaId: string,
   qnaData: Partial<QnAType>,
 ): Promise<ApiResponse<QnAType>> => {
   try {
@@ -124,7 +125,7 @@ export const updateQnA = async (
 }
 
 export const startQnA = async (
-  qnaId: number,
+  qnaId: string,
 ): Promise<ApiResponse<QnAType>> => {
   try {
     return await updateQnA(qnaId, { isActive: true, startDate: new Date() })
@@ -137,7 +138,7 @@ export const startQnA = async (
   }
 }
 
-export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
+export const endQnA = async (qnaId: string): Promise<ApiResponse<QnAType>> => {
   try {
     return await updateQnA(qnaId, { isActive: false, endDate: new Date() })
   } catch (error) {
@@ -149,7 +150,7 @@ export const endQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
   }
 }
 
-export const openQnA = async (qnaId: number): Promise<ApiResponse<QnAType>> => {
+export const openQnA = async (qnaId: string): Promise<ApiResponse<QnAType>> => {
   try {
     return await updateQnA(qnaId, { isActive: true, startDate: new Date() })
   } catch (error) {
@@ -167,14 +168,14 @@ export const loadQnaData = async ({
   setQuestionsRecord,
   setAnswersRecord,
 }: {
-  qnaId: number
+  qnaId: string
   setQuestionsRecord: (
     updater: (
-      prev: Record<number, QuestionType>,
-    ) => Record<number, QuestionType>,
+      prev: Record<string, QuestionType>,
+    ) => Record<string, QuestionType>,
   ) => void
   setAnswersRecord: (
-    updater: (prev: Record<number, AnswerType>) => Record<number, AnswerType>,
+    updater: (prev: Record<string, AnswerType>) => Record<string, AnswerType>,
   ) => void
 }): Promise<void> => {
   try {
@@ -207,7 +208,7 @@ export const addNewQuestion = async ({
   content,
   author,
 }: {
-  qnaId: number
+  qnaId: string
   content: string
   author: string
 }): Promise<ApiResponse<QuestionType>> => {
@@ -226,7 +227,7 @@ export const likeQuestionById = async ({
   questionId,
   userId,
 }: {
-  questionId: number
+  questionId: string
   userId: string
 }): Promise<ApiResponse<QuestionType>> => {
   try {
@@ -242,7 +243,7 @@ export const likeQuestionById = async ({
 
 // Toggle the answered status of a question
 export const toggleQuestionAnsweredStatus = async (
-  questionId: number,
+  questionId: string,
 ): Promise<ApiResponse<QuestionType>> => {
   try {
     return await apiConnector.toggleQuestionAnswered(questionId)
@@ -263,8 +264,8 @@ export const addNewAnswer = async ({
   content,
   author,
 }: {
-  questionId: number
-  qnaId: number
+  questionId: string
+  qnaId: string
   content: string
   author: string
 }): Promise<ApiResponse<AnswerType>> => {
@@ -283,7 +284,7 @@ export const likeAnswerById = async ({
   answerId,
   userId,
 }: {
-  answerId: number
+  answerId: string
   userId: string
 }): Promise<ApiResponse<AnswerType>> => {
   try {
@@ -315,7 +316,7 @@ export const createNewPoll = async (
 }
 
 export const deletePoll = async (
-  pollId: number,
+  pollId: string,
 ): Promise<ApiResponse<boolean>> => {
   try {
     return await apiConnector.deletePoll(pollId)
@@ -329,7 +330,7 @@ export const deletePoll = async (
 }
 
 export const updatePoll = async (
-  pollId: number,
+  pollId: string,
   pollData: Partial<PollType>,
 ): Promise<ApiResponse<PollType>> => {
   try {
@@ -348,8 +349,8 @@ export const voteInPoll = async ({
   optionIds,
   voter,
 }: {
-  pollId: number
-  optionIds: number[]
+  pollId: string
+  optionIds: string[]
   voter: string
 }): Promise<ApiResponse<PollOptionType[]>> => {
   try {
@@ -364,7 +365,7 @@ export const voteInPoll = async ({
 }
 
 export const startPoll = async (
-  pollId: number,
+  pollId: string,
 ): Promise<ApiResponse<PollType>> => {
   try {
     return await updatePoll(pollId, { isActive: true })
@@ -378,7 +379,7 @@ export const startPoll = async (
 }
 
 export const endPoll = async (
-  pollId: number,
+  pollId: string,
 ): Promise<ApiResponse<PollType>> => {
   try {
     return await updatePoll(pollId, { isActive: false })
@@ -396,11 +397,11 @@ export const loadPollOptions = async ({
   pollId,
   setPollOptionsRecord,
 }: {
-  pollId: number
+  pollId: string
   setPollOptionsRecord: (
     updater: (
-      prev: Record<number, PollOptionType>,
-    ) => Record<number, PollOptionType>,
+      prev: Record<string, PollOptionType>,
+    ) => Record<string, PollOptionType>,
   ) => void
 }): Promise<void> => {
   try {
@@ -420,9 +421,9 @@ export const loadPollsByQnaId = async ({
   qnaId,
   setPollsRecord,
 }: {
-  qnaId: number
+  qnaId: string
   setPollsRecord: (
-    updater: (prev: Record<number, PollType>) => Record<number, PollType>,
+    updater: (prev: Record<string, PollType>) => Record<string, PollType>,
   ) => void
 }): Promise<void> => {
   try {

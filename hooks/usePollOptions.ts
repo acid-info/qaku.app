@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { pollOptionsRecordAtom } from '../atoms/pollOption'
 
 // Hook for accessing poll options data for a specific poll
-export const usePollOptions = (pollId: number) => {
+export const usePollOptions = (pollId: string) => {
   const pollOptionsRecord = useAtomValue(pollOptionsRecordAtom)
 
   const pollOptions = useMemo(() => {

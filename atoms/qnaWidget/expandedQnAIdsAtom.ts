@@ -3,7 +3,7 @@ import { qnaWidgetAtom } from './qnaWidgetAtom'
 
 export const expandedQnAIdsAtom = atom(
   (get) => new Set(get(qnaWidgetAtom).expandedQnAIds),
-  (get, set, expandedQnAIds: Set<number>) => {
+  (get, set, expandedQnAIds: Set<string>) => {
     const currentState = get(qnaWidgetAtom)
     set(qnaWidgetAtom, {
       ...currentState,

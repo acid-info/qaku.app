@@ -54,7 +54,7 @@ export const SidebarContainer: React.FC = () => {
     })
   }, [filteredQnAIds, qnasRecord, pollsRecord])
 
-  const handleQnAClick = (qnaId: number) => {
+  const handleQnAClick = (qnaId: string) => {
     setActiveQnA(qnaId)
     const qna_ = qnasRecord[qnaId]
     if (qna_?.isActive) {
@@ -64,7 +64,7 @@ export const SidebarContainer: React.FC = () => {
     }
   }
 
-  const handlePollClick = (pollId: number) => {
+  const handlePollClick = (pollId: string) => {
     setActivePoll(pollId)
     const poll_ = pollsRecord[pollId]
     if (poll_?.isActive) {
@@ -74,7 +74,7 @@ export const SidebarContainer: React.FC = () => {
     }
   }
 
-  const handleHeaderClick = (qnaId: number) => {
+  const handleHeaderClick = (qnaId: string) => {
     toggleExpandedQnA(qnaId)
   }
 

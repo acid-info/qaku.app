@@ -17,7 +17,7 @@ type QnaCountsType = {
 }
 
 export type PollCreatedProps = {
-  pollId: number
+  pollId: string
   pollData: PollWithOptionsType
   qnaCounts: QnaCountsType
 }

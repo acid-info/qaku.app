@@ -19,11 +19,11 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import UserVote from './UserVote'
 
-const BACKUP_POLL_ID = 0
+const BACKUP_POLL_ID = '0'
 
 export type PollsUserProps = {
   qna?: QnAType | null
-  pollIds: number[]
+  pollIds: string[]
 }
 
 export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
@@ -32,7 +32,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
   const { openWalletPanel, walletState } = useWalletConnection()
   const router = useRouter()
 
-  const [activePollId, setActivePollId] = useState<number | null>(null)
+  const [activePollId, setActivePollId] = useState<string | null>(null)
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([])
   const [isAnonymous, setIsAnonymous] = useState(false)
 
@@ -42,7 +42,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
     let newPollId = activePollId
 
     if (router.query.poll) {
-      const pollIdFromUrl = parseInt(String(router.query.poll), 10)
+      const pollIdFromUrl = String(router.query.poll)
       if (pollIds.includes(pollIdFromUrl)) {
         newPollId = pollIdFromUrl
       }
@@ -57,12 +57,12 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
   }, [router.isReady, router.query.poll, pollIds, activePollId])
 
   const handlePollChange = (id: string | number) => {
-    const pollId = parseInt(String(id), 10)
+    const pollId = String(id)
     setSelectedOptionIds([])
     setActivePollId(pollId)
 
     if (router.isReady) {
-      const newQuery = { ...router.query, poll: String(pollId) }
+      const newQuery = { ...router.query, poll: pollId }
       router.push(
         {
           pathname: router.pathname,
@@ -119,7 +119,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
     if (!activePollId || selectedOptionIds.length === 0) return
 
     try {
-      const optionIds = selectedOptionIds.map((id) => parseInt(id, 10))
+      const optionIds = selectedOptionIds
       const response = await voteInPoll({
         pollId: activePollId,
         optionIds,
@@ -207,7 +207,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
         mode={NavbarModeEnum.Polls}
         title={qna?.title || ''}
         count={pollIds.length}
-        id={activePollId || 0}
+        id={activePollId || BACKUP_POLL_ID}
       >
         {selectedOptionIds.length > 0 && !userHasVoted && (
           <UserVote

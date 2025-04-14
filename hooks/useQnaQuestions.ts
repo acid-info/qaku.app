@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { questionsRecordAtom } from '../atoms/question'
 
 // Hook for accessing questions data for a specific QnA
-export const useQnaQuestions = (qnaId: number) => {
+export const useQnaQuestions = (qnaId: string) => {
   const questionsRecord = useAtomValue(questionsRecordAtom)
 
   const qnaQuestions = useMemo(() => {

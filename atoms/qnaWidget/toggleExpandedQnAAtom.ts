@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 import { expandedQnAIdsAtom } from './expandedQnAIdsAtom'
 
-export const toggleExpandedQnAAtom = atom(null, (get, set, qnaId: number) => {
+export const toggleExpandedQnAAtom = atom(null, (get, set, qnaId: string) => {
   const expandedQnAIds = get(expandedQnAIdsAtom)
   const newExpandedQnAIds = new Set(expandedQnAIds)
 

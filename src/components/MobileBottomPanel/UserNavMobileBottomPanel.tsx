@@ -13,7 +13,7 @@ type Props = {
   mode: NavbarModeEnum
   title: string
   count: number
-  id: number
+  id: string
   children?: React.ReactNode
 }
 

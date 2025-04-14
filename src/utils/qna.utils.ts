@@ -52,7 +52,7 @@ export const handleQnAUpdateInState = ({
 }: {
   qna: QnAType
   setQnasRecord: (
-    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+    updater: (prev: Record<string, QnAType>) => Record<string, QnAType>,
   ) => void
 }): void => {
   setQnasRecord((prev) => ({
@@ -67,17 +67,17 @@ export const handleQnADeleteInState = ({
   setQuestionsRecord,
   setAnswersRecord,
 }: {
-  qnaId: number
+  qnaId: string
   setQnasRecord: (
-    updater: (prev: Record<number, QnAType>) => Record<number, QnAType>,
+    updater: (prev: Record<string, QnAType>) => Record<string, QnAType>,
   ) => void
   setQuestionsRecord: (
     updater: (
-      prev: Record<number, QuestionType>,
-    ) => Record<number, QuestionType>,
+      prev: Record<string, QuestionType>,
+    ) => Record<string, QuestionType>,
   ) => void
   setAnswersRecord: (
-    updater: (prev: Record<number, AnswerType>) => Record<number, AnswerType>,
+    updater: (prev: Record<string, AnswerType>) => Record<string, AnswerType>,
   ) => void
 }): void => {
   setQnasRecord((prev) => {

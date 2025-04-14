@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { pollOptionsRecordAtom } from '../atoms/pollOption'
 
 // Hook for managing poll-specific subscriptions and data loading
-export const usePollSubscriptions = (pollId: number) => {
+export const usePollSubscriptions = (pollId: string) => {
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const usePollSubscriptions = (pollId: number) => {
       ApiMessageType.POLL_VOTE_MESSAGE,
       (option) => {
         if (option.pollId === pollId) {
-          setPollOptionsRecord((prev: Record<number, PollOptionType>) => ({
+          setPollOptionsRecord((prev: Record<string, PollOptionType>) => ({
             ...prev,
             [option.id]: option,
           }))
