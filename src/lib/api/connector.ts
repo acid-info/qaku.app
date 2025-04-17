@@ -8,7 +8,6 @@ import {
 import {
   addAnswer,
   addPoll as addPollHandler,
-  addQnA,
   addQuestion,
   deletePoll as deletePollHandler,
   deleteQnA as deleteQnAHandler,
@@ -32,7 +31,12 @@ import {
   updateQnA,
   votePoll,
 } from './fake/handlers'
-import { getQnA, getQnAs, getQuestionsByQnaId } from './qakulib/handlers'
+import {
+  addQnA,
+  getQnA,
+  getQnAs,
+  getQuestionsByQnaId,
+} from './qakulib/handlers'
 import {
   ApiConnector,
   ApiMessageType,
