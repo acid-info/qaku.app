@@ -1,9 +1,11 @@
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { WagmiContextProvider } from '@/contexts/WagmiContextProvider'
+import { WakuContextProvider } from '@/contexts/WakuContextProvider'
 import { css, Global } from '@emotion/react'
 import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
 import '../styles/globals.css'
 
@@ -47,6 +49,9 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
     }
   }, [])
 
+  const router = useRouter()
+  const id = String(router.query.id)
+
   return (
     <>
       <Head>
@@ -73,9 +78,17 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
           }
         `}
       />
-      <WagmiContextProvider>
-        {getLayout(<Component {...pageProps} />)}
-      </WagmiContextProvider>
+      <WakuContextProvider
+        password=""
+        qaId={id}
+        updateStatus={(s) => {
+          console.log(s)
+        }}
+      >
+        <WagmiContextProvider>
+          {getLayout(<Component {...pageProps} />)}
+        </WagmiContextProvider>
+      </WakuContextProvider>
     </>
   )
 }

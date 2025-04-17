@@ -23,11 +23,8 @@ import {
   getPollOptionsByPollId,
   getPolls,
   getPollsByQnaId,
-  getQnA,
-  getQnAs,
   getQuestion,
   getQuestions,
-  getQuestionsByQnaId,
   likeAnswer,
   likeQuestion,
   toggleQuestionAnswered,
@@ -35,6 +32,7 @@ import {
   updateQnA,
   votePoll,
 } from './fake/handlers'
+import { getQnA, getQnAs, getQuestionsByQnaId } from './qakulib/handlers'
 import {
   ApiConnector,
   ApiMessageType,
