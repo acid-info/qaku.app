@@ -17,6 +17,7 @@ import { handleShare } from '@/utils/navbar.utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
+import { useQaku } from '../../../hooks/useQaku'
 
 export const QnaPageLive: React.FC = () => {
   const router = useRouter()
@@ -24,6 +25,8 @@ export const QnaPageLive: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [isDataFetched, setIsDataFetched] = useState(false)
+
+  const { connected } = useQaku()
 
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
@@ -34,11 +37,13 @@ export const QnaPageLive: React.FC = () => {
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
   const qnaAtom = useMemo(() => {
-    if (!id) return atom(null)
+    if (!id || !connected) return atom(null)
+    console.log(getQnaByIdAtom(id))
     return getQnaByIdAtom(id)
-  }, [id])
+  }, [id, connected])
 
   const qna = useAtomValue(qnaAtom)
+  console.log(qna)
 
   useQnaQuestionsAnswersSubscriptions(id)
 
@@ -49,7 +54,7 @@ export const QnaPageLive: React.FC = () => {
       try {
         setIsLoading(true)
         await loadQnaData({ qnaId: id, setQuestionsRecord, setAnswersRecord })
-        setIsDataFetched(true)
+        //setIsDataFetched(true)
         setIsLoading(false)
       } catch (_) {
         setIsLoading(false)

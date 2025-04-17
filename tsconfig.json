@@ -15,6 +15,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "downlevelIteration": true,
     "types": ["@emotion/react/types/css-prop"],
     "paths": {
       "@/*": ["./src/*"]
