@@ -60,21 +60,21 @@ export const ApiSubscriptionManager = () => {
     const qnaSub = async () => {
       const qnaUpdateSub = await apiConnector.subscribe<QnAType>(
         QakuEvents.QAKU_CONTENT_CHANGED,
-        (qna) => {
+        (id, qna) => {
           handleQnAUpdateInState({ qna, setQnasRecord })
         },
       )
 
       const pollUpdateSub = await apiConnector.subscribe<PollType>(
         QakuEvents.NEW_POLL_VOTE,
-        (poll) => {
+        (id, poll) => {
           handlePollUpdateInState({ poll, setPollsRecord })
         },
       )
 
       const pollCreateSub = await apiConnector.subscribe<PollType>(
         QakuEvents.NEW_POLL,
-        (poll) => {
+        (id, poll) => {
           handlePollUpdateInState({ poll, setPollsRecord })
         },
       )

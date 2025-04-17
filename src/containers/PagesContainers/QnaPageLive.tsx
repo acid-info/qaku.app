@@ -43,7 +43,6 @@ export const QnaPageLive: React.FC = () => {
   }, [id, connected])
 
   const qna = useAtomValue(qnaAtom)
-  console.log(qna)
 
   // TODO-vaclav
   // This is where we subscribe to 1 specific qna events

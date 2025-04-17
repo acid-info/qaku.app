@@ -28,7 +28,7 @@ export interface ApiResponse<T> {
 }
 
 export interface SubscriptionCallback<T> {
-  (data: T): void
+  (id: string, data: T): void
 }
 
 export interface SubscriptionFilter {

@@ -55,7 +55,6 @@ export const handleQnAUpdateInState = ({
     updater: (prev: Record<string, QnAType>) => Record<string, QnAType>,
   ) => void
 }): void => {
-  console.log(qna)
   setQnasRecord((prev) => ({
     ...prev,
     [qna.id]: qna,

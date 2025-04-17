@@ -1,7 +1,7 @@
-import { initQA, initializeQaku } from '@/lib/api/qakulib/handlers'
+import { initializeQaku } from '@/lib/api/qakulib/handlers'
 import { HealthStatus } from '@waku/interfaces'
 import { useAtom } from 'jotai'
-import { Qaku, QakuEvents } from 'qakulib'
+import { Qaku } from 'qakulib'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { loadingAtom } from '../../atoms'
 
@@ -58,11 +58,6 @@ export const WakuContextProvider = ({
       setLoadingState({ isLoading: true })
       setConnecting(true)
       const qaku = await initializeQaku()
-      qaku.on(QakuEvents.NEW_QUESTION, () => setNeedsRefresh((i) => i++))
-      qaku.on(QakuEvents.NEW_ANSWER, () => setNeedsRefresh((i) => i++))
-      qaku.on(QakuEvents.NEW_MODERATION, () => setNeedsRefresh((i) => i++))
-      qaku.on(QakuEvents.NEW_UPVOTE, () => setNeedsRefresh((i) => i++))
-      qaku.on(QakuEvents.NEW_CONTROL_MESSAGE, () => setNeedsRefresh((i) => i++))
       setQaku(qaku)
 
       setConnecting(false)
@@ -71,28 +66,8 @@ export const WakuContextProvider = ({
       setStatus('connected')
     })()
 
-    return () => {
-      if (!qaku) return
-      console.log('Clearing Qaku listeners')
-      qaku.off(QakuEvents.NEW_QUESTION, () => setNeedsRefresh((i) => i++))
-      qaku.off(QakuEvents.NEW_ANSWER, () => setNeedsRefresh((i) => i++))
-      qaku.off(QakuEvents.NEW_MODERATION, () => setNeedsRefresh((i) => i++))
-      qaku.off(QakuEvents.NEW_UPVOTE, () => setNeedsRefresh((i) => i++))
-      qaku.off(QakuEvents.NEW_CONTROL_MESSAGE, () =>
-        setNeedsRefresh((i) => i++),
-      )
-    }
+    return () => {}
   }, [connecting])
-
-  useEffect(() => {
-    ;(async () => {
-      console.log('Initialized: ', connected)
-
-      if (connected && qaId !== undefined) console.log('Qakulib initalized!!')
-      await initQA(qaId, password)
-      console.log('QA initialized')
-    })()
-  }, [connected])
 
   const wakuInfo = useMemo(
     () => ({
