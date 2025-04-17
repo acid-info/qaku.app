@@ -3,6 +3,7 @@ import { HealthStatus } from '@waku/interfaces'
 import { Qaku, QakuEvents } from 'qakulib'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 
+// TODO-vaclav remove?
 export type QakuInfo = {
   needsRefresh: number
   status: string
