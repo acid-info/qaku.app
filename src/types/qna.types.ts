@@ -7,7 +7,7 @@ export type QnAType = {
   hasAdmins: boolean
   admins?: string[]
   allowsParticipantsReplies: boolean
-  questionsIds: string[]
+  questionsIds: string[] // TODO-vaclav replace with question counts
   startDate: Date
   endDate?: Date
   isActive: boolean

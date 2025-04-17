@@ -29,6 +29,7 @@ export const ApiSubscriptionManager = () => {
     const loadInitialData = async () => {
       try {
         // Load QnAs first
+        // TODO-vaclav trigger global loading state?
         const qnasResponse = await apiConnector.getQnAs()
         if (qnasResponse.success && qnasResponse.data) {
           setQnasRecord(qnasResponse.data)
@@ -54,6 +55,11 @@ export const ApiSubscriptionManager = () => {
   }, [setQnasRecord, setPollsRecord])
 
   // Set up global subscriptions
+  // TODO-vaclav
+  // In this useEffect subscribe to general events
+  // (qna active state change, qna title change, qna creation, qna deletion,
+  // eventually the same events for polls)
+  // TODO-vaclav-end
   useEffect(() => {
     const qnaUpdateSub = apiConnector.subscribe<QnAType>(
       ApiMessageType.QNA_UPDATE_MESSAGE,

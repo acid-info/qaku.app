@@ -1,6 +1,6 @@
 import { QnAType, QuestionType } from '@/types/qna.types'
 import { wakuPeerExchangeDiscovery } from '@waku/discovery'
-import { createLightNode, IWaku, LightNode, Protocols } from '@waku/sdk'
+import { IWaku, LightNode, Protocols, createLightNode } from '@waku/sdk'
 import { derivePubsubTopicsFromNetworkConfig } from '@waku/utils'
 import { Qaku, QakuState } from 'qakulib'
 import { ApiResponse } from '../types'
@@ -86,6 +86,7 @@ const getOrInitQA = async (id: string, password?: string) => {
   return qaku.qas.get(id)
 }
 
+// TODO-vaclav init each active qnas from the user in this function
 export const getQnAs = async (): Promise<
   ApiResponse<Record<string, QnAType>>
 > => {
