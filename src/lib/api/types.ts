@@ -5,6 +5,7 @@ import {
   QnAType,
   QuestionType,
 } from '@/types/qna.types'
+import { QakuEvents } from 'qakulib'
 
 export enum ApiMessageType {
   QUESTION_MESSAGE = 'question_msg',
@@ -118,8 +119,8 @@ export interface ApiConnector {
 
   // Subscription methods
   subscribe: <T>(
-    messageType: ApiMessageType,
+    messageType: QakuEvents,
     callback: SubscriptionCallback<T>,
     filter?: SubscriptionFilter,
-  ) => () => void
+  ) => Promise<() => void>
 }

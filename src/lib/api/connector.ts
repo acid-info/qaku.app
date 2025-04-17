@@ -5,13 +5,13 @@ import {
   QnAType,
   QuestionType,
 } from '@/types/qna.types'
+import { QakuEvents } from 'qakulib'
 import {
   addAnswer,
   addPoll as addPollHandler,
   addQuestion,
   deletePoll as deletePollHandler,
   deleteQnA as deleteQnAHandler,
-  subscribe as fakeSubscribe,
   getAnswer,
   getAnswers,
   getAnswersByQnaId,
@@ -36,10 +36,10 @@ import {
   getQnA,
   getQnAs,
   getQuestionsByQnaId,
+  subscribe,
 } from './qakulib/handlers'
 import {
   ApiConnector,
-  ApiMessageType,
   ApiResponse,
   SubscriptionCallback,
   SubscriptionFilter,
@@ -208,10 +208,10 @@ export const apiConnector: ApiConnector = {
 
   // Enhanced subscribe method with filter support
   subscribe: <T>(
-    messageType: ApiMessageType,
+    messageType: QakuEvents,
     callback: SubscriptionCallback<T>,
     filter?: SubscriptionFilter,
-  ): (() => void) => {
-    return fakeSubscribe(messageType, callback, filter)
+  ): Promise<() => void> => {
+    return subscribe(messageType, callback, filter)
   },
 }

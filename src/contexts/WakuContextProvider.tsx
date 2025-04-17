@@ -1,7 +1,9 @@
 import { initQA, initializeQaku } from '@/lib/api/qakulib/handlers'
 import { HealthStatus } from '@waku/interfaces'
+import { useAtom } from 'jotai'
 import { Qaku, QakuEvents } from 'qakulib'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { loadingAtom } from '../../atoms'
 
 // TODO-vaclav remove?
 export type QakuInfo = {
@@ -48,10 +50,12 @@ export const WakuContextProvider = ({
   const [health, setHealth] = useState<HealthStatus>(HealthStatus.Unhealthy)
   const [needsRefresh, setNeedsRefresh] = useState<number>(0)
   const [qaku, setQaku] = useState<Qaku | null>(null)
+  const [loadingState, setLoadingState] = useAtom(loadingAtom)
 
   useEffect(() => {
     if (connected || connecting) return
     ;(async () => {
+      setLoadingState({ isLoading: true })
       setConnecting(true)
       const qaku = await initializeQaku()
       qaku.on(QakuEvents.NEW_QUESTION, () => setNeedsRefresh((i) => i++))
@@ -63,6 +67,7 @@ export const WakuContextProvider = ({
 
       setConnecting(false)
       setConnected(true)
+      setLoadingState({ isLoading: false })
       setStatus('connected')
     })()
 
