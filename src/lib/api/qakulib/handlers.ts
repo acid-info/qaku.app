@@ -100,6 +100,9 @@ export const getQnAs = async (): Promise<
 
     for (const qa of qas) {
       if (qa.id == 'undefined') continue
+      if (qa.type !== HistoryTypes.CREATED && qa.type !== HistoryTypes.ADMIN)
+        continue
+
       result[qa.id] = {
         id: qa.id,
         description: qa.description,
@@ -114,9 +117,7 @@ export const getQnAs = async (): Promise<
         title: qa.title!,
       }
 
-      if (qa.type == HistoryTypes.CREATED || qa.type == HistoryTypes.ADMIN) {
-        qaku.initQA(qa.id, qa.password)
-      }
+      qaku.initQA(qa.id, qa.password)
     }
     return { success: true, data: result }
   } catch (error) {
@@ -229,7 +230,11 @@ export const subscribe = async <T>(
   if (!qaku) return () => {}
 
   qaku.on(messageType, async (id) => {
-    if (messageType == QakuEvents.NEW_QUESTION) {
+    if (
+      messageType == QakuEvents.NEW_QUESTION ||
+      messageType == QakuEvents.NEW_ANSWER ||
+      messageType == QakuEvents.NEW_UPVOTE
+    ) {
       console.log('New question!')
       const questions = await getQuestionsByQnaId(id)
       callback(id, questions.data as T)
