@@ -60,6 +60,7 @@ export const initializeQaku = async (): Promise<Qaku> => {
 }
 
 export const initQA = async (id: string, password?: string) => {
+  if (!id || id == 'undefined') return
   const qaku = await initializeQaku()
   if (!qaku) {
     console.debug('Qakulib not initialized')
@@ -228,9 +229,15 @@ export const subscribe = async <T>(
   if (!qaku) return () => {}
 
   qaku.on(messageType, async (id) => {
-    const qa = await getQnA(id)
+    if (messageType == QakuEvents.NEW_QUESTION) {
+      console.log('New question!')
+      const questions = await getQuestionsByQnaId(id)
+      callback(id, questions.data as T)
+      return
+    }
 
-    callback(qa.data as T)
+    const qa = await getQnA(id)
+    callback(id, qa.data as T)
   })
   return () => {
     qaku.off(messageType, callback)

@@ -15,27 +15,26 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: string) => {
   const cleanupRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
-    if (!qnaId) return
+    console.log(qnaId)
+    if (!qnaId || qnaId == 'undefined') return
 
     const qnaSub = async () => {
       loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
 
-      const questionSub = await apiConnector.subscribe<QuestionType>(
+      const questionSub = await apiConnector.subscribe<
+        Record<string, QuestionType>
+      >(
         QakuEvents.NEW_QUESTION,
-        (question) => {
-          if (question.qnaId === qnaId) {
-            setQuestionsRecord((prev: Record<string, QuestionType>) => ({
-              ...prev,
-              [question.id]: question,
-            }))
-          }
+        (id, data) => {
+          if (qnaId !== id) return
+          setQuestionsRecord(data)
         },
         { qnaId },
       )
 
       const answerSub = await apiConnector.subscribe<AnswerType>(
         QakuEvents.NEW_ANSWER,
-        (answer) => {
+        (od, answer) => {
           if (answer.qnaId === qnaId) {
             setAnswersRecord((prev: Record<string, AnswerType>) => ({
               ...prev,
@@ -48,7 +47,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: string) => {
 
       const upvoteSub = await apiConnector.subscribe<QuestionType | AnswerType>(
         QakuEvents.NEW_UPVOTE,
-        (data) => {
+        (id, data) => {
           if ('questionId' in data) {
             // It's an answer
             if (data.qnaId === qnaId) {
@@ -91,7 +90,7 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: string) => {
       }
     }
 
-    const ret = qnaSub().then((cleanup) => {
+    qnaSub().then((cleanup) => {
       cleanupRef.current = cleanup
     })
     return () => {
