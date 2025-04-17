@@ -45,6 +45,15 @@ export const QnaPageLive: React.FC = () => {
   const qna = useAtomValue(qnaAtom)
   console.log(qna)
 
+  // TODO-vaclav
+  // This is where we subscribe to 1 specific qna events
+  // and fetch all its data (questions & answers).
+  // FYI in the /hooks/ directory there are 3 files
+  // that handle the subscriptions:
+  // useQnaQuestionsAnswersSubscriptions.ts
+  // useQnaPollsSubscriptions.ts
+  // usePollSubscriptions.ts
+  // TODO-vaclav-end
   useQnaQuestionsAnswersSubscriptions(id)
 
   useEffect(() => {
@@ -54,6 +63,13 @@ export const QnaPageLive: React.FC = () => {
       try {
         setIsLoading(true)
         await loadQnaData({ qnaId: id, setQuestionsRecord, setAnswersRecord })
+        // TODO-vaclav
+        // uncomment this? It will fix 404 redirect.
+        // However you don't know when loading ends so
+        // you might want to totally remove this state.
+        // It might cause issues I can't predict now,
+        // we might have to talk about it.
+        // TODO-vaclav-end
         //setIsDataFetched(true)
         setIsLoading(false)
       } catch (_) {
