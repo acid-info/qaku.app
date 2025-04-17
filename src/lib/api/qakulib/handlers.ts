@@ -2,8 +2,8 @@ import { QnAType, QuestionType } from '@/types/qna.types'
 import { wakuPeerExchangeDiscovery } from '@waku/discovery'
 import { IWaku, LightNode, Protocols, createLightNode } from '@waku/sdk'
 import { derivePubsubTopicsFromNetworkConfig } from '@waku/utils'
-import { HistoryTypes, Qaku, QakuState } from 'qakulib'
-import { ApiResponse } from '../types'
+import { HistoryTypes, Qaku, QakuEvents, QakuState } from 'qakulib'
+import { ApiResponse, SubscriptionCallback, SubscriptionFilter } from '../types'
 
 const bootstrapNodes: string[] = [
   '/dns4/waku-test.bloxy.one/tcp/8095/wss/p2p/16Uiu2HAmSZbDB7CusdRhgkD81VssRjQV5ZH13FbzCGcdnbbh6VwZ',
@@ -216,5 +216,23 @@ export const addQnA = async (
       success: false,
       error: error instanceof Error ? error.message : 'Failed to create Q&A',
     }
+  }
+}
+
+export const subscribe = async <T>(
+  messageType: QakuEvents,
+  callback: SubscriptionCallback<T>,
+  filter?: SubscriptionFilter,
+): Promise<() => void> => {
+  const qaku = await initializeQaku()
+  if (!qaku) return () => {}
+
+  qaku.on(messageType, async (id) => {
+    const qa = await getQnA(id)
+
+    callback(qa.data as T)
+  })
+  return () => {
+    qaku.off(messageType, callback)
   }
 }

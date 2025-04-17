@@ -61,6 +61,7 @@ export const QnaPageLive: React.FC = () => {
 
     const fetchData = async () => {
       try {
+        console.log('fetching data')
         setIsLoading(true)
         await loadQnaData({ qnaId: id, setQuestionsRecord, setAnswersRecord })
         // TODO-vaclav
