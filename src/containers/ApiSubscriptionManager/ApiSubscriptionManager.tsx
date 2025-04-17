@@ -4,18 +4,12 @@ import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
 import { qnasRecordAtom } from '@/../atoms/qna'
 import { questionsRecordAtom } from '@/../atoms/question'
 import { apiConnector } from '@/lib/api/connector'
-import { ApiMessageType } from '@/lib/api/types'
 import { PollType, QnAType } from '@/types/qna.types'
-import {
-  handlePollDeleteInState,
-  handlePollUpdateInState,
-} from '@/utils/poll.utils'
-import {
-  handleQnADeleteInState,
-  handleQnAUpdateInState,
-} from '@/utils/qna.utils'
+import { handlePollUpdateInState } from '@/utils/poll.utils'
+import { handleQnAUpdateInState } from '@/utils/qna.utils'
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { QakuEvents } from 'qakulib'
+import { useEffect, useRef } from 'react'
 
 export const ApiSubscriptionManager = () => {
   const setQnasRecord = useSetAtom(qnasRecordAtom)
@@ -24,11 +18,14 @@ export const ApiSubscriptionManager = () => {
   const setQuestionsRecord = useSetAtom(questionsRecordAtom)
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
+  const cleanupRef = useRef<(() => void) | null>(null)
+
   // Load initial data
   useEffect(() => {
     const loadInitialData = async () => {
       try {
         // Load QnAs first
+        // TODO-vaclav trigger global loading state?
         const qnasResponse = await apiConnector.getQnAs()
         if (qnasResponse.success && qnasResponse.data) {
           setQnasRecord(qnasResponse.data)
@@ -54,57 +51,49 @@ export const ApiSubscriptionManager = () => {
   }, [setQnasRecord, setPollsRecord])
 
   // Set up global subscriptions
+  // TODO-vaclav
+  // In this useEffect subscribe to general events
+  // (qna active state change, qna title change, qna creation, qna deletion,
+  // eventually the same events for polls)
+  // TODO-vaclav-end
   useEffect(() => {
-    const qnaUpdateSub = apiConnector.subscribe<QnAType>(
-      ApiMessageType.QNA_UPDATE_MESSAGE,
-      (qna) => {
-        handleQnAUpdateInState({ qna, setQnasRecord })
-      },
-    )
+    const qnaSub = async () => {
+      const qnaUpdateSub = await apiConnector.subscribe<QnAType>(
+        QakuEvents.QAKU_CONTENT_CHANGED,
+        (id, qna) => {
+          handleQnAUpdateInState({ qna, setQnasRecord })
+        },
+      )
 
-    const qnaDeleteSub = apiConnector.subscribe<{ qnaId: string }>(
-      ApiMessageType.QNA_DELETE_MESSAGE,
-      ({ qnaId }) => {
-        handleQnADeleteInState({
-          qnaId,
-          setQnasRecord,
-          setQuestionsRecord,
-          setAnswersRecord,
-        })
-      },
-    )
+      const pollUpdateSub = await apiConnector.subscribe<PollType>(
+        QakuEvents.NEW_POLL_VOTE,
+        (id, poll) => {
+          handlePollUpdateInState({ poll, setPollsRecord })
+        },
+      )
 
-    const pollUpdateSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_UPDATE_MESSAGE,
-      (poll) => {
-        handlePollUpdateInState({ poll, setPollsRecord })
-      },
-    )
+      const pollCreateSub = await apiConnector.subscribe<PollType>(
+        QakuEvents.NEW_POLL,
+        (id, poll) => {
+          handlePollUpdateInState({ poll, setPollsRecord })
+        },
+      )
 
-    const pollCreateSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_CREATE_MESSAGE,
-      (poll) => {
-        handlePollUpdateInState({ poll, setPollsRecord })
-      },
-    )
+      return () => {
+        qnaUpdateSub()
+        pollUpdateSub()
+        pollCreateSub()
+      }
+    }
 
-    const pollDeleteSub = apiConnector.subscribe<{ pollId: string }>(
-      ApiMessageType.POLL_DELETE_MESSAGE,
-      ({ pollId }) => {
-        handlePollDeleteInState({
-          pollId,
-          setPollsRecord,
-          setPollOptionsRecord,
-        })
-      },
-    )
+    qnaSub().then((cleanup) => {
+      cleanupRef.current = cleanup
+    })
 
     return () => {
-      qnaUpdateSub()
-      qnaDeleteSub()
-      pollUpdateSub()
-      pollCreateSub()
-      pollDeleteSub()
+      if (cleanupRef.current) {
+        cleanupRef.current()
+      }
     }
   }, [
     setQnasRecord,

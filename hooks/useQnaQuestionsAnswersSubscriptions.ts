@@ -1,9 +1,9 @@
 import { apiConnector } from '@/lib/api/connector'
-import { ApiMessageType } from '@/lib/api/types'
-import { AnswerType, QuestionType } from '@/types/qna.types'
+import { QuestionType } from '@/types/qna.types'
 import { loadQnaData } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { QakuEvents } from 'qakulib'
+import { useEffect, useRef } from 'react'
 import { answersRecordAtom } from '../atoms/answer'
 import { questionsRecordAtom } from '../atoms/question'
 
@@ -12,79 +12,66 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: string) => {
   const setQuestionsRecord = useSetAtom(questionsRecordAtom)
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
+  const cleanupRef = useRef<(() => void) | null>(null)
+
   useEffect(() => {
-    if (!qnaId) return
+    console.log(qnaId)
+    if (!qnaId || qnaId == 'undefined') return
 
-    loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
+    const qnaSub = async () => {
+      loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
 
-    const questionSub = apiConnector.subscribe<QuestionType>(
-      ApiMessageType.QUESTION_MESSAGE,
-      (question) => {
-        if (question.qnaId === qnaId) {
-          setQuestionsRecord((prev: Record<string, QuestionType>) => ({
-            ...prev,
-            [question.id]: question,
-          }))
-        }
-      },
-      { qnaId },
-    )
+      const questionSub = await apiConnector.subscribe<
+        Record<string, QuestionType>
+      >(
+        QakuEvents.NEW_QUESTION,
+        (id, data) => {
+          if (qnaId !== id) return
+          setQuestionsRecord(data)
+        },
+        { qnaId },
+      )
 
-    const answerSub = apiConnector.subscribe<AnswerType>(
-      ApiMessageType.ANSWER_MESSAGE,
-      (answer) => {
-        if (answer.qnaId === qnaId) {
-          setAnswersRecord((prev: Record<string, AnswerType>) => ({
-            ...prev,
-            [answer.id]: answer,
-          }))
-        }
-      },
-      { qnaId },
-    )
-
-    const upvoteSub = apiConnector.subscribe<QuestionType | AnswerType>(
-      ApiMessageType.UPVOTE_MESSAGE,
-      (data) => {
-        if ('questionId' in data) {
-          // It's an answer
-          if (data.qnaId === qnaId) {
-            setAnswersRecord((prev: Record<string, AnswerType>) => ({
-              ...prev,
-              [data.id]: data as AnswerType,
-            }))
+      const answerSub = await apiConnector.subscribe<
+        Record<string, QuestionType>
+      >(
+        QakuEvents.NEW_ANSWER,
+        (id, data) => {
+          if (id === qnaId) {
+            if (qnaId !== id) return
+            setQuestionsRecord(data)
           }
-        } else {
-          // It's a question
-          if (data.qnaId === qnaId) {
-            setQuestionsRecord((prev: Record<string, QuestionType>) => ({
-              ...prev,
-              [data.id]: data as QuestionType,
-            }))
+        },
+        { qnaId },
+      )
+
+      const upvoteSub = await apiConnector.subscribe<
+        Record<string, QuestionType>
+      >(
+        QakuEvents.NEW_UPVOTE,
+        (id, data) => {
+          if (id === qnaId) {
+            if (qnaId !== id) return
+            setQuestionsRecord(data)
           }
-        }
-      },
-      { qnaId },
-    )
+        },
+        { qnaId },
+      )
 
-    const answeredSub = apiConnector.subscribe<QuestionType>(
-      ApiMessageType.ANSWERED_MESSAGE,
-      (question) => {
-        if (question.qnaId === qnaId) {
-          setQuestionsRecord((prev: Record<string, QuestionType>) => ({
-            ...prev,
-            [question.id]: question,
-          }))
-        }
-      },
-      { qnaId },
-    )
+      return async () => {
+        questionSub()
+        answerSub()
+        upvoteSub()
+      }
+    }
 
+    qnaSub().then((cleanup) => {
+      cleanupRef.current = cleanup
+    })
     return () => {
-      questionSub()
-      answerSub()
-      upvoteSub()
-      answeredSub()
+      if (cleanupRef.current) {
+        cleanupRef.current()
+      }
     }
   }, [qnaId, setQuestionsRecord, setAnswersRecord])
 }

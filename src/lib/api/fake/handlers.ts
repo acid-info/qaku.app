@@ -55,7 +55,7 @@ initializeStore()
 // Enhanced subscriber type with filter
 type Subscriber = {
   messageType: ApiMessageType
-  callback: (data: any) => void
+  callback: (id: string, data: any) => void
   id: string
   filter?: SubscriptionFilter
 }
@@ -106,7 +106,7 @@ const notifySubscribers = (messageType: ApiMessageType, data: any) => {
 
       return true
     })
-    .forEach((sub) => sub.callback(data))
+    .forEach((sub) => sub.callback(data.id, data))
 }
 
 // Question-related functions
