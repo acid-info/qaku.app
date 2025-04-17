@@ -2,7 +2,7 @@ import { QnAType, QuestionType } from '@/types/qna.types'
 import { wakuPeerExchangeDiscovery } from '@waku/discovery'
 import { IWaku, LightNode, Protocols, createLightNode } from '@waku/sdk'
 import { derivePubsubTopicsFromNetworkConfig } from '@waku/utils'
-import { Qaku, QakuState } from 'qakulib'
+import { HistoryTypes, Qaku, QakuState } from 'qakulib'
 import { ApiResponse } from '../types'
 
 const bootstrapNodes: string[] = [
@@ -96,7 +96,9 @@ export const getQnAs = async (): Promise<
   try {
     const qas = qaku.history.getAll()
     const result = {} as Record<string, QnAType>
+
     for (const qa of qas) {
+      if (qa.id == 'undefined') continue
       result[qa.id] = {
         id: qa.id,
         description: qa.description,
@@ -109,6 +111,10 @@ export const getQnAs = async (): Promise<
         admins: [],
         hash: qa.id,
         title: qa.title!,
+      }
+
+      if (qa.type == HistoryTypes.CREATED || qa.type == HistoryTypes.ADMIN) {
+        qaku.initQA(qa.id, qa.password)
       }
     }
     return { success: true, data: result }
@@ -185,6 +191,30 @@ export const getQuestionsByQnaId = async (
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const addQnA = async (
+  qnaData: Omit<QnAType, 'id' | 'questionsIds'>,
+): Promise<ApiResponse<QnAType>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+  try {
+    const id = await qaku.newQA(
+      qnaData.title,
+      qnaData.description,
+      qnaData.isActive,
+      qnaData.admins || [],
+      true,
+      undefined,
+    )
+    return { success: true, data: { ...qnaData, id, questionsIds: [] } }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to create Q&A',
     }
   }
 }
