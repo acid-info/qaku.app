@@ -16,18 +16,26 @@ export type QnAWidgetProps = {
   hasPlusButton?: boolean
   onPlusClick?: () => void
   onQnAClick?: (qnaId: string) => void
-  onPollClick?: (pollId: string) => void
+  onPollClick?: (qnaId: string, pollId: string) => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 const INITIAL_VISIBLE_POLLS = 2
 
 const PollsList: React.FC<{
+  qnaId: string
   polls: PollType[]
   activeItemId?: string
-  onPollClick?: (id: string) => void
+  onPollClick?: (qnaId: string, id: string) => void
   showPlusButton?: boolean
   onPlusClick?: () => void
-}> = ({ polls, activeItemId, onPollClick, showPlusButton, onPlusClick }) => (
+}> = ({
+  qnaId,
+  polls,
+  activeItemId,
+  onPollClick,
+  showPlusButton,
+  onPlusClick,
+}) => (
   <>
     {polls.map((poll) => (
       <QnAWidgetItem
@@ -35,7 +43,7 @@ const PollsList: React.FC<{
         title={poll.title}
         variant="text"
         isActive={activeItemId === poll.id}
-        onClick={() => onPollClick?.(poll.id)}
+        onClick={() => onPollClick?.(qnaId, poll.id)}
       />
     ))}
     {showPlusButton && <QnAWidgetItem variant="icon" onClick={onPlusClick} />}
@@ -89,6 +97,7 @@ export const QnAWidget: React.FC<QnAWidgetProps> = ({
             <Separator>Polls</Separator>
             <PollsContainer>
               <PollsList
+                qnaId={qnaData.id}
                 polls={visiblePolls}
                 activeItemId={activeItemId}
                 onPollClick={onPollClick}

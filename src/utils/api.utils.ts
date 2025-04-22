@@ -224,14 +224,14 @@ export const addNewQuestion = async ({
 }
 
 export const likeQuestionById = async ({
+  qnaId,
   questionId,
-  userId,
 }: {
+  qnaId: string
   questionId: string
-  userId: string
 }): Promise<ApiResponse<QuestionType>> => {
   try {
-    return await apiConnector.likeQuestion(questionId, userId)
+    return await apiConnector.likeQuestion(qnaId, questionId)
   } catch (error) {
     console.error('Error liking question:', error)
     return {
@@ -281,14 +281,16 @@ export const addNewAnswer = async ({
 }
 
 export const likeAnswerById = async ({
+  qnaId,
+  questionId,
   answerId,
-  userId,
 }: {
+  qnaId: string
+  questionId: string
   answerId: string
-  userId: string
 }): Promise<ApiResponse<AnswerType>> => {
   try {
-    return await apiConnector.likeAnswer(answerId, userId)
+    return await apiConnector.likeAnswer(qnaId, questionId, answerId)
   } catch (error) {
     console.error('Error liking answer:', error)
     return {
@@ -394,9 +396,11 @@ export const endPoll = async (
 
 // Function to load poll options for a specific poll
 export const loadPollOptions = async ({
+  qnaId,
   pollId,
   setPollOptionsRecord,
 }: {
+  qnaId: string
   pollId: string
   setPollOptionsRecord: (
     updater: (
@@ -405,8 +409,12 @@ export const loadPollOptions = async ({
   ) => void
 }): Promise<void> => {
   try {
-    const optionsResponse = await apiConnector.getPollOptionsByPollId(pollId)
+    const optionsResponse = await apiConnector.getPollOptionsByPollId(
+      qnaId,
+      pollId,
+    )
     if (optionsResponse.success && optionsResponse.data) {
+      console.log(optionsResponse.data)
       setPollOptionsRecord((prev) => ({
         ...prev,
         ...optionsResponse.data,

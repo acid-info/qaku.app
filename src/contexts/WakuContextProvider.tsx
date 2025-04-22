@@ -11,6 +11,7 @@ export type QakuInfo = {
   status: string
   connected: boolean
   health: HealthStatus
+  qaku: Qaku | null
 }
 
 export type WakuContextData = {
@@ -75,8 +76,9 @@ export const WakuContextProvider = ({
       status,
       connected,
       health,
+      qaku,
     }),
-    [needsRefresh, status, connected, health],
+    [needsRefresh, status, connected, health, qaku],
   )
 
   return (

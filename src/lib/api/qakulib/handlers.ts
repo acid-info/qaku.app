@@ -1,8 +1,24 @@
-import { QnAType, QuestionType } from '@/types/qna.types'
+import {
+  AnswerType,
+  PollOptionType,
+  PollType,
+  QnAType,
+  QuestionType,
+} from '@/types/qna.types'
 import { wakuPeerExchangeDiscovery } from '@waku/discovery'
 import { IWaku, LightNode, Protocols, createLightNode } from '@waku/sdk'
 import { derivePubsubTopicsFromNetworkConfig } from '@waku/utils'
-import { HistoryTypes, Qaku, QakuEvents, QakuState } from 'qakulib'
+import {
+  EnhancedQuestionMessage,
+  HistoryTypes,
+  LocalPoll,
+  Poll,
+  Qaku,
+  AnswerType as QakuAnswerType,
+  QakuEvents,
+  QakuState,
+  UpvoteType,
+} from 'qakulib'
 import { ApiResponse, SubscriptionCallback, SubscriptionFilter } from '../types'
 
 const bootstrapNodes: string[] = [
@@ -82,7 +98,11 @@ const getOrInitQA = async (id: string, password?: string) => {
   }
 
   const qa = qaku.qas.get(id)
-  if (!qa) await qaku.initQA(id)
+  try {
+    if (!qa) await qaku.initQA(id)
+  } catch (e) {
+    console.error(`failed to initialized QA ${id}`, e)
+  }
 
   return qaku.qas.get(id)
 }
@@ -176,19 +196,115 @@ export const getQuestionsByQnaId = async (
     const result: Record<string, QuestionType> = {}
 
     for (const q of qa.questions.values()) {
-      result[q.hash] = {
-        id: q.hash,
-        author: q.signer || '',
-        content: q.question,
-        isAnswered: q.answered,
-        likesCount: q.upvotes,
-        likers: q.upvoters,
-        qnaId: qnaId,
-        timestamp: new Date(q.timestamp),
+      result[q.hash] = ToQuestionType(qnaId, q)
+    }
+
+    return { success: true, data: result }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const likeQuestion = async (
+  qnaId: string,
+  questionId: string,
+): Promise<ApiResponse<QuestionType>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+
+  try {
+    const result = await qaku.upvote(qnaId, questionId, UpvoteType.QUESTION)
+    if (result) {
+      return { success: true, data: undefined }
+    } else {
+      return { success: false, error: 'Failed to submit new answer' }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const getAnswersByQnaId = async (
+  qnaId: string,
+): Promise<ApiResponse<Record<string, AnswerType>>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+  try {
+    const qa = await getOrInitQA(qnaId)
+    if (!qa)
+      return { success: false, error: `Question with ID ${qnaId} not found` }
+
+    const result: Record<string, AnswerType> = {}
+
+    for (const q of qa.questions.values()) {
+      for (const a of q.answers) {
+        result[a.id] = ToAnswerType(qnaId, a)
       }
     }
 
     return { success: true, data: result }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const addAnswer = async (
+  questionId: string,
+  qnaId: string,
+  content: string,
+  author: string,
+): Promise<ApiResponse<AnswerType>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+
+  try {
+    const result = await qaku.answer(qnaId, questionId, content)
+    if (result) {
+      return { success: true, data: undefined }
+    } else {
+      return { success: false, error: 'Failed to submit new answer' }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const likeAnswer = async (
+  qnaId: string,
+  questionId: string,
+  answerId: string,
+): Promise<ApiResponse<AnswerType>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+
+  try {
+    const result = await qaku.upvote(
+      qnaId,
+      answerId,
+      UpvoteType.ANSWER,
+      questionId,
+    )
+    if (result) {
+      return { success: true, data: undefined }
+    } else {
+      return { success: false, error: 'Failed to submit new answer' }
+    }
   } catch (error) {
     return {
       success: false,
@@ -221,6 +337,133 @@ export const addQnA = async (
   }
 }
 
+//Polls
+
+export const addPoll = async (
+  pollData: Omit<PollType, 'id' | 'optionsIds' | 'correctAnswersIds'>,
+  pollOptions: { title: string; isCorrectAnswer?: boolean }[] = [],
+): Promise<ApiResponse<PollType>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+
+  try {
+    const result = await qaku.newPoll(pollData.qnaId, {
+      title: pollData.title,
+      question: pollData.question,
+      active: pollData.isActive,
+      options: pollOptions,
+      id: '',
+    })
+    if (result) {
+      return { success: true, data: undefined }
+    } else {
+      return { success: false, error: 'Failed to publish a new poll' }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to create a poll',
+    }
+  }
+}
+
+export const getPoll = async (
+  qnaId: string,
+  id: string,
+): Promise<ApiResponse<PollType>> => {
+  try {
+    if (id === undefined || id === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const qaku = await initializeQaku()
+    if (!qaku)
+      return { success: false, error: 'Qakulib not initialized properly' }
+
+    const qa = await getOrInitQA(qnaId)
+    if (!qa)
+      return { success: false, error: `Question with ID ${qnaId} not found` }
+
+    for (const poll of qa.polls) {
+      if (poll.id == id) {
+        return { success: true, data: ToPollType(qnaId, poll) }
+      }
+    }
+
+    return { success: false, error: 'Could not find the poll' }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const getPollsByQnaId = async (
+  qnaId: string,
+): Promise<ApiResponse<Record<string, PollType>>> => {
+  try {
+    if (qnaId === undefined || qnaId === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const qaku = await initializeQaku()
+    if (!qaku)
+      return { success: false, error: 'Qakulib not initialized properly' }
+
+    const qa = await getOrInitQA(qnaId)
+    if (!qa)
+      return { success: false, error: `Question with ID ${qnaId} not found` }
+
+    const result: Record<string, PollType> = {}
+    for (const poll of qa.polls) {
+      result[poll.id] = ToPollType(qnaId, poll)
+    }
+
+    return { success: true, data: result }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export const getPollOptionsByPollId = async (
+  qnaId: string,
+  pollId: string,
+): Promise<ApiResponse<Record<string, PollOptionType>>> => {
+  try {
+    if (qnaId === undefined || qnaId === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const qaku = await initializeQaku()
+    if (!qaku)
+      return { success: false, error: 'Qakulib not initialized properly' }
+
+    const qa = await getOrInitQA(qnaId)
+    if (!qa)
+      return { success: false, error: `Question with ID ${qnaId} not found` }
+
+    for (const poll of qa.polls) {
+      if (poll.id == pollId) {
+        return { success: true, data: ToPollVoteTypeRecord(poll) }
+      }
+    }
+
+    return {
+      success: false,
+      error: 'Poll not found',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
 export const subscribe = async <T>(
   messageType: QakuEvents,
   callback: SubscriptionCallback<T>,
@@ -229,15 +472,39 @@ export const subscribe = async <T>(
   const qaku = await initializeQaku()
   if (!qaku) return () => {}
 
-  qaku.on(messageType, async (id) => {
+  qaku.on(messageType, async (id, data) => {
+    if (messageType == QakuEvents.NEW_QUESTION) {
+      callback(id, ToQuestionType(id, data) as T)
+      return
+    }
+
+    if (messageType == QakuEvents.NEW_ANSWER) {
+      callback(id, ToAnswerType(id, data) as T)
+      return
+    }
+
+    if (messageType == QakuEvents.NEW_UPVOTE) {
+      if ('questionId' in data) {
+        callback(id, ToAnswerType(id, data) as T)
+        return
+      }
+
+      callback(id, ToQuestionType(id, data) as T)
+      return
+    }
+
+    console.log(messageType)
     if (
-      messageType == QakuEvents.NEW_QUESTION ||
-      messageType == QakuEvents.NEW_ANSWER ||
-      messageType == QakuEvents.NEW_UPVOTE
+      messageType == QakuEvents.NEW_POLL ||
+      messageType == QakuEvents.POLL_STATE_CHANGE
     ) {
-      console.log('New question!')
-      const questions = await getQuestionsByQnaId(id)
-      callback(id, questions.data as T)
+      callback(id, ToPollType(id, data) as T)
+      return
+    }
+
+    if (messageType == QakuEvents.NEW_POLL_VOTE) {
+      console.log(data)
+      callback(id, ToPollVoteTypeRecord(data) as T)
       return
     }
 
@@ -247,4 +514,68 @@ export const subscribe = async <T>(
   return () => {
     qaku.off(messageType, callback)
   }
+}
+
+export const ToQuestionType = (
+  qnaId: string,
+  q: EnhancedQuestionMessage,
+): QuestionType => {
+  return {
+    id: q.hash,
+    author: q.signer || '',
+    content: q.content,
+    isAnswered: q.answers.length > 0,
+    likesCount: q.upvotes,
+    likers: q.upvoters,
+    qnaId: qnaId,
+    timestamp: new Date(q.timestamp) || new Date(),
+  }
+}
+
+export const ToAnswerType = (qnaId: string, a: QakuAnswerType): AnswerType => {
+  let ts = new Date(a.timestamp)
+  if (ts.toString() == 'Invalid Date') ts = new Date()
+  return {
+    id: a.id,
+    author: a.author,
+    content: a.content,
+    likesCount: a.likesCount,
+    likers: a.likers,
+    qnaId: qnaId,
+    timestamp: ts,
+    questionId: a.questionId,
+  }
+}
+
+export const ToPollType = (qnaId: string, poll: Poll): PollType => {
+  return {
+    id: poll.id,
+    isActive: poll.active,
+    qnaId: qnaId,
+    title: poll.title || '',
+    question: poll.question,
+    optionsIds: poll.options ? poll.options.map((o, i) => i.toString()) : [],
+    isResultVisible: true,
+    hasCorrectAnswers: false,
+    hasMultipleOptionsSelect: false,
+  }
+}
+
+export const ToPollVoteTypeRecord = (
+  poll: LocalPoll,
+): Record<string, PollOptionType> => {
+  const result: Record<string, PollOptionType> = {}
+  if (!poll.votes) return result
+  for (const v in poll.votes) {
+    console.log(v)
+    const vote = poll.votes[v]
+    result[v.toString()] = {
+      id: v.toString(),
+      pollId: poll.id,
+      title: poll.options[v].title,
+      voteCount: poll.votes[v].voters.length,
+      voters: poll.votes[v].voters,
+    }
+  }
+  return result
 }

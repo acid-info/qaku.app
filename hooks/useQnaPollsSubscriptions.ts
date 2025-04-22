@@ -1,9 +1,9 @@
 import { apiConnector } from '@/lib/api/connector'
-import { ApiMessageType } from '@/lib/api/types'
 import { PollType } from '@/types/qna.types'
 import { loadPollsByQnaId } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { QakuEvents } from 'qakulib'
+import { useEffect, useRef } from 'react'
 import { pollsRecordAtom } from '../atoms/poll'
 import { pollOptionsRecordAtom } from '../atoms/pollOption'
 
@@ -11,41 +11,53 @@ import { pollOptionsRecordAtom } from '../atoms/pollOption'
 export const useQnaPollsSubscriptions = (qnaId: string) => {
   const setPollsRecord = useSetAtom(pollsRecordAtom)
   const setPollOptionsRecord = useSetAtom(pollOptionsRecordAtom)
+  const cleanupRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     if (!qnaId) return
 
-    loadPollsByQnaId({ qnaId, setPollsRecord })
+    const pollSub = async () => {
+      loadPollsByQnaId({ qnaId, setPollsRecord })
 
-    const pollCreateSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_CREATE_MESSAGE,
-      (poll) => {
-        if (poll.qnaId === qnaId) {
-          setPollsRecord((prev: Record<string, PollType>) => ({
-            ...prev,
-            [poll.id]: poll,
-          }))
-        }
-      },
-      { qnaId },
-    )
+      const pollCreateSub = await apiConnector.subscribe<PollType>(
+        QakuEvents.NEW_POLL,
+        (id, poll) => {
+          if (id === qnaId) {
+            setPollsRecord((prev: Record<string, PollType>) => ({
+              ...prev,
+              [poll.id]: poll,
+            }))
+          }
+        },
+        { qnaId },
+      )
 
-    const pollActiveSub = apiConnector.subscribe<PollType>(
-      ApiMessageType.POLL_ACTIVE_MESSAGE,
-      (poll) => {
-        if (poll.qnaId === qnaId) {
-          setPollsRecord((prev: Record<string, PollType>) => ({
-            ...prev,
-            [poll.id]: poll,
-          }))
-        }
-      },
-      { qnaId },
-    )
+      const pollActiveSub = await apiConnector.subscribe<PollType>(
+        QakuEvents.POLL_STATE_CHANGE,
+        (id, poll) => {
+          if (id === qnaId) {
+            setPollsRecord((prev: Record<string, PollType>) => ({
+              ...prev,
+              [poll.id]: poll,
+            }))
+          }
+        },
+        { qnaId },
+      )
 
+      return () => {
+        pollCreateSub()
+        pollActiveSub()
+      }
+    }
+
+    pollSub().then((cleanup) => {
+      cleanupRef.current = cleanup
+    })
     return () => {
-      pollCreateSub()
-      pollActiveSub()
+      if (cleanupRef.current) {
+        cleanupRef.current()
+      }
     }
   }, [qnaId, setPollsRecord, setPollOptionsRecord])
 }

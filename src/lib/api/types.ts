@@ -50,8 +50,8 @@ export interface ApiConnector {
     author: string,
   ) => Promise<ApiResponse<QuestionType>>
   likeQuestion: (
+    qnaId: string,
     questionId: string,
-    userId: string,
   ) => Promise<ApiResponse<QuestionType>>
   toggleQuestionAnswered: (
     questionId: string,
@@ -73,8 +73,9 @@ export interface ApiConnector {
     author: string,
   ) => Promise<ApiResponse<AnswerType>>
   likeAnswer: (
+    qnaId: string,
+    questionId: string,
     answerId: string,
-    userId: string,
   ) => Promise<ApiResponse<AnswerType>>
 
   // QnA methods
@@ -91,7 +92,7 @@ export interface ApiConnector {
 
   // Poll methods
   getPolls: () => Promise<ApiResponse<Record<string, PollType>>>
-  getPoll: (id: string) => Promise<ApiResponse<PollType>>
+  getPoll: (qnaId: string, id: string) => Promise<ApiResponse<PollType>>
   getPollsByQnaId: (
     qnaId: string,
   ) => Promise<ApiResponse<Record<string, PollType>>>
@@ -109,6 +110,7 @@ export interface ApiConnector {
   getPollOptions: () => Promise<ApiResponse<Record<string, PollOptionType>>>
   getPollOption: (id: string) => Promise<ApiResponse<PollOptionType>>
   getPollOptionsByPollId: (
+    qnaId: string,
     pollId: string,
   ) => Promise<ApiResponse<Record<string, PollOptionType>>>
   votePoll: (

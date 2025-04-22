@@ -4,6 +4,7 @@ import {
   walletStateAtom,
 } from '@/../atoms/wallet/walletAtom'
 import { WAGMI_CONNECTORS } from '@/configs/wagmi.config'
+import { useWakuContext } from '@/contexts/WakuContextProvider'
 import {
   WalletConnectionStatusEnum,
   WalletProviderEnum,
@@ -23,6 +24,7 @@ export const useWalletConnection = () => {
   const { disconnect } = useDisconnect()
   const { connect } = useConnect()
   const { data: ensName } = useEnsName({ address })
+  const { qaku } = useWakuContext()
 
   const openWalletPanel = useCallback(() => {
     setIsWalletPanelOpen(true)
@@ -77,7 +79,7 @@ export const useWalletConnection = () => {
   // Update wallet state when connection changes
   useEffect(() => {
     const updateWalletState = async () => {
-      if (isConnected && address) {
+      if (isConnected && address && qaku && qaku.identity) {
         setWalletState({
           status:
             status === 'connected'
@@ -88,7 +90,7 @@ export const useWalletConnection = () => {
           provider: walletState.provider,
           ensName: ensName ?? null,
           userName: ensName ?? address,
-          localAddress: initialWalletState.localAddress,
+          localAddress: qaku.identity.address(),
         })
       } else if (!isConnected) {
         resetWalletState()
@@ -105,6 +107,7 @@ export const useWalletConnection = () => {
     setWalletState,
     resetWalletState,
     walletState.provider,
+    qaku,
   ])
 
   return {

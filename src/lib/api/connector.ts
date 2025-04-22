@@ -7,8 +7,6 @@ import {
 } from '@/types/qna.types'
 import { QakuEvents } from 'qakulib'
 import {
-  addAnswer,
-  addPoll as addPollHandler,
   addQuestion,
   deletePoll as deletePollHandler,
   deleteQnA as deleteQnAHandler,
@@ -16,26 +14,28 @@ import {
   getAnswers,
   getAnswersByQnaId,
   getAnswersByQuestionId,
-  getPoll,
   getPollOption,
   getPollOptions,
-  getPollOptionsByPollId,
   getPolls,
-  getPollsByQnaId,
   getQuestion,
   getQuestions,
-  likeAnswer,
-  likeQuestion,
   toggleQuestionAnswered,
   updatePoll,
   updateQnA,
   votePoll,
 } from './fake/handlers'
 import {
+  addAnswer,
+  addPoll as addPollHandler,
   addQnA,
+  getPoll,
+  getPollOptionsByPollId,
+  getPollsByQnaId,
   getQnA,
   getQnAs,
   getQuestionsByQnaId,
+  likeAnswer,
+  likeQuestion,
   subscribe,
 } from './qakulib/handlers'
 import {
@@ -72,10 +72,10 @@ export const apiConnector: ApiConnector = {
   },
 
   likeQuestion: async (
+    qnaId: string,
     questionId: string,
-    userId: string,
   ): Promise<ApiResponse<QuestionType>> => {
-    return await likeQuestion(questionId, userId)
+    return await likeQuestion(qnaId, questionId)
   },
 
   toggleQuestionAnswered: async (
@@ -115,10 +115,11 @@ export const apiConnector: ApiConnector = {
   },
 
   likeAnswer: async (
+    qnaId: string,
+    questionId: string,
     answerId: string,
-    userId: string,
   ): Promise<ApiResponse<AnswerType>> => {
-    return await likeAnswer(answerId, userId)
+    return await likeAnswer(qnaId, questionId, answerId)
   },
 
   // QnA methods
@@ -152,8 +153,11 @@ export const apiConnector: ApiConnector = {
     return await getPolls()
   },
 
-  getPoll: async (id: string): Promise<ApiResponse<PollType>> => {
-    return await getPoll(id)
+  getPoll: async (
+    qnaId: string,
+    id: string,
+  ): Promise<ApiResponse<PollType>> => {
+    return await getPoll(qnaId, id)
   },
 
   getPollsByQnaId: async (
@@ -192,9 +196,10 @@ export const apiConnector: ApiConnector = {
   },
 
   getPollOptionsByPollId: async (
+    qnaId: string,
     pollId: string,
   ): Promise<ApiResponse<Record<string, PollOptionType>>> => {
-    return await getPollOptionsByPollId(pollId)
+    return await getPollOptionsByPollId(qnaId, pollId)
   },
 
   // Poll voting

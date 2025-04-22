@@ -66,7 +66,7 @@ export const ApiSubscriptionManager = () => {
       )
 
       const pollUpdateSub = await apiConnector.subscribe<PollType>(
-        QakuEvents.NEW_POLL_VOTE,
+        QakuEvents.POLL_STATE_CHANGE,
         (id, poll) => {
           handlePollUpdateInState({ poll, setPollsRecord })
         },

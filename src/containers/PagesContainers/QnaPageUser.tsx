@@ -34,7 +34,7 @@ export const QnaPageUser: React.FC = () => {
         setIsLoading(true)
         const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
         setQna(qnaData)
-        setIsDataFetched(true)
+        //setIsDataFetched(true)
         setIsLoading(false)
       } catch (_) {
         setIsLoading(false)

@@ -1,5 +1,5 @@
 import { apiConnector } from '@/lib/api/connector'
-import { QuestionType } from '@/types/qna.types'
+import { AnswerType, QuestionType } from '@/types/qna.types'
 import { loadQnaData } from '@/utils/api.utils'
 import { useSetAtom } from 'jotai'
 import { QakuEvents } from 'qakulib'
@@ -15,44 +15,56 @@ export const useQnaQuestionsAnswersSubscriptions = (qnaId: string) => {
   const cleanupRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
-    console.log(qnaId)
     if (!qnaId || qnaId == 'undefined') return
 
     const qnaSub = async () => {
       loadQnaData({ qnaId, setQuestionsRecord, setAnswersRecord })
 
-      const questionSub = await apiConnector.subscribe<
-        Record<string, QuestionType>
-      >(
+      const questionSub = await apiConnector.subscribe<QuestionType>(
         QakuEvents.NEW_QUESTION,
         (id, data) => {
-          if (qnaId !== id) return
-          setQuestionsRecord(data)
-        },
-        { qnaId },
-      )
-
-      const answerSub = await apiConnector.subscribe<
-        Record<string, QuestionType>
-      >(
-        QakuEvents.NEW_ANSWER,
-        (id, data) => {
           if (id === qnaId) {
-            if (qnaId !== id) return
-            setQuestionsRecord(data)
+            console.log(data)
+            setQuestionsRecord((prev: Record<string, QuestionType>) => ({
+              ...prev,
+              [data.id]: data,
+            }))
           }
         },
         { qnaId },
       )
 
-      const upvoteSub = await apiConnector.subscribe<
-        Record<string, QuestionType>
-      >(
+      const answerSub = await apiConnector.subscribe<AnswerType>(
+        QakuEvents.NEW_ANSWER,
+        (id, data) => {
+          if (id === qnaId) {
+            if (qnaId !== id) return
+            setAnswersRecord((prev: Record<string, AnswerType>) => ({
+              ...prev,
+              [data.id]: data,
+            }))
+          }
+        },
+        { qnaId },
+      )
+
+      const upvoteSub = await apiConnector.subscribe<QuestionType>(
         QakuEvents.NEW_UPVOTE,
         (id, data) => {
           if (id === qnaId) {
             if (qnaId !== id) return
-            setQuestionsRecord(data)
+            // It's an answer
+            if ('questionId' in data) {
+              setAnswersRecord((prev: Record<string, AnswerType>) => ({
+                ...prev,
+                [data.id]: data as AnswerType,
+              }))
+            } else {
+              setQuestionsRecord((prev: Record<string, QuestionType>) => ({
+                ...prev,
+                [data.id]: data as QuestionType,
+              }))
+            }
           }
         },
         { qnaId },

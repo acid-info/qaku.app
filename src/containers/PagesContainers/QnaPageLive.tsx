@@ -31,7 +31,7 @@ export const QnaPageLive: React.FC = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useAtom(
     isSettingsPanelOpenAtom,
   )
-  const { userName } = useAtomValue(walletStateAtom)
+  const { userName, localAddress } = useAtomValue(walletStateAtom)
 
   const setQuestionsRecord = useSetAtom(questionsRecordAtom)
   const setAnswersRecord = useSetAtom(answersRecordAtom)
@@ -124,7 +124,7 @@ export const QnaPageLive: React.FC = () => {
         status: QnaProgressStatusEnum.InProgress,
         title: qna?.title,
         startDate: qna?.startDate,
-        count: qna?.questionsIds.length,
+        count: qna?.questionsIds?.length,
         id: id.toString(),
         showSettingsButton: true,
         onSettingsClick: () => setIsSettingsPanelOpen(true),
@@ -135,7 +135,7 @@ export const QnaPageLive: React.FC = () => {
       }}
     >
       <SEO />
-      <QnaLive qnaId={id} userId={userName ?? ''} />
+      <QnaLive qnaId={id} userId={localAddress} />
       {qna && (
         <QnaFloatingPanelEdit
           isOpen={isSettingsPanelOpen}
@@ -148,7 +148,7 @@ export const QnaPageLive: React.FC = () => {
         title={qna?.title ?? ''}
         mode={NavbarModeEnum.Qna}
         status={QnaProgressStatusEnum.InProgress}
-        count={qna?.questionsIds.length ?? 0}
+        count={qna?.questionsIds?.length ?? 0}
         id={id.toString()}
         startDate={qna?.startDate ?? new Date()}
         showSettingsButton={true}

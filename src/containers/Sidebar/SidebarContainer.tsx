@@ -64,13 +64,15 @@ export const SidebarContainer: React.FC = () => {
     }
   }
 
-  const handlePollClick = (pollId: string) => {
+  const handlePollClick = (qnaId: string, pollId: string) => {
     setActivePoll(pollId)
     const poll_ = pollsRecord[pollId]
     if (poll_?.isActive) {
-      router.push(POLL.LIVE.replace(':id', String(pollId)))
+      router.push(POLL.LIVE.replace(':id', String(pollId)) + `?qnaId=${qnaId}`)
     } else {
-      router.push(POLL.CREATED.replace(':id', String(pollId)))
+      router.push(
+        POLL.CREATED.replace(':id', String(pollId)) + `?qnaId=${qnaId}`,
+      )
     }
   }
 

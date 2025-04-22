@@ -6575,10 +6575,10 @@ pvutils@^1.1.3:
   resolved "https://registry.yarnpkg.com/pvutils/-/pvutils-1.1.3.tgz#f35fc1d27e7cd3dfbd39c0826d173e806a03f5a3"
   integrity sha512-pMpnA0qRdFp32b1sJl1wOJNxZLQ2cbQx+k6tjNtZ8CpvVhNqEPRgivZ2WOUev2YMajecdH7ctUPDvEe87nariQ==
 
-qakulib@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/qakulib/-/qakulib-0.0.4.tgz#0e4f584dc74b52282825d157080c295b545a5c81"
-  integrity sha512-6/QLQdXk8mIJ3WTjeBcPXKb2OCdy9IsP3PkZ7+gkvFUFFkELEQirREqQuZxulMOrwNlTqgLeGHYquaj4f5+acg==
+qakulib@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/qakulib/-/qakulib-0.0.6.tgz#ac09f1e41708523bd0cc2bf5f7e355adbf9bf73a"
+  integrity sha512-yyELf9WQzbsoBx9mqf2idVLWY1Pl+GLIwTEGKrOUkZEX/g/8VJgnFMw/Po/JtFr+4g8ZmHkfZtFb1yaaafrFYA==
   dependencies:
     "@codex-storage/sdk-js" "^0.0.16"
     "@waku/interfaces" "0.0.29"
