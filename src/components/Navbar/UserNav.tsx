@@ -1,6 +1,6 @@
 import { QakuLogo } from '@/components/Icons/QakuLogo'
 import { breakpoints } from '@/configs/ui.configs'
-import { LANDING } from '@/data/routes'
+import { LANDING, QnA } from '@/data/routes'
 import { NavbarModeEnum, UserNavbarProps } from '@/types/navbar.types'
 import { numberWithCommas } from '@/utils/general.utils'
 import { handleUserViewShare } from '@/utils/navbar.utils'
@@ -52,7 +52,7 @@ const UserNav = ({ mode, title, count, id, onModeChange }: UserNavbarProps) => {
       </TabWrapper>
       <Nav>
         <WalletConnect connectWalletButtonLabel="Connect for identity">
-          <Link href="/qna/create" target="_blank" rel="noopener noreferrer">
+          <Link href={QnA.CREATE} target="_blank" rel="noopener noreferrer">
             <Button icon={<PlusIcon />}>Create Q&A</Button>
           </Link>
           <Button icon={<LinkIcon />} onClick={handleUserViewShare}>
