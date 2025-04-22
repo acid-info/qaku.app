@@ -97,6 +97,14 @@ export const PollCreate: React.FC = () => {
     }
   }
 
+  const handleOptionTitleChange = (optionId: string, title: string) => {
+    setOptions(
+      options.map((option) =>
+        option.id === optionId ? { ...option, title } : option,
+      ),
+    )
+  }
+
   const handleOptionSelect = (optionId: string) => {
     if (!pollSettings.markCorrectAnswer) return
 
@@ -218,6 +226,7 @@ export const PollCreate: React.FC = () => {
               hasCheckbox={pollSettings.markCorrectAnswer}
               selectedOptionIds={correctAnswers}
               onOptionSelect={handleOptionSelect}
+              onOptionTitleChange={handleOptionTitleChange}
             />
             <IconButtonRound
               size="large"

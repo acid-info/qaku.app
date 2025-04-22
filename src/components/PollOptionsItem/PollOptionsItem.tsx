@@ -14,6 +14,7 @@ export type PollOptionsItemProps = {
   hasInput?: boolean
   onCheck: (isChecked: boolean) => void
   onRemove?: () => void
+  onTitleChange?: (title: string) => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
@@ -24,6 +25,7 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
   hasInput = false,
   onCheck,
   onRemove,
+  onTitleChange,
   ...props
 }) => {
   const validPercentage = getValidPercentage(percentage)
@@ -44,7 +46,10 @@ export const PollOptionsItem: React.FC<PollOptionsItemProps> = ({
             />
           )}
           {hasInput ? (
-            <StyledInput defaultValue={title} />
+            <StyledInput
+              value={title}
+              onChange={(e) => onTitleChange?.(e.target.value)}
+            />
           ) : (
             <Title>{title}</Title>
           )}
