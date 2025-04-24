@@ -109,6 +109,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
             await addNewQuestion({
               qnaId,
               content: message,
+              author: name,
             })
             resetForm()
           }}
@@ -119,11 +120,20 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
           <Tab
             variant="secondary"
             options={[
-              { id: FilterThreadEnum.All, label: 'All' },
-              { id: FilterThreadEnum.Popular, label: 'Popular' },
-              { id: FilterThreadEnum.Answered, label: 'Answered' },
+              {
+                id: FilterThreadEnum.All,
+                label: `All (${unansweredQuestions.length})`,
+              },
+              {
+                id: FilterThreadEnum.Popular,
+                label: `Popular (${popularQuestions.length})`,
+              },
+              {
+                id: FilterThreadEnum.Answered,
+                label: `Answered (${answeredQuestions.length})`,
+              },
             ]}
-            itemWidth="100px"
+            itemWidth="150px"
             activeId={activeFilter}
             onChange={handleTabChange}
           />
@@ -176,6 +186,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
             await addNewQuestion({
               qnaId,
               content: message,
+              author: name,
             })
             resetForm()
           }}

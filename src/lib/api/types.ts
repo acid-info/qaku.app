@@ -47,6 +47,7 @@ export interface ApiConnector {
   addQuestion: (
     qnaId: string,
     content: string,
+    author?: string,
   ) => Promise<ApiResponse<QuestionType>>
   likeQuestion: (
     qnaId: string,

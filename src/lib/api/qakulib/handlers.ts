@@ -234,13 +234,14 @@ export const likeQuestion = async (
 export const addQuestion = async (
   qnaId: string,
   content: string,
+  author?: string,
 ): Promise<ApiResponse<QuestionType>> => {
   const qaku = await initializeQaku()
   if (!qaku)
     return { success: false, error: 'Qakulib not initialized properly' }
 
   try {
-    const result = await qaku.newQuestion(qnaId, content)
+    const result = await qaku.newQuestion(qnaId, content, author)
     if (result) {
       return { success: true, data: undefined }
     } else {
@@ -571,9 +572,10 @@ export const ToQuestionType = (
   qnaId: string,
   q: EnhancedQuestionMessage,
 ): QuestionType => {
+  console.log(q.author)
   return {
     id: q.hash,
-    author: q.signer || '',
+    author: q.author || q.signer || '',
     content: q.content,
     isAnswered: q.answers.length > 0,
     likesCount: q.upvotes,

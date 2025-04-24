@@ -66,8 +66,9 @@ export const apiConnector: ApiConnector = {
   addQuestion: async (
     qnaId: string,
     content: string,
+    author?: string,
   ): Promise<ApiResponse<QuestionType>> => {
-    return await addQuestion(qnaId, content)
+    return await addQuestion(qnaId, content, author)
   },
 
   likeQuestion: async (
