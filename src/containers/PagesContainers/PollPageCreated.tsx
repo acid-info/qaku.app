@@ -22,6 +22,7 @@ import { useEffect, useMemo, useState } from 'react'
 export const PollPageCreated: React.FC = () => {
   const router = useRouter()
   const id = String(router.query.id)
+  const qnaId = String(router.query.qnaId)
 
   const [isLoading, setIsLoading] = useState(true)
   const [isDataFetched, setIsDataFetched] = useState(false)
@@ -84,7 +85,7 @@ export const PollPageCreated: React.FC = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true)
-        await loadPollOptions({ pollId: id, setPollOptionsRecord })
+        await loadPollOptions({ qnaId, pollId: id, setPollOptionsRecord })
         setIsDataFetched(true)
         setIsLoading(false)
       } catch (_) {
