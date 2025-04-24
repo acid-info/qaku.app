@@ -109,7 +109,6 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
             await addNewQuestion({
               qnaId,
               content: message,
-              author: isAnonymous ? 'Anonymous' : name || userId,
             })
             resetForm()
           }}
@@ -177,7 +176,6 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
             await addNewQuestion({
               qnaId,
               content: message,
-              author: isAnonymous ? 'Anonymous' : name || userId,
             })
             resetForm()
           }}

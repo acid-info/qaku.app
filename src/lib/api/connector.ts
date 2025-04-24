@@ -7,7 +7,6 @@ import {
 } from '@/types/qna.types'
 import { QakuEvents } from 'qakulib'
 import {
-  addQuestion,
   deletePoll as deletePollHandler,
   deleteQnA as deleteQnAHandler,
   getAnswer,
@@ -27,6 +26,7 @@ import {
   addAnswer,
   addPoll as addPollHandler,
   addQnA,
+  addQuestion,
   getPoll,
   getPollOptionsByPollId,
   getPollsByQnaId,
@@ -66,9 +66,8 @@ export const apiConnector: ApiConnector = {
   addQuestion: async (
     qnaId: string,
     content: string,
-    author: string,
   ): Promise<ApiResponse<QuestionType>> => {
-    return await addQuestion(qnaId, content, author)
+    return await addQuestion(qnaId, content)
   },
 
   likeQuestion: async (

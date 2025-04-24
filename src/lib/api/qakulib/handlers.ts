@@ -231,6 +231,29 @@ export const likeQuestion = async (
   }
 }
 
+export const addQuestion = async (
+  qnaId: string,
+  content: string,
+): Promise<ApiResponse<QuestionType>> => {
+  const qaku = await initializeQaku()
+  if (!qaku)
+    return { success: false, error: 'Qakulib not initialized properly' }
+
+  try {
+    const result = await qaku.newQuestion(qnaId, content)
+    if (result) {
+      return { success: true, data: undefined }
+    } else {
+      return { success: false, error: 'Failed to submit new question' }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 export const getAnswersByQnaId = async (
   qnaId: string,
 ): Promise<ApiResponse<Record<string, AnswerType>>> => {

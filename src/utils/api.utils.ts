@@ -207,14 +207,12 @@ export const loadQnaData = async ({
 export const addNewQuestion = async ({
   qnaId,
   content,
-  author,
 }: {
   qnaId: string
   content: string
-  author: string
 }): Promise<ApiResponse<QuestionType>> => {
   try {
-    return await apiConnector.addQuestion(qnaId, content, author)
+    return await apiConnector.addQuestion(qnaId, content)
   } catch (error) {
     console.error('Error adding question:', error)
     return {
