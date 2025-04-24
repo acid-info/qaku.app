@@ -368,6 +368,35 @@ export const addPoll = async (
   }
 }
 
+export const votePoll = async (
+  qnaId: string,
+  pollId: string,
+  optionId: number,
+): Promise<ApiResponse<PollOptionType[]>> => {
+  try {
+    // Validate inputs
+    if (pollId === undefined || pollId === null) {
+      return { success: false, error: 'Poll ID is required' }
+    }
+
+    const qaku = await initializeQaku()
+    if (!qaku)
+      return { success: false, error: 'Qakulib not initialized properly' }
+
+    const result = await qaku.pollVote(qnaId, pollId, optionId) //fixme
+    if (result) {
+      return { success: true, data: undefined }
+    } else {
+      return { success: false, error: 'Failed to vote on the poll' }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
 export const getPoll = async (
   qnaId: string,
   id: string,
@@ -464,6 +493,7 @@ export const getPollOptionsByPollId = async (
     }
   }
 }
+
 export const subscribe = async <T>(
   messageType: QakuEvents,
   callback: SubscriptionCallback<T>,
@@ -493,7 +523,6 @@ export const subscribe = async <T>(
       return
     }
 
-    console.log(messageType)
     if (
       messageType == QakuEvents.NEW_POLL ||
       messageType == QakuEvents.POLL_STATE_CHANGE
@@ -503,7 +532,6 @@ export const subscribe = async <T>(
     }
 
     if (messageType == QakuEvents.NEW_POLL_VOTE) {
-      console.log(data)
       callback(id, ToPollVoteTypeRecord(data) as T)
       return
     }
@@ -565,16 +593,20 @@ export const ToPollVoteTypeRecord = (
   poll: LocalPoll,
 ): Record<string, PollOptionType> => {
   const result: Record<string, PollOptionType> = {}
-  if (!poll.votes) return result
-  for (const v in poll.votes) {
-    console.log(v)
-    const vote = poll.votes[v]
+  let v: any = 0
+  for (v in poll.options) {
     result[v.toString()] = {
       id: v.toString(),
       pollId: poll.id,
       title: poll.options[v].title,
-      voteCount: poll.votes[v].voters.length,
-      voters: poll.votes[v].voters,
+      voteCount:
+        poll.votes?.length && poll.votes.length > v
+          ? poll.votes[v].voters.length
+          : 0,
+      voters:
+        poll.votes?.length && poll.votes?.length > v
+          ? poll.votes[v].voters
+          : [],
     }
   }
   return result

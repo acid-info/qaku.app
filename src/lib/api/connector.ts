@@ -22,7 +22,6 @@ import {
   toggleQuestionAnswered,
   updatePoll,
   updateQnA,
-  votePoll,
 } from './fake/handlers'
 import {
   addAnswer,
@@ -37,6 +36,7 @@ import {
   likeAnswer,
   likeQuestion,
   subscribe,
+  votePoll,
 } from './qakulib/handlers'
 import {
   ApiConnector,
@@ -204,11 +204,11 @@ export const apiConnector: ApiConnector = {
 
   // Poll voting
   votePoll: async (
+    qnaId: string,
     pollId: string,
-    optionIds: string[],
-    voter: string,
+    optionId: number,
   ): Promise<ApiResponse<PollOptionType[]>> => {
-    return await votePoll(pollId, optionIds, voter)
+    return await votePoll(qnaId, pollId, optionId)
   },
 
   // Enhanced subscribe method with filter support

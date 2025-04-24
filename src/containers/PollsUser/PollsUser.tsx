@@ -22,12 +22,17 @@ import UserVote from './UserVote'
 const BACKUP_POLL_ID = '0'
 
 export type PollsUserProps = {
+  qnaId: string
   qna?: QnAType | null
   pollIds: string[]
 }
 
-export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
-  const { userName } = useAtomValue(walletStateAtom)
+export const PollsUser: React.FC<PollsUserProps> = ({
+  qnaId,
+  qna,
+  pollIds,
+}) => {
+  const { localAddress } = useAtomValue(walletStateAtom)
   const pollsRecord = useAtomValue(pollsRecordAtom)
   const { openWalletPanel, walletState } = useWalletConnection()
   const router = useRouter()
@@ -81,19 +86,18 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
 
   const activePoll = useAtomValue(activePollAtom)
 
-  usePollSubscriptions(activePollId || BACKUP_POLL_ID)
+  usePollSubscriptions(qnaId, activePollId || BACKUP_POLL_ID)
 
   const { optionsWithStats, isUserVoted } = usePollOptions(
     activePollId || BACKUP_POLL_ID,
   )
 
   const userHasVoted = useMemo(() => {
-    return isUserVoted(userName ?? '')
-  }, [isUserVoted, userName])
+    return isUserVoted(localAddress ?? '')
+  }, [isUserVoted, localAddress])
 
   const formattedOptions = useMemo(() => {
     if (!activePollId) return []
-
     const shouldShowCorrectAnswers = Boolean(
       activePoll?.hasCorrectAnswers && userHasVoted,
     )
@@ -121,9 +125,9 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
     try {
       const optionIds = selectedOptionIds
       const response = await voteInPoll({
+        qnaId,
         pollId: activePollId,
-        optionIds,
-        voter: isAnonymous || !userName ? 'Anonymous' : userName,
+        optionId: parseInt(optionIds[0]),
       })
 
       if (response.success) {
@@ -195,7 +199,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
                 handleVote={handleVote}
                 walletState={walletState}
                 openWalletPanel={openWalletPanel}
-                userName={userName || ''}
+                userName={localAddress || ''}
                 isAnonymous={isAnonymous}
                 setIsAnonymous={setIsAnonymous}
               />
@@ -215,7 +219,7 @@ export const PollsUser: React.FC<PollsUserProps> = ({ qna, pollIds }) => {
             handleVote={handleVote}
             walletState={walletState}
             openWalletPanel={openWalletPanel}
-            userName={userName || ''}
+            userName={localAddress || ''}
             isAnonymous={isAnonymous}
             setIsAnonymous={setIsAnonymous}
           />

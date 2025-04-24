@@ -1,18 +1,19 @@
 import { pollIdsByQnaIdAtom } from '@/../atoms/poll'
-import { qnasRecordAtom } from '@/../atoms/qna'
+import { getQnaByIdAtom, qnasRecordAtom } from '@/../atoms/qna'
 import { useQnaPollsSubscriptions } from '@/../hooks/useQnaPollsSubscriptions'
 import { SEO } from '@/components/SEO'
 import { PollsUser } from '@/containers/PollsUser'
 import { UserLayoutContainer } from '@/containers/UserLayout'
 import { NOT_FOUND } from '@/data/routes'
 import { NavbarModeEnum } from '@/types/navbar.types'
-import { QnAType } from '@/types/qna.types'
 import { loadAndGetQna } from '@/utils/api.utils'
 import { handleUserModeChange } from '@/utils/navbar.utils'
 import styled from '@emotion/styled'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
+import { useQnaQuestionsAnswersSubscriptions } from '../../../hooks'
+import { useQaku } from '../../../hooks/useQaku'
 
 const EmptyState = () => (
   <NoContentMessage>
@@ -27,30 +28,37 @@ export const PollsPageUser: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [isDataFetched, setIsDataFetched] = useState(false)
-  const [qna, setQna] = useState<QnAType | null>(null)
+  const { connected } = useQaku()
+
+  const qnaAtom = useMemo(() => {
+    if (!id || !connected) return atom(null)
+    return getQnaByIdAtom(id)
+  }, [id, connected])
 
   useQnaPollsSubscriptions(id)
+  useQnaQuestionsAnswersSubscriptions(id)
 
   const pollIdsAtom = useMemo(() => pollIdsByQnaIdAtom(id), [id])
   const pollIds = useAtomValue(pollIdsAtom)
+  const qna = useAtomValue(qnaAtom)
 
   useEffect(() => {
-    if (!router.isReady) return
+    if (!router.isReady || !connected) return
 
     const fetchData = async () => {
       try {
         setIsLoading(true)
-        const qnaData = await loadAndGetQna({ qnaId: id, setQnasRecord })
-        setQna(qnaData)
-        setIsDataFetched(true)
+        await loadAndGetQna({ qnaId: id, setQnasRecord })
+        //setIsDataFetched(true)
         setIsLoading(false)
-      } catch (_) {
+      } catch (e) {
+        console.error(e)
         setIsLoading(false)
       }
     }
 
     fetchData()
-  }, [router.isReady, id, setQnasRecord])
+  }, [router.isReady, id, setQnasRecord, connected])
 
   useEffect(() => {
     if (!router.isReady || id == null) return
@@ -76,7 +84,7 @@ export const PollsPageUser: React.FC = () => {
       }}
     >
       <SEO />
-      <PollsUser qna={qna} pollIds={pollIds} />
+      {<PollsUser qna={qna} qnaId={id} pollIds={pollIds} />}
       {pollIds.length === 0 && <EmptyState />}
     </UserLayoutContainer>
   )

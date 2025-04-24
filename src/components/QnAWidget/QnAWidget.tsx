@@ -40,7 +40,7 @@ const PollsList: React.FC<{
     {polls.map((poll) => (
       <QnAWidgetItem
         key={poll.id}
-        title={poll.title}
+        title={poll.title || poll.question}
         variant="text"
         isActive={activeItemId === poll.id}
         onClick={() => onPollClick?.(qnaId, poll.id)}

@@ -3,6 +3,7 @@ import { pollsRecordAtom } from '@/../atoms/poll'
 import { pollOptionsRecordAtom } from '@/../atoms/pollOption'
 import { qnasRecordAtom } from '@/../atoms/qna'
 import { questionsRecordAtom } from '@/../atoms/question'
+import { useWakuContext } from '@/contexts/WakuContextProvider'
 import { apiConnector } from '@/lib/api/connector'
 import { PollType, QnAType } from '@/types/qna.types'
 import { handlePollUpdateInState } from '@/utils/poll.utils'
@@ -18,6 +19,8 @@ export const ApiSubscriptionManager = () => {
   const setQuestionsRecord = useSetAtom(questionsRecordAtom)
   const setAnswersRecord = useSetAtom(answersRecordAtom)
 
+  const { connected } = useWakuContext()
+
   const cleanupRef = useRef<(() => void) | null>(null)
 
   // Load initial data
@@ -29,11 +32,23 @@ export const ApiSubscriptionManager = () => {
         const qnasResponse = await apiConnector.getQnAs()
         if (qnasResponse.success && qnasResponse.data) {
           setQnasRecord(qnasResponse.data)
+          const promises = []
+          for (const qaId in qnasResponse.data) {
+            apiConnector.getPollsByQnaId(qaId).then((resp) => {
+              console.log(resp)
+              if (resp.success)
+                setPollsRecord((prev: Record<string, PollType>) => ({
+                  ...prev,
+                  ...resp.data,
+                }))
+            })
+          }
         } else if (!qnasResponse.success) {
           console.error('Error loading QnAs:', qnasResponse.error)
           return
         }
 
+        /*
         // Load polls
         const pollsResponse = await apiConnector.getPolls()
         if (pollsResponse.success && pollsResponse.data) {
@@ -41,14 +56,14 @@ export const ApiSubscriptionManager = () => {
         } else if (!pollsResponse.success) {
           console.error('Error loading polls:', pollsResponse.error)
           return
-        }
+        }*/
       } catch (err) {
         console.error('Error loading initial data:', err)
       }
     }
 
     loadInitialData()
-  }, [setQnasRecord, setPollsRecord])
+  }, [setQnasRecord, setPollsRecord, connected])
 
   // Set up global subscriptions
   // TODO-vaclav
