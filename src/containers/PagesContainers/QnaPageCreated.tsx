@@ -97,7 +97,7 @@ export const QnaPageCreated: React.FC = () => {
         title: qna?.title,
         startDate: qna?.startDate,
         endDate: qna?.endDate,
-        count: qna?.questionsIds.length,
+        count: qna?.questionsIds?.length,
         id: id.toString(),
         showShareButton: true,
         onShareClick: handleShareClick,
@@ -113,7 +113,7 @@ export const QnaPageCreated: React.FC = () => {
         status={
           (qna && getQnaProgressStatus(qna)) || QnaProgressStatusEnum.Ended
         }
-        count={qna?.questionsIds.length ?? 0}
+        count={qna?.questionsIds?.length ?? 0}
         id={id.toString()}
         startDate={qna?.startDate ?? new Date()}
         endDate={qna?.endDate}

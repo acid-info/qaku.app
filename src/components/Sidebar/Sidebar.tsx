@@ -23,7 +23,7 @@ export type SidebarProps = {
   expandedQnAIds: Set<string>
   onFilterChange: (filter: QnAFilterTypeEnum) => void
   onQnAClick: (qnaId: string) => void
-  onPollClick: (pollId: string) => void
+  onPollClick: (qnaId: string, pollId: string) => void
   onHeaderClick: (qnaId: string) => void
   onSearch?: (query: string) => void
   onStatusFilterChange?: (value: string | number) => void

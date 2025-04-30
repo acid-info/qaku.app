@@ -45,7 +45,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
   const [activeFilter, setActiveFilter] = useState<FilterThreadEnum>(
     FilterThreadEnum.All,
   )
-  const { status, userName } = useAtomValue(walletStateAtom)
+  const { status, userName, localAddress } = useAtomValue(walletStateAtom)
 
   const {
     questions: allQuestions,
@@ -72,16 +72,16 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
 
   const threads = useMemo(() => {
     return filteredQuestions.map((question) =>
-      mapQuestionToThread(question, userId),
+      mapQuestionToThread(question, localAddress),
     )
-  }, [filteredQuestions, userId])
+  }, [filteredQuestions, localAddress])
 
   const handleQuestionLike = async (questionId: string) => {
-    await likeQuestionById({ questionId, userId })
+    await likeQuestionById({ qnaId, questionId })
   }
 
-  const handleResponseLike = async (answerId: string) => {
-    await likeAnswerById({ answerId, userId })
+  const handleResponseLike = async (questionId: string, answerId: string) => {
+    await likeAnswerById({ qnaId, questionId, answerId })
   }
 
   const handleReply = async (
@@ -109,7 +109,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
             await addNewQuestion({
               qnaId,
               content: message,
-              author: isAnonymous ? 'Anonymous' : name || userId,
+              author: name,
             })
             resetForm()
           }}
@@ -120,11 +120,20 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
           <Tab
             variant="secondary"
             options={[
-              { id: FilterThreadEnum.All, label: 'All' },
-              { id: FilterThreadEnum.Popular, label: 'Popular' },
-              { id: FilterThreadEnum.Answered, label: 'Answered' },
+              {
+                id: FilterThreadEnum.All,
+                label: `All (${unansweredQuestions.length})`,
+              },
+              {
+                id: FilterThreadEnum.Popular,
+                label: `Popular (${popularQuestions.length})`,
+              },
+              {
+                id: FilterThreadEnum.Answered,
+                label: `Answered (${answeredQuestions.length})`,
+              },
             ]}
-            itemWidth="100px"
+            itemWidth="150px"
             activeId={activeFilter}
             onChange={handleTabChange}
           />
@@ -142,7 +151,9 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
                 onQuestionLikeClick={() =>
                   handleQuestionLike(thread.info.questionId)
                 }
-                onResponseLikeClick={(answerId) => handleResponseLike(answerId)}
+                onResponseLikeClick={(answerId) =>
+                  handleResponseLike(thread.info.questionId, answerId)
+                }
                 onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
                   handleReply(thread.info.questionId, {
                     message,
@@ -175,7 +186,7 @@ export const QnaUser: React.FC<QnaUserProps> = ({ qna, qnaId, userId }) => {
             await addNewQuestion({
               qnaId,
               content: message,
-              author: isAnonymous ? 'Anonymous' : name || userId,
+              author: name,
             })
             resetForm()
           }}

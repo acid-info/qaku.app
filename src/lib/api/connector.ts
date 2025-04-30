@@ -5,39 +5,41 @@ import {
   QnAType,
   QuestionType,
 } from '@/types/qna.types'
+import { QakuEvents } from 'qakulib'
+import {
+  deletePoll as deletePollHandler,
+  deleteQnA as deleteQnAHandler,
+  getAnswer,
+  getAnswers,
+  getAnswersByQnaId,
+  getAnswersByQuestionId,
+  getPollOption,
+  getPollOptions,
+  getPolls,
+  getQuestion,
+  getQuestions,
+  toggleQuestionAnswered,
+  updatePoll,
+  updateQnA,
+} from './fake/handlers'
 import {
   addAnswer,
   addPoll as addPollHandler,
   addQnA,
   addQuestion,
-  deletePoll as deletePollHandler,
-  deleteQnA as deleteQnAHandler,
-  subscribe as fakeSubscribe,
-  getAnswer,
-  getAnswers,
-  getAnswersByQnaId,
-  getAnswersByQuestionId,
   getPoll,
-  getPollOption,
-  getPollOptions,
   getPollOptionsByPollId,
-  getPolls,
   getPollsByQnaId,
   getQnA,
   getQnAs,
-  getQuestion,
-  getQuestions,
   getQuestionsByQnaId,
   likeAnswer,
   likeQuestion,
-  toggleQuestionAnswered,
-  updatePoll,
-  updateQnA,
+  subscribe,
   votePoll,
-} from './fake/handlers'
+} from './qakulib/handlers'
 import {
   ApiConnector,
-  ApiMessageType,
   ApiResponse,
   SubscriptionCallback,
   SubscriptionFilter,
@@ -64,16 +66,16 @@ export const apiConnector: ApiConnector = {
   addQuestion: async (
     qnaId: string,
     content: string,
-    author: string,
+    author?: string,
   ): Promise<ApiResponse<QuestionType>> => {
     return await addQuestion(qnaId, content, author)
   },
 
   likeQuestion: async (
+    qnaId: string,
     questionId: string,
-    userId: string,
   ): Promise<ApiResponse<QuestionType>> => {
-    return await likeQuestion(questionId, userId)
+    return await likeQuestion(qnaId, questionId)
   },
 
   toggleQuestionAnswered: async (
@@ -113,10 +115,11 @@ export const apiConnector: ApiConnector = {
   },
 
   likeAnswer: async (
+    qnaId: string,
+    questionId: string,
     answerId: string,
-    userId: string,
   ): Promise<ApiResponse<AnswerType>> => {
-    return await likeAnswer(answerId, userId)
+    return await likeAnswer(qnaId, questionId, answerId)
   },
 
   // QnA methods
@@ -150,8 +153,11 @@ export const apiConnector: ApiConnector = {
     return await getPolls()
   },
 
-  getPoll: async (id: string): Promise<ApiResponse<PollType>> => {
-    return await getPoll(id)
+  getPoll: async (
+    qnaId: string,
+    id: string,
+  ): Promise<ApiResponse<PollType>> => {
+    return await getPoll(qnaId, id)
   },
 
   getPollsByQnaId: async (
@@ -190,26 +196,27 @@ export const apiConnector: ApiConnector = {
   },
 
   getPollOptionsByPollId: async (
+    qnaId: string,
     pollId: string,
   ): Promise<ApiResponse<Record<string, PollOptionType>>> => {
-    return await getPollOptionsByPollId(pollId)
+    return await getPollOptionsByPollId(qnaId, pollId)
   },
 
   // Poll voting
   votePoll: async (
+    qnaId: string,
     pollId: string,
-    optionIds: string[],
-    voter: string,
+    optionId: number,
   ): Promise<ApiResponse<PollOptionType[]>> => {
-    return await votePoll(pollId, optionIds, voter)
+    return await votePoll(qnaId, pollId, optionId)
   },
 
   // Enhanced subscribe method with filter support
   subscribe: <T>(
-    messageType: ApiMessageType,
+    messageType: QakuEvents,
     callback: SubscriptionCallback<T>,
     filter?: SubscriptionFilter,
-  ): (() => void) => {
-    return fakeSubscribe(messageType, callback, filter)
+  ): Promise<() => void> => {
+    return subscribe(messageType, callback, filter)
   },
 }

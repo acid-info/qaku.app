@@ -52,6 +52,8 @@ export const MessageForm = ({
     e.preventDefault()
     if (!message.trim()) return
 
+    console.log(name)
+
     onSubmit?.({
       message: message.trim(),
       isAnonymous,

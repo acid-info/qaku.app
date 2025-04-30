@@ -89,11 +89,11 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
   }, [filteredQuestions, userId])
 
   const handleQuestionLike = async (questionId: string) => {
-    await likeQuestionById({ questionId, userId })
+    await likeQuestionById({ qnaId, questionId })
   }
 
-  const handleResponseLike = async (answerId: string) => {
-    await likeAnswerById({ answerId, userId })
+  const handleResponseLike = async (questionId: string, answerId: string) => {
+    await likeAnswerById({ qnaId, questionId, answerId })
   }
 
   const handleReply = async (
@@ -145,7 +145,9 @@ export const QnaLive: React.FC<QnaLiveProps> = ({ qnaId, userId }) => {
                 onQuestionLikeClick={() =>
                   handleQuestionLike(thread.info.questionId)
                 }
-                onResponseLikeClick={(answerId) => handleResponseLike(answerId)}
+                onResponseLikeClick={(answerId) =>
+                  handleResponseLike(thread.info.questionId, answerId)
+                }
                 onReplySubmit={({ message, isAnonymous, resetForm, name }) => {
                   handleReply(thread.info.questionId, {
                     message,

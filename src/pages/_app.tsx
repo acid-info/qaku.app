@@ -1,10 +1,15 @@
+import { Spinner } from '@/components/Spinner/Spinner'
 import { DefaultLayoutContainer } from '@/containers/DefaultLayout'
 import { WagmiContextProvider } from '@/contexts/WagmiContextProvider'
+import { WakuContextProvider } from '@/contexts/WakuContextProvider'
 import { css, Global } from '@emotion/react'
+import { useAtom } from 'jotai'
 import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
+import { loadingAtom } from '../../atoms/loading/loadingAtom'
 import '../styles/globals.css'
 
 type NextLayoutComponentType<P = {}> = NextComponentType<
@@ -47,6 +52,11 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
     }
   }, [])
 
+  const router = useRouter()
+  const id = String(router.query.id)
+  // TODO-vaclav we use the loading atom here
+  const [loadingState] = useAtom(loadingAtom)
+
   return (
     <>
       <Head>
@@ -73,9 +83,22 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
           }
         `}
       />
-      <WagmiContextProvider>
-        {getLayout(<Component {...pageProps} />)}
-      </WagmiContextProvider>
+      {/* TODO-vaclav remove WakuContextProvider? */}
+      <WakuContextProvider
+        password=""
+        qaId={id}
+        updateStatus={(s) => {
+          console.log(s)
+        }}
+      >
+        <WagmiContextProvider>
+          {/* TODO-vaclav we display the loading spinner component conditionally here */}
+          {loadingState.isLoading && (
+            <Spinner fullScreen message={loadingState.message} />
+          )}
+          {getLayout(<Component {...pageProps} />)}
+        </WagmiContextProvider>
+      </WakuContextProvider>
     </>
   )
 }

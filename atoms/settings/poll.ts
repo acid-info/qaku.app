@@ -8,7 +8,7 @@ export const defaultPollSettings: PollSettingsInterface = {
   multipleOptions: false,
   markCorrectAnswer: false,
   resultVisibility: ResultVisibilityEnum.Visible,
-  title: 'New poll',
+  title: '',
   showDescription: false,
   description: '',
 }

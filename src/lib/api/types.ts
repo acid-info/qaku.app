@@ -5,6 +5,7 @@ import {
   QnAType,
   QuestionType,
 } from '@/types/qna.types'
+import { QakuEvents } from 'qakulib'
 
 export enum ApiMessageType {
   QUESTION_MESSAGE = 'question_msg',
@@ -27,7 +28,7 @@ export interface ApiResponse<T> {
 }
 
 export interface SubscriptionCallback<T> {
-  (data: T): void
+  (id: string, data: T): void
 }
 
 export interface SubscriptionFilter {
@@ -46,11 +47,11 @@ export interface ApiConnector {
   addQuestion: (
     qnaId: string,
     content: string,
-    author: string,
+    author?: string,
   ) => Promise<ApiResponse<QuestionType>>
   likeQuestion: (
+    qnaId: string,
     questionId: string,
-    userId: string,
   ) => Promise<ApiResponse<QuestionType>>
   toggleQuestionAnswered: (
     questionId: string,
@@ -72,8 +73,9 @@ export interface ApiConnector {
     author: string,
   ) => Promise<ApiResponse<AnswerType>>
   likeAnswer: (
+    qnaId: string,
+    questionId: string,
     answerId: string,
-    userId: string,
   ) => Promise<ApiResponse<AnswerType>>
 
   // QnA methods
@@ -90,7 +92,7 @@ export interface ApiConnector {
 
   // Poll methods
   getPolls: () => Promise<ApiResponse<Record<string, PollType>>>
-  getPoll: (id: string) => Promise<ApiResponse<PollType>>
+  getPoll: (qnaId: string, id: string) => Promise<ApiResponse<PollType>>
   getPollsByQnaId: (
     qnaId: string,
   ) => Promise<ApiResponse<Record<string, PollType>>>
@@ -108,18 +110,19 @@ export interface ApiConnector {
   getPollOptions: () => Promise<ApiResponse<Record<string, PollOptionType>>>
   getPollOption: (id: string) => Promise<ApiResponse<PollOptionType>>
   getPollOptionsByPollId: (
+    qnaId: string,
     pollId: string,
   ) => Promise<ApiResponse<Record<string, PollOptionType>>>
   votePoll: (
+    qnaId: string,
     pollId: string,
-    optionIds: string[],
-    voter: string,
+    optionId: number,
   ) => Promise<ApiResponse<PollOptionType[]>>
 
   // Subscription methods
   subscribe: <T>(
-    messageType: ApiMessageType,
+    messageType: QakuEvents,
     callback: SubscriptionCallback<T>,
     filter?: SubscriptionFilter,
-  ) => () => void
+  ) => Promise<() => void>
 }

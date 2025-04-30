@@ -36,6 +36,7 @@ export const loadAndGetQna = async ({
 }): Promise<QnAType | null> => {
   try {
     const qnaResponse = await apiConnector.getQnA(qnaId)
+
     if (qnaResponse.success && qnaResponse.data) {
       const qnaData = qnaResponse.data
       setQnasRecord((prev) => ({
@@ -210,9 +211,10 @@ export const addNewQuestion = async ({
 }: {
   qnaId: string
   content: string
-  author: string
+  author?: string
 }): Promise<ApiResponse<QuestionType>> => {
   try {
+    console.log(author)
     return await apiConnector.addQuestion(qnaId, content, author)
   } catch (error) {
     console.error('Error adding question:', error)
@@ -224,14 +226,14 @@ export const addNewQuestion = async ({
 }
 
 export const likeQuestionById = async ({
+  qnaId,
   questionId,
-  userId,
 }: {
+  qnaId: string
   questionId: string
-  userId: string
 }): Promise<ApiResponse<QuestionType>> => {
   try {
-    return await apiConnector.likeQuestion(questionId, userId)
+    return await apiConnector.likeQuestion(qnaId, questionId)
   } catch (error) {
     console.error('Error liking question:', error)
     return {
@@ -281,14 +283,16 @@ export const addNewAnswer = async ({
 }
 
 export const likeAnswerById = async ({
+  qnaId,
+  questionId,
   answerId,
-  userId,
 }: {
+  qnaId: string
+  questionId: string
   answerId: string
-  userId: string
 }): Promise<ApiResponse<AnswerType>> => {
   try {
-    return await apiConnector.likeAnswer(answerId, userId)
+    return await apiConnector.likeAnswer(qnaId, questionId, answerId)
   } catch (error) {
     console.error('Error liking answer:', error)
     return {
@@ -345,16 +349,16 @@ export const updatePoll = async (
 }
 
 export const voteInPoll = async ({
+  qnaId,
   pollId,
-  optionIds,
-  voter,
+  optionId,
 }: {
+  qnaId: string
   pollId: string
-  optionIds: string[]
-  voter: string
+  optionId: number
 }): Promise<ApiResponse<PollOptionType[]>> => {
   try {
-    return await apiConnector.votePoll(pollId, optionIds, voter)
+    return await apiConnector.votePoll(qnaId, pollId, optionId)
   } catch (error) {
     console.error('Error voting in poll:', error)
     return {
@@ -394,9 +398,11 @@ export const endPoll = async (
 
 // Function to load poll options for a specific poll
 export const loadPollOptions = async ({
+  qnaId,
   pollId,
   setPollOptionsRecord,
 }: {
+  qnaId: string
   pollId: string
   setPollOptionsRecord: (
     updater: (
@@ -405,7 +411,10 @@ export const loadPollOptions = async ({
   ) => void
 }): Promise<void> => {
   try {
-    const optionsResponse = await apiConnector.getPollOptionsByPollId(pollId)
+    const optionsResponse = await apiConnector.getPollOptionsByPollId(
+      qnaId,
+      pollId,
+    )
     if (optionsResponse.success && optionsResponse.data) {
       setPollOptionsRecord((prev) => ({
         ...prev,

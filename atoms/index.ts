@@ -1,4 +1,5 @@
 export * from './answer'
+export * from './loading'
 export * from './poll'
 export * from './pollOption'
 export * from './qna'

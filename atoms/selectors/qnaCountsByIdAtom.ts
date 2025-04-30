@@ -5,6 +5,11 @@ import { answersRecordAtom } from '../answer/answersRecordAtom'
 import { getQnaByIdAtom } from '../qna/getQnaByIdAtom'
 import { getQuestionByIdAtom } from '../question/getQuestionByIdAtom'
 
+// TODO-vaclav
+// needs to be refactored c.f. qna.types.ts -> questionsIds
+// we will already have the questions count but we will need
+// total contributions counts (questions + answers) & (unique) named authors count
+// TODO-vaclav-end
 export const qnaCountsByIdAtom = (id: string) =>
   atom((get) => {
     const qna = get(getQnaByIdAtom(id))
