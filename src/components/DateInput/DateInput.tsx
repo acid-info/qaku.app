@@ -1,6 +1,6 @@
 import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import styled from '@emotion/styled'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { IconButtonRound } from '../IconButtonRound'
 import { CalendarIcon } from '../Icons/CalendarIcon'
 import { ChevronLeftIcon } from '../Icons/ChevronLeftIcon'
@@ -29,6 +29,17 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   useOnClickOutside(calendarRef, () => setIsOpen(false), isOpen)
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isOpen && (event.key === 'Escape' || event.key === 'Enter')) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
+
   const handleDateSelect = (date: Date) => {
     const newDate = new Date(
       date.getFullYear(),
@@ -39,7 +50,6 @@ export const DateInput: React.FC<DateInputProps> = ({
     )
     setSelectedDate(newDate)
     setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1))
-    setIsOpen(false)
     if (onChange) {
       onChange(newDate)
     }
