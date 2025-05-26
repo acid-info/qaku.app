@@ -5,6 +5,7 @@ import { IconButtonRound } from '../IconButtonRound'
 import { CalendarIcon } from '../Icons/CalendarIcon'
 import { ChevronLeftIcon } from '../Icons/ChevronLeftIcon'
 import { ChevronRightIcon } from '../Icons/ChevronRightIcon'
+import { TimeInput } from './TimeInput'
 
 export interface DateInputProps {
   value?: Date
@@ -22,26 +23,58 @@ export const DateInput: React.FC<DateInputProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value)
   const [currentMonth, setCurrentMonth] = useState(() => value || new Date())
+  const [hours, setHours] = useState(() => value?.getHours() ?? 0)
+  const [minutes, setMinutes] = useState(() => value?.getMinutes() ?? 0)
   const calendarRef = useRef<HTMLDivElement>(null)
 
   useOnClickOutside(calendarRef, () => setIsOpen(false), isOpen)
 
   const handleDateSelect = (date: Date) => {
-    setSelectedDate(date)
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hours,
+      minutes,
+    )
+    setSelectedDate(newDate)
     setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1))
     setIsOpen(false)
     if (onChange) {
-      onChange(date)
+      onChange(newDate)
+    }
+  }
+
+  const handleTimeChange = (newHours: number, newMinutes: number) => {
+    setHours(newHours)
+    setMinutes(newMinutes)
+    if (selectedDate) {
+      const newDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        newHours,
+        newMinutes,
+      )
+      setSelectedDate(newDate)
+      if (onChange) {
+        onChange(newDate)
+      }
     }
   }
 
   const formatDate = (date?: Date): string => {
     if (!date) return ''
-    return date.toLocaleDateString('en-US', {
+    const dateStr = date.toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
     })
+    const timeStr = `${date.getHours().toString().padStart(2, '0')}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`
+    return `${dateStr}, ${timeStr}`
   }
 
   const prevMonth = () => {
@@ -149,6 +182,11 @@ export const DateInput: React.FC<DateInputProps> = ({
           {renderCalendarHeader()}
           {renderDaysOfWeek()}
           {renderCalendarDays()}
+          <TimeInput
+            hours={hours}
+            minutes={minutes}
+            onChange={handleTimeChange}
+          />
         </CalendarContainer>
       )}
     </DateInputWrapper>
