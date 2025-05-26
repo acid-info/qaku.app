@@ -50,6 +50,9 @@ const Container = styled.div<{ $gap: number }>`
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .scrollable {
     overflow-x: auto;
 
     scrollbar-width: none;

@@ -68,7 +68,7 @@ export const DefaultNavMobileBottomPanel = ({
     <MobileBottomPanel gap={32}>
       <Top>
         <h3>{title}</h3>
-        <Info>
+        <Info className="scrollable">
           <Pill
             title={mode === NavbarModeEnum.Qna ? 'Q&A' : 'Polls'}
             variant={mode === NavbarModeEnum.Qna ? 'orange' : 'green'}
@@ -85,7 +85,7 @@ export const DefaultNavMobileBottomPanel = ({
           <p className="id">#{id}</p>
         </Info>
       </Top>
-      <div className="row">
+      <div className="row scrollable">
         {isInProgress && (
           <Button
             variant="outlined"
