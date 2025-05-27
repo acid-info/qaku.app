@@ -1,6 +1,7 @@
 import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import styled from '@emotion/styled'
 import React, { useEffect, useRef, useState } from 'react'
+import { Button } from '../Button'
 import { IconButtonRound } from '../IconButtonRound'
 import { CalendarIcon } from '../Icons/CalendarIcon'
 import { ChevronLeftIcon } from '../Icons/ChevronLeftIcon'
@@ -71,6 +72,20 @@ export const DateInput: React.FC<DateInputProps> = ({
         onChange(newDate)
       }
     }
+  }
+
+  const handleConfirm = () => {
+    setIsOpen(false)
+  }
+
+  const handleCancel = () => {
+    setSelectedDate(undefined)
+    setHours(0)
+    setMinutes(0)
+    if (onChange) {
+      onChange(undefined as any)
+    }
+    setIsOpen(false)
   }
 
   const formatDate = (date?: Date): string => {
@@ -197,6 +212,14 @@ export const DateInput: React.FC<DateInputProps> = ({
             minutes={minutes}
             onChange={handleTimeChange}
           />
+          <ButtonContainer>
+            <Button variant="outlined" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button variant="filled" onClick={handleConfirm}>
+              Confirm
+            </Button>
+          </ButtonContainer>
         </CalendarContainer>
       )}
     </DateInputWrapper>
@@ -330,5 +353,15 @@ const DayCell = styled.div<{
       if (otherMonth) return 'var(--gray-dark)'
       return 'var(--gray)'
     }};
+  }
+`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+
+  button {
+    padding: 8px 16px;
   }
 `
