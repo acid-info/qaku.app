@@ -1,10 +1,12 @@
 import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import styled from '@emotion/styled'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Button } from '../Button'
 import { IconButtonRound } from '../IconButtonRound'
 import { CalendarIcon } from '../Icons/CalendarIcon'
 import { ChevronLeftIcon } from '../Icons/ChevronLeftIcon'
 import { ChevronRightIcon } from '../Icons/ChevronRightIcon'
+import { TimeInput } from './TimeInput'
 
 export interface DateInputProps {
   value?: Date
@@ -22,26 +24,82 @@ export const DateInput: React.FC<DateInputProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value)
   const [currentMonth, setCurrentMonth] = useState(() => value || new Date())
+  const [hours, setHours] = useState(() => value?.getHours() ?? 0)
+  const [minutes, setMinutes] = useState(() => value?.getMinutes() ?? 0)
   const calendarRef = useRef<HTMLDivElement>(null)
 
   useOnClickOutside(calendarRef, () => setIsOpen(false), isOpen)
 
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date)
-    setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1))
-    setIsOpen(false)
-    if (onChange) {
-      onChange(date)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isOpen && (event.key === 'Escape' || event.key === 'Enter')) {
+        setIsOpen(false)
+      }
     }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
+
+  const handleDateSelect = (date: Date) => {
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hours,
+      minutes,
+    )
+    setSelectedDate(newDate)
+    setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1))
+    if (onChange) {
+      onChange(newDate)
+    }
+  }
+
+  const handleTimeChange = (newHours: number, newMinutes: number) => {
+    setHours(newHours)
+    setMinutes(newMinutes)
+    if (selectedDate) {
+      const newDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        newHours,
+        newMinutes,
+      )
+      setSelectedDate(newDate)
+      if (onChange) {
+        onChange(newDate)
+      }
+    }
+  }
+
+  const handleConfirm = () => {
+    setIsOpen(false)
+  }
+
+  const handleCancel = () => {
+    setSelectedDate(undefined)
+    setHours(0)
+    setMinutes(0)
+    if (onChange) {
+      onChange(undefined as any)
+    }
+    setIsOpen(false)
   }
 
   const formatDate = (date?: Date): string => {
     if (!date) return ''
-    return date.toLocaleDateString('en-US', {
+    const dateStr = date.toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
     })
+    const timeStr = `${date.getHours().toString().padStart(2, '0')}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`
+    return `${dateStr}, ${timeStr}`
   }
 
   const prevMonth = () => {
@@ -149,6 +207,19 @@ export const DateInput: React.FC<DateInputProps> = ({
           {renderCalendarHeader()}
           {renderDaysOfWeek()}
           {renderCalendarDays()}
+          <TimeInput
+            hours={hours}
+            minutes={minutes}
+            onChange={handleTimeChange}
+          />
+          <ButtonContainer>
+            <Button variant="outlined" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button variant="filled" onClick={handleConfirm}>
+              Confirm
+            </Button>
+          </ButtonContainer>
         </CalendarContainer>
       )}
     </DateInputWrapper>
@@ -282,5 +353,15 @@ const DayCell = styled.div<{
       if (otherMonth) return 'var(--gray-dark)'
       return 'var(--gray)'
     }};
+  }
+`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+
+  button {
+    padding: 8px 16px;
   }
 `
