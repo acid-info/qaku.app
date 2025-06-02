@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 export interface TimeInputProps {
   hours: number
@@ -12,6 +12,9 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   minutes,
   onChange,
 }) => {
+  const hoursInputRef = useRef<HTMLInputElement>(null)
+  const minutesInputRef = useRef<HTMLInputElement>(null)
+
   const handleHoursChange = (value: string) => {
     const newHours = Math.max(0, Math.min(23, parseInt(value) || 0))
     onChange(newHours, minutes)
@@ -22,12 +25,38 @@ export const TimeInput: React.FC<TimeInputProps> = ({
     onChange(hours, newMinutes)
   }
 
+  useEffect(() => {
+    const preventWheel = (e: WheelEvent) => {
+      e.preventDefault()
+    }
+
+    const hoursInput = hoursInputRef.current
+    const minutesInput = minutesInputRef.current
+
+    if (hoursInput) {
+      hoursInput.addEventListener('wheel', preventWheel, { passive: false })
+    }
+    if (minutesInput) {
+      minutesInput.addEventListener('wheel', preventWheel, { passive: false })
+    }
+
+    return () => {
+      if (hoursInput) {
+        hoursInput.removeEventListener('wheel', preventWheel)
+      }
+      if (minutesInput) {
+        minutesInput.removeEventListener('wheel', preventWheel)
+      }
+    }
+  }, [])
+
   return (
     <TimeSection>
       <TimeLabel>Time</TimeLabel>
       <TimeInputs>
         <TimeInputContainer>
           <StyledTimeInput
+            ref={hoursInputRef}
             type="number"
             min="0"
             max="23"
@@ -38,6 +67,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
         <TimeSeparator>:</TimeSeparator>
         <TimeInputContainer>
           <StyledTimeInput
+            ref={minutesInputRef}
             type="number"
             min="0"
             max="59"
