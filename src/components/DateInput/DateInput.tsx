@@ -1,6 +1,6 @@
 import { useOnClickOutside } from '@/../hooks/useOnClickOutside'
 import styled from '@emotion/styled'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '../Button'
 import { IconButtonRound } from '../IconButtonRound'
 import { CalendarIcon } from '../Icons/CalendarIcon'
@@ -24,69 +24,71 @@ export const DateInput: React.FC<DateInputProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value)
   const [currentMonth, setCurrentMonth] = useState(() => value || new Date())
-  const [hours, setHours] = useState(() => value?.getHours() ?? 0)
-  const [minutes, setMinutes] = useState(() => value?.getMinutes() ?? 0)
+  const [pendingDate, setPendingDate] = useState<Date | undefined>(value)
+  const [pendingHours, setPendingHours] = useState(() => value?.getHours() ?? 0)
+  const [pendingMinutes, setPendingMinutes] = useState(
+    () => value?.getMinutes() ?? 0,
+  )
+
   const calendarRef = useRef<HTMLDivElement>(null)
 
   useOnClickOutside(calendarRef, () => setIsOpen(false), isOpen)
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (isOpen && (event.key === 'Escape' || event.key === 'Enter')) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen])
 
   const handleDateSelect = (date: Date) => {
     const newDate = new Date(
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
-      hours,
-      minutes,
+      pendingHours,
+      pendingMinutes,
     )
-    setSelectedDate(newDate)
+    setPendingDate(newDate)
     setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1))
-    if (onChange) {
-      onChange(newDate)
-    }
   }
 
   const handleTimeChange = (newHours: number, newMinutes: number) => {
-    setHours(newHours)
-    setMinutes(newMinutes)
-    if (selectedDate) {
+    setPendingHours(newHours)
+    setPendingMinutes(newMinutes)
+    if (pendingDate) {
       const newDate = new Date(
-        selectedDate.getFullYear(),
-        selectedDate.getMonth(),
-        selectedDate.getDate(),
+        pendingDate.getFullYear(),
+        pendingDate.getMonth(),
+        pendingDate.getDate(),
         newHours,
         newMinutes,
       )
-      setSelectedDate(newDate)
+      setPendingDate(newDate)
+    }
+  }
+
+  const handleConfirm = useCallback(() => {
+    if (pendingDate) {
+      const confirmedDate = new Date(
+        pendingDate.getFullYear(),
+        pendingDate.getMonth(),
+        pendingDate.getDate(),
+        pendingHours,
+        pendingMinutes,
+      )
+      setSelectedDate(confirmedDate)
       if (onChange) {
-        onChange(newDate)
+        onChange(confirmedDate)
+      }
+    } else {
+      setSelectedDate(undefined)
+      if (onChange) {
+        onChange(undefined as any)
       }
     }
-  }
-
-  const handleConfirm = () => {
     setIsOpen(false)
-  }
+  }, [onChange, pendingDate, pendingHours, pendingMinutes])
 
-  const handleCancel = () => {
-    setSelectedDate(undefined)
-    setHours(0)
-    setMinutes(0)
-    if (onChange) {
-      onChange(undefined as any)
-    }
+  const handleCancel = useCallback(() => {
+    setPendingDate(selectedDate)
+    setPendingHours(selectedDate?.getHours() ?? 0)
+    setPendingMinutes(selectedDate?.getMinutes() ?? 0)
     setIsOpen(false)
-  }
+  }, [selectedDate])
 
   const formatDate = (date?: Date): string => {
     if (!date) return ''
@@ -153,19 +155,16 @@ export const DateInput: React.FC<DateInputProps> = ({
     const startDayOfWeek = firstDay.getDay()
     const daysInMonth = lastDay.getDate()
 
-    // Calculate total grid size
     const totalCells = Math.ceil((startDayOfWeek + daysInMonth) / 7) * 7
 
     return (
       <CalendarDays>
         {Array.from({ length: totalCells }).map((_, i) => {
-          // Calculate date for this cell
           const dayOffset = i - startDayOfWeek
           const date = new Date(year, month, dayOffset + 1)
 
           const isCurrentMonth = date.getMonth() === month
-          const isSelected =
-            selectedDate?.toDateString() === date.toDateString()
+          const isSelected = pendingDate?.toDateString() === date.toDateString()
 
           return (
             <DayCell
@@ -185,6 +184,30 @@ export const DateInput: React.FC<DateInputProps> = ({
       </CalendarDays>
     )
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isOpen && (event.key === 'Escape' || event.key === 'Enter')) {
+        if (event.key === 'Enter') {
+          handleConfirm()
+        } else {
+          handleCancel()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, handleConfirm, handleCancel])
+
+  useEffect(() => {
+    if (isOpen) {
+      setPendingDate(selectedDate)
+      setPendingHours(selectedDate?.getHours() ?? 0)
+      setPendingMinutes(selectedDate?.getMinutes() ?? 0)
+      setCurrentMonth(selectedDate || new Date())
+    }
+  }, [isOpen, selectedDate])
 
   return (
     <DateInputWrapper>
@@ -208,8 +231,8 @@ export const DateInput: React.FC<DateInputProps> = ({
           {renderDaysOfWeek()}
           {renderCalendarDays()}
           <TimeInput
-            hours={hours}
-            minutes={minutes}
+            hours={pendingHours}
+            minutes={pendingMinutes}
             onChange={handleTimeChange}
           />
           <ButtonContainer>
